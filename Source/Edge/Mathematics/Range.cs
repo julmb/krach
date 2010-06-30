@@ -1,6 +1,6 @@
+using System;
 using System.Collections.Generic;
 using Utility.Extensions;
-using System;
 
 namespace Edge.Mathematics
 {

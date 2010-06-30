@@ -1,6 +1,6 @@
 namespace Edge.Mathematics.Maps.Linear
 {
-	public class MapDouble
+	public class MapDouble : IMap<double, double>
 	{
 		readonly Range<double> source;
 		readonly Range<double> destination;
@@ -27,17 +27,9 @@ namespace Edge.Mathematics.Maps.Linear
 		{
 			return offset + value * factor;
 		}
-		public Range<double> ForwardMap(Range<double> range)
-		{
-			return new Range<double>(ForwardMap(range.Start), ForwardMap(range.End));
-		}
 		public double ReverseMap(double value)
 		{
 			return (value - offset) / factor;
-		}
-		public Range<double> ReverseMap(Range<double> range)
-		{
-			return new Range<double>(ReverseMap(range.Start), ReverseMap(range.End));
 		}
 	}
 }
