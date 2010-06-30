@@ -157,6 +157,8 @@ namespace Utilities
 		/// <returns>The index of the specified item or -1 if the item was not found.</returns>
 		public static int GetIndex<TSource>(this IEnumerable<TSource> source, TSource item)
 		{
+			if (source == null) throw new ArgumentNullException("source");
+
 			IEqualityComparer<TSource> comparer = EqualityComparer<TSource>.Default;
 
 			int index = 0;
@@ -179,6 +181,8 @@ namespace Utilities
 		/// <returns>A collection that contains elements from the input sequence that don't satisfy the condition.</returns>
 		public static IEnumerable<TSource> WhereNot<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
 		{
+			if (source == null) throw new ArgumentNullException("source");
+
 			foreach (TSource item in source)
 				if (!predicate(item))
 					yield return item;
@@ -192,9 +196,30 @@ namespace Utilities
 		/// <returns>A collection that contains elements from the input sequence that don't have the given type.</returns>
 		public static IEnumerable<TSource> NotOfType<TSource, TType>(this IEnumerable<TSource> source)
 		{
+			if (source == null) throw new ArgumentNullException("source");
+
 			foreach (TSource item in source)
 				if (!(item is TType))
 					yield return item;
+		}
+		public static IEnumerable<TSource> Append<TSource>(this IEnumerable<TSource> source, TSource item)
+		{
+			return Enumerable.Concat(source, EnumerableUtilities.Single(item));
+		}
+		public static IEnumerable<T> Randomize<T>(this IEnumerable<T> source, Random random)
+		{
+			List<T> remainingItems = new List<T>(source);
+			List<T> result = new List<T>();
+
+			while (remainingItems.Any())
+			{
+				int index = random.Next(remainingItems.Count);
+				T item = remainingItems[index];
+				remainingItems.RemoveAt(index);
+				result.Add(item);
+			}
+
+			return result;
 		}
 	}
 }
