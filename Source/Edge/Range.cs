@@ -1,4 +1,4 @@
-namespace Utilities
+namespace Utility
 {
 	public struct Range<T>
 	{
