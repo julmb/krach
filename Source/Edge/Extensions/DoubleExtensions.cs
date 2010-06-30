@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using Utility.Utilities;
 
 namespace Utility.Extensions
 {
@@ -44,12 +43,12 @@ namespace Utility.Extensions
 		{
 			return Math.Ceiling(value / interval) * interval;
 		}
-		public static double Clamp(this double value, double minimum, double maximum)
-		{
-			value = Math.Max(value, minimum);
-			value = Math.Min(value, maximum);
+		//public static double Clamp(this double value, double minimum, double maximum)
+		//{
+		//    value = Math.Max(value, minimum);
+		//    value = Math.Min(value, maximum);
 
-			return value;
-		}
+		//    return value;
+		//}
 	}
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Utility.Utilities;
+using Edge.Mathematics;
 
 namespace Utility.Extensions
 {
@@ -17,6 +18,7 @@ namespace Utility.Extensions
 			{
 				if (first) first = false;
 				else yield return separator;
+
 				yield return item;
 			}
 		}
@@ -32,18 +34,18 @@ namespace Utility.Extensions
 
 			return source.Except(EnumerableUtility.Single(item));
 		}
-		public static IEnumerable<Range<T>> GetRanges<T>(this IEnumerable<T> source)
-		{
-			if (source == null) throw new ArgumentNullException("source");
+		//public static IEnumerable<Range<T>> GetRanges<T>(this IEnumerable<T> source)
+		//{
+		//    if (source == null) throw new ArgumentNullException("source");
 
-			IEnumerator<T> enumerator = source.GetEnumerator();
+		//    IEnumerator<T> enumerator = source.GetEnumerator();
 
-			if (!enumerator.MoveNext()) yield break;
+		//    if (!enumerator.MoveNext()) yield break;
 
-			T last = enumerator.Current;
+		//    T last = enumerator.Current;
 
-			while (enumerator.MoveNext()) yield return new Range<T>(last, last = enumerator.Current);
-		}
+		//    while (enumerator.MoveNext()) yield return new Range<T>(last, last = enumerator.Current);
+		//}
 		public static IEnumerable<string> ToStrings<T>(this IEnumerable<T> source)
 		{
 			if (source == null) throw new ArgumentNullException("source");

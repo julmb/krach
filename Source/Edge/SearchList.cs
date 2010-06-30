@@ -1,14 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Edge.Mathematics;
 
 namespace Utility
 {
 	public class SearchList<TValue, TKey> : IEnumerable<TValue>
+		where TKey : IComparable<TKey>
 	{
+		readonly IComparer<TKey> comparer = Comparer<TKey>.Default;
+		readonly List<TValue> items = new List<TValue>();
 		readonly Func<TValue, TKey> keySelector;
-		readonly IComparer<TKey> comparer;
-		readonly List<TValue> items;
 
 		public TValue this[int index]
 		{
@@ -61,16 +63,12 @@ namespace Utility
 		public bool IsEmpty { get { return items.Count == 0; } }
 		public int Count { get { return items.Count; } }
 
-		public SearchList(Func<TValue, TKey> keySelector, IComparer<TKey> comparer)
+		public SearchList(Func<TValue, TKey> keySelector)
 		{
 			if (keySelector == null) throw new ArgumentNullException("keySelector");
-			if (comparer == null) throw new ArgumentNullException("comparer");
 
 			this.keySelector = keySelector;
-			this.comparer = comparer;
-			this.items = new List<TValue>();
 		}
-		public SearchList(Func<TValue, TKey> keySelector) : this(keySelector, Comparer<TKey>.Default) { }
 
 		public void Clear()
 		{

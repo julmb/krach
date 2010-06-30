@@ -43,26 +43,26 @@
     <Compile Include="EventArgs.cs" />
     <Compile Include="EventsArgs.cs" />
     <Compile Include="Extensions\ColorExtensions.cs" />
+    <Compile Include="Extensions\ComparableExtensions.cs" />
     <Compile Include="Extensions\DoubleExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\QueueExtensions.cs" />
     <Compile Include="Extensions\RandomExtensions.cs" />
-    <Compile Include="Extensions\RangeExtensions.cs" />
     <Compile Include="Extensions\RectangleExtensions.cs" />
     <Compile Include="Graphs\GraphTraverser.cs" />
     <Compile Include="Graphs\IGraph.cs" />
-    <Compile Include="IMapping.cs" />
+    <Compile Include="Mathematics\Maps\IMap.cs" />
     <Compile Include="IMulti.cs" />
-    <Compile Include="LinearMapping.cs" />
-    <Compile Include="Mapping.cs" />
+    <Compile Include="Mathematics\Maps\Linear\MapDouble.cs" />
+    <Compile Include="Mathematics\Maps\Linear\MapFloat.cs" />
     <Compile Include="MathExtensions.cs" />
     <Compile Include="MathUtilities.cs" />
-    <Compile Include="Matrix22Float.cs" />
+    <Compile Include="Mathematics\Matrix22Float.cs" />
     <Compile Include="Multi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Range.cs" />
-    <Compile Include="RectangleFloat.cs" />
-    <Compile Include="RectangleFloatMapping.cs" />
+    <Compile Include="Mathematics\Range.cs" />
+    <Compile Include="Mathematics\RectangleFloat.cs" />
+    <Compile Include="Mathematics\Maps\Linear\MapRectangleFloat.cs" />
     <Compile Include="SearchList.cs" />
     <Compile Include="Utilities\ColorUtility.cs" />
     <Compile Include="Utilities\ConsoleUtility.cs" />
@@ -70,8 +70,8 @@
     <Compile Include="Utilities\EnumerableUtility.cs" />
     <Compile Include="Utilities\RectangleUtility.cs" />
     <Compile Include="Utilities\ThreadUtility.cs" />
-    <Compile Include="Vector2Float.cs" />
-    <Compile Include="Vector2Int.cs" />
+    <Compile Include="Mathematics\Vector2Float.cs" />
+    <Compile Include="Mathematics\Vector2Int.cs" />
     <Compile Include="XSerializable.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -80,9 +80,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Math\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
