@@ -1,6 +1,6 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using Edge.Mathematics;
 
 namespace Utility.Extensions
 {
@@ -20,6 +20,10 @@ namespace Utility.Extensions
 			value = Minimum(value, maximum);
 
 			return value;
+		}
+		public static T Clamp<T>(this T value, Range<T> range) where T : IComparable<T>
+		{
+			return value.Clamp(range.Start, range.End);
 		}
 	}
 }

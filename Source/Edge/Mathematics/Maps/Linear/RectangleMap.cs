@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Edge.Mathematics.Maps.Linear
+﻿namespace Edge.Mathematics.Maps.Linear
 {
-	public class MapVector2Float : Edge.Mathematics.Maps.MapVector2Float
+	public class RectangleMap : MapVector2Float
 	{
 		readonly RectangleFloat source;
 		readonly RectangleFloat destination;
@@ -13,7 +8,7 @@ namespace Edge.Mathematics.Maps.Linear
 		public RectangleFloat Source { get { return source; } }
 		public RectangleFloat Destination { get { return destination; } }
 
-		public MapVector2Float(RectangleFloat source, RectangleFloat destination)
+		public RectangleMap(RectangleFloat source, RectangleFloat destination)
 			: base
 			(
 				new MapFloat(new Range<float>(source.Left, source.Right), new Range<float>(destination.Left, destination.Right)),

@@ -1,4 +1,4 @@
-namespace Multimedia.Graphics
+namespace Edge.Graphics
 {
 	public static class Colors
 	{

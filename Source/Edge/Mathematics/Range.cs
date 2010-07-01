@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Utility.Extensions;
 
 namespace Edge.Mathematics
 {
@@ -22,10 +21,6 @@ namespace Edge.Mathematics
 		public override string ToString()
 		{
 			return start + " - " + end;
-		}
-		public T Clamp(T value)
-		{
-			return value.Clamp(start, end);
 		}
 	}
 }

@@ -53,7 +53,7 @@
     <Compile Include="Mathematics\Maps\IMap.cs" />
     <Compile Include="Mathematics\Maps\Linear\MapDouble.cs" />
     <Compile Include="Mathematics\Maps\Linear\MapFloat.cs" />
-    <Compile Include="Mathematics\Maps\Linear\MapVector2Float.cs" />
+    <Compile Include="Mathematics\Maps\Linear\RectangleMap.cs" />
     <Compile Include="Mathematics\Maps\MapRange.cs" />
     <Compile Include="Mathematics\Maps\MapRectangleFloat.cs" />
     <Compile Include="MathExtensions.cs" />

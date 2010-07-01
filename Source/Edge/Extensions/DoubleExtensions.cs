@@ -50,5 +50,9 @@ namespace Utility.Extensions
 
 		//    return value;
 		//}
+		public static double Square(this double value)
+		{
+			return value * value;
+		}
 	}
 }
