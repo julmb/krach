@@ -1,41 +1,40 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using Utility.Extensions;
 
-namespace Utility
+namespace Edge.Graphics
 {
 	public class ColorGenerator
 	{
 		readonly Random random = new Random();
-		readonly List<ColorPlus> colors = new List<ColorPlus>();
+		readonly List<Color> colors = new List<Color>();
 
 		public Color NextColor()
 		{
-			ColorPlus color = GetColor();
+			Color color = GetColor();
 
 			colors.Add(color);
 
-			return color.ToColor();
+			return color;
 		}
 
-		ColorPlus GetColor()
+		Color GetColor()
 		{
-			if (!colors.Any()) return GetRandomColors(1).Single();
+			if (!colors.Any()) return GetRandomColors(random, 1).Single();
 
 			return
 			(
-				from randomColor in GetRandomColors(5000)
-				orderby colors.Min((Func<ColorPlus, double>)(color => ColorPlus.Distance(randomColor, color))) descending
+				from randomColor in GetRandomColors(random, 5000)
+				orderby colors.Min(color => Color.DistanceRgb(randomColor, color)) descending
 				select randomColor
 			)
 			.First();
 		}
-		IEnumerable<ColorPlus> GetRandomColors(int count)
+
+		static IEnumerable<Color> GetRandomColors(Random random, int count)
 		{
-			for (int i = 0; i < count; i++)
-				yield return ColorPlus.FromHsv(random.NextDouble(0, 6), random.NextDouble(0.5, 1), random.NextDouble(0.5, 1));
+			for (int i = 0; i < count; i++) yield return Color.FromHsv(random.NextDouble(0, 6), random.NextDouble(0.5, 1), random.NextDouble(0.5, 1));
 		}
 	}
 }

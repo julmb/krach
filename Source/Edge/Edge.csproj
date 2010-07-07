@@ -36,7 +36,6 @@
     <Compile Include="CollectionExtensions.cs" />
     <Compile Include="Graphics\Color.cs" />
     <Compile Include="Graphics\ColorGenerator.cs" />
-    <Compile Include="Graphics\ColorPlus.cs" />
     <Compile Include="Graphics\Colors.cs" />
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="EnumerableUtilities.cs" />
@@ -48,6 +47,8 @@
     <Compile Include="Extensions\QueueExtensions.cs" />
     <Compile Include="Extensions\RandomExtensions.cs" />
     <Compile Include="Extensions\RectangleExtensions.cs" />
+    <Compile Include="Graphics\HsvColor.cs" />
+    <Compile Include="Graphics\RgbColor.cs" />
     <Compile Include="Graphs\GraphTraverser.cs" />
     <Compile Include="Graphs\IGraph.cs" />
     <Compile Include="Mathematics\Maps\IMap.cs" />

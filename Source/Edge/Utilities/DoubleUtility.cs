@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Utility.Extensions;
 
 namespace Utility.Utilities
@@ -15,13 +16,13 @@ namespace Utility.Utilities
 
 			for (double value = start; value <= end; value += intervalLength) yield return value;
 		}
-		public static double Modulo(double a, double b)
+		public static double Minimum(params double[] values)
 		{
-			if (b == 0) throw new DivideByZeroException();
-
-			double remainder = a % b;
-			if (remainder < 0) remainder += b;
-			return remainder;
+			return values.Min();
+		}
+		public static double Maximum(params double[] values)
+		{
+			return values.Max();
 		}
 	}
 }

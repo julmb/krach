@@ -54,5 +54,13 @@ namespace Utility.Extensions
 		{
 			return value * value;
 		}
+		public static double Modulo(this double value, double divisor)
+		{
+			if (divisor == 0) throw new DivideByZeroException();
+
+			double remainder = value % divisor;
+			if (remainder < 0) remainder += divisor;
+			return remainder;
+		}
 	}
 }
