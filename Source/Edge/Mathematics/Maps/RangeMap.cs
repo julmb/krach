@@ -2,12 +2,12 @@
 
 namespace Edge.Mathematics.Maps
 {
-	public class MapRange<T> : IMap<Range<T>, Range<T>>
+	public class RangeMap<T> : IMap<Range<T>, Range<T>>
 		where T : IComparable<T>
 	{
 		readonly IMap<T, T> map;
 
-		public MapRange(IMap<T, T> map)
+		public RangeMap(IMap<T, T> map)
 		{
 			if (map == null) throw new ArgumentNullException("map");
 

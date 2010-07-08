@@ -1,6 +1,6 @@
 namespace Edge.Mathematics.Maps.Linear
 {
-	public class MapFloat : IMap<float, float>
+	public class FloatMap : IMap<float, float>
 	{
 		readonly Range<float> source;
 		readonly Range<float> destination;
@@ -12,7 +12,7 @@ namespace Edge.Mathematics.Maps.Linear
 		public float Offset { get { return offset; } }
 		public float Factor { get { return factor; } }
 
-		public MapFloat(Range<float> source, Range<float> destination)
+		public FloatMap(Range<float> source, Range<float> destination)
 		{
 			this.source = source;
 			this.destination = destination;
@@ -21,7 +21,7 @@ namespace Edge.Mathematics.Maps.Linear
 			this.offset = (source.End * destination.Start - source.Start * destination.End) / divisor;
 			this.factor = (destination.End - destination.Start) / divisor;
 		}
-		public MapFloat(Range<float> source) : this(source, new Range<float>(0, 1)) { }
+		public FloatMap(Range<float> source) : this(source, new Range<float>(0, 1)) { }
 
 		public float ForwardMap(float value)
 		{

@@ -40,7 +40,7 @@ namespace Edge.Mathematics
 		{
 			return this == other;
 		}
-		public Matrix22Float Transpose(Matrix22Float matrix)
+		public Matrix22Float Transpose()
 		{
 			return new Matrix22Float(x11, x21, x12, x22);
 		}

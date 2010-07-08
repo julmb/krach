@@ -2,11 +2,11 @@
 
 namespace Edge.Mathematics.Maps
 {
-	public class MapRectangleFloat : IMap<RectangleFloat, RectangleFloat>
+	public class RectangleFloatMap : IMap<RectangleFloat, RectangleFloat>
 	{
 		readonly IMap<Vector2Float, Vector2Float> map;
 
-		public MapRectangleFloat(IMap<Vector2Float, Vector2Float> map)
+		public RectangleFloatMap(IMap<Vector2Float, Vector2Float> map)
 		{
 			if (map == null) throw new ArgumentNullException("map");
 
