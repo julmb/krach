@@ -1,6 +1,6 @@
 using System;
 
-namespace Edge.Mathematics
+namespace Edge
 {
 	public struct Vector2Int : IEquatable<Vector2Int>
 	{
@@ -64,9 +64,9 @@ namespace Edge.Mathematics
 			return new Vector2Int(factor * v.x, factor * v.y);
 		}
 
-		public static implicit operator Vector2Float(Vector2Int v)
+		public static implicit operator Vector2Double(Vector2Int v)
 		{
-			return new Vector2Float(v.x, v.y);
+			return new Vector2Double(v.x, v.y);
 		}
 	}
 }

@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Edge.Mathematics;
 
 namespace Utility
 {
@@ -58,7 +57,6 @@ namespace Utility
 				return this[startIndex, endIndex];
 			}
 		}
-		public TValue[] this[Range<TKey> range] { get { return this[range.Start, range.End]; } }
 
 		public bool IsEmpty { get { return items.Count == 0; } }
 		public int Count { get { return items.Count; } }

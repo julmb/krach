@@ -1,4 +1,4 @@
-﻿namespace Edge.Mathematics.Maps
+﻿namespace Edge.Maps
 {
 	public interface IMap<TSource, TDestination>
 	{

@@ -1,26 +1,26 @@
 ﻿using System;
 
-namespace Edge.Mathematics.Maps
+namespace Edge.Maps
 {
-	public class RangeMap<T> : IMap<Range<T>, Range<T>>
-		where T : IComparable<T>
-	{
-		readonly IMap<T, T> map;
+	//public class RangeMap<T> : IMap<Range1Double<T>, Range1Double<T>>
+	//    where T : IComparable<T>
+	//{
+	//    readonly IMap<T, T> map;
 
-		public RangeMap(IMap<T, T> map)
-		{
-			if (map == null) throw new ArgumentNullException("map");
+	//    public RangeMap(IMap<T, T> map)
+	//    {
+	//        if (map == null) throw new ArgumentNullException("map");
 
-			this.map = map;
-		}
+	//        this.map = map;
+	//    }
 
-		public Range<T> ForwardMap(Range<T> value)
-		{
-			return new Range<T>(map.ForwardMap(value.Start), map.ForwardMap(value.End));
-		}
-		public Range<T> ReverseMap(Range<T> value)
-		{
-			return new Range<T>(map.ReverseMap(value.Start), map.ReverseMap(value.End));
-		}
-	}
+	//    public Range1Double<T> ForwardMap(Range1Double<T> value)
+	//    {
+	//        return new Range1Double<T>(map.ForwardMap(value.Start), map.ForwardMap(value.End));
+	//    }
+	//    public Range1Double<T> ReverseMap(Range1Double<T> value)
+	//    {
+	//        return new Range1Double<T>(map.ReverseMap(value.Start), map.ReverseMap(value.End));
+	//    }
+	//}
 }
