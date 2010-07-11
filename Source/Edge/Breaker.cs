@@ -1,9 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using Utility.Extensions;
 using System.Threading;
 
 namespace Utility
@@ -18,18 +13,18 @@ namespace Utility
 		bool disposed = false;
 		bool done = false;
 		T current;
-		
+
 		T Current
 		{
 			get
 			{
 				itemAvailable.WaitOne();
-			
+
 				T item = current;
-				
+
 				itemAvailable.Reset();
 				itemNeeded.Set();
-				
+
 				return item;
 			}
 			set
@@ -42,7 +37,7 @@ namespace Utility
 				itemAvailable.Set();
 			}
 		}
-		
+
 		public Breaker(Func<T> readItem)
 		{
 			this.readItem = readItem;
@@ -53,13 +48,13 @@ namespace Utility
 		{
 			Dispose();
 		}
-		
+
 		public virtual void Dispose()
 		{
 			if (!disposed)
 			{
 				done = true;
-				
+
 				if (!reader.Join(TimeSpan.FromSeconds(1.0)))
 				{
 					reader.Abort();
@@ -68,7 +63,7 @@ namespace Utility
 
 				itemNeeded.Close();
 				itemAvailable.Close();
-				
+
 				disposed = true;
 			}
 		}
