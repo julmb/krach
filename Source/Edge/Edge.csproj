@@ -33,6 +33,8 @@
   <ItemGroup>
     <Compile Include="BatchCollection.cs" />
     <Compile Include="Breaker.cs" />
+    <Compile Include="Matrix.cs" />
+    <Compile Include="RangeExtensions.cs" />
     <Compile Include="CollectionExtensions.cs" />
     <Compile Include="Range2Double.cs" />
     <Compile Include="Range.cs" />

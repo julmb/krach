@@ -70,17 +70,17 @@ namespace Edge
 		{
 			return new Range2Double(Range<double>.Union(ranges.Select(range => range.range1)), Range<double>.Union(ranges.Select(range => range.range2)));
 		}
-		public static IEnumerable<Range2Double> Exclude(Range2Double rectangle, Range2Double exclusion)
+		public static IEnumerable<Range2Double> Exclude(Range2Double range, Range2Double exclusion)
 		{
-			Range2Double intersection = Intersect(new[]{exclusion, rectangle});
+			Range2Double intersection = Intersect(new[] { range, exclusion });
 
-			if (intersection.IsEmpty) yield return rectangle;
+			if (intersection.IsEmpty) yield return range;
 			else
 			{
-				Range2Double top = new Range2Double(rectangle.Start1, rectangle.End1, rectangle.Start2, intersection.Start2);
-				Range2Double bottom = new Range2Double(rectangle.Start1, rectangle.End1, intersection.End2, rectangle.End2);
-				Range2Double left = new Range2Double(rectangle.Start1, intersection.Start1, intersection.Start2, intersection.End2);
-				Range2Double right = new Range2Double(intersection.End1, rectangle.End1, intersection.Start2, intersection.End2);
+				Range2Double top = new Range2Double(range.Start1, range.End1, range.Start2, intersection.Start2);
+				Range2Double bottom = new Range2Double(range.Start1, range.End1, intersection.End2, range.End2);
+				Range2Double left = new Range2Double(range.Start1, intersection.Start1, intersection.Start2, intersection.End2);
+				Range2Double right = new Range2Double(intersection.End1, range.End1, intersection.Start2, intersection.End2);
 
 				if (!top.IsEmpty) yield return top;
 				if (!bottom.IsEmpty) yield return bottom;
