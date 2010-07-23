@@ -1,5 +1,6 @@
 using System;
 using Utilities;
+using Dash.Extensions;
 
 namespace Edge
 {
@@ -15,8 +16,8 @@ namespace Edge
 
 		public double X { get { return x; } }
 		public double Y { get { return y; } }
-		public double Length { get { return Math.Sqrt(x * x + y * y); } }
-		public double LengthSquared { get { return x * x + y * y; } }
+		public double Length { get { return LengthSquared.SquareRoot(); } }
+		public double LengthSquared { get { return x.Square() + y.Square(); } }
 
 		public Vector2Double(double x, double y)
 		{
@@ -69,7 +70,7 @@ namespace Edge
 
 		public static Vector2Double InterpolateLinear(Vector2Double vector1, Vector2Double vector2, double fraction)
 		{
-			return new Vector2Double(MathUtilities.InterpolateLinear(vector1.x, vector2.x, fraction), MathUtilities.InterpolateLinear(vector1.y, vector2.y, fraction));
+			return new Vector2Double(Scalar.InterpolateLinear(vector1.x, vector2.x, fraction), Scalar.InterpolateLinear(vector1.y, vector2.y, fraction));
 		}
 	}
 }

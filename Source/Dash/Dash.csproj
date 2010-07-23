@@ -33,22 +33,19 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BatchCollection.cs" />
     <Compile Include="Breaker.cs" />
-    <Compile Include="CollectionExtensions.cs" />
-    <Compile Include="EnumerableExtensions_.cs" />
-    <Compile Include="EnumerableUtilities.cs" />
+    <Compile Include="Extensions\CollectionExtensions.cs" />
+    <Compile Include="Extensions\EnumerableExtensions_.cs" />
+    <Compile Include="Extensions\EnumerableUtilities.cs" />
     <Compile Include="EventArgs.cs" />
-    <Compile Include="ColorExtensions.cs" />
-    <Compile Include="ComparableExtensions.cs" />
-    <Compile Include="DoubleExtensions.cs" />
-    <Compile Include="EnumerableExtensions.cs" />
-    <Compile Include="QueueExtensions.cs" />
-    <Compile Include="RandomExtensions.cs" />
-    <Compile Include="RectangleExtensions.cs" />
+    <Compile Include="Extensions\ComparableExtensions.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="Extensions\QueueExtensions.cs" />
+    <Compile Include="Extensions\RandomExtensions.cs" />
+    <Compile Include="Extensions\Scalar.cs" />
     <Compile Include="Graphics\Color.cs" />
     <Compile Include="Graphics\ColorGenerator.cs" />
     <Compile Include="Graphics\Colors.cs" />
@@ -63,20 +60,16 @@
     <Compile Include="Maps\Linear\Range2DoubleMap.cs" />
     <Compile Include="Maps\MapRange.cs" />
     <Compile Include="Maps\MapVector2Double.cs" />
-    <Compile Include="MathExtensions.cs" />
-    <Compile Include="MathUtilities.cs" />
     <Compile Include="Basic\Matrix.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Basic\Range.cs" />
     <Compile Include="Basic\Range1Double.cs" />
     <Compile Include="Basic\Range2Double.cs" />
-    <Compile Include="Basic\RangeExtensions.cs" />
+    <Compile Include="Extensions\RangeExtensions.cs" />
     <Compile Include="SearchList.cs" />
-    <Compile Include="ConsoleUtility.cs" />
-    <Compile Include="DoubleUtility.cs" />
-    <Compile Include="EnumerableUtility.cs" />
-    <Compile Include="RectangleUtility.cs" />
-    <Compile Include="ThreadUtility.cs" />
+    <Compile Include="Extensions\ConsoleUtility.cs" />
+    <Compile Include="Extensions\EnumerableUtility.cs" />
+    <Compile Include="Extensions\ThreadUtility.cs" />
     <Compile Include="Basic\Vector1Double.cs" />
     <Compile Include="Basic\Vector2Double.cs" />
   </ItemGroup>

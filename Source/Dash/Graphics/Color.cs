@@ -19,6 +19,8 @@ namespace Edge.Graphics
 
 		public double Alpha { get { return alpha; } }
 
+		public Color Inverse { get { return new Color(new RgbColor(1 - rgbColor.Red, 1 - rgbColor.Green, 1 - rgbColor.Blue), alpha); } }
+
 		Color(RgbColor rgbColor, HsvColor hsvColor, double alpha)
 		{
 			this.rgbColor = rgbColor;

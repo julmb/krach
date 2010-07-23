@@ -1,5 +1,6 @@
 ﻿using System;
 using Utility.Extensions;
+using Dash.Extensions;
 
 namespace Edge.Graphics
 {
@@ -51,7 +52,7 @@ namespace Edge.Graphics
 			double green = color1.green - color2.green;
 			double blue = color1.blue - color2.blue;
 
-			return Math.Sqrt(red.Square() + green.Square() + blue.Square());
+			return (red.Square() + green.Square() + blue.Square()).SquareRoot();
 		}
 	}
 }

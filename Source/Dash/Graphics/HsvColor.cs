@@ -1,6 +1,7 @@
 ﻿using System;
 using Utility.Extensions;
 using Utility.Utilities;
+using Dash.Extensions;
 
 namespace Edge.Graphics
 {
@@ -27,8 +28,8 @@ namespace Edge.Graphics
 
 		public static HsvColor FromRgb(RgbColor color)
 		{
-			double value = DoubleUtility.Maximum(color.Red, color.Green, color.Blue);
-			double chroma = value - DoubleUtility.Minimum(color.Red, color.Green, color.Blue);
+			double value = Scalar.Maximum(color.Red, color.Green, color.Blue);
+			double chroma = value - Scalar.Minimum(color.Red, color.Green, color.Blue);
 
 			if (chroma == 0) return new HsvColor(0, 0, value);
 
@@ -46,7 +47,7 @@ namespace Edge.Graphics
 			double saturation = color1.saturation - color2.saturation;
 			double value = color1.value - color2.value;
 
-			return Math.Sqrt(hue.Square() + saturation.Square() + value.Square());
+			return (hue.Square() + saturation.Square() + value.Square()).SquareRoot();
 		}
 	}
 }
