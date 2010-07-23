@@ -28,7 +28,7 @@ namespace Utility.Extensions
 			if (count > source.Count) throw new ArgumentOutOfRangeException("count");
 
 			List<T> result = new List<T>();
-			
+
 			for (int i = 0; i < count; i++) result.Add(source.Dequeue());
 
 			return result;

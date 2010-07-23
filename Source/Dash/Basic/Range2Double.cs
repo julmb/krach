@@ -77,15 +77,15 @@ namespace Edge
 			if (intersection.IsEmpty) yield return range;
 			else
 			{
-				Range2Double top = new Range2Double(range.StartX, range.EndX, range.StartY, intersection.StartY);
-				Range2Double bottom = new Range2Double(range.StartX, range.EndX, intersection.EndY, range.EndY);
 				Range2Double left = new Range2Double(range.StartX, intersection.StartX, intersection.StartY, intersection.EndY);
 				Range2Double right = new Range2Double(intersection.EndX, range.EndX, intersection.StartY, intersection.EndY);
+				Range2Double top = new Range2Double(range.StartX, range.EndX, range.StartY, intersection.StartY);
+				Range2Double bottom = new Range2Double(range.StartX, range.EndX, intersection.EndY, range.EndY);
 
-				if (!top.IsEmpty) yield return top;
-				if (!bottom.IsEmpty) yield return bottom;
 				if (!left.IsEmpty) yield return left;
 				if (!right.IsEmpty) yield return right;
+				if (!top.IsEmpty) yield return top;
+				if (!bottom.IsEmpty) yield return bottom;
 			}
 		}
 		public static Range2Double InterpolateLinear(Range2Double range1, Range2Double range2, double fraction)

@@ -2,12 +2,12 @@ using System;
 
 namespace Edge.Maps
 {
-	public class Vector2DoubleMap : IMap<Vector2Double, Vector2Double>
+	public class MapVector2Double : IMap<Vector2Double, Vector2Double>
 	{
 		readonly IMap<double, double> mapX;
 		readonly IMap<double, double> mapY;
 
-		public Vector2DoubleMap(IMap<double, double> mapX, IMap<double, double> mapY)
+		public MapVector2Double(IMap<double, double> mapX, IMap<double, double> mapY)
 		{
 			if (mapX == null) throw new ArgumentNullException("mapX");
 			if (mapY == null) throw new ArgumentNullException("mapY");

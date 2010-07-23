@@ -56,12 +56,13 @@
     <Compile Include="Graphics\RgbColor.cs" />
     <Compile Include="Graphs\GraphTraverser.cs" />
     <Compile Include="Graphs\IGraph.cs" />
+    <Compile Include="Maps\MapVector1Double.cs" />
     <Compile Include="Maps\IMap.cs" />
+    <Compile Include="Maps\Linear\Range1DoubleMap.cs" />
     <Compile Include="Maps\Linear\MapDouble.cs" />
-    <Compile Include="Maps\Linear\MapRectangle.cs" />
-    <Compile Include="Maps\RangeMap.cs" />
-    <Compile Include="Maps\RectangleDoubleMap.cs" />
-    <Compile Include="Maps\Vector2DoubleMap.cs" />
+    <Compile Include="Maps\Linear\Range2DoubleMap.cs" />
+    <Compile Include="Maps\MapRange.cs" />
+    <Compile Include="Maps\MapVector2Double.cs" />
     <Compile Include="MathExtensions.cs" />
     <Compile Include="MathUtilities.cs" />
     <Compile Include="Basic\Matrix.cs" />
@@ -70,7 +71,6 @@
     <Compile Include="Basic\Range1Double.cs" />
     <Compile Include="Basic\Range2Double.cs" />
     <Compile Include="Basic\RangeExtensions.cs" />
-    <Compile Include="RectangleDouble.cs" />
     <Compile Include="SearchList.cs" />
     <Compile Include="Utilities\ConsoleUtility.cs" />
     <Compile Include="Utilities\DoubleUtility.cs" />
