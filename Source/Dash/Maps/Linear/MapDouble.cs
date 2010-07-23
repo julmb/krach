@@ -16,8 +16,8 @@ namespace Edge.Maps.Linear
 		{
 			this.source = source;
 			this.destination = destination;
-			this.offset = (source.End1 * destination.Start1 - source.Start1 * destination.End1) / (source.End1 - source.Start1);
-			this.factor = (destination.End1 - destination.Start1) / (source.End1 - source.Start1);
+			this.offset = (source.EndX * destination.StartX - source.StartX * destination.EndX) / (source.EndX - source.StartX);
+			this.factor = (destination.EndX - destination.StartX) / (source.EndX - source.StartX);
 		}
 		public MapDouble(Range1Double source) : this(source, new Range1Double(0, 1)) { }
 

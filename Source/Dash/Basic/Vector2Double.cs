@@ -41,35 +41,35 @@ namespace Edge
 			return this == other;
 		}
 
-		public static bool operator ==(Vector2Double u, Vector2Double v)
+		public static bool operator ==(Vector2Double vector1, Vector2Double vector2)
 		{
-			return u.x == v.x && u.y == v.y;
+			return vector1.x == vector2.x && vector1.y == vector2.y;
 		}
-		public static bool operator !=(Vector2Double u, Vector2Double v)
+		public static bool operator !=(Vector2Double vector1, Vector2Double vector2)
 		{
-			return u.x != v.x || u.y != v.y;
-		}
-
-		public static Vector2Double operator +(Vector2Double u, Vector2Double v)
-		{
-			return new Vector2Double(u.x + v.x, u.y + v.y);
-		}
-		public static Vector2Double operator -(Vector2Double u, Vector2Double v)
-		{
-			return new Vector2Double(u.x - v.x, u.y - v.y);
-		}
-		public static Vector2Double operator *(Vector2Double v, double factor)
-		{
-			return new Vector2Double(v.x * factor, v.y * factor);
-		}
-		public static Vector2Double operator *(double factor, Vector2Double v)
-		{
-			return new Vector2Double(factor * v.x, factor * v.y);
+			return vector1.x != vector2.x || vector1.y != vector2.y;
 		}
 
-		public static Vector2Double InterpolateLinear(Vector2Double u, Vector2Double v, double fraction)
+		public static Vector2Double operator +(Vector2Double vector1, Vector2Double vector2)
 		{
-			return new Vector2Double(MathUtilities.InterpolateLinear(u.x, v.x, fraction), MathUtilities.InterpolateLinear(u.y, v.y, fraction));
+			return new Vector2Double(vector1.x + vector2.x, vector1.y + vector2.y);
+		}
+		public static Vector2Double operator -(Vector2Double vector1, Vector2Double vector2)
+		{
+			return new Vector2Double(vector1.x - vector2.x, vector1.y - vector2.y);
+		}
+		public static Vector2Double operator *(Vector2Double vector, double factor)
+		{
+			return new Vector2Double(vector.x * factor, vector.y * factor);
+		}
+		public static Vector2Double operator *(double factor, Vector2Double vector)
+		{
+			return new Vector2Double(factor * vector.x, factor * vector.y);
+		}
+
+		public static Vector2Double InterpolateLinear(Vector2Double vector1, Vector2Double vector2, double fraction)
+		{
+			return new Vector2Double(MathUtilities.InterpolateLinear(vector1.x, vector2.x, fraction), MathUtilities.InterpolateLinear(vector1.y, vector2.y, fraction));
 		}
 	}
 }
