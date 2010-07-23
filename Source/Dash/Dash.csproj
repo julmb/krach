@@ -38,11 +38,10 @@
     <Compile Include="BatchCollection.cs" />
     <Compile Include="Breaker.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
-    <Compile Include="Extensions\EnumerableExtensions_.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\EnumerableUtilities.cs" />
     <Compile Include="EventArgs.cs" />
     <Compile Include="Extensions\ComparableExtensions.cs" />
-    <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\QueueExtensions.cs" />
     <Compile Include="Extensions\RandomExtensions.cs" />
     <Compile Include="Extensions\Scalar.cs" />
@@ -66,6 +65,7 @@
     <Compile Include="Basic\Range1Double.cs" />
     <Compile Include="Basic\Range2Double.cs" />
     <Compile Include="Extensions\RangeExtensions.cs" />
+    <Compile Include="Random2.cs" />
     <Compile Include="SearchList.cs" />
     <Compile Include="Extensions\ConsoleUtility.cs" />
     <Compile Include="Extensions\EnumerableUtility.cs" />

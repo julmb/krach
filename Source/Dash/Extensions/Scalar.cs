@@ -16,6 +16,14 @@ namespace Dash.Extensions
 		{
 			return Math.Sqrt(value);
 		}
+		public static int Modulo(this int value, int divisor)
+		{
+			if (divisor == 0) throw new DivideByZeroException();
+
+			int remainder = value % divisor;
+			if (remainder < 0) remainder += divisor;
+			return remainder;
+		}
 		public static double Modulo(this double value, double divisor)
 		{
 			if (divisor == 0) throw new DivideByZeroException();
@@ -98,7 +106,7 @@ namespace Dash.Extensions
 		{
 			if (value <= 0) throw new ArgumentOutOfRangeException("value");
 
-			int result = 1;
+			uint result = 1;
 
 			while (result < value) result <<= 1;
 
@@ -116,7 +124,7 @@ namespace Dash.Extensions
 		{
 			if (value <= 0) throw new ArgumentOutOfRangeException("value");
 
-			int result = 1;
+			uint result = 1;
 
 			while (result < value) result <<= 1;
 
@@ -134,11 +142,11 @@ namespace Dash.Extensions
 		{
 			if (value <= 0) throw new ArgumentOutOfRangeException("value");
 
-			int result = 1;
+			uint result = 1;
 
 			while (result < value) result <<= 1;
 
-			int floor = result >> 1;
+			uint floor = result >> 1;
 
 			return floor << (value.Logarithm(2) - ((double)floor).Logarithm(2) <= 0.5 ? 0 : 1);
 		}
