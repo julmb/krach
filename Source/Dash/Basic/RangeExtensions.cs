@@ -1,6 +1,5 @@
-﻿using Utility.Utilities;
-using Utility.Extensions;
-using Utilities;
+﻿using Utilities;
+
 namespace Edge
 {
 	public static class RangeExtensions
