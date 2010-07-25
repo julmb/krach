@@ -65,7 +65,7 @@ namespace Edge
 
 		public static Vector1Double InterpolateLinear(Vector1Double vector1, Vector1Double vector2, double fraction)
 		{
-			return new Vector1Double(Scalar.InterpolateLinear(vector1.x, vector2.x, fraction));
+			return new Vector1Double(Scalars.InterpolateLinear(vector1.x, vector2.x, fraction));
 		}
 	}
 }

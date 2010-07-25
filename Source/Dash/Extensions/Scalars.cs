@@ -5,7 +5,7 @@ using Edge;
 
 namespace Dash.Extensions
 {
-	public static class Scalar
+	public static class Scalars
 	{
 		// Calculation
 		public static double Square(this double value)
@@ -32,13 +32,13 @@ namespace Dash.Extensions
 			if (remainder < 0) remainder += divisor;
 			return remainder;
 		}
-		public static double Exponent(this double value, double exponent)
+		public static double Exponentiate(this double value, double exponent)
 		{
 			return Math.Pow(value, exponent);
 		}
-		public static double Exponent(this double value)
+		public static double Exponentiate(double exponent)
 		{
-			return Math.Exp(value);
+			return Math.Exp(exponent);
 		}
 		public static double Logarithm(this double value, double @base)
 		{
@@ -174,8 +174,8 @@ namespace Dash.Extensions
 			if (!targets.Any()) throw new ArgumentException("Argument \"targets\" cannot be empty.");
 
 			int magnitude = (int)value.Logarithm(10).Floor();
-			double fraction = value * 10.0.Exponent(-magnitude);
-			return fraction.Round(targets) * 10.0.Exponent(magnitude);
+			double fraction = value * 10.0.Exponentiate(-magnitude);
+			return fraction.Round(targets) * 10.0.Exponentiate(magnitude);
 		}
 		public static double FractionRound(this double value, params double[] targets)
 		{

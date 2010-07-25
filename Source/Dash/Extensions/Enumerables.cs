@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using Dash.Extensions;
-using Utility.Utilities;
 
 namespace Utilities
 {
 	/// <summary>
 	/// Provides extension methods for working with types that implement the IEnumerable interface.
 	/// </summary>
-	public static class EnumerableExtensions
+	public static class Enumerables
 	{
 		/// <summary>
 		/// Tests whether a collection contains all elements of a second collection.
@@ -111,7 +110,7 @@ namespace Utilities
 		}
 		public static IEnumerable<TSource> Append<TSource>(this IEnumerable<TSource> source, TSource item)
 		{
-			return Enumerable.Concat(source, EnumerableUtilities.Single(item));
+			return Enumerable.Concat(source, Enumerables.Single(item));
 		}
 		public static IEnumerable<T> Separate<T>(this IEnumerable<T> source, T separator)
 		{
@@ -131,7 +130,7 @@ namespace Utilities
 		{
 			if (source == null) throw new ArgumentNullException("source");
 
-			return source.Except(EnumerableUtility.Single(item));
+			return source.Except(Enumerables.Single(item));
 		}
 		public static IEnumerable<Tuple<T, T>> GetRanges<T>(this IEnumerable<T> source)
 		{
@@ -184,6 +183,30 @@ namespace Utilities
 			}
 
 			return queue;
+		}
+		public static IEnumerable<T> Concatenate<T>(params IEnumerable<T>[] sources)
+		{
+			if (sources == null) throw new ArgumentNullException("sources");
+
+			foreach (IEnumerable<T> source in sources)
+			{
+				if (source == null) throw new ArgumentException("sources");
+
+				foreach (T item in source)
+					yield return item;
+			}
+		}
+		public static IEnumerable<T> Create<T>(params T[] items)
+		{
+			return items;
+		}
+		public static IEnumerable<T> Consume<T>(Func<T> getItem)
+		{
+			while (true) yield return getItem();
+		}
+		public static IEnumerable<T> Single<T>(T item)
+		{
+			yield return item;
 		}
 	}
 }

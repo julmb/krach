@@ -28,8 +28,8 @@ namespace Edge.Graphics
 
 		public static HsvColor FromRgb(RgbColor color)
 		{
-			double value = Scalar.Maximum(color.Red, color.Green, color.Blue);
-			double chroma = value - Scalar.Minimum(color.Red, color.Green, color.Blue);
+			double value = Scalars.Maximum(color.Red, color.Green, color.Blue);
+			double chroma = value - Scalars.Minimum(color.Red, color.Green, color.Blue);
 
 			if (chroma == 0) return new HsvColor(0, 0, value);
 

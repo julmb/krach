@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Utilities
 {
-	public static class CollectionExtensions
+	public static class Collections
 	{
 		public static void Remove<TSource>(this ICollection<TSource> source, IEnumerable<TSource> items)
 		{

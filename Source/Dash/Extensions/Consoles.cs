@@ -2,7 +2,7 @@ using System;
 
 namespace Utility.Utilities
 {
-	public static class ConsoleUtility
+	public static class Consoles
 	{
 		public static void Write(int column, string text)
 		{

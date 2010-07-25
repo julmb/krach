@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using Dash.Extensions;
 
 namespace Matrices
 {
@@ -77,7 +78,7 @@ namespace Matrices
 		{
 			if (Rows != Columns) throw new InvalidOperationException();
 
-			Matrix matrix = Identity((Rows + Columns) / 2);
+			Matrix matrix = Identity(Items.Equal(Rows, Columns));
 
 			for (int i = 0; i < exponent; i++) matrix *= this;
 
@@ -86,11 +87,11 @@ namespace Matrices
 
 		public static bool operator ==(Matrix matrix1, Matrix matrix2)
 		{
-			if (matrix1.Rows != matrix2.Rows) throw new ArgumentOutOfRangeException();
-			if (matrix1.Columns != matrix2.Columns) throw new ArgumentOutOfRangeException();
+			if (matrix1.Rows != matrix2.Rows) throw new ArgumentException("The row counts do not match.");
+			if (matrix1.Columns != matrix2.Columns) throw new ArgumentException("The column counts do not match.");
 
-			int rows = (matrix1.Rows + matrix2.Rows) / 2;
-			int columns = (matrix1.Columns + matrix2.Columns) / 2;
+			int rows = Items.Equal(matrix1.Rows, matrix2.Rows);
+			int columns = Items.Equal(matrix1.Columns, matrix2.Columns);
 
 			for (int row = 0; row < rows; row++)
 				for (int column = 0; column < columns; column++)
@@ -101,11 +102,11 @@ namespace Matrices
 		}
 		public static bool operator !=(Matrix matrix1, Matrix matrix2)
 		{
-			if (matrix1.Rows != matrix2.Rows) throw new ArgumentOutOfRangeException();
-			if (matrix1.Columns != matrix2.Columns) throw new ArgumentOutOfRangeException();
+			if (matrix1.Rows != matrix2.Rows) throw new ArgumentException("The row counts do not match.");
+			if (matrix1.Columns != matrix2.Columns) throw new ArgumentException("The column counts do not match.");
 
-			int rows = (matrix1.Rows + matrix2.Rows) / 2;
-			int columns = (matrix1.Columns + matrix2.Columns) / 2;
+			int rows = Items.Equal(matrix1.Rows, matrix2.Rows);
+			int columns = Items.Equal(matrix1.Columns, matrix2.Columns);
 
 			for (int row = 0; row < rows; row++)
 				for (int column = 0; column < columns; column++)
@@ -117,11 +118,11 @@ namespace Matrices
 
 		public static Matrix operator +(Matrix matrix1, Matrix matrix2)
 		{
-			if (matrix1.Rows != matrix2.Rows) throw new ArgumentOutOfRangeException();
-			if (matrix1.Columns != matrix2.Columns) throw new ArgumentOutOfRangeException();
+			if (matrix1.Rows != matrix2.Rows) throw new ArgumentException("The row counts do not match.");
+			if (matrix1.Columns != matrix2.Columns) throw new ArgumentException("The column counts do not match.");
 
-			int rows = (matrix1.Rows + matrix2.Rows) / 2;
-			int columns = (matrix1.Columns + matrix2.Columns) / 2;
+			int rows = Items.Equal(matrix1.Rows, matrix2.Rows);
+			int columns = Items.Equal(matrix1.Columns, matrix2.Columns);
 
 			Matrix result = new Matrix(rows, columns);
 
@@ -131,11 +132,27 @@ namespace Matrices
 
 			return result;
 		}
+		public static Matrix operator -(Matrix matrix1, Matrix matrix2)
+		{
+			if (matrix1.Rows != matrix2.Rows) throw new ArgumentException("The row counts do not match.");
+			if (matrix1.Columns != matrix2.Columns) throw new ArgumentException("The column counts do not match.");
+
+			int rows = Items.Equal(matrix1.Rows, matrix2.Rows);
+			int columns = Items.Equal(matrix1.Columns, matrix2.Columns);
+
+			Matrix result = new Matrix(rows, columns);
+
+			for (int row = 0; row < rows; row++)
+				for (int column = 0; column < columns; column++)
+					result[row, column] = matrix1[row, column] - matrix2[row, column];
+
+			return result;
+		}
 		public static Matrix operator *(Matrix matrix1, Matrix matrix2)
 		{
 			if (matrix1.Columns != matrix2.Rows) throw new ArgumentOutOfRangeException();
 
-			int size = (matrix1.Columns + matrix2.Rows) / 2;
+			int size = Items.Equal(matrix1.Columns, matrix2.Rows);
 
 			Matrix result = new Matrix(matrix1.Rows, matrix2.Columns);
 

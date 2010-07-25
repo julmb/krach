@@ -1,16 +1,16 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using Edge;
+using Utility.Utilities;
+using Utilities;
 
 namespace Utility.Extensions
 {
-	public static class ComparableExtensions
+	public static class Comparables
 	{
 		public static T Clamp<T>(this T value, T minimum, T maximum) where T : IComparable<T>
 		{
-			value = new[] { value, minimum }.Max();
-			value = new[] { value, maximum }.Min();
+			value = Enumerables.Create(value, minimum).Max();
+			value = Enumerables.Create(value, maximum).Min();
 
 			return value;
 		}

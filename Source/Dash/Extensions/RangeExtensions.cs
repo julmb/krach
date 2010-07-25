@@ -15,7 +15,7 @@ namespace Edge
 		}
 		public static Range<double> InterpolateLinear(Range<double> range1, Range<double> range2, double fraction)
 		{
-			return new Range<double>(Scalar.InterpolateLinear(range1.Start, range2.Start, fraction), Scalar.InterpolateLinear(range1.End, range2.End, fraction));
+			return new Range<double>(Scalars.InterpolateLinear(range1.Start, range2.Start, fraction), Scalars.InterpolateLinear(range1.End, range2.End, fraction));
 		}
 	}
 }

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Utility.Extensions
 {
-	public static class QueueExtensions
+	public static class Queues
 	{
 		public static IEnumerable<T> Dequeue<T>(this Queue<T> source, Func<T, bool> predicate)
 		{

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Dash.Extensions;
 
 namespace Utility
 {
@@ -108,7 +109,7 @@ namespace Utility
 		}
 		/// <summary>
 		/// Returns the index of the first item which has a key that is greater than or equal to <paramref name="key"/>.
-		/// If no such item is found, Count is returned.
+		/// If no such item is found, the value of Count is returned.
 		/// </summary>
 		/// <param name="key">The key to search for.</param>
 		/// <returns>The index of the first item which has a key that is greater than or equal to <paramref name="key"/>.</returns>
@@ -125,7 +126,7 @@ namespace Utility
 				else startIndex = index + 1;
 			}
 
-			return startIndex;
+			return Items.Equal(startIndex, endIndex);
 		}
 		public IEnumerator<TValue> GetEnumerator()
 		{
