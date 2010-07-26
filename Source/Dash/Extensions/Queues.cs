@@ -29,7 +29,7 @@ namespace Dash.Extensions
 
 			List<T> result = new List<T>();
 
-			for (int i = 0; i < count; i++) result.Add(source.Dequeue());
+			for (int i = 0; source.Any() && i < count; i++) result.Add(source.Dequeue());
 
 			return result;
 		}
