@@ -1,4 +1,4 @@
-﻿namespace Edge.Maps
+﻿namespace Dash.Maps
 {
 	public interface IMap<TSource, TDestination>
 	{

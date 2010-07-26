@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Utilities
+namespace Dash
 {
 	public class EventArgs<T> : EventArgs
 	{

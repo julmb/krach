@@ -1,9 +1,9 @@
-﻿using Utilities;
-using Dash.Extensions;
+﻿using Dash.Extensions;
+using Dash.Basics;
 
-namespace Edge
+namespace Dash.Extensions
 {
-	public static class RangeExtensions
+	public static class Ranges
 	{
 		public static double Length(this Range<double> range)
 		{

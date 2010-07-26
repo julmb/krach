@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 
-namespace Edge.Graphics
+namespace Dash.Graphics
 {
 	public struct Color
 	{

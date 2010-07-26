@@ -35,8 +35,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BatchCollection.cs" />
-    <Compile Include="Breaker.cs" />
+    <Compile Include="Collections\BatchCollection.cs" />
+    <Compile Include="Threading\Breaker.cs" />
     <Compile Include="Extensions\Collections.cs" />
     <Compile Include="Extensions\Enumerables.cs" />
     <Compile Include="EventArgs.cs" />
@@ -58,18 +58,17 @@
     <Compile Include="Maps\Linear\Range2DoubleMap.cs" />
     <Compile Include="Maps\MapRange.cs" />
     <Compile Include="Maps\MapVector2Double.cs" />
-    <Compile Include="Basic\Matrix.cs" />
+    <Compile Include="Basics\Matrix.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Basic\Range.cs" />
-    <Compile Include="Basic\Range1Double.cs" />
-    <Compile Include="Basic\Range2Double.cs" />
-    <Compile Include="Extensions\RangeExtensions.cs" />
+    <Compile Include="Basics\Range.cs" />
+    <Compile Include="Basics\Range1Double.cs" />
+    <Compile Include="Basics\Range2Double.cs" />
+    <Compile Include="Extensions\Ranges.cs" />
     <Compile Include="RandomNumberGenerator.cs" />
-    <Compile Include="SearchList.cs" />
-    <Compile Include="Extensions\Consoles.cs" />
-    <Compile Include="Extensions\ThreadUtility.cs" />
-    <Compile Include="Basic\Vector1Double.cs" />
-    <Compile Include="Basic\Vector2Double.cs" />
+    <Compile Include="Collections\SearchList.cs" />
+    <Compile Include="Extensions\Terminal.cs" />
+    <Compile Include="Basics\Vector1Double.cs" />
+    <Compile Include="Basics\Vector2Double.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

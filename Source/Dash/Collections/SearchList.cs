@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Dash.Extensions;
 
-namespace Utility
+namespace Dash.Collections
 {
 	public class SearchList<TValue, TKey> : IEnumerable<TValue>
 		where TKey : IComparable<TKey>

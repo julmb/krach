@@ -1,4 +1,4 @@
-namespace Edge.Graphics
+namespace Dash.Graphics
 {
 	public static class Colors
 	{

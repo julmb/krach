@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Utility.Extensions;
 using Dash;
 
-namespace Edge.Graphics
+namespace Dash.Graphics
 {
 	public class ColorGenerator
 	{

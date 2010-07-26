@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Utility.Extensions
+namespace Dash.Extensions
 {
 	public static class Queues
 	{

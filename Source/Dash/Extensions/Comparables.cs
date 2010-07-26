@@ -1,9 +1,7 @@
 using System;
 using System.Linq;
-using Utility.Utilities;
-using Utilities;
 
-namespace Utility.Extensions
+namespace Dash.Extensions
 {
 	public static class Comparables
 	{

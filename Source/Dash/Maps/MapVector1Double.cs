@@ -1,6 +1,7 @@
 using System;
+using Dash.Basics;
 
-namespace Edge.Maps
+namespace Dash.Maps
 {
 	public class MapVector1Double : IMap<Vector1Double, Vector1Double>
 	{

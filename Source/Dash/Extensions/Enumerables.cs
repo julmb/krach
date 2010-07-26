@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Dash.Extensions;
 
-namespace Utilities
+namespace Dash.Extensions
 {
 	/// <summary>
 	/// Provides extension methods for working with types that implement the IEnumerable interface.

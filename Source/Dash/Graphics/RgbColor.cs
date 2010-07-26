@@ -1,8 +1,7 @@
 ﻿using System;
-using Utility.Extensions;
 using Dash.Extensions;
 
-namespace Edge.Graphics
+namespace Dash.Graphics
 {
 	public struct RgbColor
 	{

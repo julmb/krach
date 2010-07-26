@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Utilities
+namespace Dash.Collections
 {
 	public class BatchCollection<T> : IEnumerable<T>
 	{

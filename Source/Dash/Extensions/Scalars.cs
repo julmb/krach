@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Edge;
+using Dash;
+using Dash.Basics;
 
 namespace Dash.Extensions
 {

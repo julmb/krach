@@ -1,6 +1,7 @@
 ﻿using System;
+using Dash.Basics;
 
-namespace Edge.Maps
+namespace Dash.Maps
 {
 	public class MapRange<T> : IMap<Range<T>, Range<T>>
 		where T : IEquatable<T>, IComparable<T>

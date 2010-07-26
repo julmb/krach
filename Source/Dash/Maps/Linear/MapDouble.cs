@@ -1,4 +1,6 @@
-namespace Edge.Maps.Linear
+using Dash.Basics;
+
+namespace Dash.Maps.Linear
 {
 	public class MapDouble : IMap<double, double>
 	{
