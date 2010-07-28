@@ -20,6 +20,14 @@ namespace Krach.Extensions
 {
 	public static class Ranges
 	{
+		public static int Length(this Range<int> range)
+		{
+			return range.End - range.Start;
+		}
+		public static Range<int> Inflate(this Range<int> range, int value)
+		{
+			return new Range<int>(range.Start - value, range.End + value);
+		}
 		public static double Length(this Range<double> range)
 		{
 			return range.End - range.Start;

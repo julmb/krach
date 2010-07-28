@@ -35,6 +35,10 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Basics\Range1Integer.cs" />
+    <Compile Include="Basics\Range2Integer.cs" />
+    <Compile Include="Basics\Vector1Integer.cs" />
+    <Compile Include="Basics\Vector2Integer.cs" />
     <Compile Include="Basics\Matrix.cs" />
     <Compile Include="Basics\Range.cs" />
     <Compile Include="Basics\Range1Double.cs" />
