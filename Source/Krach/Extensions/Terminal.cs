@@ -1,6 +1,6 @@
 using System;
 
-namespace Dash.Extensions
+namespace Krach.Extensions
 {
 	public static class Terminal
 	{

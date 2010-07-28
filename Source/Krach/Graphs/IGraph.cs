@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Dash.Graphs
+namespace Krach.Graphs
 {
 	public interface IGraph<T>
 	{

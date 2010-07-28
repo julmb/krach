@@ -1,7 +1,7 @@
 ﻿using System;
-using Dash.Basics;
+using Krach.Basics;
 
-namespace Dash.Maps
+namespace Krach.Maps
 {
 	public class MapRange<T> : IMap<Range<T>, Range<T>>
 		where T : IEquatable<T>, IComparable<T>

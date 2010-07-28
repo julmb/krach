@@ -1,7 +1,7 @@
 using System;
-using Dash.Basics;
+using Krach.Basics;
 
-namespace Dash.Maps
+namespace Krach.Maps
 {
 	public class MapVector2Double : IMap<Vector2Double, Vector2Double>
 	{

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Dash.Extensions
+namespace Krach.Extensions
 {
 	public static class Enumerables
 	{

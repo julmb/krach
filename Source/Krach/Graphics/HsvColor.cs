@@ -1,7 +1,7 @@
 ﻿using System;
-using Dash.Extensions;
+using Krach.Extensions;
 
-namespace Dash.Graphics
+namespace Krach.Graphics
 {
 	public struct HsvColor
 	{

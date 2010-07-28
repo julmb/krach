@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Dash
+namespace Krach
 {
 	public class EventArgs<T> : EventArgs
 	{

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Dash.Graphs
+namespace Krach.Graphs
 {
 	public class GraphTraverser<T>
 	{

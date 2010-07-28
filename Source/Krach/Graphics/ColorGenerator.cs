@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Dash;
+using Krach;
 
-namespace Dash.Graphics
+namespace Krach.Graphics
 {
 	public class ColorGenerator
 	{

@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 
-namespace Dash.Threading
+namespace Krach.Threading
 {
 	public class Breaker<T> : IDisposable
 	{

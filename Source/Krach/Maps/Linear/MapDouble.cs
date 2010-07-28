@@ -1,6 +1,6 @@
-using Dash.Basics;
+using Krach.Basics;
 
-namespace Dash.Maps.Linear
+namespace Krach.Maps.Linear
 {
 	public class MapDouble : IMap<double, double>
 	{

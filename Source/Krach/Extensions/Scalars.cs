@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Dash.Basics;
+using Krach.Basics;
 
-namespace Dash.Extensions
+namespace Krach.Extensions
 {
 	public static class Scalars
 	{

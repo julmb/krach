@@ -1,4 +1,4 @@
-namespace Dash.Graphics
+namespace Krach.Graphics
 {
 	public static class Colors
 	{

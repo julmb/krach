@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Dash.Extensions
+namespace Krach.Extensions
 {
 	public static class Collections
 	{

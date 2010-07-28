@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 
-namespace Dash.Graphics
+namespace Krach.Graphics
 {
 	public struct Color
 	{

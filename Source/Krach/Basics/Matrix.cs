@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Text;
-using Dash.Extensions;
+using Krach.Extensions;
 
-namespace Dash.Basics
+namespace Krach.Basics
 {
 	public struct Matrix : IEquatable<Matrix>
 	{

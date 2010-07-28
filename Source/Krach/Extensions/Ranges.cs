@@ -1,6 +1,6 @@
-﻿using Dash.Basics;
+﻿using Krach.Basics;
 
-namespace Dash.Extensions
+namespace Krach.Extensions
 {
 	public static class Ranges
 	{

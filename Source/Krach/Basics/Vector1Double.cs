@@ -1,7 +1,7 @@
 using System;
-using Dash.Extensions;
+using Krach.Extensions;
 
-namespace Dash.Basics
+namespace Krach.Basics
 {
 	public struct Vector1Double : IEquatable<Vector1Double>
 	{

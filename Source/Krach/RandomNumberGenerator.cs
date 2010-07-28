@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Dash.Extensions;
+using Krach.Extensions;
 
-namespace Dash
+namespace Krach
 {
 	public class RandomNumberGenerator
 	{

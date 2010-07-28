@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Dash.Basics
+namespace Krach.Basics
 {
 	public struct Range<T> : IEquatable<Range<T>>
 		where T : IEquatable<T>, IComparable<T>

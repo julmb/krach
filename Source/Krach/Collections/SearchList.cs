@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Dash.Extensions;
+using Krach.Extensions;
 
-namespace Dash.Collections
+namespace Krach.Collections
 {
 	public class SearchList<TValue, TKey> : IEnumerable<TValue>
 		where TKey : IComparable<TKey>

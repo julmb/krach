@@ -1,4 +1,4 @@
-﻿namespace Dash.Maps
+﻿namespace Krach.Maps
 {
 	public interface IMap<TSource, TDestination>
 	{

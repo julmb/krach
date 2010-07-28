@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Dash.Extensions;
+using Krach.Extensions;
 
-namespace Dash.Basics
+namespace Krach.Basics
 {
 	public struct Range1Double : IEquatable<Range1Double>
 	{
