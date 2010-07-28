@@ -28,7 +28,7 @@ namespace Krach.Extensions
 		}
 		public static Range<T> ReverseMap<T>(this IMap<T, T> map, Range<T> value) where T : IEquatable<T>, IComparable<T>
 		{
-			return new Range<T>(map.ForwardMap(value.Start), map.ForwardMap(value.End));
+			return new Range<T>(map.ReverseMap(value.Start), map.ReverseMap(value.End));
 		}
 	}
 }
