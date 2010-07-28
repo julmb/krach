@@ -66,8 +66,8 @@
     <Compile Include="Graphs\IGraph.cs" />
     <Compile Include="Maps\IMap.cs" />
     <Compile Include="Maps\Linear\MapDouble.cs" />
-    <Compile Include="Maps\Linear\Range1DoubleMap.cs" />
-    <Compile Include="Maps\Linear\Range2DoubleMap.cs" />
+    <Compile Include="Maps\Linear\Volume1DoubleMap.cs" />
+    <Compile Include="Maps\Linear\Volume2DoubleMap.cs" />
     <Compile Include="Maps\MapVector1Double.cs" />
     <Compile Include="Maps\MapVector2Double.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

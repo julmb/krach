@@ -18,16 +18,16 @@ using Krach.Basics;
 
 namespace Krach.Maps.Linear
 {
-	public class Range2DoubleMap : MapVector2Double
+	public class Volume1DoubleMap : MapVector1Double
 	{
-		readonly Volume2Double source;
-		readonly Volume2Double destination;
+		readonly Volume1Double source;
+		readonly Volume1Double destination;
 
-		public Volume2Double Source { get { return source; } }
-		public Volume2Double Destination { get { return destination; } }
+		public Volume1Double Source { get { return source; } }
+		public Volume1Double Destination { get { return destination; } }
 
-		public Range2DoubleMap(Volume2Double source, Volume2Double destination)
-			: base(new MapDouble(source.RangeX, destination.RangeX), new MapDouble(source.RangeY, destination.RangeY))
+		public Volume1DoubleMap(Volume1Double source, Volume1Double destination)
+			: base(new MapDouble(source.RangeX, destination.RangeX))
 		{
 			this.source = source;
 			this.destination = destination;
