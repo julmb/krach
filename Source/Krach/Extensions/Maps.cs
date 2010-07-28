@@ -16,28 +16,19 @@
 
 using System;
 using Krach.Basics;
+using Krach.Maps;
 
-namespace Krach.Maps
+namespace Krach.Extensions
 {
-	public class MapRange<T> : IMap<Range<T>, Range<T>>
-		where T : IEquatable<T>, IComparable<T>
+	public static class Maps
 	{
-		readonly IMap<T, T> map;
-
-		public MapRange(IMap<T, T> map)
-		{
-			if (map == null) throw new ArgumentNullException("map");
-
-			this.map = map;
-		}
-
-		public Range<T> ForwardMap(Range<T> value)
+		public static Range<T> ForwardMap<T>(this IMap<T, T> map, Range<T> value) where T : IEquatable<T>, IComparable<T>
 		{
 			return new Range<T>(map.ForwardMap(value.Start), map.ForwardMap(value.End));
 		}
-		public Range<T> ReverseMap(Range<T> value)
+		public static Range<T> ReverseMap<T>(this IMap<T, T> map, Range<T> value) where T : IEquatable<T>, IComparable<T>
 		{
-			return new Range<T>(map.ReverseMap(value.Start), map.ReverseMap(value.End));
+			return new Range<T>(map.ForwardMap(value.Start), map.ForwardMap(value.End));
 		}
 	}
 }

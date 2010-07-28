@@ -52,6 +52,7 @@
     <Compile Include="Extensions\Comparables.cs" />
     <Compile Include="Extensions\Enumerables.cs" />
     <Compile Include="Extensions\Items.cs" />
+    <Compile Include="Extensions\Maps.cs" />
     <Compile Include="Extensions\Queues.cs" />
     <Compile Include="Extensions\Ranges.cs" />
     <Compile Include="Extensions\Scalars.cs" />
@@ -67,7 +68,6 @@
     <Compile Include="Maps\Linear\MapDouble.cs" />
     <Compile Include="Maps\Linear\Range1DoubleMap.cs" />
     <Compile Include="Maps\Linear\Range2DoubleMap.cs" />
-    <Compile Include="Maps\MapRange.cs" />
     <Compile Include="Maps\MapVector1Double.cs" />
     <Compile Include="Maps\MapVector2Double.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
