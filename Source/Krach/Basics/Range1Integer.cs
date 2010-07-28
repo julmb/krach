@@ -38,6 +38,10 @@ namespace Krach.Basics
 		{
 			this.rangeX = rangeX;
 		}
+		public Range1Integer(Vector1Integer start, Vector1Integer end)
+		{
+			this.rangeX = new Range<int>(start.X, end.X);
+		}
 		public Range1Integer(int startX, int endX)
 		{
 			this.rangeX = new Range<int>(startX, endX);

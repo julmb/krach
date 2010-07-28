@@ -38,6 +38,10 @@ namespace Krach.Basics
 		{
 			this.rangeX = rangeX;
 		}
+		public Range1Double(Vector1Double start, Vector1Double end)
+		{
+			this.rangeX = new Range<double>(start.X, end.X);
+		}
 		public Range1Double(double startX, double endX)
 		{
 			this.rangeX = new Range<double>(startX, endX);

@@ -43,6 +43,11 @@ namespace Krach.Basics
 			this.rangeX = rangeX;
 			this.rangeY = rangeY;
 		}
+		public Range2Double(Vector2Double start, Vector2Double end)
+		{
+			this.rangeX = new Range<double>(start.X, end.X);
+			this.rangeY = new Range<double>(start.Y, end.Y);
+		}
 		public Range2Double(double startX, double endX, double startY, double endY)
 		{
 			this.rangeX = new Range<double>(startX, endX);
