@@ -18,21 +18,20 @@ using System;
 
 namespace Krach.Maps
 {
-	public abstract class SymmetricMap<TSource, TDestination> : ISymmetricMap<TSource, TDestination>
+	public class InstantMap<TSource, TDestination> : IMap<TSource, TDestination>
 	{
-		readonly IMap<TSource, TDestination> forward;
-		readonly IMap<TDestination, TSource> reverse;
+		readonly Func<TSource, TDestination> map;
 
-		public IMap<TSource, TDestination> Forward { get { return forward; } }
-		public IMap<TDestination, TSource> Reverse { get { return reverse; } }
-
-		protected SymmetricMap(IMap<TSource, TDestination> forward, IMap<TDestination, TSource> reverse)
+		public InstantMap(Func<TSource, TDestination> map)
 		{
-			if (forward == null) throw new ArgumentNullException("forward");
-			if (reverse == null) throw new ArgumentNullException("reverse");
+			if (map == null) throw new ArgumentNullException("mapper");
 
-			this.forward = forward;
-			this.reverse = reverse;
+			this.map = map;
+		}
+
+		public TDestination Map(TSource value)
+		{
+			return map(value);
 		}
 	}
 }

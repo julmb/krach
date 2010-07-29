@@ -64,6 +64,7 @@
     <Compile Include="Graphics\RgbColor.cs" />
     <Compile Include="Graphs\GraphTraverser.cs" />
     <Compile Include="Graphs\IGraph.cs" />
+    <Compile Include="Maps\InstantMap.cs" />
     <Compile Include="Maps\Linear\Mapper.cs" />
     <Compile Include="Maps\Scalars\RangeMap.cs" />
     <Compile Include="Maps\Vectors\SymmetricVolume1DoubleMap.cs" />
