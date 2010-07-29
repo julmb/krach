@@ -14,10 +14,25 @@
 // You should have received a copy of the GNU General Public License along with
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
+using System;
+
 namespace Krach.Maps
 {
-	public interface IMap<TSource, TDestination>
+	public abstract class SymmetricMap<TSource, TDestination> : ISymmetricMap<TSource, TDestination>
 	{
-		TDestination Map(TSource value);
+		readonly IMap<TSource, TDestination> forward;
+		readonly IMap<TDestination, TSource> reverse;
+
+		public IMap<TSource, TDestination> Forward { get { return forward; } }
+		public IMap<TDestination, TSource> Reverse { get { return reverse; } }
+
+		public SymmetricMap(IMap<TSource, TDestination> forward, IMap<TDestination, TSource> reverse)
+		{
+			if (forward == null) throw new ArgumentNullException("forward");
+			if (reverse == null) throw new ArgumentNullException("reverse");
+
+			this.forward = forward;
+			this.reverse = reverse;
+		}
 	}
 }

@@ -22,29 +22,19 @@ namespace Krach.Extensions
 {
 	public static class Maps
 	{
-		public static Range<T> ForwardMap<T>(this IMap<T, T> map, Range<T> value) where T : IEquatable<T>, IComparable<T>
+		public static Range<TDestination> Map<TSource, TDestination>(this IMap<TSource, TDestination> map, Range<TSource> value)
+			where TSource : IEquatable<TSource>, IComparable<TSource>
+			where TDestination : IEquatable<TDestination>, IComparable<TDestination>
 		{
-			return new Range<T>(map.ForwardMap(value.Start), map.ForwardMap(value.End));
+			return new Range<TDestination>(map.Map(value.Start), map.Map(value.End));
 		}
-		public static Range<T> ReverseMap<T>(this IMap<T, T> map, Range<T> value) where T : IEquatable<T>, IComparable<T>
+		public static Volume1Double Map(this IMap<Vector1Double, Vector1Double> map, Volume1Double volume)
 		{
-			return new Range<T>(map.ReverseMap(value.Start), map.ReverseMap(value.End));
+			return new Volume1Double(map.Map(volume.Start), map.Map(volume.End));
 		}
-		public static Volume1Double ForwardMap(this IMap<Vector1Double, Vector1Double> map, Volume1Double volume)
+		public static Volume2Double Map(this IMap<Vector2Double, Vector2Double> map, Volume2Double volume)
 		{
-			return new Volume1Double(map.ForwardMap(volume.Start), map.ForwardMap(volume.End));
-		}
-		public static Volume1Double ReverseMap(this IMap<Vector1Double, Vector1Double> map, Volume1Double volume)
-		{
-			return new Volume1Double(map.ReverseMap(volume.Start), map.ReverseMap(volume.End));
-		}
-		public static Volume2Double ForwardMap(this IMap<Vector2Double, Vector2Double> map, Volume2Double volume)
-		{
-			return new Volume2Double(map.ForwardMap(volume.Start), map.ForwardMap(volume.End));
-		}
-		public static Volume2Double ReverseMap(this IMap<Vector2Double, Vector2Double> map, Volume2Double volume)
-		{
-			return new Volume2Double(map.ReverseMap(volume.Start), map.ReverseMap(volume.End));
+			return new Volume2Double(map.Map(volume.Start), map.Map(volume.End));
 		}
 	}
 }

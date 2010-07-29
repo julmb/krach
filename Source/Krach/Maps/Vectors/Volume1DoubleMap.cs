@@ -15,10 +15,11 @@
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
 using Krach.Basics;
+using Krach.Maps.Scalar;
 
-namespace Krach.Maps.Linear
+namespace Krach.Maps.Vectors
 {
-	public class Volume1DoubleMap : MapVector1Double
+	public class Volume1DoubleMap : Vector1DoubleMap
 	{
 		readonly Volume1Double source;
 		readonly Volume1Double destination;
@@ -27,7 +28,7 @@ namespace Krach.Maps.Linear
 		public Volume1Double Destination { get { return destination; } }
 
 		public Volume1DoubleMap(Volume1Double source, Volume1Double destination)
-			: base(new MapDouble(source.RangeX, destination.RangeX))
+			: base(new RangeMap(source.RangeX, destination.RangeX))
 		{
 			this.source = source;
 			this.destination = destination;

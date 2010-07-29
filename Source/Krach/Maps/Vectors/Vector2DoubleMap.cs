@@ -1,4 +1,4 @@
-﻿// Copyright © Julian Brunner 2010
+// Copyright � Julian Brunner 2010
 
 // This file is part of Krach.
 //
@@ -14,10 +14,28 @@
 // You should have received a copy of the GNU General Public License along with
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
-namespace Krach.Maps
+using System;
+using Krach.Basics;
+
+namespace Krach.Maps.Vectors
 {
-	public interface IMap<TSource, TDestination>
+	public class Vector2DoubleMap : IMap<Vector2Double, Vector2Double>
 	{
-		TDestination Map(TSource value);
+		readonly IMap<double, double> mapX;
+		readonly IMap<double, double> mapY;
+
+		public Vector2DoubleMap(IMap<double, double> mapX, IMap<double, double> mapY)
+		{
+			if (mapX == null) throw new ArgumentNullException("mapX");
+			if (mapY == null) throw new ArgumentNullException("mapY");
+
+			this.mapX = mapX;
+			this.mapY = mapY;
+		}
+
+		public Vector2Double Map(Vector2Double value)
+		{
+			return new Vector2Double(mapX.Map(value.X), mapY.Map(value.Y));
+		}
 	}
 }

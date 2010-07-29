@@ -1,4 +1,4 @@
-﻿// Copyright © Julian Brunner 2010
+// Copyright � Julian Brunner 2010
 
 // This file is part of Krach.
 //
@@ -14,10 +14,24 @@
 // You should have received a copy of the GNU General Public License along with
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
-namespace Krach.Maps
+using System;
+
+namespace Krach.Maps.Scalar
 {
-	public interface IMap<TSource, TDestination>
+	class DoubleMap : IMap<double, double>
 	{
-		TDestination Map(TSource value);
+		IMap<double, double> map;
+
+		public DoubleMap(IMap<double, double> map)
+		{
+			if (map == null) throw new ArgumentNullException("map");
+
+			this.map = map;
+		}
+
+		public double Map(double value)
+		{
+			return map.Map(value);
+		}
 	}
 }

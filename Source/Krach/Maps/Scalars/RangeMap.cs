@@ -1,4 +1,4 @@
-﻿// Copyright © Julian Brunner 2010
+// Copyright � Julian Brunner 2010
 
 // This file is part of Krach.
 //
@@ -15,22 +15,24 @@
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
 using Krach.Basics;
+using Krach.Maps.Linear;
 
-namespace Krach.Maps.Linear
+namespace Krach.Maps.Scalar
 {
-	public class Volume2DoubleMap : MapVector2Double
+	class RangeMap : DoubleMap
 	{
-		readonly Volume2Double source;
-		readonly Volume2Double destination;
+		readonly Range<double> source;
+		readonly Range<double> destination;
 
-		public Volume2Double Source { get { return source; } }
-		public Volume2Double Destination { get { return destination; } }
+		public Range<double> Source { get { return source; } }
+		public Range<double> Destination { get { return destination; } }
 
-		public Volume2DoubleMap(Volume2Double source, Volume2Double destination)
-			: base(new MapDouble(source.RangeX, destination.RangeX), new MapDouble(source.RangeY, destination.RangeY))
+		public RangeMap(Range<double> source, Range<double> destination)
+			: base(new Mapper(source, destination))
 		{
 			this.source = source;
 			this.destination = destination;
 		}
+		public RangeMap(Range<double> source) : this(source, new Range<double>(0, 1)) { }
 	}
 }

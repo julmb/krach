@@ -1,4 +1,4 @@
-﻿// Copyright © Julian Brunner 2010
+// Copyright � Julian Brunner 2010
 
 // This file is part of Krach.
 //
@@ -14,10 +14,24 @@
 // You should have received a copy of the GNU General Public License along with
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
-namespace Krach.Maps
+using Krach.Basics;
+
+namespace Krach.Maps.Linear
 {
-	public interface IMap<TSource, TDestination>
+	class Mapper : IMap<double, double>
 	{
-		TDestination Map(TSource value);
+		readonly double offset;
+		readonly double factor;
+
+		public Mapper(Range<double> source, Range<double> destination)
+		{
+			this.offset = (source.End * destination.Start - source.Start * destination.End) / (source.End - source.Start);
+			this.factor = (destination.End - destination.Start) / (source.End - source.Start);
+		}
+
+		public double Map(double value)
+		{
+			return offset + value * factor;
+		}
 	}
 }

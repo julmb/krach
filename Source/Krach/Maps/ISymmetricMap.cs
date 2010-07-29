@@ -16,8 +16,9 @@
 
 namespace Krach.Maps
 {
-	public interface IMap<TSource, TDestination>
+	public interface ISymmetricMap<TSource, TDestination>
 	{
-		TDestination Map(TSource value);
+		IMap<TSource, TDestination> Forward { get; }
+		IMap<TDestination, TSource> Reverse { get; }
 	}
 }

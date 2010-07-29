@@ -1,4 +1,4 @@
-﻿// Copyright © Julian Brunner 2010
+// Copyright � Julian Brunner 2010
 
 // This file is part of Krach.
 //
@@ -14,10 +14,15 @@
 // You should have received a copy of the GNU General Public License along with
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
-namespace Krach.Maps
+using Krach.Basics;
+
+namespace Krach.Maps.Vectors
 {
-	public interface IMap<TSource, TDestination>
+	public class SymmetricVector1DoubleMap : SymmetricMap<Vector1Double, Vector1Double>
 	{
-		TDestination Map(TSource value);
+		public SymmetricVector1DoubleMap(Volume1Double source, Volume1Double destination)
+			: base(new Volume1DoubleMap(source, destination), new Volume1DoubleMap(destination, source))
+		{
+		}
 	}
 }
