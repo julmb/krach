@@ -18,9 +18,9 @@ using Krach.Basics;
 
 namespace Krach.Maps.Vectors
 {
-	public class SymmetricVector2DoubleMap : SymmetricMap<Vector2Double, Vector2Double>
+	public class SymmetricVolume2DoubleMap : SymmetricMap<Vector2Double, Vector2Double>
 	{
-		public SymmetricVector2DoubleMap(Volume2Double source, Volume2Double destination)
+		public SymmetricVolume2DoubleMap(Volume2Double source, Volume2Double destination)
 			: base(new Volume2DoubleMap(source, destination), new Volume2DoubleMap(destination, source))
 		{
 		}
