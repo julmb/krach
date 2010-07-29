@@ -72,11 +72,21 @@ namespace Krach.Basics
 
 		public static Range<T> Intersect(IEnumerable<Range<T>> ranges)
 		{
-			return new Range<T>(ranges.Max(range => range.start), ranges.Min(range => range.end));
+			T start = ranges.Max(range => range.start);
+			T end = ranges.Min(range => range.end);
+
+			if (Comparer<T>.Default.Compare(start, end) > 0) return Range<T>.Default;
+
+			return new Range<T>(start, end);
 		}
 		public static Range<T> Union(IEnumerable<Range<T>> ranges)
 		{
-			return new Range<T>(ranges.Min(range => range.start), ranges.Max(range => range.end));
+			T start = ranges.Min(range => range.start);
+			T end = ranges.Max(range => range.end);
+
+			if (Comparer<T>.Default.Compare(start, end) > 0) return Range<T>.Default;
+
+			return new Range<T>(start, end);
 		}
 	}
 }
