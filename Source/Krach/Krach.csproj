@@ -47,6 +47,7 @@
     <Compile Include="Basics\Vector2Double.cs" />
     <Compile Include="Collections\BatchCollection.cs" />
     <Compile Include="Collections\SearchList.cs" />
+    <Compile Include="Delegates.cs" />
     <Compile Include="EventArgs.cs" />
     <Compile Include="Extensions\Collections.cs" />
     <Compile Include="Extensions\Comparables.cs" />
