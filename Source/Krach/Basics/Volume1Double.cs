@@ -28,6 +28,8 @@ namespace Krach.Basics
 		public static Volume1Double Empty { get { return new Volume1Double(Range<double>.Default); } }
 
 		public Range<double> RangeX { get { return rangeX; } }
+		public Vector1Double Start { get { return new Vector1Double(rangeX.Start); } }
+		public Vector1Double End { get { return new Vector1Double(rangeX.End); } }
 		public double StartX { get { return rangeX.Start; } }
 		public double EndX { get { return rangeX.End; } }
 		public Vector1Double Size { get { return new Vector1Double(rangeX.Length()); } }

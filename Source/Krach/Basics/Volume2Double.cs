@@ -30,6 +30,8 @@ namespace Krach.Basics
 
 		public Range<double> RangeX { get { return rangeX; } }
 		public Range<double> RangeY { get { return rangeY; } }
+		public Vector2Double Start { get { return new Vector2Double(rangeX.Start, rangeY.Start); } }
+		public Vector2Double End { get { return new Vector2Double(rangeX.End, rangeY.End); } }
 		public double StartX { get { return rangeX.Start; } }
 		public double EndX { get { return rangeX.End; } }
 		public double StartY { get { return rangeY.Start; } }

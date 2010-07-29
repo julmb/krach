@@ -30,6 +30,8 @@ namespace Krach.Basics
 
 		public Range<int> RangeX { get { return rangeX; } }
 		public Range<int> RangeY { get { return rangeY; } }
+		public Vector2Integer Start { get { return new Vector2Integer(rangeX.Start, rangeY.Start); } }
+		public Vector2Integer End { get { return new Vector2Integer(rangeX.End, rangeY.End); } }
 		public int StartX { get { return rangeX.Start; } }
 		public int EndX { get { return rangeX.End; } }
 		public int StartY { get { return rangeY.Start; } }
@@ -82,6 +84,11 @@ namespace Krach.Basics
 		public static bool operator !=(Volume2Integer range1, Volume2Integer range2)
 		{
 			return range1.rangeX != range2.rangeX || range1.rangeY != range2.rangeY;
+		}
+
+		public static implicit operator Volume2Double(Volume2Integer volume)
+		{
+			return new Volume2Double(volume.Start, volume.End);
 		}
 
 		public static Volume2Integer Intersect(IEnumerable<Volume2Integer> ranges)
