@@ -102,7 +102,7 @@ namespace Krach
 			return result;
 		}
 
-		double NextSample()
+		protected virtual double NextSample()
 		{
 			return random.NextDouble();
 		}

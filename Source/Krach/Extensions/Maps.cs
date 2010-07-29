@@ -30,5 +30,21 @@ namespace Krach.Extensions
 		{
 			return new Range<T>(map.ReverseMap(value.Start), map.ReverseMap(value.End));
 		}
+		public static Volume1Double ForwardMap(this IMap<Vector1Double, Vector1Double> map, Volume1Double volume)
+		{
+			return new Volume1Double(map.ForwardMap(volume.Start), map.ForwardMap(volume.End));
+		}
+		public static Volume1Double ReverseMap(this IMap<Vector1Double, Vector1Double> map, Volume1Double volume)
+		{
+			return new Volume1Double(map.ReverseMap(volume.Start), map.ReverseMap(volume.End));
+		}
+		public static Volume2Double ForwardMap(this IMap<Vector2Double, Vector2Double> map, Volume2Double volume)
+		{
+			return new Volume2Double(map.ForwardMap(volume.Start), map.ForwardMap(volume.End));
+		}
+		public static Volume2Double ReverseMap(this IMap<Vector2Double, Vector2Double> map, Volume2Double volume)
+		{
+			return new Volume2Double(map.ReverseMap(volume.Start), map.ReverseMap(volume.End));
+		}
 	}
 }
