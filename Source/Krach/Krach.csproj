@@ -46,6 +46,7 @@
     <Compile Include="Basics\Vector1Double.cs" />
     <Compile Include="Basics\Vector2Double.cs" />
     <Compile Include="Collections\BatchCollection.cs" />
+    <Compile Include="Collections\FixedList.cs" />
     <Compile Include="Collections\SearchList.cs" />
     <Compile Include="Delegates.cs" />
     <Compile Include="EventArgs.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="Graphics\RgbColor.cs" />
     <Compile Include="Graphs\GraphTraverser.cs" />
     <Compile Include="Graphs\IGraph.cs" />
+    <Compile Include="Collections\IFixedList.cs" />
     <Compile Include="Maps\InstantMap.cs" />
     <Compile Include="Maps\Linear\Mapper.cs" />
     <Compile Include="Maps\Scalars\RangeMap.cs" />

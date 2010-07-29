@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Krach.Collections;
 
 namespace Krach.Extensions
 {
@@ -180,6 +181,10 @@ namespace Krach.Extensions
 		public static IEnumerable<TSource> Single<TSource>(TSource item)
 		{
 			yield return item;
+		}
+		public static IFixedList<TSource> ToFixed<TSource>(this IEnumerable<TSource> source)
+		{
+			return new FixedList<TSource>(source);
 		}
 	}
 }
