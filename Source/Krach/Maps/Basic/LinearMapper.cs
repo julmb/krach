@@ -16,13 +16,13 @@
 
 using Krach.Basics;
 
-namespace Krach.Maps.Mappers
+namespace Krach.Maps.Basic
 {
-	public class CosineMapper : IMapper<double, double>
+	public class LinearMapper : IMapper<double, double>
 	{
 		public IMap<double, double> CreateMap(Range<double> source, Range<double> destination)
 		{
-			return new CosineMap(source, destination);
+			return new LinearMap(source, destination);
 		}
 	}
 }

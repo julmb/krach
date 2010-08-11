@@ -15,7 +15,7 @@
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
 using Krach.Basics;
-using Krach.Maps.Mappers;
+using Krach.Maps.Basic;
 
 namespace Krach.Maps.Scalar
 {

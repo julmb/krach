@@ -18,7 +18,7 @@ using System;
 using Krach.Basics;
 using Krach.Extensions;
 
-namespace Krach.Maps.Mappers
+namespace Krach.Maps.Basic
 {
 	public class CosineMap : IMap<double, double>
 	{
