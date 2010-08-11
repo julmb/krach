@@ -44,6 +44,10 @@ namespace Krach.Maps.Vectors
 				RangeMap.CreateLinear(source.RangeY, destination.RangeY)
 			);
 		}
+		public static Volume2DoubleMap CreateLinear(Volume2Double source)
+		{
+			return CreateLinear(source, new Volume2Double(new Range<double>(0, 1), new Range<double>(0, 1)));
+		}
 		public static Volume2DoubleMap CreateCosine(Volume2Double source, Volume2Double destination)
 		{
 			return new Volume2DoubleMap
@@ -53,6 +57,10 @@ namespace Krach.Maps.Vectors
 				RangeMap.CreateCosine(source.RangeX, destination.RangeX),
 				RangeMap.CreateCosine(source.RangeY, destination.RangeY)
 			);
+		}
+		public static Volume2DoubleMap CreateCosine(Volume2Double source)
+		{
+			return CreateCosine(source, new Volume2Double(new Range<double>(0, 1), new Range<double>(0, 1)));
 		}
 	}
 }

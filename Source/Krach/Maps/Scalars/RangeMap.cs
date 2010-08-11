@@ -38,9 +38,17 @@ namespace Krach.Maps.Scalar
 		{
 			return new RangeMap(source, destination, new LinearMap(source, destination));
 		}
+		public static RangeMap CreateLinear(Range<double> source)
+		{
+			return CreateLinear(source, new Range<double>(0, 1));
+		}
 		public static RangeMap CreateCosine(Range<double> source, Range<double> destination)
 		{
 			return new RangeMap(source, destination, new CosineMap(source, destination));
+		}
+		public static RangeMap CreateCosine(Range<double> source)
+		{
+			return CreateCosine(source, new Range<double>(0, 1));
 		}
 	}
 }

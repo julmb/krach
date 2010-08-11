@@ -68,9 +68,12 @@
     <Compile Include="Graphs\GraphTraverser.cs" />
     <Compile Include="Graphs\IGraph.cs" />
     <Compile Include="Collections\IFixedList.cs" />
+    <Compile Include="Maps\IMapper.cs" />
     <Compile Include="Maps\InstantMap.cs" />
-    <Compile Include="Maps\Mappers\CosineMap.cs" />
+    <Compile Include="Maps\Mappers\CosineMapper.cs" />
     <Compile Include="Maps\Mappers\LinearMap.cs" />
+    <Compile Include="Maps\Mappers\CosineMap.cs" />
+    <Compile Include="Maps\Mappers\LinearMapper.cs" />
     <Compile Include="Maps\Scalars\RangeMap.cs" />
     <Compile Include="Maps\SymmetricMap.cs" />
     <Compile Include="Maps\ISymmetricMap.cs" />
