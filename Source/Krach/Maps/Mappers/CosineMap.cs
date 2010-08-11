@@ -14,24 +14,29 @@
 // You should have received a copy of the GNU General Public License along with
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
+using System;
 using Krach.Basics;
+using Krach.Extensions;
 
-namespace Krach.Maps.Linear
+namespace Krach.Maps.Mappers
 {
-	class Mapper : IMap<double, double>
+	class CosineMap : IMap<double, double>
 	{
-		readonly double offset;
-		readonly double factor;
+		readonly Range<double> source;
+		readonly Range<double> destination;
 
-		public Mapper(Range<double> source, Range<double> destination)
+		public CosineMap(Range<double> source, Range<double> destination)
 		{
-			this.offset = (source.End * destination.Start - source.Start * destination.End) / (source.End - source.Start);
-			this.factor = (destination.End - destination.Start) / (source.End - source.Start);
+			this.source = source;
+			this.destination = destination;
 		}
 
 		public double Map(double value)
 		{
-			return offset + value * factor;
+			if (value < source.Start || value > source.End) throw new ArgumentOutOfRangeException("value");
+
+			double fraction = (value - source.Start) / (source.End - source.Start);
+			return Scalars.InterpolateCosine(destination.Start, destination.End, fraction);
 		}
 	}
 }

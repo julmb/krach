@@ -15,24 +15,24 @@
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
 using Krach.Basics;
-using Krach.Maps.Mappers;
+using Krach.Extensions;
 
-namespace Krach.Maps.Scalar
+namespace Krach.Maps.Mappers
 {
-	class RangeMap : DoubleMap
+	class LinearMap : IMap<double, double>
 	{
-		readonly Range<double> source;
-		readonly Range<double> destination;
+		readonly double offset;
+		readonly double factor;
 
-		public Range<double> Source { get { return source; } }
-		public Range<double> Destination { get { return destination; } }
-
-		public RangeMap(Range<double> source, Range<double> destination)
-			: base(new LinearMap(source, destination))
+		public LinearMap(Range<double> source, Range<double> destination)
 		{
-			this.source = source;
-			this.destination = destination;
+			this.offset = (source.End * destination.Start - source.Start * destination.End) / source.Length();
+			this.factor = destination.Length() / source.Length();
 		}
-		public RangeMap(Range<double> source) : this(source, new Range<double>(0, 1)) { }
+
+		public double Map(double value)
+		{
+			return offset + value * factor;
+		}
 	}
 }

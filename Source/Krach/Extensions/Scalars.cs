@@ -66,6 +66,31 @@ namespace Krach.Extensions
 		{
 			return Math.Log(value);
 		}
+		// Trigonometry
+		public static double Sine(this double value)
+		{
+			return Math.Sin(value);
+		}
+		public static double ArcSine(this double value)
+		{
+			return Math.Asin(value);
+		}
+		public static double Cosine(this double value)
+		{
+			return Math.Cos(value);
+		}
+		public static double ArcCosine(this double value)
+		{
+			return Math.Acos(value);
+		}
+		public static double Tangent(this double value)
+		{
+			return Math.Tan(value);
+		}
+		public static double ArcTangent(this double value)
+		{
+			return Math.Atan(value);
+		}
 		// Clamping
 		public static double Clamp(this double value, double minimum, double maximum)
 		{
@@ -209,7 +234,15 @@ namespace Krach.Extensions
 		// Interpolation
 		public static double InterpolateLinear(double value1, double value2, double fraction)
 		{
+			if (fraction < 0 || fraction > 1) throw new ArgumentOutOfRangeException("fraction");
+
 			return (1 - fraction) * value1 + fraction * value2;
+		}
+		public static double InterpolateCosine(double value1, double value2, double fraction)
+		{
+			if (fraction < 0 || fraction > 1) throw new ArgumentOutOfRangeException("fraction");
+
+			return InterpolateLinear(value1, value2, (1 - Cosine(fraction * Math.PI)) / 2);
 		}
 	}
 }
