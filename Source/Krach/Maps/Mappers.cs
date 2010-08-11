@@ -1,4 +1,4 @@
-// Copyright � Julian Brunner 2010
+﻿// Copyright © Julian Brunner 2010
 
 // This file is part of Krach.
 //
@@ -14,15 +14,13 @@
 // You should have received a copy of the GNU General Public License along with
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
-using Krach.Basics;
+using Krach.Maps.Basic;
 
-namespace Krach.Maps.Basic
+namespace Krach.Maps
 {
-	public class CosineMapper : IMapper<double, double>
+	public static class Mappers
 	{
-		public IMap<double, double> CreateMap(Range<double> source, Range<double> destination)
-		{
-			return new CosineMap(source, destination);
-		}
+		public static IMapper<double, double> Linear { get { return new InstantMapper<double, double>((source, destination) => new LinearMap(source, destination)); } }
+		public static IMapper<double, double> Cosine { get { return new InstantMapper<double, double>((source, destination) => new CosineMap(source, destination)); } }
 	}
 }

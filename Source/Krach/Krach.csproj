@@ -69,9 +69,9 @@
     <Compile Include="Graphs\IGraph.cs" />
     <Compile Include="Collections\IFixedList.cs" />
     <Compile Include="Maps\Basic\CosineMap.cs" />
-    <Compile Include="Maps\Basic\CosineMapper.cs" />
     <Compile Include="Maps\Basic\LinearMap.cs" />
-    <Compile Include="Maps\Basic\LinearMapper.cs" />
+    <Compile Include="Maps\InstantMapper.cs" />
+    <Compile Include="Maps\Mappers.cs" />
     <Compile Include="Maps\IMapper.cs" />
     <Compile Include="Maps\InstantMap.cs" />
     <Compile Include="Maps\Scalars\RangeMap.cs" />
