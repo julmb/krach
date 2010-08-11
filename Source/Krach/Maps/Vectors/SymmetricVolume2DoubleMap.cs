@@ -14,15 +14,46 @@
 // You should have received a copy of the GNU General Public License along with
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
+using System;
 using Krach.Basics;
 
 namespace Krach.Maps.Vectors
 {
-	public class SymmetricVolume2DoubleMap : SymmetricMap<Vector2Double, Vector2Double>
+	public class SymmetricVolume2DoubleMap : ISymmetricMap<Vector2Double, Vector2Double>
 	{
-		public SymmetricVolume2DoubleMap(Volume2Double source, Volume2Double destination)
-			: base(new Volume2DoubleMap(source, destination), new Volume2DoubleMap(destination, source))
+		readonly Volume2DoubleMap forward;
+		readonly Volume2DoubleMap reverse;
+
+		public Volume2DoubleMap Forward { get { return forward; } }
+		public Volume2DoubleMap Reverse { get { return reverse; } }
+
+		SymmetricVolume2DoubleMap(Volume2DoubleMap forward, Volume2DoubleMap reverse)
 		{
+			if (forward == null) throw new ArgumentNullException("forward");
+			if (reverse == null) throw new ArgumentNullException("reverse");
+
+			this.forward = forward;
+			this.reverse = reverse;
 		}
+
+		public static SymmetricVolume2DoubleMap CreateLinear(Volume2Double source, Volume2Double destination)
+		{
+			return new SymmetricVolume2DoubleMap
+			(
+				Volume2DoubleMap.CreateLinear(source, destination),
+				Volume2DoubleMap.CreateLinear(destination, source)
+			);
+		}
+		public static SymmetricVolume2DoubleMap CreateCosine(Volume2Double source, Volume2Double destination)
+		{
+			return new SymmetricVolume2DoubleMap
+			(
+				Volume2DoubleMap.CreateCosine(source, destination),
+				Volume2DoubleMap.CreateCosine(destination, source)
+			);
+		}
+
+		IMap<Vector2Double, Vector2Double> ISymmetricMap<Vector2Double, Vector2Double>.Forward { get { return Forward; } }
+		IMap<Vector2Double, Vector2Double> ISymmetricMap<Vector2Double, Vector2Double>.Reverse { get { return Reverse; } }
 	}
 }

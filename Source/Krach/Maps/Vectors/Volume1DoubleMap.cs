@@ -27,11 +27,30 @@ namespace Krach.Maps.Vectors
 		public Volume1Double Source { get { return source; } }
 		public Volume1Double Destination { get { return destination; } }
 
-		public Volume1DoubleMap(Volume1Double source, Volume1Double destination)
-			: base(new RangeMap(source.RangeX, destination.RangeX))
+		Volume1DoubleMap(Volume1Double source, Volume1Double destination, IMap<double, double> mapX)
+			: base(mapX)
 		{
 			this.source = source;
 			this.destination = destination;
+		}
+
+		public static Volume1DoubleMap CreateLinear(Volume1Double source, Volume1Double destination)
+		{
+			return new Volume1DoubleMap
+			(
+				source,
+				destination,
+				RangeMap.CreateLinear(source.RangeX, destination.RangeX)
+			);
+		}
+		public static Volume1DoubleMap CreateCosine(Volume1Double source, Volume1Double destination)
+		{
+			return new Volume1DoubleMap
+			(
+				source,
+				destination,
+				RangeMap.CreateCosine(source.RangeX, destination.RangeX)
+			);
 		}
 	}
 }

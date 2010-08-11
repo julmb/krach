@@ -27,12 +27,20 @@ namespace Krach.Maps.Scalar
 		public Range<double> Source { get { return source; } }
 		public Range<double> Destination { get { return destination; } }
 
-		public RangeMap(Range<double> source, Range<double> destination)
-			: base(new LinearMap(source, destination))
+		RangeMap(Range<double> source, Range<double> destination, IMap<double, double> map)
+			: base(map)
 		{
 			this.source = source;
 			this.destination = destination;
 		}
-		public RangeMap(Range<double> source) : this(source, new Range<double>(0, 1)) { }
+
+		public static RangeMap CreateLinear(Range<double> source, Range<double> destination)
+		{
+			return new RangeMap(source, destination, new LinearMap(source, destination));
+		}
+		public static RangeMap CreateCosine(Range<double> source, Range<double> destination)
+		{
+			return new RangeMap(source, destination, new CosineMap(source, destination));
+		}
 	}
 }

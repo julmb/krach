@@ -14,24 +14,46 @@
 // You should have received a copy of the GNU General Public License along with
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
+using System;
 using Krach.Basics;
 
 namespace Krach.Maps.Scalar
 {
-	public class SymmetricRangeMap : SymmetricMap<double, double>
+	public class SymmetricRangeMap : ISymmetricMap<double, double>
 	{
-		readonly Range<double> source;
-		readonly Range<double> destination;
+		readonly RangeMap forward;
+		readonly RangeMap reverse;
 
-		public Range<double> Source { get { return source; } }
-		public Range<double> Destination { get { return destination; } }
+		public RangeMap Forward { get { return forward; } }
+		public RangeMap Reverse { get { return reverse; } }
 
-		public SymmetricRangeMap(Range<double> source, Range<double> destination)
-			: base(new RangeMap(source, destination), new RangeMap(destination, source))
+		SymmetricRangeMap(RangeMap forward, RangeMap reverse)
 		{
-			this.source = source;
-			this.destination = destination;
+			if (forward == null) throw new ArgumentNullException("forward");
+			if (reverse == null) throw new ArgumentNullException("reverse");
+
+			this.forward = forward;
+			this.reverse = reverse;
 		}
-		public SymmetricRangeMap(Range<double> source) : this(source, new Range<double>(0, 1)) { }
+
+		public static SymmetricRangeMap CreateLinear(Range<double> source, Range<double> destination)
+		{
+			return new SymmetricRangeMap
+			(
+				RangeMap.CreateLinear(source, destination),
+				RangeMap.CreateLinear(destination, source)
+			);
+		}
+		public static SymmetricRangeMap CreateCosine(Range<double> source, Range<double> destination)
+		{
+			return new SymmetricRangeMap
+			(
+				RangeMap.CreateCosine(source, destination),
+				RangeMap.CreateCosine(destination, source)
+			);
+		}
+
+		IMap<double, double> ISymmetricMap<double, double>.Forward { get { return Forward; } }
+		IMap<double, double> ISymmetricMap<double, double>.Reverse { get { return Reverse; } }
 	}
 }

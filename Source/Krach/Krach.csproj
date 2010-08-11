@@ -72,21 +72,34 @@
     <Compile Include="Maps\Mappers\CosineMap.cs" />
     <Compile Include="Maps\Mappers\LinearMap.cs" />
     <Compile Include="Maps\Scalars\RangeMap.cs" />
-    <Compile Include="Maps\Vectors\SymmetricVolume1DoubleMap.cs" />
-    <Compile Include="Maps\Vectors\Vector1DoubleMap.cs" />
-    <Compile Include="Maps\Vectors\SymmetricVolume2DoubleMap.cs" />
     <Compile Include="Maps\SymmetricMap.cs" />
     <Compile Include="Maps\ISymmetricMap.cs" />
     <Compile Include="Maps\IMap.cs" />
     <Compile Include="Maps\Scalars\SymmetricRangeMap.cs" />
     <Compile Include="Maps\Scalars\DoubleMap.cs" />
-    <Compile Include="Maps\Vectors\Volume1DoubleMap.cs" />
-    <Compile Include="Maps\Vectors\Volume2DoubleMap.cs" />
-    <Compile Include="Maps\Vectors\Vector2DoubleMap.cs" />
+    <Compile Include="Maps\Vectors\SymmetricVolume1DoubleMap.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Maps\Vectors\SymmetricVolume2DoubleMap.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Maps\Vectors\Vector1DoubleMap.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Maps\Vectors\Vector2DoubleMap.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Maps\Vectors\Volume1DoubleMap.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Maps\Vectors\Volume2DoubleMap.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomNumberGenerator.cs" />
     <Compile Include="Threading\Breaker.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

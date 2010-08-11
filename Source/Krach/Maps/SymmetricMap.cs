@@ -18,7 +18,7 @@ using System;
 
 namespace Krach.Maps
 {
-	public abstract class SymmetricMap<TSource, TDestination> : ISymmetricMap<TSource, TDestination>
+	public class SymmetricMap<TSource, TDestination> : ISymmetricMap<TSource, TDestination>
 	{
 		readonly IMap<TSource, TDestination> forward;
 		readonly IMap<TDestination, TSource> reverse;
@@ -26,7 +26,7 @@ namespace Krach.Maps
 		public IMap<TSource, TDestination> Forward { get { return forward; } }
 		public IMap<TDestination, TSource> Reverse { get { return reverse; } }
 
-		protected SymmetricMap(IMap<TSource, TDestination> forward, IMap<TDestination, TSource> reverse)
+		public SymmetricMap(IMap<TSource, TDestination> forward, IMap<TDestination, TSource> reverse)
 		{
 			if (forward == null) throw new ArgumentNullException("forward");
 			if (reverse == null) throw new ArgumentNullException("reverse");
