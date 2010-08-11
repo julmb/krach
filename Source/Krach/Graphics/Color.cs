@@ -93,6 +93,13 @@ namespace Krach.Graphics
 			}
 			catch (FormatException) { throw new ArgumentException("Parameter 'text' contains invalid characters."); }
 		}
+		public static string ToHtmlString(Color color)
+		{
+			return
+				(color.Red * 0xFF).ToString("X2") +
+				(color.Green * 0xFF).ToString("X2") +
+				(color.Blue * 0xFF).ToString("X2");
+		}
 		public static double DistanceRgb(Color color1, Color color2)
 		{
 			return RgbColor.Distance(color1.rgbColor, color2.rgbColor);
