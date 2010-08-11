@@ -19,7 +19,7 @@ using Krach.Extensions;
 
 namespace Krach.Maps.Mappers
 {
-	class LinearMap : IMap<double, double>
+	public class LinearMap : IMap<double, double>
 	{
 		readonly double offset;
 		readonly double factor;

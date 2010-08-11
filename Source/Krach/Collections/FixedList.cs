@@ -20,7 +20,7 @@ using System.Linq;
 
 namespace Krach.Collections
 {
-	class FixedList<T> : IFixedList<T>
+	public class FixedList<T> : IFixedList<T>
 	{
 		readonly IEnumerable<T> source;
 

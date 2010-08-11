@@ -16,6 +16,6 @@
 
 namespace Krach
 {
-	public delegate T Interpolator<T>(T source, T destination, double fraction);
+	public delegate T Interpolation<T>(T source, T destination, double fraction);
 	public delegate bool EqualityComparison<T>(T item1, T item2);
 }

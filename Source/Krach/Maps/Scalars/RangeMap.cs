@@ -19,7 +19,7 @@ using Krach.Maps.Mappers;
 
 namespace Krach.Maps.Scalar
 {
-	class RangeMap : DoubleMap
+	public class RangeMap : DoubleMap
 	{
 		readonly Range<double> source;
 		readonly Range<double> destination;

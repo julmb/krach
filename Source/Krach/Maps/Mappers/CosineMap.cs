@@ -20,7 +20,7 @@ using Krach.Extensions;
 
 namespace Krach.Maps.Mappers
 {
-	class CosineMap : IMap<double, double>
+	public class CosineMap : IMap<double, double>
 	{
 		readonly Range<double> source;
 		readonly Range<double> destination;

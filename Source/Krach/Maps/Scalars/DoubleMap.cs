@@ -18,7 +18,7 @@ using System;
 
 namespace Krach.Maps.Scalar
 {
-	class DoubleMap : IMap<double, double>
+	public class DoubleMap : IMap<double, double>
 	{
 		IMap<double, double> map;
 
