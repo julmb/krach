@@ -25,5 +25,9 @@ namespace Krach.Maps.Scalar
 			: base(source, destination, mapper, mapper)
 		{
 		}
+		public SymmetricRangeMap(Range<double> source, IFactory<RangeMap, Range<double>, Range<double>> mapper)
+			: this(source, new Range<double>(0, 1), mapper)
+		{
+		}
 	}
 }

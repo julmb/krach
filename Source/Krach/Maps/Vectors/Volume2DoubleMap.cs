@@ -34,5 +34,9 @@ namespace Krach.Maps.Vectors
 			this.source = source;
 			this.destination = destination;
 		}
+		public Volume2DoubleMap(Volume2Double source, IFactory<IMap<double, double>, Range<double>, Range<double>> mapper)
+			: this(source, new Volume2Double(new Range<double>(0, 1), new Range<double>(0, 1)), mapper)
+		{
+		}
 	}
 }

@@ -26,6 +26,10 @@ namespace Krach.Maps.Vectors
 			: base(source, destination, GetFactory(mapper), GetFactory(mapper))
 		{
 		}
+		public SymmetricVolume2DoubleMap(Volume2Double source, IFactory<IMap<double, double>, Range<double>, Range<double>> mapper)
+			: this(source, new Volume2Double(new Range<double>(0, 1), new Range<double>(0, 1)), mapper)
+		{
+		}
 
 		static IFactory<Volume2DoubleMap, Volume2Double, Volume2Double> GetFactory(IFactory<IMap<double, double>, Range<double>, Range<double>> mapper)
 		{
