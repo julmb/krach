@@ -14,10 +14,11 @@
 // You should have received a copy of the GNU General Public License along with
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
-namespace Krach.Maps
+namespace Krach.Maps.Abstract
 {
-	public interface IMap<TSource, TDestination>
+	public interface IBounded<TSourceBounds, TDestinationBounds>
 	{
-		TDestination Map(TSource value);
+		TSourceBounds Source { get; }
+		TDestinationBounds Destination { get; }
 	}
 }

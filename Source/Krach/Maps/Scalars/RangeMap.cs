@@ -15,11 +15,12 @@
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
 using Krach.Basics;
-using Krach.Maps.Basic;
+using Krach.Design;
+using Krach.Maps.Abstract;
 
 namespace Krach.Maps.Scalar
 {
-	public class RangeMap : DoubleMap
+	public class RangeMap : DoubleMap, IBounded<Range<double>, Range<double>>
 	{
 		readonly Range<double> source;
 		readonly Range<double> destination;
@@ -27,28 +28,12 @@ namespace Krach.Maps.Scalar
 		public Range<double> Source { get { return source; } }
 		public Range<double> Destination { get { return destination; } }
 
-		RangeMap(Range<double> source, Range<double> destination, IMap<double, double> map)
-			: base(map)
+		public RangeMap(Range<double> source, Range<double> destination, IFactory<IMap<double, double>, Range<double>, Range<double>> mapper)
+			: base(mapper.Create(source, destination))
 		{
 			this.source = source;
 			this.destination = destination;
 		}
-
-		public static RangeMap CreateLinear(Range<double> source, Range<double> destination)
-		{
-			return new RangeMap(source, destination, new LinearMap(source, destination));
-		}
-		public static RangeMap CreateLinear(Range<double> source)
-		{
-			return CreateLinear(source, new Range<double>(0, 1));
-		}
-		public static RangeMap CreateCosine(Range<double> source, Range<double> destination)
-		{
-			return new RangeMap(source, destination, new CosineMap(source, destination));
-		}
-		public static RangeMap CreateCosine(Range<double> source)
-		{
-			return CreateCosine(source, new Range<double>(0, 1));
-		}
+		public RangeMap(Range<double> source, IFactory<IMap<double, double>, Range<double>, Range<double>> mapper) : this(source, new Range<double>(0, 1), mapper) { }
 	}
 }

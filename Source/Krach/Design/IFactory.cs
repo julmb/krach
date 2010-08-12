@@ -14,11 +14,30 @@
 // You should have received a copy of the GNU General Public License along with
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
-namespace Krach.Maps
+namespace Krach.Design
 {
-	public interface ISymmetricMap<TSource, TDestination>
+	public interface IFactory<TResult>
 	{
-		IMap<TSource, TDestination> Forward { get; }
-		IMap<TDestination, TSource> Reverse { get; }
+		TResult Create();
+	}
+	public interface IFactory<TResult, T1>
+	{
+		TResult Create(T1 parameter1);
+	}
+	public interface IFactory<TResult, T1, T2>
+	{
+		TResult Create(T1 parameter1, T2 parameter2);
+	}
+	public interface IFactory<TResult, T1, T2, T3>
+	{
+		TResult Create(T1 parameter1, T2 parameter2, T3 parameter3);
+	}
+	public interface IFactory<TResult, T1, T2, T3, T4>
+	{
+		TResult Create(T1 parameter1, T2 parameter2, T3 parameter3, T4 parameter4);
+	}
+	public interface IFactory<TResult, T1, T2, T3, T4, T5>
+	{
+		TResult Create(T1 parameter1, T2 parameter2, T3 parameter3, T4 parameter4, T5 parameter5);
 	}
 }

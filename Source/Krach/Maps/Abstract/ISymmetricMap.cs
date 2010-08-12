@@ -14,25 +14,11 @@
 // You should have received a copy of the GNU General Public License along with
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
-using Krach.Basics;
-using Krach.Design;
-using Krach.Maps.Abstract;
-
-namespace Krach.Maps.Vectors
+namespace Krach.Maps.Abstract
 {
-	public class Volume2DoubleMap : Vector2DoubleMap, IBounded<Volume2Double, Volume2Double>
+	public interface ISymmetricMap<TSource, TDestination>
 	{
-		readonly Volume2Double source;
-		readonly Volume2Double destination;
-
-		public Volume2Double Source { get { return source; } }
-		public Volume2Double Destination { get { return destination; } }
-
-		public Volume2DoubleMap(Volume2Double source, Volume2Double destination, IFactory<IMap<double, double>, Range<double>, Range<double>> mapper)
-			: base(mapper.Create(source.RangeX, destination.RangeX), mapper.Create(source.RangeY, destination.RangeY))
-		{
-			this.source = source;
-			this.destination = destination;
-		}
+		IMap<TSource, TDestination> Forward { get; }
+		IMap<TDestination, TSource> Reverse { get; }
 	}
 }

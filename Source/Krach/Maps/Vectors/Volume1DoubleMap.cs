@@ -15,7 +15,8 @@
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
 using Krach.Basics;
-using Krach.Maps.Scalar;
+using Krach.Design;
+using Krach.Maps.Abstract;
 
 namespace Krach.Maps.Vectors
 {
@@ -27,38 +28,11 @@ namespace Krach.Maps.Vectors
 		public Volume1Double Source { get { return source; } }
 		public Volume1Double Destination { get { return destination; } }
 
-		Volume1DoubleMap(Volume1Double source, Volume1Double destination, IMap<double, double> mapX)
-			: base(mapX)
+		public Volume1DoubleMap(Volume1Double source, Volume1Double destination, IFactory<IMap<double, double>, Range<double>, Range<double>> mapper)
+			: base(mapper.Create(source.RangeX, destination.RangeX))
 		{
 			this.source = source;
 			this.destination = destination;
-		}
-
-		public static Volume1DoubleMap CreateLinear(Volume1Double source, Volume1Double destination)
-		{
-			return new Volume1DoubleMap
-			(
-				source,
-				destination,
-				RangeMap.CreateLinear(source.RangeX, destination.RangeX)
-			);
-		}
-		public static Volume1DoubleMap CreateLinear(Volume1Double source)
-		{
-			return CreateLinear(source, new Volume1Double(new Range<double>(0, 1)));
-		}
-		public static Volume1DoubleMap CreateCosine(Volume1Double source, Volume1Double destination)
-		{
-			return new Volume1DoubleMap
-			(
-				source,
-				destination,
-				RangeMap.CreateCosine(source.RangeX, destination.RangeX)
-			);
-		}
-		public static Volume1DoubleMap CreateCosine(Volume1Double source)
-		{
-			return CreateCosine(source, new Volume1Double(new Range<double>(0, 1)));
 		}
 	}
 }

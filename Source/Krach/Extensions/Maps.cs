@@ -16,7 +16,7 @@
 
 using System;
 using Krach.Basics;
-using Krach.Maps;
+using Krach.Maps.Abstract;
 
 namespace Krach.Extensions
 {

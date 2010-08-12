@@ -16,6 +16,7 @@
 
 using System;
 using Krach.Basics;
+using Krach.Maps.Abstract;
 
 namespace Krach.Maps.Vectors
 {

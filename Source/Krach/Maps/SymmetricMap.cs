@@ -15,24 +15,40 @@
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using Krach.Design;
+using Krach.Maps.Abstract;
 
 namespace Krach.Maps
 {
-	public class SymmetricMap<TSource, TDestination> : ISymmetricMap<TSource, TDestination>
+	public class SymmetricMap<TSourceBounds, TDestinationBounds, TSource, TDestination, TForward, TReverse>
+		: IBounded<TSourceBounds, TDestinationBounds>, ISymmetricMap<TSource, TDestination>
+		where TForward : IMap<TSource, TDestination>
+		where TReverse : IMap<TDestination, TSource>
 	{
-		readonly IMap<TSource, TDestination> forward;
-		readonly IMap<TDestination, TSource> reverse;
+		readonly TSourceBounds source;
+		readonly TDestinationBounds destination;
+		readonly TForward forward;
+		readonly TReverse reverse;
 
-		public IMap<TSource, TDestination> Forward { get { return forward; } }
-		public IMap<TDestination, TSource> Reverse { get { return reverse; } }
+		public TSourceBounds Source { get { return source; } }
+		public TDestinationBounds Destination { get { return destination; } }
+		public TForward Forward { get { return forward; } }
+		public TReverse Reverse { get { return reverse; } }
 
-		public SymmetricMap(IMap<TSource, TDestination> forward, IMap<TDestination, TSource> reverse)
+		public SymmetricMap(TSourceBounds source, TDestinationBounds destination, IFactory<TForward, TSourceBounds, TDestinationBounds> forwardMapper, IFactory<TReverse, TDestinationBounds, TSourceBounds> reverseMapper)
 		{
-			if (forward == null) throw new ArgumentNullException("forward");
-			if (reverse == null) throw new ArgumentNullException("reverse");
+			if (object.Equals(source, null)) throw new ArgumentNullException("source");
+			if (object.Equals(destination, null)) throw new ArgumentNullException("destination");
+			if (forwardMapper == null) throw new ArgumentNullException("forwardMapper");
+			if (reverseMapper == null) throw new ArgumentNullException("reverseMapper");
 
-			this.forward = forward;
-			this.reverse = reverse;
+			this.source = source;
+			this.destination = destination;
+			this.forward = forwardMapper.Create(source, destination);
+			this.reverse = reverseMapper.Create(destination, source);
 		}
+
+		IMap<TSource, TDestination> ISymmetricMap<TSource, TDestination>.Forward { get { return Forward; } }
+		IMap<TDestination, TSource> ISymmetricMap<TSource, TDestination>.Reverse { get { return Reverse; } }
 	}
 }

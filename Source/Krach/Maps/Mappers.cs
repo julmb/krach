@@ -14,13 +14,34 @@
 // You should have received a copy of the GNU General Public License along with
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
+using Krach.Basics;
+using Krach.Design;
+using Krach.Maps.Abstract;
 using Krach.Maps.Basic;
 
 namespace Krach.Maps
 {
 	public static class Mappers
 	{
-		public static IMapper<double, double> Linear { get { return new InstantMapper<double, double>((source, destination) => new LinearMap(source, destination)); } }
-		public static IMapper<double, double> Cosine { get { return new InstantMapper<double, double>((source, destination) => new CosineMap(source, destination)); } }
+		public static IFactory<IMap<double, double>, Range<double>, Range<double>> Linear
+		{
+			get
+			{
+				return new Factory<IMap<double, double>, Range<double>, Range<double>>
+				(
+					(source, destination) => new LinearMap(source, destination)
+				);
+			}
+		}
+		public static IFactory<IMap<double, double>, Range<double>, Range<double>> Cosine
+		{
+			get
+			{
+				return new Factory<IMap<double, double>, Range<double>, Range<double>>
+				(
+					(source, destination) => new CosineMap(source, destination)
+				);
+			}
+		}
 	}
 }

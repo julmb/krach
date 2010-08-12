@@ -14,15 +14,10 @@
 // You should have received a copy of the GNU General Public License along with
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
-using System;
-using Krach.Basics;
-
-namespace Krach.Maps
+namespace Krach.Maps.Abstract
 {
-	public interface IMapper<TSource, TDestination>
-		where TSource : IEquatable<TSource>, IComparable<TSource>
-		where TDestination : IEquatable<TDestination>, IComparable<TDestination>
+	public interface IMap<TSource, TDestination>
 	{
-		IMap<TSource, TDestination> CreateMap(Range<TSource> source, Range<TDestination> destination);
+		TDestination Map(TSource value);
 	}
 }
