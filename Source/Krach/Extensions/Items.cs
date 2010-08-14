@@ -23,7 +23,11 @@ namespace Krach.Extensions
 	{
 		public static T Equal<T>(T item1, T item2) where T : IEquatable<T>
 		{
-			if (!EqualityComparer<T>.Default.Equals(item1, item2)) throw new ArgumentException("The two items are not equal.");
+			return Equal(item1, item2, EqualityComparer<T>.Default.Equals);
+		}
+		public static T Equal<T>(T item1, T item2, EqualityComparison<T> compare)
+		{
+			if (!compare(item1, item2)) throw new ArgumentException(string.Format("The parameters 'item1' and 'item2' are not equal ({0}, {1}).", item1, item2));
 
 			return item1;
 		}
