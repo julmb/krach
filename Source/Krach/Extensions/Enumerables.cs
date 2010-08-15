@@ -72,14 +72,6 @@ namespace Krach.Extensions
 
 			for (int i = 0; i < buffer.Length; i++) yield return buffer[(i - offset).Modulo(buffer.Length)];
 		}
-		public static IEnumerable<TSource> WhereNot<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
-		{
-			if (source == null) throw new ArgumentNullException("source");
-
-			foreach (TSource item in source)
-				if (!predicate(item))
-					yield return item;
-		}
 		public static IEnumerable<TSource> Append<TSource>(this IEnumerable<TSource> source, TSource item)
 		{
 			if (source == null) throw new ArgumentNullException("source");
