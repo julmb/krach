@@ -47,11 +47,16 @@ namespace Krach.Basics
 
 		public Matrix(int rows, int columns)
 		{
-			values = new double[rows, columns];
+			this.values = new double[rows, columns];
 		}
 		public Matrix(double[,] values)
 		{
 			this.values = values;
+		}
+		public Matrix(double[] values)
+			: this(values.Length, 1)
+		{
+			for (int row = 0; row < Rows; row++) this[row, 0] = values[row];
 		}
 
 		public override bool Equals(object obj)
@@ -88,6 +93,16 @@ namespace Krach.Basics
 		public bool Equals(Matrix other)
 		{
 			return this == other;
+		}
+		public double[] ToValues()
+		{
+			if (Columns != 1) throw new InvalidOperationException("Cannot convert non-Vector to values.");
+
+			double[] values = new double[Rows];
+
+			for (int row = 0; row < Rows; row++) values[row] = this[row, 0];
+
+			return values;
 		}
 
 		public Matrix Power(int exponent)
