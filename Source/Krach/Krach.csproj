@@ -71,6 +71,12 @@
     <Compile Include="Graphs\GraphTraverser.cs" />
     <Compile Include="Graphs\IGraph.cs" />
     <Compile Include="Collections\IFixedList.cs" />
+    <Compile Include="MachineLearning\GameAI.cs" />
+    <Compile Include="MachineLearning\IGameAction.cs" />
+    <Compile Include="MachineLearning\IGameState.cs" />
+    <Compile Include="MachineLearning\ILearner.cs" />
+    <Compile Include="MachineLearning\SimpleGameAI.cs" />
+    <Compile Include="MachineLearning\SvmLearner.cs" />
     <Compile Include="Maps\Abstract\IBounded.cs" />
     <Compile Include="Maps\Basic\CosineMap.cs" />
     <Compile Include="Maps\Basic\LinearMap.cs" />
