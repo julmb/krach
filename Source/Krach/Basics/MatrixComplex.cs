@@ -35,13 +35,13 @@ namespace Krach.Basics
 		{
 			get
 			{
-				MatrixComplex MatrixComplex = new MatrixComplex(Rows, Columns);
+				MatrixComplex matrix = new MatrixComplex(Rows, Columns);
 
 				for (int row = 0; row < Rows; row++)
 					for (int column = 0; column < Columns; column++)
-						MatrixComplex[row, column] = values[column, row];
+						matrix[row, column] = values[column, row];
 
-				return MatrixComplex;
+				return matrix;
 			}
 		}
 
@@ -109,119 +109,119 @@ namespace Krach.Basics
 		{
 			if (Rows != Columns) throw new InvalidOperationException();
 
-			MatrixComplex MatrixComplex = Identity(Items.Equal(Rows, Columns));
+			MatrixComplex matrix = Identity(Items.Equal(Rows, Columns));
 
-			for (int i = 0; i < exponent; i++) MatrixComplex *= this;
+			for (int i = 0; i < exponent; i++) matrix *= this;
 
-			return MatrixComplex;
+			return matrix;
 		}
 
-		public static bool operator ==(MatrixComplex MatrixComplex1, MatrixComplex MatrixComplex2)
+		public static bool operator ==(MatrixComplex matrix1, MatrixComplex matrix2)
 		{
-			if (MatrixComplex1.Rows != MatrixComplex2.Rows) throw new ArgumentException("The row counts do not match.");
-			if (MatrixComplex1.Columns != MatrixComplex2.Columns) throw new ArgumentException("The column counts do not match.");
+			if (matrix1.Rows != matrix2.Rows) throw new ArgumentException("The row counts do not match.");
+			if (matrix1.Columns != matrix2.Columns) throw new ArgumentException("The column counts do not match.");
 
-			int rows = Items.Equal(MatrixComplex1.Rows, MatrixComplex2.Rows);
-			int columns = Items.Equal(MatrixComplex1.Columns, MatrixComplex2.Columns);
+			int rows = Items.Equal(matrix1.Rows, matrix2.Rows);
+			int columns = Items.Equal(matrix1.Columns, matrix2.Columns);
 
 			for (int row = 0; row < rows; row++)
 				for (int column = 0; column < columns; column++)
-					if (MatrixComplex1[row, column] != MatrixComplex2[row, column])
+					if (matrix1[row, column] != matrix2[row, column])
 						return false;
 
 			return true;
 		}
-		public static bool operator !=(MatrixComplex MatrixComplex1, MatrixComplex MatrixComplex2)
+		public static bool operator !=(MatrixComplex matrix1, MatrixComplex matrix2)
 		{
-			if (MatrixComplex1.Rows != MatrixComplex2.Rows) throw new ArgumentException("The row counts do not match.");
-			if (MatrixComplex1.Columns != MatrixComplex2.Columns) throw new ArgumentException("The column counts do not match.");
+			if (matrix1.Rows != matrix2.Rows) throw new ArgumentException("The row counts do not match.");
+			if (matrix1.Columns != matrix2.Columns) throw new ArgumentException("The column counts do not match.");
 
-			int rows = Items.Equal(MatrixComplex1.Rows, MatrixComplex2.Rows);
-			int columns = Items.Equal(MatrixComplex1.Columns, MatrixComplex2.Columns);
+			int rows = Items.Equal(matrix1.Rows, matrix2.Rows);
+			int columns = Items.Equal(matrix1.Columns, matrix2.Columns);
 
 			for (int row = 0; row < rows; row++)
 				for (int column = 0; column < columns; column++)
-					if (MatrixComplex1[row, column] != MatrixComplex2[row, column])
+					if (matrix1[row, column] != matrix2[row, column])
 						return true;
 
 			return false;
 		}
 
-		public static MatrixComplex operator +(MatrixComplex MatrixComplex1, MatrixComplex MatrixComplex2)
+		public static MatrixComplex operator +(MatrixComplex matrix1, MatrixComplex matrix2)
 		{
-			if (MatrixComplex1.Rows != MatrixComplex2.Rows) throw new ArgumentException("The row counts do not match.");
-			if (MatrixComplex1.Columns != MatrixComplex2.Columns) throw new ArgumentException("The column counts do not match.");
+			if (matrix1.Rows != matrix2.Rows) throw new ArgumentException("The row counts do not match.");
+			if (matrix1.Columns != matrix2.Columns) throw new ArgumentException("The column counts do not match.");
 
-			int rows = Items.Equal(MatrixComplex1.Rows, MatrixComplex2.Rows);
-			int columns = Items.Equal(MatrixComplex1.Columns, MatrixComplex2.Columns);
+			int rows = Items.Equal(matrix1.Rows, matrix2.Rows);
+			int columns = Items.Equal(matrix1.Columns, matrix2.Columns);
 
 			MatrixComplex result = new MatrixComplex(rows, columns);
 
 			for (int row = 0; row < rows; row++)
 				for (int column = 0; column < columns; column++)
-					result[row, column] = MatrixComplex1[row, column] + MatrixComplex2[row, column];
+					result[row, column] = matrix1[row, column] + matrix2[row, column];
 
 			return result;
 		}
-		public static MatrixComplex operator -(MatrixComplex MatrixComplex1, MatrixComplex MatrixComplex2)
+		public static MatrixComplex operator -(MatrixComplex matrix1, MatrixComplex matrix2)
 		{
-			if (MatrixComplex1.Rows != MatrixComplex2.Rows) throw new ArgumentException("The row counts do not match.");
-			if (MatrixComplex1.Columns != MatrixComplex2.Columns) throw new ArgumentException("The column counts do not match.");
+			if (matrix1.Rows != matrix2.Rows) throw new ArgumentException("The row counts do not match.");
+			if (matrix1.Columns != matrix2.Columns) throw new ArgumentException("The column counts do not match.");
 
-			int rows = Items.Equal(MatrixComplex1.Rows, MatrixComplex2.Rows);
-			int columns = Items.Equal(MatrixComplex1.Columns, MatrixComplex2.Columns);
+			int rows = Items.Equal(matrix1.Rows, matrix2.Rows);
+			int columns = Items.Equal(matrix1.Columns, matrix2.Columns);
 
 			MatrixComplex result = new MatrixComplex(rows, columns);
 
 			for (int row = 0; row < rows; row++)
 				for (int column = 0; column < columns; column++)
-					result[row, column] = MatrixComplex1[row, column] - MatrixComplex2[row, column];
+					result[row, column] = matrix1[row, column] - matrix2[row, column];
 
 			return result;
 		}
-		public static MatrixComplex operator *(MatrixComplex MatrixComplex1, MatrixComplex MatrixComplex2)
+		public static MatrixComplex operator *(MatrixComplex matrix1, MatrixComplex matrix2)
 		{
-			if (MatrixComplex1.Columns != MatrixComplex2.Rows) throw new ArgumentOutOfRangeException();
+			if (matrix1.Columns != matrix2.Rows) throw new ArgumentOutOfRangeException();
 
-			int size = Items.Equal(MatrixComplex1.Columns, MatrixComplex2.Rows);
+			int size = Items.Equal(matrix1.Columns, matrix2.Rows);
 
-			MatrixComplex result = new MatrixComplex(MatrixComplex1.Rows, MatrixComplex2.Columns);
+			MatrixComplex result = new MatrixComplex(matrix1.Rows, matrix2.Columns);
 
-			for (int row = 0; row < MatrixComplex1.Rows; row++)
-				for (int column = 0; column < MatrixComplex2.Columns; column++)
+			for (int row = 0; row < matrix1.Rows; row++)
+				for (int column = 0; column < matrix2.Columns; column++)
 					for (int i = 0; i < size; i++)
-						result[row, column] += MatrixComplex1[row, i] * MatrixComplex2[i, column];
+						result[row, column] += matrix1[row, i] * matrix2[i, column];
 
 			return result;
 		}
-		public static MatrixComplex operator *(Complex factor, MatrixComplex MatrixComplex)
+		public static MatrixComplex operator *(Complex factor, MatrixComplex matrix)
 		{
-			MatrixComplex result = new MatrixComplex(MatrixComplex.Rows, MatrixComplex.Columns);
+			MatrixComplex result = new MatrixComplex(matrix.Rows, matrix.Columns);
 
-			for (int row = 0; row < MatrixComplex.Rows; row++)
-				for (int column = 0; column < MatrixComplex.Columns; column++)
-					result[row, column] = MatrixComplex[row, column] * factor;
+			for (int row = 0; row < matrix.Rows; row++)
+				for (int column = 0; column < matrix.Columns; column++)
+					result[row, column] = matrix[row, column] * factor;
 
 			return result;
 		}
-		public static MatrixComplex operator *(MatrixComplex MatrixComplex, Complex factor)
+		public static MatrixComplex operator *(MatrixComplex matrix, Complex factor)
 		{
-			MatrixComplex result = new MatrixComplex(MatrixComplex.Rows, MatrixComplex.Columns);
+			MatrixComplex result = new MatrixComplex(matrix.Rows, matrix.Columns);
 
-			for (int row = 0; row < MatrixComplex.Rows; row++)
-				for (int column = 0; column < MatrixComplex.Columns; column++)
-					result[row, column] = MatrixComplex[row, column] * factor;
+			for (int row = 0; row < matrix.Rows; row++)
+				for (int column = 0; column < matrix.Columns; column++)
+					result[row, column] = matrix[row, column] * factor;
 
 			return result;
 		}
 
 		public static MatrixComplex Identity(int size)
 		{
-			MatrixComplex MatrixComplex = new MatrixComplex(size, size);
+			MatrixComplex matrix = new MatrixComplex(size, size);
 
-			for (int i = 0; i < size; i++) MatrixComplex[i, i] = 1;
+			for (int i = 0; i < size; i++) matrix[i, i] = 1;
 
-			return MatrixComplex;
+			return matrix;
 		}
 	}
 }

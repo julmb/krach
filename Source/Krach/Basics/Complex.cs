@@ -67,11 +67,11 @@ namespace Krach.Basics
 
 		public static Complex operator +(Complex complex1, Complex complex2)
 		{
-			return new Complex(complex2.real + complex2.real, complex1.imaginary + complex2.imaginary);
+			return new Complex(complex1.real + complex2.real, complex1.imaginary + complex2.imaginary);
 		}
 		public static Complex operator -(Complex complex1, Complex complex2)
 		{
-			return new Complex(complex2.real - complex2.real, complex1.imaginary - complex2.imaginary);
+			return new Complex(complex1.real - complex2.real, complex1.imaginary - complex2.imaginary);
 		}
 		public static Complex operator *(Complex complex1, Complex complex2)
 		{
@@ -92,6 +92,15 @@ namespace Krach.Basics
 				(complex1.real * complex2.real + complex1.imaginary * complex2.imaginary) / divisor,
 				(complex1.real * complex2.imaginary - complex1.imaginary * complex2.real) / divisor
 			);
+		}
+
+		public static Complex operator +(Complex complex)
+		{
+			return Zero + complex;
+		}
+		public static Complex operator -(Complex complex)
+		{
+			return Zero - complex;
 		}
 
 		public static implicit operator Complex(double value)

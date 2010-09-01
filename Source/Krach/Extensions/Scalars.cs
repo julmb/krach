@@ -40,17 +40,17 @@ namespace Krach.Extensions
 			if (remainder < 0) remainder += divisor;
 			return remainder;
 		}
-		public static double Modulo(this double value, double divisor)
+		public static double Modulo(this double @base, double divisor)
 		{
 			if (divisor == 0) throw new DivideByZeroException();
 
-			double remainder = value % divisor;
+			double remainder = @base % divisor;
 			if (remainder < 0) remainder += divisor;
 			return remainder;
 		}
-		public static double Exponentiate(this double value, double exponent)
+		public static double Exponentiate(this double @base, double exponent)
 		{
-			return Math.Pow(value, exponent);
+			return Math.Pow(@base, exponent);
 		}
 		public static double Exponentiate(double exponent)
 		{
@@ -60,13 +60,13 @@ namespace Krach.Extensions
 		{
 			return Exponentiate(exponent.Real) * new Complex(Cosine(exponent.Imaginary), Sine(exponent.Imaginary));
 		}
-		public static double Logarithm(this double value, double @base)
+		public static double Logarithm(this double @base, double value)
 		{
 			if (@base == 10) return Math.Log10(value);
 
 			return Math.Log(value, @base);
 		}
-		public static double Logarithm(this double value)
+		public static double Logarithm(double value)
 		{
 			return Math.Log(value);
 		}
@@ -193,7 +193,7 @@ namespace Krach.Extensions
 
 			uint floor = result >> 1;
 
-			return floor << (value.Logarithm(2) - ((double)floor).Logarithm(2) <= 0.5 ? 0 : 1);
+			return floor << (2.0.Logarithm(value) - 2.0.Logarithm((double)floor) <= 0.5 ? 0 : 1);
 		}
 		// Target rounding
 		public static double Round(this double value, IEnumerable<double> targets)
@@ -218,7 +218,7 @@ namespace Krach.Extensions
 			if (targets == null) throw new ArgumentNullException("targets");
 			if (!targets.Any()) throw new ArgumentException("Argument \"targets\" cannot be empty.");
 
-			int magnitude = (int)value.Logarithm(10).Floor();
+			int magnitude = (int)10.0.Logarithm(value).Floor();
 			double fraction = value * 10.0.Exponentiate(-magnitude);
 			return fraction.Round(targets) * 10.0.Exponentiate(magnitude);
 		}

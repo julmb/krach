@@ -64,11 +64,11 @@ namespace Krach
 		}
 		public double NextLogarithmic(double minimum, double maximum)
 		{
-			return Scalars.Exponentiate(NextDouble(minimum.Logarithm(), maximum.Logarithm()));
+			return Scalars.Exponentiate(NextDouble(Scalars.Logarithm(minimum), Scalars.Logarithm(maximum)));
 		}
 		public double NextExponential(double minimum, double maximum)
 		{
-			return NextDouble(Scalars.Exponentiate(minimum), Scalars.Exponentiate(maximum)).Logarithm();
+			return Scalars.Logarithm(NextDouble(Scalars.Exponentiate(minimum), Scalars.Exponentiate(maximum)));
 		}
 		public int NextIndex(IEnumerable<double> probabilities)
 		{
