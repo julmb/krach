@@ -56,6 +56,10 @@ namespace Krach.Extensions
 		{
 			return Math.Exp(exponent);
 		}
+		public static Complex Exponentiate(Complex exponent)
+		{
+			return Exponentiate(exponent.Real) * new Complex(Cosine(exponent.Imaginary), Sine(exponent.Imaginary));
+		}
 		public static double Logarithm(this double value, double @base)
 		{
 			if (@base == 10) return Math.Log10(value);

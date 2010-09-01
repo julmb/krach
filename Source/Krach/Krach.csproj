@@ -35,6 +35,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Basics\Complex.cs" />
     <Compile Include="Basics\Volume1Integer.cs" />
     <Compile Include="Basics\Volume2Integer.cs" />
     <Compile Include="Basics\Vector1Integer.cs" />
