@@ -39,7 +39,7 @@ namespace Krach.Basics
 
 				for (int row = 0; row < Rows; row++)
 					for (int column = 0; column < Columns; column++)
-						matrix[row, column] = this[column, row];
+						matrix[row, column] = values[column, row];
 
 				return matrix;
 			}
@@ -56,7 +56,7 @@ namespace Krach.Basics
 		public Matrix(double[] values)
 			: this(values.Length, 1)
 		{
-			for (int row = 0; row < Rows; row++) this[row, 0] = values[row];
+			for (int row = 0; row < Rows; row++) this.values[row, 0] = values[row];
 		}
 
 		public override bool Equals(object obj)
@@ -69,7 +69,7 @@ namespace Krach.Basics
 
 			for (int row = 0; row < Rows; row++)
 				for (int column = 0; column < Columns; column++)
-					result ^= this[row, column].GetHashCode();
+					result ^= values[row, column].GetHashCode();
 
 			return result;
 		}
@@ -81,7 +81,7 @@ namespace Krach.Basics
 			{
 				for (int column = 0; column < Columns; column++)
 				{
-					result.Append(this[row, column]);
+					result.Append(values[row, column]);
 					result.Append(", ");
 				}
 				result.Remove(result.Length - 2, 2);
@@ -100,7 +100,7 @@ namespace Krach.Basics
 
 			double[] values = new double[Rows];
 
-			for (int row = 0; row < Rows; row++) values[row] = this[row, 0];
+			for (int row = 0; row < Rows; row++) values[row] = this.values[row, 0];
 
 			return values;
 		}
