@@ -14,12 +14,17 @@
 // You should have received a copy of the GNU General Public License along with
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Krach.Extensions;
+using Krach.Basics;
 
-namespace Krach.MachineLearning
+namespace Krach.Fourier
 {
-	public interface ILearner
+	public static class DiscreteFourierTransform
 	{
-		double this[IEnumerable<double> position] { get; set; }
+
 	}
 }
