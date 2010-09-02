@@ -65,7 +65,7 @@
     <Compile Include="Extensions\Ranges.cs" />
     <Compile Include="Extensions\Scalars.cs" />
     <Compile Include="Extensions\Terminal.cs" />
-    <Compile Include="Fourier\SpectralElement.cs" />
+    <Compile Include="Fourier\Wave.cs" />
     <Compile Include="Fourier\DiscreteFourierTransform.cs" />
     <Compile Include="Fourier\SpectralAnalysis.cs" />
     <Compile Include="Graphics\Color.cs" />

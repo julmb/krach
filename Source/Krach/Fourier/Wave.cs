@@ -14,9 +14,12 @@
 // You should have received a copy of the GNU General Public License along with
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
+using System;
+using Krach.Extensions;
+
 namespace Krach.Fourier
 {
-	public class SpectralElement
+	public class Wave
 	{
 		readonly double frequency;
 		readonly double amplitude;
@@ -26,16 +29,46 @@ namespace Krach.Fourier
 		public double Amplitude { get { return amplitude; } }
 		public double Phase { get { return phase; } }
 
-		public SpectralElement(double frequency, double amplitude, double phase)
+		public Wave(double frequency, double amplitude, double phase)
 		{
-			this.frequency = frequency;
+			this.frequency = frequency.Absolute();
 			this.amplitude = amplitude;
-			this.phase = phase;
+			this.phase = frequency < 0 ? 0.5 - phase : phase;
 		}
 
 		public override string ToString()
 		{
 			return string.Format("Frequency: {0}, Amplitude: {1}, Phase: {2}", frequency, amplitude, phase);
+		}
+		public double GetValue(double time)
+		{
+			return amplitude * Scalars.PSine(frequency * time + phase);
+		}
+
+		public static Wave operator +(Wave wave1, Wave wave2)
+		{
+			if (wave1.frequency != wave2.frequency) throw new ArgumentException("The frequencies don't match.");
+
+			double basePhase = wave1.phase;
+			double phaseDifference = wave2.phase - wave1.phase;
+
+			double frequency = Items.Equal(wave1.frequency, wave2.frequency);
+			double amplitude = Scalars.SquareRoot
+			(
+				wave1.amplitude.Square() +
+				2 * wave1.amplitude * wave2.amplitude * Scalars.PSine(phaseDifference + 0.25) +
+				wave2.amplitude.Square()
+			);
+			double phase =
+				basePhase +
+				Scalars.ArcTangent
+				(
+					wave2.amplitude * Scalars.PSine(phaseDifference),
+					wave1.amplitude + wave2.amplitude * Scalars.PSine(phaseDifference + 0.25)
+				)
+				/ (2 * Math.PI);
+
+			return new Wave(frequency, amplitude, phase);
 		}
 	}
 }

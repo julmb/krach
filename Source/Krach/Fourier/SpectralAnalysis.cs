@@ -24,39 +24,47 @@ namespace Krach.Fourier
 {
 	public static class SpectralAnalysis
 	{
-		public static IEnumerable<SpectralElement> SignalToSpectrum(IEnumerable<double> signal, double length)
+		public static IEnumerable<Wave> SignalToSpectrum(IEnumerable<double> signal, double length)
 		{
 			Complex[] spectrum = DiscreteFourierTransform.TransformForward(signal.Select(sample => (Complex)sample)).ToArray();
 
-			for (int index = 0; index < spectrum.Length; index++)
+			for (int spectrumIndex = 0; spectrumIndex < spectrum.Length; spectrumIndex++)
 			{
-				double frequencyIndex = index > spectrum.Length / 2 ? index - spectrum.Length : index;
+				double frequencyIndex = spectrumIndex > spectrum.Length / 2 ? spectrumIndex - spectrum.Length : spectrumIndex;
 				double frequency = frequencyIndex / length;
-				double cosineAmplitude = spectrum[index].Real;
-				double sineAmplitude = spectrum[index].Imaginary;
+				double cosineAmplitude = spectrum[spectrumIndex].Real;
+				double sineAmplitude = spectrum[spectrumIndex].Imaginary;
 				double mixedAmplitude = Scalars.SquareRoot(cosineAmplitude.Square() + sineAmplitude.Square());
 				double amplitude = mixedAmplitude / Scalars.SquareRoot(spectrum.Length);
 				double phase = Scalars.ArcTangent(sineAmplitude, cosineAmplitude);
 
-				yield return new SpectralElement(frequency, amplitude, phase);
+				yield return new Wave(frequency, amplitude, -phase / (2 * Math.PI) + 0.25);
 			}
 		}
-		public static IEnumerable<double> SpectrumToSignal(IEnumerable<SpectralElement> elements, double length, int sampleCount)
+		public static IEnumerable<double> SpectrumToSignal(IEnumerable<Wave> elements, double length, int sampleCount)
 		{
 			double[] signal = new double[sampleCount];
 
-			foreach (SpectralElement element in elements)
+			foreach (Wave wave in elements)
 				for (int sampleIndex = 0; sampleIndex < sampleCount; sampleIndex++)
-				{
-					double amplitude = element.Amplitude;
-					double timeFraction = sampleIndex * length / sampleCount;
-					double phaseFraction = 2 * Math.PI * timeFraction;
-					double phase = element.Frequency * phaseFraction - element.Phase;
-
-					signal[sampleIndex] += amplitude * Scalars.Cosine(phase);
-				}
+					signal[sampleIndex] += wave.GetValue(sampleIndex * length / sampleCount);
 
 			return signal;
+		}
+		public static IEnumerable<Wave> Simplify(IEnumerable<Wave> elements)
+		{
+			Dictionary<double, Wave> result = new Dictionary<double, Wave>();
+
+			foreach (Wave element in elements)
+			{
+				double frequency = element.Frequency.Absolute();
+
+				if (!result.ContainsKey(frequency)) result.Add(frequency, new Wave(frequency, 0, 0));
+
+				result[frequency] += element;
+			}
+
+			return result.Values;
 		}
 	}
 }

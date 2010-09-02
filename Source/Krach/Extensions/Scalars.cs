@@ -71,6 +71,10 @@ namespace Krach.Extensions
 			return Math.Log(value);
 		}
 		// Trigonometry
+		public static double PSine(double value)
+		{
+			return Math.Sin(value * 2 * Math.PI);
+		}
 		public static double Sine(this double value)
 		{
 			return Math.Sin(value);
@@ -250,7 +254,7 @@ namespace Krach.Extensions
 		{
 			if (fraction < 0 || fraction > 1) throw new ArgumentOutOfRangeException("fraction");
 
-			return InterpolateLinear(value1, value2, (1 - Cosine(fraction * Math.PI)) / 2);
+			return InterpolateLinear(value1, value2, 0.5 * (1 + Scalars.PSine(0.5 * fraction + 0.25)));
 		}
 	}
 }
