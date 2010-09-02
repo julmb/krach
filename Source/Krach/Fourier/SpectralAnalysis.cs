@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License along with
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Krach.Basics;
@@ -21,26 +22,41 @@ using Krach.Extensions;
 
 namespace Krach.Fourier
 {
-	public class SpectrumAnalyzer
+	public static class SpectralAnalysis
 	{
-		readonly List<SpectrumElement> elements = new List<SpectrumElement>();
-
-		public IEnumerable<SpectrumElement> Elements { get { return elements; } }
-
-		public SpectrumAnalyzer(IEnumerable<double> signal, double length)
+		public static IEnumerable<SpectralElement> SignalToSpectrum(IEnumerable<double> signal, double length)
 		{
 			Complex[] spectrum = DiscreteFourierTransform.TransformForward(signal.Select(sample => (Complex)sample)).ToArray();
 
 			for (int index = 0; index < spectrum.Length; index++)
 			{
-				double frequency = index / length;
+				double frequencyIndex = index > spectrum.Length / 2 ? index - spectrum.Length : index;
+				double frequency = frequencyIndex / length;
 				double cosineAmplitude = spectrum[index].Real;
 				double sineAmplitude = spectrum[index].Imaginary;
-				double amplitude = Scalars.SquareRoot(cosineAmplitude.Square() + sineAmplitude.Square());
+				double mixedAmplitude = Scalars.SquareRoot(cosineAmplitude.Square() + sineAmplitude.Square());
+				double amplitude = mixedAmplitude / Scalars.SquareRoot(spectrum.Length);
 				double phase = Scalars.ArcTangent(sineAmplitude, cosineAmplitude);
 
-				elements.Add(new SpectrumElement(frequency, amplitude, phase));
+				yield return new SpectralElement(frequency, amplitude, phase);
 			}
+		}
+		public static IEnumerable<double> SpectrumToSignal(IEnumerable<SpectralElement> elements, double length, int sampleCount)
+		{
+			double[] signal = new double[sampleCount];
+
+			foreach (SpectralElement element in elements)
+				for (int sampleIndex = 0; sampleIndex < sampleCount; sampleIndex++)
+				{
+					double amplitude = element.Amplitude;
+					double timeFraction = sampleIndex * length / sampleCount;
+					double phaseFraction = 2 * Math.PI * timeFraction;
+					double phase = element.Frequency * phaseFraction - element.Phase;
+
+					signal[sampleIndex] += amplitude * Scalars.Cosine(phase);
+				}
+
+			return signal;
 		}
 	}
 }

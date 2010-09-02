@@ -14,11 +14,9 @@
 // You should have received a copy of the GNU General Public License along with
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
-using System;
-
 namespace Krach.Fourier
 {
-	public class SpectrumElement
+	public class SpectralElement
 	{
 		readonly double frequency;
 		readonly double amplitude;
@@ -28,10 +26,8 @@ namespace Krach.Fourier
 		public double Amplitude { get { return amplitude; } }
 		public double Phase { get { return phase; } }
 
-		public SpectrumElement(double frequency, double amplitude, double phase)
+		public SpectralElement(double frequency, double amplitude, double phase)
 		{
-			if (frequency < 0) throw new ArgumentOutOfRangeException("frequency");
-
 			this.frequency = frequency;
 			this.amplitude = amplitude;
 			this.phase = phase;

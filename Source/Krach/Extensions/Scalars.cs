@@ -40,11 +40,11 @@ namespace Krach.Extensions
 			if (remainder < 0) remainder += divisor;
 			return remainder;
 		}
-		public static double Modulo(this double @base, double divisor)
+		public static double Modulo(this double value, double divisor)
 		{
 			if (divisor == 0) throw new DivideByZeroException();
 
-			double remainder = @base % divisor;
+			double remainder = value % divisor;
 			if (remainder < 0) remainder += divisor;
 			return remainder;
 		}
