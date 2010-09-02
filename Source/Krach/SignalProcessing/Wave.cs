@@ -17,7 +17,7 @@
 using System;
 using Krach.Extensions;
 
-namespace Krach.Fourier
+namespace Krach.SignalProcessing
 {
 	public class Wave
 	{

@@ -20,7 +20,7 @@ using System.Linq;
 using Krach.Basics;
 using Krach.Extensions;
 
-namespace Krach.Fourier
+namespace Krach.SignalProcessing
 {
 	public static class SpectralAnalysis
 	{

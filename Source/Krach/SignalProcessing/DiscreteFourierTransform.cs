@@ -20,7 +20,7 @@ using System.Linq;
 using Krach.Basics;
 using Krach.Extensions;
 
-namespace Krach.Fourier
+namespace Krach.SignalProcessing
 {
 	// TODO: Questions:
 	// - Is there a better way to handle waves at frequencies like 0.5 or 1.5?
