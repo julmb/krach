@@ -49,7 +49,15 @@ namespace Krach.Basics
 		}
 		public override string ToString()
 		{
-			return string.Format("{0} + {1}i", real, imaginary);
+			double real = this.real.Round(0.00000001);
+			double imaginary = this.imaginary.Round(0.00000001);
+
+			if (real == 0 && imaginary == 0) return string.Format("0");
+			if (real != 0 && imaginary == 0) return string.Format("{0}r", real);
+			if (real == 0 && imaginary != 0) return string.Format("{0}i", imaginary);
+			if (real != 0 && imaginary != 0) return string.Format("{0}r|{1}i", real, imaginary);
+
+			throw new InvalidOperationException();
 		}
 		public bool Equals(Complex other)
 		{

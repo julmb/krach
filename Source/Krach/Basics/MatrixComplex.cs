@@ -53,11 +53,6 @@ namespace Krach.Basics
 		{
 			this.values = values;
 		}
-		public MatrixComplex(Complex[] values)
-			: this(values.Length, 1)
-		{
-			for (int row = 0; row < Rows; row++) this.values[row, 0] = values[row];
-		}
 
 		public override bool Equals(object obj)
 		{
@@ -93,16 +88,6 @@ namespace Krach.Basics
 		public bool Equals(MatrixComplex other)
 		{
 			return this == other;
-		}
-		public Complex[] ToValues()
-		{
-			if (Columns != 1) throw new InvalidOperationException("Cannot convert non-Vector to values.");
-
-			Complex[] values = new Complex[Rows];
-
-			for (int row = 0; row < Rows; row++) values[row] = this.values[row, 0];
-
-			return values;
 		}
 
 		public MatrixComplex Power(int exponent)

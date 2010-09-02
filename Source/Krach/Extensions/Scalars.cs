@@ -95,6 +95,10 @@ namespace Krach.Extensions
 		{
 			return Math.Atan(value);
 		}
+		public static double ArcTangent(double y, double x)
+		{
+			return Math.Atan2(y, x);
+		}
 		// Clamping
 		public static double Clamp(this double value, double minimum, double maximum)
 		{

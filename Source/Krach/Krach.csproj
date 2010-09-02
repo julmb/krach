@@ -56,6 +56,7 @@
     <Compile Include="EventArgs.cs" />
     <Compile Include="Extensions\Collections.cs" />
     <Compile Include="Extensions\Comparables.cs" />
+    <Compile Include="Extensions\Matrices.cs" />
     <Compile Include="Extensions\Dictionaries.cs" />
     <Compile Include="Extensions\Enumerables.cs" />
     <Compile Include="Extensions\Items.cs" />
@@ -64,8 +65,9 @@
     <Compile Include="Extensions\Ranges.cs" />
     <Compile Include="Extensions\Scalars.cs" />
     <Compile Include="Extensions\Terminal.cs" />
+    <Compile Include="Fourier\SpectrumElement.cs" />
     <Compile Include="Fourier\DiscreteFourierTransform.cs" />
-    <Compile Include="Fourier\DiscreteCosineTransform.cs" />
+    <Compile Include="Fourier\SpectrumAnalyzer.cs" />
     <Compile Include="Graphics\Color.cs" />
     <Compile Include="Graphics\ColorGenerator.cs" />
     <Compile Include="Graphics\Colors.cs" />
