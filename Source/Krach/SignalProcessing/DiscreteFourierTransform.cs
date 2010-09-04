@@ -27,6 +27,7 @@ namespace Krach.SignalProcessing
 	// - Does the DFT try to use minimal summed amplitude?
 	// - Why does the DFT always try to put as much amplitude into the low frequencies?
 	// - What about time-frequency analysis?
+	// - How should one choose the intervals to which DFT is applied?
 	public static class DiscreteFourierTransform
 	{
 		public static IEnumerable<Complex> TransformForward(IEnumerable<Complex> values)

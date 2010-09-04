@@ -26,6 +26,9 @@ namespace Krach.SignalProcessing
 	{
 		public static IEnumerable<Wave> SignalToSpectrum(IEnumerable<double> signal, double length)
 		{
+			if (signal == null) throw new ArgumentNullException("signal");
+			if (length <= 0) throw new ArgumentOutOfRangeException("length");
+
 			Complex[] spectrum = DiscreteFourierTransform.TransformForward(signal.Select(sample => (Complex)sample)).ToArray();
 
 			for (int spectrumIndex = 0; spectrumIndex < spectrum.Length; spectrumIndex++)
@@ -43,6 +46,10 @@ namespace Krach.SignalProcessing
 		}
 		public static IEnumerable<double> SpectrumToSignal(IEnumerable<Wave> elements, double length, int sampleCount)
 		{
+			if (elements == null) throw new ArgumentNullException("elements");
+			if (length <= 0) throw new ArgumentOutOfRangeException("length");
+			if (sampleCount <= 0) throw new ArgumentOutOfRangeException("sampleCount");
+
 			double[] signal = new double[sampleCount];
 
 			foreach (Wave wave in elements)
