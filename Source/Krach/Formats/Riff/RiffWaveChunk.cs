@@ -16,6 +16,7 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using Krach.Audio;
 
 namespace Krach.Formats.Riff
@@ -29,8 +30,17 @@ namespace Krach.Formats.Riff
 		public string RiffID { get { return riffID; } }
 		public RiffFormatChunk FormatChunk { get { return formatChunk; } }
 		public RiffDataChunk DataChunk { get { return dataChunk; } }
-		public uint BlockCount { get { return dataChunk.Size / formatChunk.BlockSize; } }
 
+		public RiffWaveChunk(RiffFormatChunk formatChunk, RiffDataChunk dataChunk)
+			: base("RIFF", 4 + 8 + formatChunk.Size + 8 + dataChunk.Size + dataChunk.Size % 2)
+		{
+			if (formatChunk == null) throw new ArgumentNullException("formatChunk");
+			if (dataChunk == null) throw new ArgumentNullException("dataChunk");
+
+			this.riffID = "WAVE";
+			this.formatChunk = formatChunk;
+			this.dataChunk = dataChunk;
+		}
 		public RiffWaveChunk(BinaryReader reader)
 			: base(reader)
 		{
@@ -43,37 +53,67 @@ namespace Krach.Formats.Riff
 			this.formatChunk = new RiffFormatChunk(reader);
 			this.dataChunk = new RiffDataChunk(reader);
 
-			uint paddingSize = dataChunk.Size % 2;
-			if (Size != 4 + 8 + formatChunk.Size + 8 + dataChunk.Size + paddingSize) throw new ArgumentException(string.Format("Incorrect chunk size '{0}', should be '{1}'.", Size, 4 + 8 + formatChunk.Size + 8 + dataChunk.Size + paddingSize));
+			if (Size != 4 + 8 + formatChunk.Size + 8 + dataChunk.Size + dataChunk.Size % 2) throw new ArgumentException(string.Format("Incorrect chunk size '{0}', should be '{1}'.", Size, 4 + 8 + formatChunk.Size + 8 + dataChunk.Size + dataChunk.Size % 2));
 		}
 
-		public PcmAudio ToPcmAudio()
+		public override void Write(BinaryWriter writer)
 		{
-			PcmBlock[] blocks = new PcmBlock[BlockCount];
+			base.Write(writer);
 
-			int half = 1 << formatChunk.SampleSize - 1;
-			int full = 1 << formatChunk.SampleSize;
+			writer.Write(riffID.ToCharArray());
+			formatChunk.Write(writer);
+			dataChunk.Write(writer);
+		}
 
-			for (int block = 0; block < BlockCount; block++)
+		public static PcmAudio ToPcmAudio(RiffWaveChunk waveChunk)
+		{
+			int half = 1 << waveChunk.formatChunk.SampleSize - 1;
+			int full = 1 << waveChunk.formatChunk.SampleSize;
+
+			PcmBlock[] blocks = new PcmBlock[waveChunk.dataChunk.Size / waveChunk.formatChunk.BlockSize];
+
+			for (int blockIndex = 0; blockIndex < blocks.Length; blockIndex++)
 			{
-				double[] samples = new double[formatChunk.ChannelCount];
+				double[] samples = new double[waveChunk.formatChunk.ChannelCount];
 
-				for (int channel = 0; channel < formatChunk.ChannelCount; channel++)
+				for (int sampleIndex = 0; sampleIndex < samples.Length; sampleIndex++)
 				{
 					int sample = 0;
 
-					for (int part = 0; part < (formatChunk.SampleSize / 8); part++)
-						sample += dataChunk.Data[block * formatChunk.BlockSize + channel * (formatChunk.SampleSize / 8) + part] << part * 8;
+					for (int part = 0; part < (waveChunk.formatChunk.SampleSize / 8); part++)
+						sample += waveChunk.dataChunk.Data[blockIndex * waveChunk.formatChunk.BlockSize + sampleIndex * (waveChunk.formatChunk.SampleSize / 8) + part] << part * 8;
 
 					if (sample >= half) sample -= full;
 
-					samples[channel] = (double)sample / (double)half;
+					samples[sampleIndex] = (double)sample / (double)half;
 				}
 
-				blocks[block] = new PcmBlock(samples);
+				blocks[blockIndex] = new PcmBlock(samples);
 			}
 
-			return new PcmAudio(blocks);
+			return new PcmAudio(blocks, (double)blocks.Length / (double)waveChunk.formatChunk.SampleRate);
+		}
+		public static RiffWaveChunk FromPcmAudio(PcmAudio pcmAudio)
+		{
+			PcmBlock[] blocks = pcmAudio.Blocks.ToArray();
+
+			RiffFormatChunk formatChunk = new RiffFormatChunk((ushort)pcmAudio.ChannelCount, (ushort)(blocks.Length / pcmAudio.Length), 16);
+
+			byte[] data = new byte[formatChunk.BlockSize * blocks.Length];
+			int position = 0;
+
+			for (int blockIndex = 0; blockIndex < blocks.Length; blockIndex++)
+			{
+				double[] samples = blocks[blockIndex].Samples.ToArray();
+
+				for (int sampleIndex = 0; sampleIndex < samples.Length; sampleIndex++)
+					foreach (byte part in BitConverter.GetBytes((short)(samples[sampleIndex] * 0x8000)))
+						data[position++] = part;
+			}
+
+			RiffDataChunk dataChunk = new RiffDataChunk(data);
+
+			return new RiffWaveChunk(formatChunk, dataChunk);
 		}
 	}
 }

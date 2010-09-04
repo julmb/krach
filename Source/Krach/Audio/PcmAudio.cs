@@ -14,17 +14,33 @@
 // You should have received a copy of the GNU General Public License along with
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Krach.Audio
 {
 	public class PcmAudio
 	{
-		readonly PcmBlock[] blocks;
+		readonly IEnumerable<PcmBlock> blocks;
+		readonly double length;
+		readonly int channelCount;
 
-		public PcmBlock[] Blocks { get { return blocks; } }
+		public IEnumerable<PcmBlock> Blocks { get { return blocks; } }
+		public double Length { get { return length; } }
+		public int ChannelCount { get { return channelCount; } }
 
-		public PcmAudio(PcmBlock[] blocks)
+		public PcmAudio(IEnumerable<PcmBlock> blocks, double length)
 		{
+			if (blocks == null) throw new ArgumentNullException("blocks");
+			if (!blocks.Any()) throw new ArgumentException("Parameter blocks cannot be empty.");
+			if (length <= 0) throw new ArgumentOutOfRangeException("length");
+
 			this.blocks = blocks;
+			this.length = length;
+			this.channelCount = blocks.First().Samples.Count();
+
+			if (!blocks.All(block => block.Samples.Count() == channelCount)) throw new ArgumentException("All blocks must have the same channel count.");
 		}
 	}
 }

@@ -25,12 +25,25 @@ namespace Krach.Formats.Riff
 
 		public byte[] Data { get { return data; } }
 
+		public RiffDataChunk(byte[] data) : base("data", (uint)data.Length)
+		{
+			if (data == null) throw new ArgumentNullException("data");
+
+			this.data = data;
+		}
 		public RiffDataChunk(BinaryReader reader)
 			: base(reader)
 		{
 			if (ID != "data") throw new ArgumentException(string.Format("Wrong chunk ID '{0}', should be 'data'.", ID));
 
 			this.data = reader.ReadBytes((int)Size);
+		}
+
+		public override void Write(BinaryWriter writer)
+		{
+			base.Write(writer);
+
+			writer.Write(data);
 		}
 	}
 }

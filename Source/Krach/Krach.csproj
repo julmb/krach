@@ -35,8 +35,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Audio\PcmAudio.cs" />
     <Compile Include="Audio\PcmBlock.cs" />
+    <Compile Include="Audio\PcmAudio.cs" />
     <Compile Include="Basics\Complex.cs" />
     <Compile Include="Basics\MatrixComplex.cs" />
     <Compile Include="Basics\Volume1Integer.cs" />

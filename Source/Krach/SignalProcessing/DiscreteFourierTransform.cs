@@ -30,16 +30,24 @@ namespace Krach.SignalProcessing
 	// - How should one choose the intervals to which DFT is applied?
 	public static class DiscreteFourierTransform
 	{
+		// TODO: This shouldn't be static (make the transformer an object)
+		static readonly Dictionary<int, MatrixComplex> forwardTransformations = new Dictionary<int, MatrixComplex>();
+		static readonly Dictionary<int, MatrixComplex> reverseTransformations = new Dictionary<int, MatrixComplex>();
+
 		public static IEnumerable<Complex> TransformForward(IEnumerable<Complex> values)
 		{
-			MatrixComplex transformation = GetForwardTransformation(values.Count());
+			if (!forwardTransformations.ContainsKey(values.Count())) forwardTransformations[values.Count()] = GetForwardTransformation(values.Count());
+
+			MatrixComplex transformation = forwardTransformations[values.Count()];
 			MatrixComplex vector = Matrices.ValuesToMatrix(values);
 
 			return Matrices.MatrixToValues(transformation * vector);
 		}
 		public static IEnumerable<Complex> TransformReverse(IEnumerable<Complex> values)
 		{
-			MatrixComplex transformation = GetReverseTransformation(values.Count());
+			if (!reverseTransformations.ContainsKey(values.Count())) reverseTransformations[values.Count()] = GetReverseTransformation(values.Count());
+
+			MatrixComplex transformation = reverseTransformations[values.Count()];
 			MatrixComplex vector = Matrices.ValuesToMatrix(values);
 
 			return Matrices.MatrixToValues(transformation * vector);

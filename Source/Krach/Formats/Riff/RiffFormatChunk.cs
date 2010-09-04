@@ -35,6 +35,16 @@ namespace Krach.Formats.Riff
 		public ushort BlockSize { get { return blockSize; } }
 		public ushort SampleSize { get { return sampleSize; } }
 
+		public RiffFormatChunk(ushort channelCount, uint sampleRate, ushort sampleSize)
+			: base("fmt ", 16)
+		{
+			this.format = 1;
+			this.channelCount = channelCount;
+			this.sampleRate = sampleRate;
+			this.dataRate = sampleRate * blockSize;
+			this.blockSize = (ushort)(channelCount * sampleSize / 8);
+			this.sampleSize = sampleSize;
+		}
 		public RiffFormatChunk(BinaryReader reader)
 			: base(reader)
 		{
@@ -51,6 +61,18 @@ namespace Krach.Formats.Riff
 			if (format != 1) throw new ArgumentException(string.Format("Unsupported format code '{0}'.", format));
 			if (blockSize != channelCount * sampleSize / 8) throw new ArgumentException(string.Format("Incorrect block size '{0}'.", blockSize));
 			if (dataRate != sampleRate * blockSize) throw new ArgumentException(string.Format("Incorrect data rate '{0}'.", dataRate));
+		}
+
+		public override void Write(BinaryWriter writer)
+		{
+			base.Write(writer);
+
+			writer.Write(format);
+			writer.Write(channelCount);
+			writer.Write(sampleRate);
+			writer.Write(dataRate);
+			writer.Write(blockSize);
+			writer.Write(sampleSize);
 		}
 	}
 }

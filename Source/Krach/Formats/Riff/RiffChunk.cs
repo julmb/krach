@@ -27,12 +27,25 @@ namespace Krach.Formats.Riff
 		public string ID { get { return id; } }
 		public uint Size { get { return size; } }
 
+		protected RiffChunk(string id, uint size)
+		{
+			if (id.Length != 4) throw new ArgumentException(string.Format("Parameter id '{0}' doesn't have a length of 4.", id));
+
+			this.id = id;
+			this.size = size;
+		}
 		protected RiffChunk(BinaryReader reader)
 		{
 			if (reader == null) throw new ArgumentNullException("reader");
 
 			this.id = new string(reader.ReadChars(4));
 			this.size = reader.ReadUInt32();
+		}
+
+		public virtual void Write(BinaryWriter writer)
+		{
+			writer.Write(id.ToCharArray());
+			writer.Write(size);
 		}
 	}
 }

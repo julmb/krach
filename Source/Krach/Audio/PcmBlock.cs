@@ -15,16 +15,17 @@
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using System.Collections.Generic;
 
 namespace Krach.Audio
 {
 	public struct PcmBlock
 	{
-		readonly double[] samples;
+		readonly IEnumerable<double> samples;
 
-		public double[] Samples { get { return samples; } }
+		public IEnumerable<double> Samples { get { return samples; } }
 
-		public PcmBlock(double[] samples)
+		public PcmBlock(IEnumerable<double> samples)
 		{
 			if (samples == null) throw new ArgumentNullException("samples");
 
