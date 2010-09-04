@@ -16,92 +16,64 @@
 
 using System;
 using System.IO;
+using Krach.Audio;
 
 namespace Krach.Formats.Riff
 {
-	class RiffWaveChunk
+	public class RiffWaveChunk : RiffChunk
 	{
-		readonly byte[] data;
-		readonly ushort channelCount;
-		readonly ushort sampleSize;
-		readonly uint sampleRate;
+		readonly string riffID;
+		readonly RiffFormatChunk formatChunk;
+		readonly RiffDataChunk dataChunk;
 
-		public byte[] Data { get { return data; } }
-		public ushort ChannelCount { get { return channelCount; } }
-		public ushort SampleSize { get { return sampleSize; } }
-		public uint SampleRate { get { return sampleRate; } }
-		public int BlockSize { get { return channelCount * (sampleSize / 8); } }
-		public int BlockCount { get { return data.Length / (sampleSize / 8) / channelCount; } }
+		public string RiffID { get { return riffID; } }
+		public RiffFormatChunk FormatChunk { get { return formatChunk; } }
+		public RiffDataChunk DataChunk { get { return dataChunk; } }
+		public uint BlockCount { get { return dataChunk.Size / formatChunk.BlockSize; } }
 
 		public RiffWaveChunk(BinaryReader reader)
+			: base(reader)
 		{
-			if (reader == null) throw new ArgumentNullException("reader");
+			if (ID != "RIFF") throw new ArgumentException(string.Format("Wrong chunk ID '{0}', should be 'RIFF'.", ID));
 
-			// RIFF chunk ID
-			if (new string(reader.ReadChars(4)) != "RIFF") throw new ArgumentException();
-			// RIFF chunk size
-			uint chunkSize = reader.ReadUInt32();
-			// Wave ID
-			if (new string(reader.ReadChars(4)) != "WAVE") throw new ArgumentException();
+			this.riffID = new string(reader.ReadChars(4));
 
-			// Format chunk ID
-			if (new string(reader.ReadChars(4)) != "fmt ") throw new ArgumentException();
-			// Format chunk size (only accept basic PCM formats)
-			if (reader.ReadUInt32() != 16) throw new ArgumentException();
-			// Format code (only accept basic PCM formats)
-			if (reader.ReadUInt16() != 1) throw new ArgumentException();
-			// Channel count
-			this.channelCount = reader.ReadUInt16();
-			// Sample rate (samples / second)
-			this.sampleRate = reader.ReadUInt32();
-			// Data rate (bytes / second)
-			uint dataRate = reader.ReadUInt32();
-			// Data block size
-			ushort blockSize = reader.ReadUInt16();
-			// Sample size (bits)
-			this.sampleSize = reader.ReadUInt16();
+			if (riffID != "WAVE") throw new ArgumentException(string.Format("Wrong RIFF ID '{0}', should be 'WAVE'.", riffID));
 
-			if (blockSize != channelCount * sampleSize / 8) throw new ArgumentException();
-			if (dataRate != sampleRate * blockSize) throw new ArgumentException();
+			this.formatChunk = new RiffFormatChunk(reader);
+			this.dataChunk = new RiffDataChunk(reader);
 
-			// Data chunk ID
-			if (new string(reader.ReadChars(4)) != "data") throw new ArgumentException();
-			// Data chunk size
-			uint dataChunkSize = reader.ReadUInt32();
-			// Data
-			data = reader.ReadBytes((int)dataChunkSize);
-
-			uint paddingSize = dataChunkSize % 2;
-			if (4 + 8 + 16 + 8 + dataChunkSize + paddingSize != chunkSize) throw new ArgumentException();
+			uint paddingSize = dataChunk.Size % 2;
+			if (Size != 4 + 8 + formatChunk.Size + 8 + dataChunk.Size + paddingSize) throw new ArgumentException(string.Format("Incorrect chunk size '{0}', should be '{1}'.", Size, 4 + 8 + formatChunk.Size + 8 + dataChunk.Size + paddingSize));
 		}
 
-		//public PcmAudio ToPcmAudio()
-		//{
-		//    PcmBlock[] blocks = new PcmBlock[BlockCount];
+		public PcmAudio ToPcmAudio()
+		{
+			PcmBlock[] blocks = new PcmBlock[BlockCount];
 
-		//    int half = 1 << SampleSize - 1;
-		//    int full = 1 << SampleSize;
+			int half = 1 << formatChunk.SampleSize - 1;
+			int full = 1 << formatChunk.SampleSize;
 
-		//    for (int block = 0; block < BlockCount; block++)
-		//    {
-		//        double[] samples = new double[ChannelCount];
+			for (int block = 0; block < BlockCount; block++)
+			{
+				double[] samples = new double[formatChunk.ChannelCount];
 
-		//        for (int channel = 0; channel < ChannelCount; channel++)
-		//        {
-		//            int sample = 0;
+				for (int channel = 0; channel < formatChunk.ChannelCount; channel++)
+				{
+					int sample = 0;
 
-		//            for (int part = 0; part < (SampleSize / 8); part++)
-		//                sample += data[block * BlockSize + channel * (SampleSize / 8) + part] << part * 8;
+					for (int part = 0; part < (formatChunk.SampleSize / 8); part++)
+						sample += dataChunk.Data[block * formatChunk.BlockSize + channel * (formatChunk.SampleSize / 8) + part] << part * 8;
 
-		//            if (sample >= half) sample -= full;
+					if (sample >= half) sample -= full;
 
-		//            samples[channel] = (double)sample / (double)half;
-		//        }
+					samples[channel] = (double)sample / (double)half;
+				}
 
-		//        blocks[block] = new PcmBlock(samples);
-		//    }
+				blocks[block] = new PcmBlock(samples);
+			}
 
-		//    return new PcmAudio(blocks);
-		//}
+			return new PcmAudio(blocks);
+		}
 	}
 }

@@ -19,20 +19,18 @@ using System.IO;
 
 namespace Krach.Formats.Riff
 {
-	public abstract class RiffChunk
+	public class RiffDataChunk : RiffChunk
 	{
-		readonly string id;
-		readonly uint size;
+		readonly byte[] data;
 
-		public string ID { get { return id; } }
-		public uint Size { get { return size; } }
+		public byte[] Data { get { return data; } }
 
-		protected RiffChunk(BinaryReader reader)
+		public RiffDataChunk(BinaryReader reader)
+			: base(reader)
 		{
-			if (reader == null) throw new ArgumentNullException("reader");
+			if (ID != "data") throw new ArgumentException(string.Format("Wrong chunk ID '{0}', should be 'data'.", ID));
 
-			this.id = new string(reader.ReadChars(4));
-			this.size = reader.ReadUInt32();
+			this.data = reader.ReadBytes((int)Size);
 		}
 	}
 }

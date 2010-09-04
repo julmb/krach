@@ -35,6 +35,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Audio\PcmAudio.cs" />
+    <Compile Include="Audio\PcmBlock.cs" />
     <Compile Include="Basics\Complex.cs" />
     <Compile Include="Basics\MatrixComplex.cs" />
     <Compile Include="Basics\Volume1Integer.cs" />
@@ -65,6 +67,8 @@
     <Compile Include="Extensions\Ranges.cs" />
     <Compile Include="Extensions\Scalars.cs" />
     <Compile Include="Extensions\Terminal.cs" />
+    <Compile Include="Formats\Riff\RiffDataChunk.cs" />
+    <Compile Include="Formats\Riff\RiffFormatChunk.cs" />
     <Compile Include="Formats\Riff\RiffChunk.cs" />
     <Compile Include="Formats\Riff\RiffWaveChunk.cs" />
     <Compile Include="SignalProcessing\Wave.cs" />
@@ -117,9 +121,7 @@
     <Compile Include="RandomNumberGenerator.cs" />
     <Compile Include="Threading\Breaker.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Audio\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

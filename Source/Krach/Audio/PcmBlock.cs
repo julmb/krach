@@ -1,4 +1,4 @@
-﻿// Copyright © Julian Brunner 2010
+// Copyright � Julian Brunner 2010
 
 // This file is part of Krach.
 //
@@ -15,24 +15,20 @@
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
 using System;
-using System.IO;
 
-namespace Krach.Formats.Riff
+namespace Krach.Audio
 {
-	public abstract class RiffChunk
+	public struct PcmBlock
 	{
-		readonly string id;
-		readonly uint size;
+		readonly double[] samples;
 
-		public string ID { get { return id; } }
-		public uint Size { get { return size; } }
+		public double[] Samples { get { return samples; } }
 
-		protected RiffChunk(BinaryReader reader)
+		public PcmBlock(double[] samples)
 		{
-			if (reader == null) throw new ArgumentNullException("reader");
+			if (samples == null) throw new ArgumentNullException("samples");
 
-			this.id = new string(reader.ReadChars(4));
-			this.size = reader.ReadUInt32();
+			this.samples = samples;
 		}
 	}
 }
