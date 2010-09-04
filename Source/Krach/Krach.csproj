@@ -65,6 +65,8 @@
     <Compile Include="Extensions\Ranges.cs" />
     <Compile Include="Extensions\Scalars.cs" />
     <Compile Include="Extensions\Terminal.cs" />
+    <Compile Include="Formats\Riff\RiffChunk.cs" />
+    <Compile Include="Formats\Riff\RiffWaveChunk.cs" />
     <Compile Include="SignalProcessing\Wave.cs" />
     <Compile Include="SignalProcessing\DiscreteFourierTransform.cs" />
     <Compile Include="SignalProcessing\SpectralAnalysis.cs" />
@@ -115,7 +117,9 @@
     <Compile Include="RandomNumberGenerator.cs" />
     <Compile Include="Threading\Breaker.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Audio\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
