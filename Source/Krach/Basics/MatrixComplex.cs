@@ -1,4 +1,4 @@
-﻿// Copyright © Julian Brunner 2010
+// Copyright © Julian Brunner 2010
 
 // This file is part of Krach.
 //
