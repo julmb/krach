@@ -31,5 +31,11 @@ namespace Krach.Extensions
 
 			return item1;
 		}
+		public static void Swap<T>(ref T item1, ref T item2)
+		{
+			T temporary = item1;
+			item1 = item2;
+			item2 = temporary;
+		}
 	}
 }
