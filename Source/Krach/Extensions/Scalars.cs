@@ -242,7 +242,7 @@ namespace Krach.Extensions
 			start = start.Ceiling(intervalLength);
 			end = end.Floor(intervalLength);
 
-			return GetValues(start, end, (int)((end - start) / intervalLength));
+			return GetValues(start, end, (int)((end - start) / intervalLength).Round());
 		}
 		// Interpolation
 		public static double InterpolateLinear(double value1, double value2, double fraction)
