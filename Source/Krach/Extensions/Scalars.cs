@@ -242,7 +242,7 @@ namespace Krach.Extensions
 			start = start.Ceiling(intervalLength);
 			end = end.Floor(intervalLength);
 
-			for (double value = start; value <= end; value += intervalLength) yield return value;
+			return GetValues(start, end, (int)((end - start) / intervalLength));
 		}
 		// Interpolation
 		public static double InterpolateLinear(double value1, double value2, double fraction)
@@ -256,6 +256,10 @@ namespace Krach.Extensions
 			if (fraction < 0 || fraction > 1) throw new ArgumentOutOfRangeException("fraction");
 
 			return InterpolateLinear(value1, value2, 0.5 * (1 + Scalars.PSine(0.5 * fraction + 0.25)));
+		}
+		public static IEnumerable<double> GetValues(double start, double end, int count)
+		{
+			for (int index = 0; index <= count; index++) yield return start + index * (end - start) / count;
 		}
 	}
 }
