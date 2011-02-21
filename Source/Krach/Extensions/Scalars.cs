@@ -223,12 +223,13 @@ namespace Krach.Extensions
 		}
 		public static double FractionRound(this double value, IEnumerable<double> targets)
 		{
+			if (value == 0) throw new ArgumentOutOfRangeException("value");
 			if (targets == null) throw new ArgumentNullException("targets");
 			if (!targets.Any()) throw new ArgumentException("Argument \"targets\" cannot be empty.");
 
-			int magnitude = (int)10.0.Logarithm(value).Floor();
+			int magnitude = (int)10.0.Logarithm(value).Floor() + 1;
 			double fraction = value * 10.0.Exponentiate(-magnitude);
-			return fraction.Round(targets) * 10.0.Exponentiate(magnitude);
+			return fraction.Round(targets) * 10.0.Exponentiate(+magnitude);
 		}
 		public static double FractionRound(this double value, params double[] targets)
 		{
@@ -236,7 +237,7 @@ namespace Krach.Extensions
 		}
 		public static IEnumerable<double> GetMarkers(double start, double end, int count)
 		{
-			double intervalLength = ((end - start) / count).FractionRound(1, 2, 2.5, 5);
+			double intervalLength = ((end - start) / count).FractionRound(0.1, 0.2, 0.25, 0.5, 1.0);
 
 			start = start.Ceiling(intervalLength);
 			end = end.Floor(intervalLength);
