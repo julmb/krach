@@ -16,7 +16,7 @@
 
 #!/bin/sh
 
-tail -n +17 "$1" > "$1.temp"
+tail -n +16 "$1" > "$1.temp"
 cat "$2" "$1.temp" > "$1"
 
 rm "$1.temp"
