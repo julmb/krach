@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -50,7 +50,6 @@
     <Compile Include="Basics\Vector1Double.cs" />
     <Compile Include="Basics\Vector2Double.cs" />
     <Compile Include="Collections\BatchCollection.cs" />
-    <Compile Include="Collections\FixedList.cs" />
     <Compile Include="Collections\SearchList.cs" />
     <Compile Include="Design\Factory.cs" />
     <Compile Include="Design\IFactory.cs" />
@@ -81,7 +80,6 @@
     <Compile Include="Graphics\RgbColor.cs" />
     <Compile Include="Graphs\GraphTraverser.cs" />
     <Compile Include="Graphs\IGraph.cs" />
-    <Compile Include="Collections\IFixedList.cs" />
     <Compile Include="Maps\Abstract\IBounded.cs" />
     <Compile Include="Maps\Basic\CosineMap.cs" />
     <Compile Include="Maps\Basic\LinearMap.cs" />

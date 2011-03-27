@@ -162,6 +162,18 @@ namespace Krach.Extensions
 					yield return item;
 			}
 		}
+		public static IEnumerable<TSource> Union<TSource>(params IEnumerable<TSource>[] sources)
+		{
+			if (sources == null) throw new ArgumentNullException("sources");
+					
+			return sources.Aggregate(Enumerable.Empty<TSource>(), Enumerable.Union);
+		}
+		public static IEnumerable<TSource> Intersect<TSource>(params IEnumerable<TSource>[] sources)
+		{
+			if (sources == null) throw new ArgumentNullException("sources");
+			
+			return sources.Aggregate(Enumerable.Empty<TSource>(), Enumerable.Intersect);
+		}
 		public static IEnumerable<TSource> Create<TSource>(params TSource[] items)
 		{
 			return items;
@@ -173,10 +185,6 @@ namespace Krach.Extensions
 		public static IEnumerable<TSource> Single<TSource>(TSource item)
 		{
 			yield return item;
-		}
-		public static IFixedList<TSource> ToFixed<TSource>(this IEnumerable<TSource> source)
-		{
-			return new FixedList<TSource>(source);
 		}
 	}
 }
