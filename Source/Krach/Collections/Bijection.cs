@@ -13,6 +13,8 @@ namespace Krach.Collections
 				
 		public IMap<TSource, TDestination> Forward { get { return forward; } }
 		public IMap<TDestination, TSource> Reverse { get { return reverse; } }
+		public IEnumerable<TSource> SourceItems { get { return reverse.Values; } }
+		public IEnumerable<TDestination> DestinationItems { get { return forward.Values; } }
 		
 		public void Add(TSource source, TDestination destination) 
 		{
