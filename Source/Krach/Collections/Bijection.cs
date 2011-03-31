@@ -37,10 +37,10 @@ namespace Krach.Collections
 		{
 			Remove(reverse[destination], destination);
 		}
-		public void RotateSource(IEnumerable<TSource> rotateChain, int offset) 
+		public void RotateSource(IEnumerable<TSource> rotationChain, int offset) 
 		{
-			IEnumerable<TDestination> oldDestination = from item in rotateChain select forward[item];
-			IEnumerable<TSource> rotatedSource = rotateChain.Rotate(offset);
+			IEnumerable<TDestination> oldDestination = from item in rotationChain select forward[item];
+			IEnumerable<TSource> rotatedSource = rotationChain.Rotate(offset);
 			
 			foreach (Tuple<TDestination, TSource> chainItem in Enumerable.Zip(oldDestination, rotatedSource, Tuple.Create).ToArray())
 			{
@@ -48,10 +48,10 @@ namespace Krach.Collections
 				forward[chainItem.Item2] = chainItem.Item1;
 			}
 		}
-		public void RotateDestination(IEnumerable<TDestination> rotateChain, int offset) 
+		public void RotateDestination(IEnumerable<TDestination> rotationChain, int offset) 
 		{
-			IEnumerable<TSource> oldSource = from item in rotateChain select reverse[item];
-			IEnumerable<TDestination> rotatedDestination = rotateChain.Rotate(offset);
+			IEnumerable<TSource> oldSource = from item in rotationChain select reverse[item];
+			IEnumerable<TDestination> rotatedDestination = rotationChain.Rotate(offset);
 			
 			foreach (Tuple<TSource, TDestination> chainItem in Enumerable.Zip(oldSource, rotatedDestination, Tuple.Create).ToArray())
 			{
