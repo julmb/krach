@@ -21,6 +21,13 @@ namespace Krach.Extensions
 {
 	public static class Collections
 	{
+		public static void Add<TSource>(this ICollection<TSource> source, IEnumerable<TSource> items)
+		{
+			if (source == null) throw new ArgumentNullException("source");
+			if (items == null) throw new ArgumentNullException("items");
+
+			foreach (TSource item in items) source.Add(item);
+		}
 		public static void Remove<TSource>(this ICollection<TSource> source, IEnumerable<TSource> items)
 		{
 			if (source == null) throw new ArgumentNullException("source");
