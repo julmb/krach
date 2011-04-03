@@ -155,7 +155,7 @@ namespace Krach.Extensions
 		{
 			return (value / interval).Floor() * interval;
 		}
-		public static double Power2Floor(this double value)
+		public static double PowerOf2Floor(this double value)
 		{
 			if (value <= 0) throw new ArgumentOutOfRangeException("value");
 
@@ -173,7 +173,7 @@ namespace Krach.Extensions
 		{
 			return (value / interval).Ceiling() * interval;
 		}
-		public static double Power2Ceiling(this double value)
+		public static double PowerOf2Ceiling(this double value)
 		{
 			if (value <= 0) throw new ArgumentOutOfRangeException("value");
 
@@ -191,7 +191,7 @@ namespace Krach.Extensions
 		{
 			return (value / interval).Round() * interval;
 		}
-		public static double Power2Round(this double value)
+		public static double PowerOf2Round(this double value)
 		{
 			if (value <= 0) throw new ArgumentOutOfRangeException("value");
 

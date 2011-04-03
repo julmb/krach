@@ -21,11 +21,11 @@ using Krach.Extensions;
 
 namespace Krach.Basics
 {
-	public struct Volume1Integer : IEquatable<Volume1Integer>
+	public struct Orthotope1Integer : IEquatable<Orthotope1Integer>
 	{
 		readonly Range<int> rangeX;
 
-		public static Volume1Integer Empty { get { return new Volume1Integer(Range<int>.Default); } }
+		public static Orthotope1Integer Empty { get { return new Orthotope1Integer(Range<int>.Default); } }
 
 		public Range<int> RangeX { get { return rangeX; } }
 		public Vector1Integer Start { get { return new Vector1Integer(rangeX.Start); } }
@@ -36,22 +36,22 @@ namespace Krach.Basics
 		public int Volume { get { return Size.X; } }
 		public bool IsEmpty { get { return Size.X <= 0; } }
 
-		public Volume1Integer(Range<int> rangeX)
+		public Orthotope1Integer(Range<int> rangeX)
 		{
 			this.rangeX = rangeX;
 		}
-		public Volume1Integer(Vector1Integer start, Vector1Integer end)
+		public Orthotope1Integer(Vector1Integer start, Vector1Integer end)
 		{
 			this.rangeX = new Range<int>(start.X, end.X);
 		}
-		public Volume1Integer(int startX, int endX)
+		public Orthotope1Integer(int startX, int endX)
 		{
 			this.rangeX = new Range<int>(startX, endX);
 		}
 
 		public override bool Equals(object obj)
 		{
-			return obj is Volume1Integer && this == (Volume1Integer)obj;
+			return obj is Orthotope1Integer && this == (Orthotope1Integer)obj;
 		}
 		public override int GetHashCode()
 		{
@@ -61,46 +61,46 @@ namespace Krach.Basics
 		{
 			return "[" + rangeX + "]";
 		}
-		public bool Equals(Volume1Integer other)
+		public bool Equals(Orthotope1Integer other)
 		{
 			return this == other;
 		}
-		public Volume1Integer Inflate(int value)
+		public Orthotope1Integer Inflate(int value)
 		{
-			return new Volume1Integer(rangeX.Inflate(value));
+			return new Orthotope1Integer(rangeX.Inflate(value));
 		}
 
-		public static bool operator ==(Volume1Integer range1, Volume1Integer range2)
+		public static bool operator ==(Orthotope1Integer range1, Orthotope1Integer range2)
 		{
 			return range1.rangeX == range2.rangeX;
 		}
-		public static bool operator !=(Volume1Integer range1, Volume1Integer range2)
+		public static bool operator !=(Orthotope1Integer range1, Orthotope1Integer range2)
 		{
 			return range1.rangeX != range2.rangeX;
 		}
 
-		public static implicit operator Volume1Double(Volume1Integer volume)
+		public static implicit operator Orthotope1Double(Orthotope1Integer volume)
 		{
-			return new Volume1Double(volume.Start, volume.End);
+			return new Orthotope1Double(volume.Start, volume.End);
 		}
 
-		public static Volume1Integer Intersect(IEnumerable<Volume1Integer> ranges)
+		public static Orthotope1Integer Intersect(IEnumerable<Orthotope1Integer> ranges)
 		{
-			return new Volume1Integer(Range<int>.Intersect(ranges.Select(range => range.rangeX)));
+			return new Orthotope1Integer(Range<int>.Intersect(ranges.Select(range => range.rangeX)));
 		}
-		public static Volume1Integer Union(IEnumerable<Volume1Integer> ranges)
+		public static Orthotope1Integer Union(IEnumerable<Orthotope1Integer> ranges)
 		{
-			return new Volume1Integer(Range<int>.Union(ranges.Select(range => range.rangeX)));
+			return new Orthotope1Integer(Range<int>.Union(ranges.Select(range => range.rangeX)));
 		}
-		public static IEnumerable<Volume1Integer> Exclude(Volume1Integer range, Volume1Integer exclusion)
+		public static IEnumerable<Orthotope1Integer> Exclude(Orthotope1Integer range, Orthotope1Integer exclusion)
 		{
-			Volume1Integer intersection = Intersect(new[] { range, exclusion });
+			Orthotope1Integer intersection = Intersect(new[] { range, exclusion });
 
 			if (intersection.IsEmpty) yield return range;
 			else
 			{
-				Volume1Integer left = new Volume1Integer(range.StartX, intersection.StartX);
-				Volume1Integer right = new Volume1Integer(intersection.EndX, range.EndX);
+				Orthotope1Integer left = new Orthotope1Integer(range.StartX, intersection.StartX);
+				Orthotope1Integer right = new Orthotope1Integer(intersection.EndX, range.EndX);
 
 				if (!left.IsEmpty) yield return left;
 				if (!right.IsEmpty) yield return right;

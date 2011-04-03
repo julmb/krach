@@ -21,11 +21,11 @@ using Krach.Extensions;
 
 namespace Krach.Basics
 {
-	public struct Volume1Double : IEquatable<Volume1Double>
+	public struct Orthotope1Double : IEquatable<Orthotope1Double>
 	{
 		readonly Range<double> rangeX;
 
-		public static Volume1Double Empty { get { return new Volume1Double(Range<double>.Default); } }
+		public static Orthotope1Double Empty { get { return new Orthotope1Double(Range<double>.Default); } }
 
 		public Range<double> RangeX { get { return rangeX; } }
 		public Vector1Double Start { get { return new Vector1Double(rangeX.Start); } }
@@ -36,22 +36,22 @@ namespace Krach.Basics
 		public double Volume { get { return Size.X; } }
 		public bool IsEmpty { get { return Size.X <= 0; } }
 
-		public Volume1Double(Range<double> rangeX)
+		public Orthotope1Double(Range<double> rangeX)
 		{
 			this.rangeX = rangeX;
 		}
-		public Volume1Double(Vector1Double start, Vector1Double end)
+		public Orthotope1Double(Vector1Double start, Vector1Double end)
 		{
 			this.rangeX = new Range<double>(start.X, end.X);
 		}
-		public Volume1Double(double startX, double endX)
+		public Orthotope1Double(double startX, double endX)
 		{
 			this.rangeX = new Range<double>(startX, endX);
 		}
 
 		public override bool Equals(object obj)
 		{
-			return obj is Volume1Double && this == (Volume1Double)obj;
+			return obj is Orthotope1Double && this == (Orthotope1Double)obj;
 		}
 		public override int GetHashCode()
 		{
@@ -61,49 +61,49 @@ namespace Krach.Basics
 		{
 			return "[" + rangeX + "]";
 		}
-		public bool Equals(Volume1Double other)
+		public bool Equals(Orthotope1Double other)
 		{
 			return this == other;
 		}
-		public Volume1Double Inflate(double value)
+		public Orthotope1Double Inflate(double value)
 		{
-			return new Volume1Double(rangeX.Inflate(value));
+			return new Orthotope1Double(rangeX.Inflate(value));
 		}
 
-		public static bool operator ==(Volume1Double range1, Volume1Double range2)
+		public static bool operator ==(Orthotope1Double range1, Orthotope1Double range2)
 		{
 			return range1.rangeX == range2.rangeX;
 		}
-		public static bool operator !=(Volume1Double range1, Volume1Double range2)
+		public static bool operator !=(Orthotope1Double range1, Orthotope1Double range2)
 		{
 			return range1.rangeX != range2.rangeX;
 		}
 
-		public static Volume1Double Intersect(IEnumerable<Volume1Double> ranges)
+		public static Orthotope1Double Intersect(IEnumerable<Orthotope1Double> ranges)
 		{
-			return new Volume1Double(Range<double>.Intersect(ranges.Select(range => range.rangeX)));
+			return new Orthotope1Double(Range<double>.Intersect(ranges.Select(range => range.rangeX)));
 		}
-		public static Volume1Double Union(IEnumerable<Volume1Double> ranges)
+		public static Orthotope1Double Union(IEnumerable<Orthotope1Double> ranges)
 		{
-			return new Volume1Double(Range<double>.Union(ranges.Select(range => range.rangeX)));
+			return new Orthotope1Double(Range<double>.Union(ranges.Select(range => range.rangeX)));
 		}
-		public static IEnumerable<Volume1Double> Exclude(Volume1Double range, Volume1Double exclusion)
+		public static IEnumerable<Orthotope1Double> Exclude(Orthotope1Double range, Orthotope1Double exclusion)
 		{
-			Volume1Double intersection = Intersect(new[] { range, exclusion });
+			Orthotope1Double intersection = Intersect(new[] { range, exclusion });
 
 			if (intersection.IsEmpty) yield return range;
 			else
 			{
-				Volume1Double left = new Volume1Double(range.StartX, intersection.StartX);
-				Volume1Double right = new Volume1Double(intersection.EndX, range.EndX);
+				Orthotope1Double left = new Orthotope1Double(range.StartX, intersection.StartX);
+				Orthotope1Double right = new Orthotope1Double(intersection.EndX, range.EndX);
 
 				if (!left.IsEmpty) yield return left;
 				if (!right.IsEmpty) yield return right;
 			}
 		}
-		public static Volume1Double InterpolateLinear(Volume1Double range1, Volume1Double range2, double fraction)
+		public static Orthotope1Double InterpolateLinear(Orthotope1Double range1, Orthotope1Double range2, double fraction)
 		{
-			return new Volume1Double(Ranges.InterpolateLinear(range1.rangeX, range2.rangeX, fraction));
+			return new Orthotope1Double(Ranges.InterpolateLinear(range1.rangeX, range2.rangeX, fraction));
 		}
 	}
 }

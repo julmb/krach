@@ -39,14 +39,10 @@
     <Compile Include="Audio\PcmAudio.cs" />
     <Compile Include="Basics\Complex.cs" />
     <Compile Include="Basics\MatrixComplex.cs" />
-    <Compile Include="Basics\Volume1Integer.cs" />
-    <Compile Include="Basics\Volume2Integer.cs" />
     <Compile Include="Basics\Vector1Integer.cs" />
     <Compile Include="Basics\Vector2Integer.cs" />
     <Compile Include="Basics\Matrix.cs" />
     <Compile Include="Basics\Range.cs" />
-    <Compile Include="Basics\Volume1Double.cs" />
-    <Compile Include="Basics\Volume2Double.cs" />
     <Compile Include="Basics\Vector1Double.cs" />
     <Compile Include="Basics\Vector2Double.cs" />
     <Compile Include="Collections\BatchCollection.cs" />
@@ -102,6 +98,10 @@
     <Compile Include="Threading\Breaker.cs" />
     <Compile Include="Collections\Bijection.cs" />
     <Compile Include="Collections\DictionaryMap.cs" />
+    <Compile Include="Basics\Orthotope1Double.cs" />
+    <Compile Include="Basics\Orthotope1Integer.cs" />
+    <Compile Include="Basics\Orthotope2Double.cs" />
+    <Compile Include="Basics\Orthotope2Integer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -28,13 +28,13 @@ namespace Krach.Extensions
 		{
 			return new Range<TDestination>(map.Map(value.Start), map.Map(value.End));
 		}
-		public static Volume1Double Map(this IMap<Vector1Double, Vector1Double> map, Volume1Double volume)
+		public static Orthotope1Double Map(this IMap<Vector1Double, Vector1Double> map, Orthotope1Double volume)
 		{
-			return new Volume1Double(map.Map(volume.Start), map.Map(volume.End));
+			return new Orthotope1Double(map.Map(volume.Start), map.Map(volume.End));
 		}
-		public static Volume2Double Map(this IMap<Vector2Double, Vector2Double> map, Volume2Double volume)
+		public static Orthotope2Double Map(this IMap<Vector2Double, Vector2Double> map, Orthotope2Double volume)
 		{
-			return new Volume2Double(map.Map(volume.Start), map.Map(volume.End));
+			return new Orthotope2Double(map.Map(volume.Start), map.Map(volume.End));
 		}
 	}
 }
