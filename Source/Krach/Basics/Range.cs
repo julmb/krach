@@ -56,6 +56,10 @@ namespace Krach.Basics
 		{
 			return this == other;
 		}
+		public bool Contains(T value) 
+		{
+			return Comparer<T>.Default.Compare(value, start) >= 0 && Comparer<T>.Default.Compare(value, end) <= 0;
+		}
 
 		public static bool operator ==(Range<T> range1, Range<T> range2)
 		{
