@@ -86,6 +86,10 @@ namespace Krach.Basics
 			return orthotope1.rangeX != orthotope2.rangeX || orthotope1.rangeY != orthotope2.rangeY;
 		}
 
+		public static Orthotope2Double CreateFromCenter(Vector2Double center, Vector2Double size)
+		{
+			return new Orthotope2Double(center - 0.5 * size, center + 0.5 * size);
+		}
 		public static Orthotope2Double Intersect(IEnumerable<Orthotope2Double> orthotopes)
 		{
 			return new Orthotope2Double(Range<double>.Intersect(orthotopes.Select(orthotope => orthotope.rangeX)), Range<double>.Intersect(orthotopes.Select(orthotope => orthotope.rangeY)));

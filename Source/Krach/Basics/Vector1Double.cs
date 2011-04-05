@@ -61,6 +61,14 @@ namespace Krach.Basics
 			return vector1.x != vector2.x;
 		}
 
+		public static Vector1Double operator -(Vector1Double vector)
+		{
+			return new Vector1Double(-vector.x);
+		}
+		public static Vector1Double operator +(Vector1Double vector)
+		{
+			return new Vector1Double(+vector.x);
+		}
 		public static Vector1Double operator +(Vector1Double vector1, Vector1Double vector2)
 		{
 			return new Vector1Double(vector1.x + vector2.x);

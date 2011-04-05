@@ -63,6 +63,14 @@ namespace Krach.Basics
 			return new Vector1Double(vector.x);
 		}
 
+		public static Vector1Integer operator -(Vector1Integer vector)
+		{
+			return new Vector1Integer(-vector.x);
+		}
+		public static Vector1Integer operator +(Vector1Integer vector)
+		{
+			return new Vector1Integer(+vector.x);
+		}
 		public static Vector1Integer operator +(Vector1Integer vector1, Vector1Integer vector2)
 		{
 			return new Vector1Integer(vector1.x + vector2.x);
