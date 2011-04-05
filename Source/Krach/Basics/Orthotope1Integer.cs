@@ -70,37 +70,37 @@ namespace Krach.Basics
 			return new Orthotope1Integer(rangeX.Inflate(value));
 		}
 
-		public static bool operator ==(Orthotope1Integer range1, Orthotope1Integer range2)
+		public static bool operator ==(Orthotope1Integer orthotope1, Orthotope1Integer orthotope2)
 		{
-			return range1.rangeX == range2.rangeX;
+			return orthotope1.rangeX == orthotope2.rangeX;
 		}
-		public static bool operator !=(Orthotope1Integer range1, Orthotope1Integer range2)
+		public static bool operator !=(Orthotope1Integer orthotope1, Orthotope1Integer orthotope2)
 		{
-			return range1.rangeX != range2.rangeX;
-		}
-
-		public static implicit operator Orthotope1Double(Orthotope1Integer volume)
-		{
-			return new Orthotope1Double(volume.Start, volume.End);
+			return orthotope1.rangeX != orthotope2.rangeX;
 		}
 
-		public static Orthotope1Integer Intersect(IEnumerable<Orthotope1Integer> ranges)
+		public static implicit operator Orthotope1Double(Orthotope1Integer orthotope)
 		{
-			return new Orthotope1Integer(Range<int>.Intersect(ranges.Select(range => range.rangeX)));
+			return new Orthotope1Double(orthotope.Start, orthotope.End);
 		}
-		public static Orthotope1Integer Union(IEnumerable<Orthotope1Integer> ranges)
-		{
-			return new Orthotope1Integer(Range<int>.Union(ranges.Select(range => range.rangeX)));
-		}
-		public static IEnumerable<Orthotope1Integer> Exclude(Orthotope1Integer range, Orthotope1Integer exclusion)
-		{
-			Orthotope1Integer intersection = Intersect(new[] { range, exclusion });
 
-			if (intersection.IsEmpty) yield return range;
+		public static Orthotope1Integer Intersect(IEnumerable<Orthotope1Integer> orthotopes)
+		{
+			return new Orthotope1Integer(Range<int>.Intersect(orthotopes.Select(orthotope => orthotope.rangeX)));
+		}
+		public static Orthotope1Integer Union(IEnumerable<Orthotope1Integer> orthotope2)
+		{
+			return new Orthotope1Integer(Range<int>.Union(orthotope2.Select(orthotope => orthotope.rangeX)));
+		}
+		public static IEnumerable<Orthotope1Integer> Exclude(Orthotope1Integer orthotope, Orthotope1Integer exclusion)
+		{
+			Orthotope1Integer intersection = Intersect(new[] { orthotope, exclusion });
+
+			if (intersection.IsEmpty) yield return orthotope;
 			else
 			{
-				Orthotope1Integer left = new Orthotope1Integer(range.StartX, intersection.StartX);
-				Orthotope1Integer right = new Orthotope1Integer(intersection.EndX, range.EndX);
+				Orthotope1Integer left = new Orthotope1Integer(orthotope.StartX, intersection.StartX);
+				Orthotope1Integer right = new Orthotope1Integer(intersection.EndX, orthotope.EndX);
 
 				if (!left.IsEmpty) yield return left;
 				if (!right.IsEmpty) yield return right;

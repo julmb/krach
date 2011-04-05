@@ -77,34 +77,34 @@ namespace Krach.Basics
 			return new Orthotope2Double(rangeX.Inflate(value), rangeY.Inflate(value));
 		}
 
-		public static bool operator ==(Orthotope2Double range1, Orthotope2Double range2)
+		public static bool operator ==(Orthotope2Double orthotope1, Orthotope2Double orthotope2)
 		{
-			return range1.rangeX == range2.rangeX && range1.rangeY == range2.rangeY;
+			return orthotope1.rangeX == orthotope2.rangeX && orthotope1.rangeY == orthotope2.rangeY;
 		}
-		public static bool operator !=(Orthotope2Double range1, Orthotope2Double range2)
+		public static bool operator !=(Orthotope2Double orthotope1, Orthotope2Double orthotope2)
 		{
-			return range1.rangeX != range2.rangeX || range1.rangeY != range2.rangeY;
+			return orthotope1.rangeX != orthotope2.rangeX || orthotope1.rangeY != orthotope2.rangeY;
 		}
 
-		public static Orthotope2Double Intersect(IEnumerable<Orthotope2Double> ranges)
+		public static Orthotope2Double Intersect(IEnumerable<Orthotope2Double> orthotopes)
 		{
-			return new Orthotope2Double(Range<double>.Intersect(ranges.Select(range => range.rangeX)), Range<double>.Intersect(ranges.Select(range => range.rangeY)));
+			return new Orthotope2Double(Range<double>.Intersect(orthotopes.Select(orthotope => orthotope.rangeX)), Range<double>.Intersect(orthotopes.Select(orthotope => orthotope.rangeY)));
 		}
-		public static Orthotope2Double Union(IEnumerable<Orthotope2Double> ranges)
+		public static Orthotope2Double Union(IEnumerable<Orthotope2Double> orthotopes)
 		{
-			return new Orthotope2Double(Range<double>.Union(ranges.Select(range => range.rangeX)), Range<double>.Union(ranges.Select(range => range.rangeY)));
+			return new Orthotope2Double(Range<double>.Union(orthotopes.Select(orthotope => orthotope.rangeX)), Range<double>.Union(orthotopes.Select(orthotope => orthotope.rangeY)));
 		}
-		public static IEnumerable<Orthotope2Double> Exclude(Orthotope2Double range, Orthotope2Double exclusion)
+		public static IEnumerable<Orthotope2Double> Exclude(Orthotope2Double orthotope, Orthotope2Double exclusion)
 		{
-			Orthotope2Double intersection = Intersect(new[] { range, exclusion });
+			Orthotope2Double intersection = Intersect(new[] { orthotope, exclusion });
 
-			if (intersection.IsEmpty) yield return range;
+			if (intersection.IsEmpty) yield return orthotope;
 			else
 			{
-				Orthotope2Double left = new Orthotope2Double(range.StartX, intersection.StartX, intersection.StartY, intersection.EndY);
-				Orthotope2Double right = new Orthotope2Double(intersection.EndX, range.EndX, intersection.StartY, intersection.EndY);
-				Orthotope2Double top = new Orthotope2Double(range.StartX, range.EndX, range.StartY, intersection.StartY);
-				Orthotope2Double bottom = new Orthotope2Double(range.StartX, range.EndX, intersection.EndY, range.EndY);
+				Orthotope2Double left = new Orthotope2Double(orthotope.StartX, intersection.StartX, intersection.StartY, intersection.EndY);
+				Orthotope2Double right = new Orthotope2Double(intersection.EndX, orthotope.EndX, intersection.StartY, intersection.EndY);
+				Orthotope2Double top = new Orthotope2Double(orthotope.StartX, orthotope.EndX, orthotope.StartY, intersection.StartY);
+				Orthotope2Double bottom = new Orthotope2Double(orthotope.StartX, orthotope.EndX, intersection.EndY, orthotope.EndY);
 
 				if (!left.IsEmpty) yield return left;
 				if (!right.IsEmpty) yield return right;
@@ -112,9 +112,9 @@ namespace Krach.Basics
 				if (!bottom.IsEmpty) yield return bottom;
 			}
 		}
-		public static Orthotope2Double InterpolateLinear(Orthotope2Double range1, Orthotope2Double range2, double fraction)
+		public static Orthotope2Double InterpolateLinear(Orthotope2Double orthotope1, Orthotope2Double orthotope2, double fraction)
 		{
-			return new Orthotope2Double(Ranges.InterpolateLinear(range1.rangeX, range2.rangeX, fraction), Ranges.InterpolateLinear(range1.rangeY, range2.rangeY, fraction));
+			return new Orthotope2Double(Ranges.InterpolateLinear(orthotope1.rangeX, orthotope2.rangeX, fraction), Ranges.InterpolateLinear(orthotope1.rangeY, orthotope2.rangeY, fraction));
 		}
 	}
 }

@@ -20,22 +20,22 @@ using Krach.Maps.Abstract;
 
 namespace Krach.Maps.Vectors
 {
-	public class SymmetricVolume2DoubleMap : SymmetricMap<Orthotope2Double, Orthotope2Double, Vector2Double, Vector2Double, Volume2DoubleMap, Volume2DoubleMap>
+	public class SymmetricOrthotope1DoubleMap : SymmetricMap<Orthotope1Double, Orthotope1Double, Vector1Double, Vector1Double, Orthotope1DoubleMap, Orthotope1DoubleMap>
 	{
-		public SymmetricVolume2DoubleMap(Orthotope2Double source, Orthotope2Double destination, IFactory<IMap<double, double>, Range<double>, Range<double>> mapper)
+		public SymmetricOrthotope1DoubleMap(Orthotope1Double source, Orthotope1Double destination, IFactory<IMap<double, double>, Range<double>, Range<double>> mapper)
 			: base(source, destination, GetFactory(mapper), GetFactory(mapper))
 		{
 		}
-		public SymmetricVolume2DoubleMap(Orthotope2Double source, IFactory<IMap<double, double>, Range<double>, Range<double>> mapper)
-			: this(source, new Orthotope2Double(new Range<double>(0, 1), new Range<double>(0, 1)), mapper)
+		public SymmetricOrthotope1DoubleMap(Orthotope1Double source, IFactory<IMap<double, double>, Range<double>, Range<double>> mapper)
+			: this(source, new Orthotope1Double(new Range<double>(0, 1)), mapper)
 		{
 		}
 
-		static IFactory<Volume2DoubleMap, Orthotope2Double, Orthotope2Double> GetFactory(IFactory<IMap<double, double>, Range<double>, Range<double>> mapper)
+		static IFactory<Orthotope1DoubleMap, Orthotope1Double, Orthotope1Double> GetFactory(IFactory<IMap<double, double>, Range<double>, Range<double>> mapper)
 		{
-			return new Factory<Volume2DoubleMap, Orthotope2Double, Orthotope2Double>
+			return new Factory<Orthotope1DoubleMap, Orthotope1Double, Orthotope1Double>
 			(
-				(source, destination) => new Volume2DoubleMap(source, destination, mapper)
+				(source, destination) => new Orthotope1DoubleMap(source, destination, mapper)
 			);
 		}
 	}

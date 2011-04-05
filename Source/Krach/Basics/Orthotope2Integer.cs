@@ -77,39 +77,39 @@ namespace Krach.Basics
 			return new Orthotope2Integer(rangeX.Inflate(value), rangeY.Inflate(value));
 		}
 
-		public static bool operator ==(Orthotope2Integer range1, Orthotope2Integer range2)
+		public static bool operator ==(Orthotope2Integer orthotope1, Orthotope2Integer orthotope2)
 		{
-			return range1.rangeX == range2.rangeX && range1.rangeY == range2.rangeY;
+			return orthotope1.rangeX == orthotope2.rangeX && orthotope1.rangeY == orthotope2.rangeY;
 		}
-		public static bool operator !=(Orthotope2Integer range1, Orthotope2Integer range2)
+		public static bool operator !=(Orthotope2Integer orthotope1, Orthotope2Integer orthotope2)
 		{
-			return range1.rangeX != range2.rangeX || range1.rangeY != range2.rangeY;
-		}
-
-		public static implicit operator Orthotope2Double(Orthotope2Integer volume)
-		{
-			return new Orthotope2Double(volume.Start, volume.End);
+			return orthotope1.rangeX != orthotope2.rangeX || orthotope1.rangeY != orthotope2.rangeY;
 		}
 
-		public static Orthotope2Integer Intersect(IEnumerable<Orthotope2Integer> ranges)
+		public static implicit operator Orthotope2Double(Orthotope2Integer orthotope)
 		{
-			return new Orthotope2Integer(Range<int>.Intersect(ranges.Select(range => range.rangeX)), Range<int>.Intersect(ranges.Select(range => range.rangeY)));
+			return new Orthotope2Double(orthotope.Start, orthotope.End);
 		}
-		public static Orthotope2Integer Union(IEnumerable<Orthotope2Integer> ranges)
-		{
-			return new Orthotope2Integer(Range<int>.Union(ranges.Select(range => range.rangeX)), Range<int>.Union(ranges.Select(range => range.rangeY)));
-		}
-		public static IEnumerable<Orthotope2Integer> Exclude(Orthotope2Integer range, Orthotope2Integer exclusion)
-		{
-			Orthotope2Integer intersection = Intersect(new[] { range, exclusion });
 
-			if (intersection.IsEmpty) yield return range;
+		public static Orthotope2Integer Intersect(IEnumerable<Orthotope2Integer> orthotopes)
+		{
+			return new Orthotope2Integer(Range<int>.Intersect(orthotopes.Select(orthotope => orthotope.rangeX)), Range<int>.Intersect(orthotopes.Select(orthotope => orthotope.rangeY)));
+		}
+		public static Orthotope2Integer Union(IEnumerable<Orthotope2Integer> orthotopes)
+		{
+			return new Orthotope2Integer(Range<int>.Union(orthotopes.Select(orthotope => orthotope.rangeX)), Range<int>.Union(orthotopes.Select(orthotope => orthotope.rangeY)));
+		}
+		public static IEnumerable<Orthotope2Integer> Exclude(Orthotope2Integer orthotope, Orthotope2Integer exclusion)
+		{
+			Orthotope2Integer intersection = Intersect(new[] { orthotope, exclusion });
+
+			if (intersection.IsEmpty) yield return orthotope;
 			else
 			{
-				Orthotope2Integer left = new Orthotope2Integer(range.StartX, intersection.StartX, intersection.StartY, intersection.EndY);
-				Orthotope2Integer right = new Orthotope2Integer(intersection.EndX, range.EndX, intersection.StartY, intersection.EndY);
-				Orthotope2Integer top = new Orthotope2Integer(range.StartX, range.EndX, range.StartY, intersection.StartY);
-				Orthotope2Integer bottom = new Orthotope2Integer(range.StartX, range.EndX, intersection.EndY, range.EndY);
+				Orthotope2Integer left = new Orthotope2Integer(orthotope.StartX, intersection.StartX, intersection.StartY, intersection.EndY);
+				Orthotope2Integer right = new Orthotope2Integer(intersection.EndX, orthotope.EndX, intersection.StartY, intersection.EndY);
+				Orthotope2Integer top = new Orthotope2Integer(orthotope.StartX, orthotope.EndX, orthotope.StartY, intersection.StartY);
+				Orthotope2Integer bottom = new Orthotope2Integer(orthotope.StartX, orthotope.EndX, intersection.EndY, orthotope.EndY);
 
 				if (!left.IsEmpty) yield return left;
 				if (!right.IsEmpty) yield return right;

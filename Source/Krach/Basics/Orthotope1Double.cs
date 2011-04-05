@@ -70,40 +70,40 @@ namespace Krach.Basics
 			return new Orthotope1Double(rangeX.Inflate(value));
 		}
 
-		public static bool operator ==(Orthotope1Double range1, Orthotope1Double range2)
+		public static bool operator ==(Orthotope1Double orthotope1, Orthotope1Double orthotope2)
 		{
-			return range1.rangeX == range2.rangeX;
+			return orthotope1.rangeX == orthotope2.rangeX;
 		}
-		public static bool operator !=(Orthotope1Double range1, Orthotope1Double range2)
+		public static bool operator !=(Orthotope1Double orthotope1, Orthotope1Double orthotope2)
 		{
-			return range1.rangeX != range2.rangeX;
+			return orthotope1.rangeX != orthotope2.rangeX;
 		}
 
-		public static Orthotope1Double Intersect(IEnumerable<Orthotope1Double> ranges)
+		public static Orthotope1Double Intersect(IEnumerable<Orthotope1Double> orthotopes)
 		{
-			return new Orthotope1Double(Range<double>.Intersect(ranges.Select(range => range.rangeX)));
+			return new Orthotope1Double(Range<double>.Intersect(orthotopes.Select(orthotope => orthotope.rangeX)));
 		}
-		public static Orthotope1Double Union(IEnumerable<Orthotope1Double> ranges)
+		public static Orthotope1Double Union(IEnumerable<Orthotope1Double> orthotopes)
 		{
-			return new Orthotope1Double(Range<double>.Union(ranges.Select(range => range.rangeX)));
+			return new Orthotope1Double(Range<double>.Union(orthotopes.Select(orthotope => orthotope.rangeX)));
 		}
-		public static IEnumerable<Orthotope1Double> Exclude(Orthotope1Double range, Orthotope1Double exclusion)
+		public static IEnumerable<Orthotope1Double> Exclude(Orthotope1Double orthotope, Orthotope1Double exclusion)
 		{
-			Orthotope1Double intersection = Intersect(new[] { range, exclusion });
+			Orthotope1Double intersection = Intersect(new[] { orthotope, exclusion });
 
-			if (intersection.IsEmpty) yield return range;
+			if (intersection.IsEmpty) yield return orthotope;
 			else
 			{
-				Orthotope1Double left = new Orthotope1Double(range.StartX, intersection.StartX);
-				Orthotope1Double right = new Orthotope1Double(intersection.EndX, range.EndX);
+				Orthotope1Double left = new Orthotope1Double(orthotope.StartX, intersection.StartX);
+				Orthotope1Double right = new Orthotope1Double(intersection.EndX, orthotope.EndX);
 
 				if (!left.IsEmpty) yield return left;
 				if (!right.IsEmpty) yield return right;
 			}
 		}
-		public static Orthotope1Double InterpolateLinear(Orthotope1Double range1, Orthotope1Double range2, double fraction)
+		public static Orthotope1Double InterpolateLinear(Orthotope1Double orthotope1, Orthotope1Double orthotope2, double fraction)
 		{
-			return new Orthotope1Double(Ranges.InterpolateLinear(range1.rangeX, range2.rangeX, fraction));
+			return new Orthotope1Double(Ranges.InterpolateLinear(orthotope1.rangeX, orthotope2.rangeX, fraction));
 		}
 	}
 }

@@ -20,22 +20,22 @@ using Krach.Maps.Abstract;
 
 namespace Krach.Maps.Vectors
 {
-	public class Volume1DoubleMap : Vector1DoubleMap
+	public class Orthotope2DoubleMap : Vector2DoubleMap, IBounded<Orthotope2Double, Orthotope2Double>
 	{
-		readonly Orthotope1Double source;
-		readonly Orthotope1Double destination;
+		readonly Orthotope2Double source;
+		readonly Orthotope2Double destination;
 
-		public Orthotope1Double Source { get { return source; } }
-		public Orthotope1Double Destination { get { return destination; } }
+		public Orthotope2Double Source { get { return source; } }
+		public Orthotope2Double Destination { get { return destination; } }
 
-		public Volume1DoubleMap(Orthotope1Double source, Orthotope1Double destination, IFactory<IMap<double, double>, Range<double>, Range<double>> mapper)
-			: base(mapper.Create(source.RangeX, destination.RangeX))
+		public Orthotope2DoubleMap(Orthotope2Double source, Orthotope2Double destination, IFactory<IMap<double, double>, Range<double>, Range<double>> mapper)
+			: base(mapper.Create(source.RangeX, destination.RangeX), mapper.Create(source.RangeY, destination.RangeY))
 		{
 			this.source = source;
 			this.destination = destination;
 		}
-		public Volume1DoubleMap(Orthotope1Double source, IFactory<IMap<double, double>, Range<double>, Range<double>> mapper)
-			: this(source, new Orthotope1Double(new Range<double>(0, 1)), mapper)
+		public Orthotope2DoubleMap(Orthotope2Double source, IFactory<IMap<double, double>, Range<double>, Range<double>> mapper)
+			: this(source, new Orthotope2Double(new Range<double>(0, 1), new Range<double>(0, 1)), mapper)
 		{
 		}
 	}
