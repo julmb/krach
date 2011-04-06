@@ -1,0 +1,28 @@
+#!/bin/sh
+
+dataDirectory="$HOME/.csscript"
+
+mkdir -p $dataDirectory
+
+if [ ! -e "$dataDirectory/Krach" ];
+then
+	svn checkout "http://krach.googlecode.com/svn" "$dataDirectory/Krach" > /dev/null
+fi
+
+svn update "$dataDirectory/Krach" > /dev/null
+xbuild /property:Configuration=Release "$dataDirectory/Krach/trunk/Source/Krach.sln" > /dev/null
+
+source=`mktemp`
+directory=`dirname $0`
+
+cat "$directory/../share/header.cs" >> "$source"
+tail -n +2 "$1" >> "$source"
+
+dmcs -reference:"$dataDirectory/Krach/trunk/Source/Krach/bin/Release/Krach.dll" -out:"$source.exe" "$source"
+
+rm "$source"
+
+shift
+MONO_PATH="$dataDirectory/Krach/trunk/Source/Krach/bin/Release" mono "$source.exe" "$@"
+
+rm "$source.exe"

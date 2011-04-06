@@ -174,6 +174,23 @@ namespace Krach.Extensions
 			
 			return sources.Aggregate(Enumerable.Empty<TSource>(), Enumerable.Intersect);
 		}
+		public static IEnumerable<IEnumerable<TSource>> PowerSet<TSource>(IEnumerable<TSource> source)
+		{
+			if (source == null) throw new ArgumentNullException("source");
+	
+			if (source.Any())
+			{
+				IEnumerable<TSource> head = source.Take(1);
+				IEnumerable<TSource> tail = source.Skip(1);
+	
+				foreach (IEnumerable<TSource> subset in PowerSet(tail))
+				{
+					yield return subset;
+					yield return Enumerable.Concat(head, subset).ToArray();
+				}
+			}
+			else yield return Enumerable.Empty<TSource>();
+		}
 		public static IEnumerable<TSource> Create<TSource>(params TSource[] items)
 		{
 			return items;
