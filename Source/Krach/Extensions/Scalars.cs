@@ -185,6 +185,7 @@ namespace Krach.Extensions
 		}
 		public static double Round(this double value)
 		{
+			// TODO: Reimplement this using regular rounding instead of banker's rounding
 			return Math.Round(value);
 		}
 		public static double Round(this double value, double interval)
