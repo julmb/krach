@@ -191,6 +191,23 @@ namespace Krach.Extensions
 			}
 			else yield return Enumerable.Empty<TSource>();
 		}
+		public static IEnumerable<IEnumerable<TSource>> Flip<TSource>(IEnumerable<IEnumerable<TSource>> source)
+		{
+			IEnumerable<IEnumerator<TSource>> enumerators =
+			(
+				from row in source
+				select row.GetEnumerator()
+			)
+			.ToArray();
+
+			while (enumerators.All(enumerator => enumerator.MoveNext()))
+				yield return
+				(
+					from enumerator in enumerators
+					select enumerator.Current
+				)
+				.ToArray();
+		}
 		public static IEnumerable<TSource> Create<TSource>(params TSource[] items)
 		{
 			return items;
