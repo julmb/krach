@@ -193,6 +193,10 @@ namespace Krach.Extensions
 		}
 		public static IEnumerable<IEnumerable<TSource>> Flip<TSource>(this IEnumerable<IEnumerable<TSource>> source)
 		{
+			if (source == null) throw new ArgumentNullException("source");
+
+			if (!source.Any()) yield break;
+
 			IEnumerable<IEnumerator<TSource>> enumerators =
 			(
 				from row in source
