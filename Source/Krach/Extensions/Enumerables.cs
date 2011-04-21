@@ -174,7 +174,7 @@ namespace Krach.Extensions
 			
 			return sources.Aggregate(Enumerable.Empty<TSource>(), Enumerable.Intersect);
 		}
-		public static IEnumerable<IEnumerable<TSource>> PowerSet<TSource>(IEnumerable<TSource> source)
+		public static IEnumerable<IEnumerable<TSource>> PowerSet<TSource>(this IEnumerable<TSource> source)
 		{
 			if (source == null) throw new ArgumentNullException("source");
 	
@@ -191,7 +191,7 @@ namespace Krach.Extensions
 			}
 			else yield return Enumerable.Empty<TSource>();
 		}
-		public static IEnumerable<IEnumerable<TSource>> Flip<TSource>(IEnumerable<IEnumerable<TSource>> source)
+		public static IEnumerable<IEnumerable<TSource>> Flip<TSource>(this IEnumerable<IEnumerable<TSource>> source)
 		{
 			IEnumerable<IEnumerator<TSource>> enumerators =
 			(
