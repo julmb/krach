@@ -2,16 +2,6 @@
 
 dataDirectory="$HOME/.csscript"
 
-mkdir -p $dataDirectory
-
-if [ ! -e "$dataDirectory/Krach" ];
-then
-	svn checkout "http://krach.googlecode.com/svn" "$dataDirectory/Krach" > /dev/null
-fi
-
-svn update "$dataDirectory/Krach" > /dev/null
-xbuild /property:Configuration=Release "$dataDirectory/Krach/trunk/Source/Krach.sln" > /dev/null
-
 source=`mktemp`
 directory=`dirname $0`
 

@@ -1,0 +1,14 @@
+#!/bin/sh
+
+dataDirectory="$HOME/.csscript"
+
+mkdir -p $dataDirectory
+
+if [ ! -e "$dataDirectory/Krach" ];
+then
+	svn checkout "http://krach.googlecode.com/svn" "$dataDirectory/Krach"
+fi
+
+svn update "$dataDirectory/Krach"
+
+xbuild /property:Configuration=Release "$dataDirectory/Krach/trunk/Source/Krach.sln"
