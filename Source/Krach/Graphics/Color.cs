@@ -43,8 +43,7 @@ namespace Krach.Graphics
 			this.hsvColor = hsvColor;
 			this.alpha = alpha;
 		}
-
-		public Color(RgbColor color, double alpha)
+		Color(RgbColor color, double alpha)
 		{
 			if (alpha < 0 || alpha > 1) throw new ArgumentOutOfRangeException("alpha");
 
@@ -52,8 +51,8 @@ namespace Krach.Graphics
 			this.hsvColor = HsvColor.FromRgb(rgbColor);
 			this.alpha = alpha;
 		}
-		public Color(RgbColor color) : this(color, 1) { }
-		public Color(HsvColor color, double alpha)
+		Color(RgbColor color) : this(color, 1) { }
+		Color(HsvColor color, double alpha)
 		{
 			if (alpha < 0 || alpha > 1) throw new ArgumentOutOfRangeException("alpha");
 
@@ -61,7 +60,7 @@ namespace Krach.Graphics
 			this.hsvColor = color;
 			this.alpha = alpha;
 		}
-		public Color(HsvColor color) : this(color, 1) { }
+		Color(HsvColor color) : this(color, 1) { }
 
 		public static Color FromRgba(double red, double green, double blue, double alpha)
 		{
@@ -107,6 +106,14 @@ namespace Krach.Graphics
 		public static double DistanceHsv(Color color1, Color color2)
 		{
 			return HsvColor.Distance(color1.hsvColor, color2.hsvColor);
+		}
+		public static Color InterpolateRgb(Color color1, Color color2, Interpolation<double> interpolate, double fraction)
+		{
+			return new Color(RgbColor.Interpolate(color1.rgbColor, color2.rgbColor, interpolate, fraction), interpolate(color1.alpha, color2.alpha, fraction));
+		}
+		public static Color InterpolateHsv(Color color1, Color color2, Interpolation<double> interpolate, double fraction)
+		{
+			return new Color(HsvColor.Interpolate(color1.hsvColor, color2.hsvColor, interpolate, fraction), interpolate(color1.alpha, color2.alpha, fraction));
 		}
 	}
 }

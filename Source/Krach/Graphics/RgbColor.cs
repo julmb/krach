@@ -19,7 +19,7 @@ using Krach.Extensions;
 
 namespace Krach.Graphics
 {
-	public struct RgbColor
+	struct RgbColor
 	{
 		readonly double red;
 		readonly double green;
@@ -68,6 +68,18 @@ namespace Krach.Graphics
 			double blue = color1.blue - color2.blue;
 
 			return (red.Square() + green.Square() + blue.Square()).SquareRoot();
+		}
+		public static RgbColor Interpolate(RgbColor color1, RgbColor color2, Interpolation<double> interpolate, double fraction)
+		{
+			if (interpolate == null) throw new ArgumentNullException("interpolate");
+			if (fraction < 0 || fraction > 1) throw new ArgumentOutOfRangeException("fraction");
+
+			return new RgbColor
+			(
+				interpolate(color1.red, color2.red, fraction),
+				interpolate(color1.green, color2.green, fraction),
+				interpolate(color1.blue, color2.blue, fraction)
+			);
 		}
 	}
 }

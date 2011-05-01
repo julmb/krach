@@ -96,9 +96,9 @@ namespace Krach.Basics
 			return new Vector2Double(factor * vector.x, factor * vector.y);
 		}
 
-		public static Vector2Double InterpolateLinear(Vector2Double vector1, Vector2Double vector2, double fraction)
+		public static Vector2Double Interpolate(Vector2Double vector1, Vector2Double vector2, Interpolation<double> interpolate, double fraction)
 		{
-			return new Vector2Double(Scalars.InterpolateLinear(vector1.x, vector2.x, fraction), Scalars.InterpolateLinear(vector1.y, vector2.y, fraction));
+			return new Vector2Double(interpolate(vector1.x, vector2.x, fraction), interpolate(vector1.y, vector2.y, fraction));
 		}
 		public static double DotProduct(Vector2Double vector1, Vector2Double vector2)
 		{

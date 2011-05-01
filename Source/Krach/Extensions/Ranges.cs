@@ -36,9 +36,9 @@ namespace Krach.Extensions
 		{
 			return new Range<double>(range.Start - value, range.End + value);
 		}
-		public static Range<double> InterpolateLinear(Range<double> range1, Range<double> range2, double fraction)
+		public static Range<double> Interpolate(Range<double> range1, Range<double> range2, Interpolation<double> interpolate, double fraction)
 		{
-			return new Range<double>(Scalars.InterpolateLinear(range1.Start, range2.Start, fraction), Scalars.InterpolateLinear(range1.End, range2.End, fraction));
+			return new Range<double>(interpolate(range1.Start, range2.Start, fraction), interpolate(range1.End, range2.End, fraction));
 		}
 	}
 }

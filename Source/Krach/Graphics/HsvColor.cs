@@ -19,7 +19,7 @@ using Krach.Extensions;
 
 namespace Krach.Graphics
 {
-	public struct HsvColor
+	struct HsvColor
 	{
 		readonly double hue;
 		readonly double saturation;
@@ -62,6 +62,18 @@ namespace Krach.Graphics
 			double value = color1.value - color2.value;
 
 			return (hue.Square() + saturation.Square() + value.Square()).SquareRoot();
+		}
+		public static HsvColor Interpolate(HsvColor color1, HsvColor color2, Interpolation<double> interpolate, double fraction)
+		{
+			if (interpolate == null) throw new ArgumentNullException("interpolate");
+			if (fraction < 0 || fraction > 1) throw new ArgumentOutOfRangeException("fraction");
+
+			return new HsvColor
+			(
+				interpolate(color1.hue, color2.hue, fraction),
+				interpolate(color1.saturation, color2.saturation, fraction),
+				interpolate(color1.value, color2.value, fraction)
+			);
 		}
 	}
 }
