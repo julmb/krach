@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Krach.Collections;
 
 namespace Krach.Extensions
 {
@@ -165,24 +164,24 @@ namespace Krach.Extensions
 		public static IEnumerable<TSource> Union<TSource>(params IEnumerable<TSource>[] sources)
 		{
 			if (sources == null) throw new ArgumentNullException("sources");
-					
+
 			return sources.Aggregate(Enumerable.Empty<TSource>(), Enumerable.Union);
 		}
 		public static IEnumerable<TSource> Intersect<TSource>(params IEnumerable<TSource>[] sources)
 		{
 			if (sources == null) throw new ArgumentNullException("sources");
-			
+
 			return sources.Aggregate(Enumerable.Empty<TSource>(), Enumerable.Intersect);
 		}
 		public static IEnumerable<IEnumerable<TSource>> PowerSet<TSource>(this IEnumerable<TSource> source)
 		{
 			if (source == null) throw new ArgumentNullException("source");
-	
+
 			if (source.Any())
 			{
 				IEnumerable<TSource> head = source.Take(1);
 				IEnumerable<TSource> tail = source.Skip(1);
-	
+
 				foreach (IEnumerable<TSource> subset in PowerSet(tail))
 				{
 					yield return subset;
