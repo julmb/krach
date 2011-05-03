@@ -15,18 +15,40 @@
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using Krach.Basics;
 
 namespace Krach.Extensions
 {
 	public static class Comparables
 	{
+		public static TSource Minimum<TSource>(this IEnumerable<TSource> source) where TSource : IComparable<TSource>
+		{
+			return source.Min();
+		}
+		public static TSource Minimum<TSource>(params TSource[] source) where TSource : IComparable<TSource>
+		{
+			return source.Minimum();
+		}
+		public static TSource Maximum<TSource>(this IEnumerable<TSource> source) where TSource : IComparable<TSource>
+		{
+			return source.Max();
+		}
+		public static TSource Maximum<TSource>(params TSource[] source) where TSource : IComparable<TSource>
+		{
+			return source.Maximum();
+		}
 		public static T Clamp<T>(this T value, T minimum, T maximum) where T : IComparable<T>
 		{
-			value = Enumerables.Create(value, minimum).Max();
-			value = Enumerables.Create(value, maximum).Min();
+			value = Enumerables.Create(value, minimum).Maximum();
+			value = Enumerables.Create(value, maximum).Minimum();
 
 			return value;
+		}
+		public static T Clamp<T>(this T value, Range<T> range) where T : IEquatable<T>, IComparable<T>
+		{
+			return value.Clamp(range.Start, range.End);
 		}
 	}
 }

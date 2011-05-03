@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -50,7 +50,6 @@
     <Compile Include="Design\Factory.cs" />
     <Compile Include="Design\IFactory.cs" />
     <Compile Include="Delegates.cs" />
-    <Compile Include="EventArgs.cs" />
     <Compile Include="Extensions\Collections.cs" />
     <Compile Include="Extensions\Comparables.cs" />
     <Compile Include="Extensions\Matrices.cs" />
@@ -62,6 +61,7 @@
     <Compile Include="Extensions\Ranges.cs" />
     <Compile Include="Extensions\Scalars.cs" />
     <Compile Include="Extensions\Terminal.cs" />
+    <Compile Include="Formats\Mpeg\MpegFrame.cs" />
     <Compile Include="Formats\Riff\RiffDataChunk.cs" />
     <Compile Include="Formats\Riff\RiffFormatChunk.cs" />
     <Compile Include="Formats\Riff\RiffChunk.cs" />
@@ -103,5 +103,6 @@
     <Compile Include="Maps\Vectors\Orthotope1DoubleMap.cs" />
     <Compile Include="Maps\Vectors\Orthotope2DoubleMap.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

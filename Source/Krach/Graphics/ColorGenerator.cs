@@ -14,10 +14,8 @@
 // You should have received a copy of the GNU General Public License along with
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using Krach;
 
 namespace Krach.Graphics
 {
@@ -37,18 +35,17 @@ namespace Krach.Graphics
 
 		Color GetColor()
 		{
-			if (!colors.Any()) return GetRandomColors(generator, 1).Single();
+			if (!colors.Any()) return GetRandomColors(1).Single();
 
 			return
 			(
-				from randomColor in GetRandomColors(generator, 5000)
+				from randomColor in GetRandomColors(5000)
 				orderby colors.Min(color => Color.DistanceRgb(randomColor, color)) descending
 				select randomColor
 			)
 			.First();
 		}
-
-		static IEnumerable<Color> GetRandomColors(RandomNumberGenerator generator, int count)
+		IEnumerable<Color> GetRandomColors(int count)
 		{
 			for (int i = 0; i < count; i++) yield return Color.FromHsv(generator.NextDouble(0, 6), generator.NextDouble(0.5, 1), generator.NextDouble(0.5, 1));
 		}

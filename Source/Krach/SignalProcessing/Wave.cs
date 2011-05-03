@@ -47,7 +47,7 @@ namespace Krach.SignalProcessing
 
 		public static Wave operator +(Wave wave1, Wave wave2)
 		{
-			if (wave1.frequency != wave2.frequency) throw new ArgumentException("The frequencies don't match.");
+			if (wave1.frequency != wave2.frequency) throw new ArgumentException("The frequencies of 'wave1' and 'wave2' don't match.");
 
 			double basePhase = wave1.phase;
 			double phaseDifference = wave2.phase - wave1.phase;

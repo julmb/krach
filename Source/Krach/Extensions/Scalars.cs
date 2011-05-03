@@ -103,35 +103,6 @@ namespace Krach.Extensions
 		{
 			return Math.Atan2(y, x);
 		}
-		// Clamping
-		public static double Clamp(this double value, double minimum, double maximum)
-		{
-			value = Maximum(value, minimum);
-			value = Minimum(value, maximum);
-
-			return value;
-		}
-		public static double Clamp(this double value, Range<double> range)
-		{
-			return value.Clamp(range.Start, range.End);
-		}
-		// Minimum and Maximum
-		public static double Minimum(this IEnumerable<double> values)
-		{
-			return values.Min();
-		}
-		public static double Minimum(params double[] values)
-		{
-			return values.Min();
-		}
-		public static double Maximum(this IEnumerable<double> values)
-		{
-			return values.Max();
-		}
-		public static double Maximum(params double[] values)
-		{
-			return values.Max();
-		}
 		// Absolute
 		public static double Absolute(this double value)
 		{
@@ -242,7 +213,7 @@ namespace Krach.Extensions
 			start = start.Ceiling(intervalLength);
 			end = end.Floor(intervalLength);
 
-			return GetValues(start, end, (int)((end - start) / intervalLength).Round());
+			return GetIntermediateValues(start, end, (int)((end - start) / intervalLength).Round());
 		}
 		// Interpolation
 		public static double InterpolateLinear(double value1, double value2, double fraction)
@@ -257,7 +228,7 @@ namespace Krach.Extensions
 
 			return InterpolateLinear(value1, value2, 0.5 * (1 + Scalars.PSine(0.5 * fraction + 0.25)));
 		}
-		public static IEnumerable<double> GetValues(double start, double end, int count)
+		public static IEnumerable<double> GetIntermediateValues(double start, double end, int count)
 		{
 			for (int index = 0; index <= count; index++) yield return start + index * (end - start) / count;
 		}
