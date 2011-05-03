@@ -45,6 +45,7 @@
     <Compile Include="Basics\Range.cs" />
     <Compile Include="Basics\Vector1Double.cs" />
     <Compile Include="Basics\Vector2Double.cs" />
+    <Compile Include="BitField.cs" />
     <Compile Include="Collections\BatchCollection.cs" />
     <Compile Include="Collections\SearchList.cs" />
     <Compile Include="Design\Factory.cs" />
@@ -52,6 +53,7 @@
     <Compile Include="Delegates.cs" />
     <Compile Include="Extensions\Collections.cs" />
     <Compile Include="Extensions\Comparables.cs" />
+    <Compile Include="Extensions\Enumerations.cs" />
     <Compile Include="Extensions\Matrices.cs" />
     <Compile Include="Extensions\Dictionaries.cs" />
     <Compile Include="Extensions\Enumerables.cs" />
@@ -60,12 +62,32 @@
     <Compile Include="Extensions\Queues.cs" />
     <Compile Include="Extensions\Ranges.cs" />
     <Compile Include="Extensions\Scalars.cs" />
+    <Compile Include="Extensions\Streams.cs" />
     <Compile Include="Extensions\Terminal.cs" />
-    <Compile Include="Formats\Mpeg\MpegFrame.cs" />
+    <Compile Include="Formats\Mpeg\MpegAudioFile.cs" />
+    <Compile Include="Formats\Mpeg\MpegAudioFrame.cs" />
     <Compile Include="Formats\Riff\RiffDataChunk.cs" />
     <Compile Include="Formats\Riff\RiffFormatChunk.cs" />
     <Compile Include="Formats\Riff\RiffChunk.cs" />
     <Compile Include="Formats\Riff\RiffWaveChunk.cs" />
+    <Compile Include="Formats\Tags\Id3v2\Id3v2CommentFrame.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Formats\Tags\Id3v2\Id3v2Frame.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Formats\Tags\Id3v2\Id3v2PictureFrame.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Formats\Tags\Id3v2\Id3v2PrivateFrame.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Formats\Tags\Id3v2\Id3v2Tag.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Formats\Tags\Id3v2\Id3v2TextFrame.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="SignalProcessing\Wave.cs" />
     <Compile Include="SignalProcessing\DiscreteFourierTransform.cs" />
     <Compile Include="SignalProcessing\SpectralAnalysis.cs" />

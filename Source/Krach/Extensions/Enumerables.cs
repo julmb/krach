@@ -75,13 +75,13 @@ namespace Krach.Extensions
 		{
 			if (source == null) throw new ArgumentNullException("source");
 
-			return Enumerable.Concat(source, Single(item));
+			return Enumerable.Concat(source, Create(item));
 		}
 		public static IEnumerable<TSource> Except<TSource>(this IEnumerable<TSource> source, TSource item)
 		{
 			if (source == null) throw new ArgumentNullException("source");
 
-			return source.Except(Single(item));
+			return source.Except(Create(item));
 		}
 		public static IEnumerable<TSource> SkipLast<TSource>(this IEnumerable<TSource> source, int count)
 		{
@@ -110,6 +110,15 @@ namespace Krach.Extensions
 			}
 
 			return queue;
+		}
+		public static IEnumerable<TSource> GetRange<TSource>(this IEnumerable<TSource> source, int startIndex, int endIndex)
+		{
+			if (source == null) throw new ArgumentNullException("source");
+			if (startIndex < 0 || startIndex > source.Count()) throw new ArgumentOutOfRangeException("startIndex");
+			if (endIndex < 0 || endIndex > source.Count()) throw new ArgumentOutOfRangeException("endIndex");
+			if (endIndex < startIndex) throw new ArgumentException("Parameter 'endIndex' cannot be smaller than parameter 'startIndex'.");
+
+			return source.Skip(startIndex).Take(endIndex - startIndex);
 		}
 		public static IEnumerable<TSource> Separate<TSource>(this IEnumerable<TSource> source, TSource separator)
 		{
@@ -218,10 +227,6 @@ namespace Krach.Extensions
 		public static IEnumerable<TSource> Consume<TSource>(Func<TSource> getItem)
 		{
 			while (true) yield return getItem();
-		}
-		public static IEnumerable<TSource> Single<TSource>(TSource item)
-		{
-			yield return item;
 		}
 	}
 }
