@@ -24,7 +24,7 @@ namespace Krach.Extensions
 		{
 			T result = (T)Enum.ToObject(typeof(T), value);
 
-			if (!Enum.IsDefined(typeof(T), result)) throw new ArgumentOutOfRangeException("value");
+			if (!Enum.IsDefined(typeof(T), value)) throw new ArgumentOutOfRangeException("value");
 
 			return result;
 		}

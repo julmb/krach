@@ -70,24 +70,15 @@
     <Compile Include="Formats\Riff\RiffFormatChunk.cs" />
     <Compile Include="Formats\Riff\RiffChunk.cs" />
     <Compile Include="Formats\Riff\RiffWaveChunk.cs" />
-    <Compile Include="Formats\Tags\Id3v2\Id3v2CommentFrame.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Formats\Tags\Id3v2\Id3v2UserTextFrame.cs" />
     <Compile Include="Formats\Tags\Id3v2\Id3v2Frame.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Formats\Tags\Id3v2\Id3v2PictureFrame.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Formats\Tags\Id3v2\Id3v2PrivateFrame.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Formats\Tags\Id3v2\Id3v2GenericFrame.cs" />
     <Compile Include="Formats\Tags\Id3v2\Id3v2Tag.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Formats\Tags\Id3v2\Id3v2TextFrame.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Formats\Tags\Id3v2\Id3v2TextFrame.cs" />
     <Compile Include="SignalProcessing\Wave.cs" />
     <Compile Include="SignalProcessing\DiscreteFourierTransform.cs" />
     <Compile Include="SignalProcessing\SpectralAnalysis.cs" />

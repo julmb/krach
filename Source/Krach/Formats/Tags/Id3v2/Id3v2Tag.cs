@@ -67,29 +67,29 @@ namespace Krach.Formats.Tags.Id3v2
 			lengthData = new BitField(Enumerables.Concatenate(lengthData.Bits.GetRange(1, 8), lengthData.Bits.GetRange(9, 16), lengthData.Bits.GetRange(17, 24), lengthData.Bits.GetRange(25, 32)));
 			this.length = lengthData.Value;
 
-			long startPosition = reader.BaseStream.Position;
+			long endPosition = reader.BaseStream.Position + length;
 
-			while (reader.BaseStream.Position < startPosition + length)
+			while (reader.BaseStream.Position < endPosition)
 			{
 				// Padding has started
 				if (reader.PeekChar() == 0) break;
 
-				Id3v2Frame frame = null;
-
 				string frameIdentifier = new string(reader.PeekChars(4));
 
-				if (frameIdentifier[0] == 'T' && frameIdentifier != "TXXX") frame = new Id3v2TextFrame(reader);
-				if (frameIdentifier == "APIC") frame = new Id3v2PictureFrame(reader);
-				if (frameIdentifier == "PRIV") frame = new Id3v2PrivateFrame(reader);
-				if (frameIdentifier == "COMM") frame = new Id3v2CommentFrame(reader);
+				Id3v2Frame frame;
 
-				if (frame == null) throw new ArgumentException(string.Format("Unknown frame identifier '{0}'.", frameIdentifier));
+				if (frameIdentifier[0] == 'T')
+				{
+					if (frameIdentifier == "TXXX") frame = new Id3v2UserTextFrame(reader);
+					else frame = new Id3v2TextFrame(reader);
+				}
+				else frame = new Id3v2GenericFrame(reader);
 
 				frames.Add(frame);
 			}
 
-			// Move to the end of padding
-			reader.BaseStream.Position = startPosition + length;
+			// Move to the end of the tag (skip potential padding)
+			reader.BaseStream.Position = endPosition;
 		}
 	}
 }

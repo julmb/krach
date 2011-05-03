@@ -29,6 +29,7 @@ namespace Krach.Formats.Mpeg
 		readonly Id3v2Tag tag;
 		readonly List<MpegAudioFrame> frames = new List<MpegAudioFrame>();
 
+		public Id3v2Tag Tag { get { return tag; } }
 		public IEnumerable<MpegAudioFrame> Frames { get { return frames; } }
 
 		public MpegAudioFile(BinaryReader reader)

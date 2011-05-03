@@ -16,19 +16,22 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Krach.Formats.Tags.Id3v2
 {
-	public class Id3v2TextFrame : Id3v2Frame
+	public class Id3v2UserTextFrame : Id3v2Frame
 	{
 		readonly Encoding encoding;
+		readonly string description;
 		readonly string text;
 
 		public Encoding Encoding { get { return encoding; } }
+		public string Description { get { return description; } }
 		public string Text { get { return text; } }
 
-		public Id3v2TextFrame(BinaryReader reader)
+		public Id3v2UserTextFrame(BinaryReader reader)
 			: base(reader)
 		{
 			byte encodingIdentifier = reader.ReadByte();
@@ -40,12 +43,17 @@ namespace Krach.Formats.Tags.Id3v2
 				default: throw new ArgumentException(string.Format("Unknown encoding identifier '{0}'.", encodingIdentifier));
 			}
 
-			this.text = encoding.GetString(reader.ReadBytes(DataLength - 1));
+			byte[] data = reader.ReadBytes(DataLength - 1);
+			byte[] descriptionData = data.TakeWhile(item => item != 0).ToArray();
+			byte[] textData = data.SkipWhile(item => item != 0).Skip(1).ToArray();
+
+			this.description = encoding.GetString(descriptionData);
+			this.text = encoding.GetString(textData);
 		}
 
 		public override string ToString()
 		{
-			return string.Format("{0}: {1}", Identifier, text);
+			return string.Format("{0}: {1}", description, text);
 		}
 	}
 }

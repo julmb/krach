@@ -14,20 +14,21 @@
 // You should have received a copy of the GNU General Public License along with
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
+using System.Collections.Generic;
 
 namespace Krach.Formats.Tags.Id3v2
 {
-	class Id3v2CommentFrame : Id3v2Frame
+	public class Id3v2GenericFrame : Id3v2Frame
 	{
-		public Id3v2CommentFrame(BinaryReader reader)
+		readonly byte[] data;
+
+		public IEnumerable<byte> Data { get { return data; } }
+
+		public Id3v2GenericFrame(BinaryReader reader)
 			: base(reader)
 		{
-			reader.ReadBytes(DataLength);
+			this.data = reader.ReadBytes(DataLength);
 		}
 	}
 }

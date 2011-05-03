@@ -23,16 +23,16 @@ namespace Krach
 {
 	public class BitField
 	{
-		readonly IEnumerable<bool> bits;
+		readonly bool[] bits;
 
 		public IEnumerable<bool> Bits { get { return bits; } }
 		public int Value
 		{
 			get
 			{
-				int index = 0;
 				int result = 0;
-				foreach (bool bit in bits.Reverse()) result += (bit ? 1 : 0) << index++;
+
+				for (int index = 0; index < bits.Length; index++) result += (bits[index] ? 1 : 0) << ((bits.Length - 1) - index);
 
 				return result;
 			}
@@ -42,20 +42,28 @@ namespace Krach
 		{
 			if (bits == null) throw new ArgumentNullException("bits");
 
+			this.bits = bits.ToArray();
+		}
+		BitField(bool[] bits)
+		{
 			this.bits = bits;
 		}
 
 		public BitField GetRange(int startPosition, int endPosition)
 		{
-			if (startPosition < 0 || startPosition > bits.Count()) throw new ArgumentOutOfRangeException("startPosition");
-			if (endPosition < 0 || endPosition > bits.Count()) throw new ArgumentOutOfRangeException("endPosition");
+			if (startPosition < 0 || startPosition > bits.Length) throw new ArgumentOutOfRangeException("startPosition");
+			if (endPosition < 0 || endPosition > bits.Length) throw new ArgumentOutOfRangeException("endPosition");
 			if (endPosition < startPosition) throw new ArgumentException("Parameter 'endPosition' cannot be smaller than parameter 'startPosition'.");
 
-			return new BitField(bits.GetRange(startPosition, endPosition));
+			bool[] data = new bool[endPosition - startPosition];
+
+			Array.Copy(bits, startPosition, data, 0, data.Length);
+
+			return new BitField(data);
 		}
 		public bool GetBit(int position)
 		{
-			return bits.ElementAt(position);
+			return bits[position];
 		}
 		public override string ToString()
 		{
@@ -66,26 +74,15 @@ namespace Krach
 		{
 			if (data == null) throw new ArgumentNullException("data");
 
-			return FromBytes(data, 0, data.Count() * 8);
-		}
-		public static BitField FromBytes(IEnumerable<byte> data, int startPosition, int endPosition)
-		{
-			if (data == null) throw new ArgumentNullException("data");
-
 			byte[] bytes = data.ToArray();
+			bool[] bits = new bool[bytes.Length * 8];
 
-			if (startPosition < 0 || startPosition > bytes.Length * 8) throw new ArgumentOutOfRangeException("startPosition");
-			if (endPosition < 0 || endPosition > bytes.Length * 8) throw new ArgumentOutOfRangeException("endPosition");
-			if (endPosition < startPosition) throw new ArgumentException("Parameter 'endPosition' cannot be smaller than parameter 'startPosition'.");
-
-			List<bool> bits = new List<bool>();
-
-			for (int position = startPosition; position < endPosition; position++)
+			for (int position = 0; position < bits.Length; position++)
 			{
 				int byteIndex = position / 8;
 				int bitIndex = 7 - position % 8;
 
-				bits.Add((bytes[byteIndex] & (1 << bitIndex)) != 0);
+				bits[position] = (bytes[byteIndex] & (1 << bitIndex)) != 0;
 			}
 
 			return new BitField(bits);

@@ -31,6 +31,16 @@ namespace Krach.Formats.Mpeg
 	public enum Emphasis { None = 0x0, MS50_15 = 0x1, Reserved = 0x2, CcitJ_17 = 0x3 }
 	public class MpegAudioFrame
 	{
+		static readonly int[] version1Layer1Bitrates = new[] { 0, 32, 64, 96, 128, 160, 192, 224, 256, 288, 320, 352, 384, 416, 448, 0 };
+		static readonly int[] version1Layer2Bitrates = new[] { 0, 32, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320, 384, 0 };
+		static readonly int[] version1Layer3Bitrates = new[] { 0, 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320, 0 };
+		static readonly int[] version2Layer1Bitrates = new[] { 0, 32, 48, 56, 64, 80, 96, 112, 128, 144, 160, 176, 192, 224, 256, 0 };
+		static readonly int[] version2Layer2Bitrates = new[] { 0, 8, 16, 24, 32, 40, 48, 56, 64, 80, 96, 112, 128, 144, 160, 0 };
+		static readonly int[] version2Layer3Bitrates = new[] { 0, 8, 16, 24, 32, 40, 48, 56, 64, 80, 96, 112, 128, 144, 160, 0 };
+		static readonly int[] version1SamplingRates = new[] { 44100, 48000, 32000, 0 };
+		static readonly int[] version2SamplingRates = new[] { 22500, 24000, 16000, 0 };
+		static readonly int[] version25SamplingRates = new[] { 11025, 12000, 8000, 0 };
+
 		readonly BitField sync;
 		readonly Version version;
 		readonly Layer layer;
@@ -161,30 +171,23 @@ namespace Krach.Formats.Mpeg
 		{
 			if (value <= 0 || value >= 15) throw new ArgumentOutOfRangeException("value");
 
-			int[] version1Layer1 = new[] { 0, 32, 64, 96, 128, 160, 192, 224, 256, 288, 320, 352, 384, 416, 448, 0 };
-			int[] version1Layer2 = new[] { 0, 32, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320, 384, 0 };
-			int[] version1Layer3 = new[] { 0, 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320, 0 };
-			int[] version2Layer1 = new[] { 0, 32, 48, 56, 64, 80, 96, 112, 128, 144, 160, 176, 192, 224, 256, 0 };
-			int[] version2Layer2 = new[] { 0, 8, 16, 24, 32, 40, 48, 56, 64, 80, 96, 112, 128, 144, 160, 0 };
-			int[] version2Layer3 = new[] { 0, 8, 16, 24, 32, 40, 48, 56, 64, 80, 96, 112, 128, 144, 160, 0 };
-
 			switch (version)
 			{
 				case Version.Mpeg1:
 					switch (layer)
 					{
-						case Layer.LayerI: return version1Layer1[value];
-						case Layer.LayerII: return version1Layer2[value];
-						case Layer.LayerIII: return version1Layer3[value];
+						case Layer.LayerI: return version1Layer1Bitrates[value];
+						case Layer.LayerII: return version1Layer2Bitrates[value];
+						case Layer.LayerIII: return version1Layer3Bitrates[value];
 						default: throw new ArgumentOutOfRangeException("layer");
 					}
 				case Version.Mpeg2:
 				case Version.Mpeg25:
 					switch (layer)
 					{
-						case Layer.LayerI: return version2Layer1[value];
-						case Layer.LayerII: return version2Layer2[value];
-						case Layer.LayerIII: return version2Layer3[value];
+						case Layer.LayerI: return version2Layer1Bitrates[value];
+						case Layer.LayerII: return version2Layer2Bitrates[value];
+						case Layer.LayerIII: return version2Layer3Bitrates[value];
 						default: throw new ArgumentOutOfRangeException("layer");
 					}
 				default: throw new ArgumentOutOfRangeException("version");
@@ -194,15 +197,11 @@ namespace Krach.Formats.Mpeg
 		{
 			if (value < 0 || value >= 3) throw new ArgumentOutOfRangeException("value");
 
-			int[] version1 = new[] { 44100, 48000, 32000, 0 };
-			int[] version2 = new[] { 22500, 24000, 16000, 0 };
-			int[] version25 = new[] { 11025, 12000, 8000, 0 };
-
 			switch (version)
 			{
-				case Version.Mpeg1: return version1[value];
-				case Version.Mpeg2: return version2[value];
-				case Version.Mpeg25: return version25[value];
+				case Version.Mpeg1: return version1SamplingRates[value];
+				case Version.Mpeg2: return version2SamplingRates[value];
+				case Version.Mpeg25: return version25SamplingRates[value];
 				default: throw new ArgumentOutOfRangeException("version");
 			}
 		}
