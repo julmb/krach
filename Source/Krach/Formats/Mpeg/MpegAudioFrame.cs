@@ -38,7 +38,7 @@ namespace Krach.Formats.Mpeg
 		static readonly int[] version2Layer2Bitrates = new[] { 0, 8, 16, 24, 32, 40, 48, 56, 64, 80, 96, 112, 128, 144, 160, 0 };
 		static readonly int[] version2Layer3Bitrates = new[] { 0, 8, 16, 24, 32, 40, 48, 56, 64, 80, 96, 112, 128, 144, 160, 0 };
 		static readonly int[] version1SamplingRates = new[] { 44100, 48000, 32000, 0 };
-		static readonly int[] version2SamplingRates = new[] { 22500, 24000, 16000, 0 };
+		static readonly int[] version2SamplingRates = new[] { 22050, 24000, 16000, 0 };
 		static readonly int[] version25SamplingRates = new[] { 11025, 12000, 8000, 0 };
 
 		readonly BitField sync;
@@ -118,8 +118,6 @@ namespace Krach.Formats.Mpeg
 			int dataLength = GetSampleCount(version, layer) * dataRate / sampleRate;
 			int paddingLength = padding ? GetSlotLength(layer) : 0;
 			this.data = reader.ReadBytes(dataLength + paddingLength - headerLength - checksumLength);
-
-			Console.WriteLine();
 		}
 
 		public override string ToString()
