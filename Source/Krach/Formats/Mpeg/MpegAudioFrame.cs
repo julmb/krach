@@ -75,33 +75,6 @@ namespace Krach.Formats.Mpeg
 		public ushort Checksum { get { return checksum; } }
 		public IEnumerable<byte> Data { get { return data; } }
 		public int Length { get { return 4 + (errorProtection ? 2 : 0) + data.Length; } }
-		public int SampleCount
-		{
-			get
-			{
-				switch (layer)
-				{
-					case Layer.LayerI: return 0x180;
-					case Layer.LayerII: return 0x480;
-					case Layer.LayerIII: return 0x480;
-					default: throw new InvalidOperationException();
-				}
-			}
-		}
-		public double SampleLength { get { return (double)dataRate / (double)sampleRate; } }
-		public int SlotLength
-		{
-			get
-			{
-				switch (layer)
-				{
-					case Layer.LayerI: return 4;
-					case Layer.LayerII: return 1;
-					case Layer.LayerIII: return 1;
-					default: throw new InvalidOperationException();
-				}
-			}
-		}
 
 		public MpegAudioFrame(BinaryReader reader)
 		{
@@ -113,11 +86,11 @@ namespace Krach.Formats.Mpeg
 			if (version == Version.Reserved) throw new ArgumentException(string.Format("Incorrect version '{0}'.", version));
 			this.layer = header.GetRange(13, 15).Value.ToEnumeration<Layer>();
 			if (layer == Layer.Reserved) throw new ArgumentException(string.Format("Incorrect layer '{0}'.", layer));
-			this.errorProtection = header.GetRange(15, 16).Value == 0;
+			this.errorProtection = !header.GetBit(15);
 			this.dataRate = GetBitRate(version, layer, header.GetRange(16, 20).Value) * 1000 / 8;
 			this.sampleRate = GetSamplingRate(version, header.GetRange(20, 22).Value);
-			this.padding = header.GetRange(22, 23).Value == 1;
-			this.privateBit = header.GetRange(23, 24).Value == 1;
+			this.padding = header.GetBit(22);
+			this.privateBit = header.GetBit(23);
 			this.channelMode = header.GetRange(24, 26).Value.ToEnumeration<ChannelMode>();
 			switch (layer)
 			{
@@ -132,15 +105,21 @@ namespace Krach.Formats.Mpeg
 					break;
 				default: throw new InvalidOperationException();
 			}
-			// TODO: Use GetBit for flags
-			this.copyright = header.GetRange(28, 29).Value == 1;
-			this.original = header.GetRange(29, 30).Value == 1;
+			this.copyright = header.GetBit(28);
+			this.original = header.GetBit(29);
 			this.emphasis = header.GetRange(30, 32).Value.ToEnumeration<Emphasis>();
 
 			// TODO: Test for correctness of the checksum
 			this.checksum = errorProtection ? reader.ReadUInt16() : (ushort)0;
 
-			this.data = reader.ReadBytes((int)(SampleCount * SampleLength) + (padding ? SlotLength : 0) - (errorProtection ? 2 : 0) - 4);
+			// TODO: This is not always correct
+			int headerLength = 4;
+			int checksumLength = errorProtection ? 2 : 0;
+			int dataLength = GetSampleCount(version, layer) * dataRate / sampleRate;
+			int paddingLength = padding ? GetSlotLength(layer) : 0;
+			this.data = reader.ReadBytes(dataLength + paddingLength - headerLength - checksumLength);
+
+			Console.WriteLine();
 		}
 
 		public override string ToString()
@@ -203,6 +182,33 @@ namespace Krach.Formats.Mpeg
 				case Version.Mpeg2: return version2SamplingRates[value];
 				case Version.Mpeg25: return version25SamplingRates[value];
 				default: throw new ArgumentOutOfRangeException("version");
+			}
+		}
+		static int GetSampleCount(Version version, Layer layer)
+		{
+			switch (layer)
+			{
+				case Layer.LayerI: return 0x180;
+				case Layer.LayerII: return 0x480;
+				case Layer.LayerIII:
+					switch (version)
+					{
+						case Version.Mpeg1: return 0x480;
+						case Version.Mpeg2: return 0x240;
+						case Version.Mpeg25: return 0x240;
+						default: throw new InvalidOperationException();
+					}
+				default: throw new InvalidOperationException();
+			}
+		}
+		static int GetSlotLength(Layer layer)
+		{
+			switch (layer)
+			{
+				case Layer.LayerI: return 4;
+				case Layer.LayerII: return 1;
+				case Layer.LayerIII: return 1;
+				default: throw new InvalidOperationException();
 			}
 		}
 	}
