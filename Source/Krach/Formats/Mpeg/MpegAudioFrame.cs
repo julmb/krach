@@ -112,7 +112,6 @@ namespace Krach.Formats.Mpeg
 			// TODO: Test for correctness of the checksum
 			this.checksum = errorProtection ? reader.ReadUInt16() : (ushort)0;
 
-			// TODO: This is not always correct
 			int headerLength = 4;
 			int checksumLength = errorProtection ? 2 : 0;
 			int dataLength = GetSampleCount(version, layer) * dataRate / sampleRate;
