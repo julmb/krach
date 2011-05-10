@@ -20,9 +20,9 @@ namespace Krach.Extensions
 {
 	public static class Streams
 	{
-		public static char[] PeekChars(this BinaryReader reader, int count)
+		public static byte[] Peek(this BinaryReader reader, int count)
 		{
-			char[] result = reader.ReadChars(count);
+			byte[] result = reader.ReadBytes(count);
 
 			reader.BaseStream.Position -= count;
 

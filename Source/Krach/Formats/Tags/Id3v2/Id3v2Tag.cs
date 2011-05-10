@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Krach.Extensions;
+using System.Text;
 
 namespace Krach.Formats.Tags.Id3v2
 {
@@ -43,7 +44,7 @@ namespace Krach.Formats.Tags.Id3v2
 
 		public Id3v2Tag(BinaryReader reader)
 		{
-			this.identifier = new string(reader.ReadChars(3));
+			this.identifier = Encoding.ASCII.GetString(reader.ReadBytes(3));
 			if (identifier != "ID3") throw new ArgumentException(string.Format("Wrong identifier '{0}', should be 'ID3'.", identifier));
 
 			this.majorVersion = reader.ReadByte();
@@ -74,7 +75,7 @@ namespace Krach.Formats.Tags.Id3v2
 				// Padding has started
 				if (reader.PeekChar() == 0) break;
 
-				string frameIdentifier = new string(reader.PeekChars(4));
+				string frameIdentifier = Encoding.ASCII.GetString(reader.Peek(4));;
 
 				Id3v2Frame frame;
 

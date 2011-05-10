@@ -16,6 +16,7 @@
 
 using System;
 using System.IO;
+using System.Text;
 
 namespace Krach.Formats.Riff
 {
@@ -38,7 +39,7 @@ namespace Krach.Formats.Riff
 		{
 			if (reader == null) throw new ArgumentNullException("reader");
 
-			this.id = new string(reader.ReadChars(4));
+			this.id = Encoding.ASCII.GetString(reader.ReadBytes(4));;
 			this.size = reader.ReadUInt32();
 		}
 

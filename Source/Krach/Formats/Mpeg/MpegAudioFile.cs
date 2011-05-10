@@ -34,7 +34,7 @@ namespace Krach.Formats.Mpeg
 
 		public MpegAudioFile(BinaryReader reader)
 		{
-			if (new string(reader.PeekChars(3)) == "ID3") tag = new Id3v2Tag(reader);
+			if (Encoding.ASCII.GetString(reader.Peek(3)) == "ID3") tag = new Id3v2Tag(reader);
 
 			while (reader.BaseStream.Position < reader.BaseStream.Length) frames.Add(new MpegAudioFrame(reader));
 		}

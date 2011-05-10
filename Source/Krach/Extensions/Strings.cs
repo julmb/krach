@@ -25,6 +25,9 @@ namespace Krach.Extensions
 			if (text1 == null) throw new ArgumentNullException("text1");
 			if (text2 == null) throw new ArgumentNullException("text2");
 
+			text1 = text1.ToLowerInvariant();
+			text2 = text2.ToLowerInvariant();
+
 			int rows = text1.Length + 1;
 			int columns = text2.Length + 1;
 

@@ -18,6 +18,7 @@ using System;
 using System.IO;
 using System.Text.RegularExpressions;
 using Krach;
+using System.Text;
 
 namespace Krach.Formats.Tags.Id3v2
 {
@@ -44,7 +45,7 @@ namespace Krach.Formats.Tags.Id3v2
 
 		public Id3v2Frame(BinaryReader reader)
 		{
-			this.identifier = new string(reader.ReadChars(4));
+			this.identifier = Encoding.ASCII.GetString(reader.ReadBytes(4));
 			if (!Regex.IsMatch(identifier, "^[A-Z0-9]{4}$")) throw new ArgumentException(string.Format("Invalid frame identifier '{0}'", identifier));
 
 			this.length = BitField.FromBytes(reader.ReadBytes(4)).Value;

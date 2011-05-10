@@ -18,6 +18,7 @@ using System;
 using System.IO;
 using System.Linq;
 using Krach.Audio;
+using System.Text;
 
 namespace Krach.Formats.Riff
 {
@@ -46,7 +47,7 @@ namespace Krach.Formats.Riff
 		{
 			if (ID != "RIFF") throw new ArgumentException(string.Format("Wrong chunk ID '{0}', should be 'RIFF'.", ID));
 
-			this.riffID = new string(reader.ReadChars(4));
+			this.riffID = Encoding.ASCII.GetString(reader.ReadBytes(4));
 
 			if (riffID != "WAVE") throw new ArgumentException(string.Format("Wrong RIFF ID '{0}', should be 'WAVE'.", riffID));
 
