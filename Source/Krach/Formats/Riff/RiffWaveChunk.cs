@@ -17,8 +17,8 @@
 using System;
 using System.IO;
 using System.Linq;
-using Krach.Audio;
 using System.Text;
+using Krach.Audio;
 
 namespace Krach.Formats.Riff
 {

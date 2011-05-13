@@ -119,30 +119,6 @@ namespace Krach.Formats.Mpeg
 			this.data = reader.ReadBytes(dataLength + paddingLength - headerLength - checksumLength);
 		}
 
-		public override string ToString()
-		{
-			StringBuilder result = new StringBuilder();
-
-			result.AppendLine("Sync: " + sync);
-			result.AppendLine("Version: " + version);
-			result.AppendLine("Layer: " + layer);
-			result.AppendLine("Error protection: " + errorProtection);
-			result.AppendLine("Data rate (B/s): " + dataRate);
-			result.AppendLine("Sample rate (Hz): " + sampleRate);
-			result.AppendLine("Padding: " + padding);
-			result.AppendLine("Private bit: " + privateBit);
-			result.AppendLine("Channel mode: " + channelMode);
-			result.AppendLine("Join bands: " + joinBands);
-			result.AppendLine("Join mode: " + joinMode);
-			result.AppendLine("Copyright: " + copyright);
-			result.AppendLine("Original: " + original);
-			result.AppendLine("Emphasis: " + emphasis);
-			if (errorProtection) result.AppendLine("Checksum: " + checksum.ToString("X4"));
-			result.AppendLine("Data length: " + data.Length);
-
-			return result.ToString();
-		}
-
 		static int GetBitRate(Version version, Layer layer, int value)
 		{
 			if (value <= 0 || value >= 15) throw new ArgumentOutOfRangeException("value");
