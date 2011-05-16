@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using Krach.Extensions;
 
 namespace Krach.Formats.Mpeg
@@ -117,6 +116,14 @@ namespace Krach.Formats.Mpeg
 			int dataLength = GetSampleCount(version, layer) * dataRate / sampleRate;
 			int paddingLength = padding ? GetSlotLength(layer) : 0;
 			this.data = reader.ReadBytes(dataLength + paddingLength - headerLength - checksumLength);
+		}
+
+		public static bool AreCompatible(MpegAudioFrame frame1, MpegAudioFrame frame2)
+		{
+			if (frame1 == null) throw new ArgumentNullException("frame1");
+			if (frame2 == null) throw new ArgumentNullException("frame2");
+
+			return frame1.version == frame2.version && frame1.layer == frame2.layer && frame1.sampleRate == frame2.sampleRate;
 		}
 
 		static int GetBitRate(Version version, Layer layer, int value)
