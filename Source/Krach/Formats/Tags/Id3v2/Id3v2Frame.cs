@@ -25,7 +25,7 @@ namespace Krach.Formats.Tags.Id3v2
 	public abstract class Id3v2Frame
 	{
 		readonly string identifier;
-		readonly int length;
+		readonly int dataLength;
 		readonly bool tagAlterPreservation;
 		readonly bool fileAlterPreservation;
 		readonly bool readOnly;
@@ -34,21 +34,21 @@ namespace Krach.Formats.Tags.Id3v2
 		readonly bool groupingIdentity;
 
 		public string Identifier { get { return identifier; } }
-		public int TotalLength { get { return length + 10; } }
-		public int DataLength { get { return length; } }
+		public int DataLength { get { return dataLength; } }
 		public bool TagAlterPreservation { get { return tagAlterPreservation; } }
 		public bool FileAlterPreservation { get { return fileAlterPreservation; } }
 		public bool ReadOnly { get { return readOnly; } }
 		public bool Compression { get { return compression; } }
 		public bool Encryption { get { return encryption; } }
 		public bool GroupingIdentity { get { return groupingIdentity; } }
+		public int TotalLength { get { return dataLength + 10; } }
 
 		public Id3v2Frame(BinaryReader reader)
 		{
 			this.identifier = Encoding.ASCII.GetString(reader.ReadBytes(4));
 			if (!Regex.IsMatch(identifier, "^[A-Z0-9]{4}$")) throw new ArgumentException(string.Format("Invalid frame identifier '{0}'", identifier));
 
-			this.length = BitField.FromBytes(reader.ReadBytes(4)).Value;
+			this.dataLength = BitField.FromBytes(reader.ReadBytes(4)).Value;
 
 			BitField flags = BitField.FromBytes(reader.ReadBytes(2));
 			if (flags.GetRange(3, 8).Value != 0 || flags.GetRange(11, 16).Value != 0) throw new ArgumentException(string.Format("Found non-used but set flags '{0}'", flags));

@@ -14,29 +14,24 @@
 // You should have received a copy of the GNU General Public License along with
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
-using Krach.Extensions;
-using Krach.Formats.Tags.Id3v2;
 
 namespace Krach.Formats.Mpeg
 {
-	public class MpegAudioFile
+	public class MpegAudioDataFrame : MpegAudioFrame
 	{
-		readonly Id3v2Tag tag;
-		readonly List<MpegAudioFrame> frames = new List<MpegAudioFrame>();
+		readonly byte[] sideInformation;
+		readonly byte[] data;
 
-		public Id3v2Tag Tag { get { return tag; } }
-		public IEnumerable<MpegAudioFrame> Frames { get { return frames; } }
+		public IEnumerable<byte> SideInformation { get { return sideInformation; } }
+		public IEnumerable<byte> Data { get { return data; } }
 
-		public MpegAudioFile(BinaryReader reader)
+		public MpegAudioDataFrame(BinaryReader reader)
+			: base(reader)
 		{
-			if (Encoding.ASCII.GetString(reader.Peek(3)) == "ID3") tag = new Id3v2Tag(reader);
-
-			while (reader.BaseStream.Position < reader.BaseStream.Length) frames.Add(new MpegAudioDataFrame(reader));
+			this.sideInformation = reader.ReadBytes(SideInformationLength);
+			this.data = reader.ReadBytes(DataLength);
 		}
 	}
 }
