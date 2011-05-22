@@ -18,11 +18,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Krach.Extensions;
 
 namespace Krach.Formats.Mpeg
 {
 	[Flags]
-	public enum MpegAudioXingFields : ushort { FrameCount = 0x0001, AudioLength = 0x0002, TableOfContents = 0x0004, QualityIndicator = 0x0008 }
+	public enum MpegAudioXingFields { FrameCount = 0x0001, AudioLength = 0x0002, TableOfContents = 0x0004, QualityIndicator = 0x0008 }
 	public class MpegAudioXingFrame : MpegAudioFrame
 	{
 		readonly byte[] sideInformation;
@@ -55,15 +56,33 @@ namespace Krach.Formats.Mpeg
 			this.identifier = Encoding.ASCII.GetString(reader.ReadBytes(4));
 			if (identifier != "Xing") throw new ArgumentException(string.Format("Wrong identifier '{0}', should be 'Xing'.", identifier));
 
-			this.fields = (MpegAudioXingFields)reader.ReadUInt16();
-			if (((ushort)fields & 0xFFF0) != 0) throw new ArgumentException(string.Format("Unexpected field flags '{0}' in Xing tag.", fields));
+			this.fields = (MpegAudioXingFields)Binary.SwitchEndianness(reader.ReadUInt32());
+			if (((int)fields & 0xFFFFFFF0) != 0) throw new ArgumentException(string.Format("Unexpected field flags '{0}' in Xing tag.", fields));
 
-			if ((fields & MpegAudioXingFields.FrameCount) != 0) this.frameCount = reader.ReadInt32();
-			if ((fields & MpegAudioXingFields.AudioLength) != 0) this.audioLength = reader.ReadInt32();
+			if ((fields & MpegAudioXingFields.FrameCount) != 0) this.frameCount = Binary.SwitchEndianness(reader.ReadInt32());
+			if ((fields & MpegAudioXingFields.AudioLength) != 0) this.audioLength = Binary.SwitchEndianness(reader.ReadInt32());
 			if ((fields & MpegAudioXingFields.TableOfContents) != 0) this.tableOfContents = reader.ReadBytes(100);
-			if ((fields & MpegAudioXingFields.QualityIndicator) != 0) this.qualityIndicator = reader.ReadInt32();
+			if ((fields & MpegAudioXingFields.QualityIndicator) != 0) this.qualityIndicator = Binary.SwitchEndianness(reader.ReadInt32());
 
-			this.padding = reader.ReadBytes(DataLength - (4 + 2 + FrameCountLength + AudioLengthLength + TableOfContentsLength + QualityIndicatorLength));
+			this.padding = reader.ReadBytes(DataLength - (4 + 4 + FrameCountLength + AudioLengthLength + TableOfContentsLength + QualityIndicatorLength));
+		}
+
+		public override void Write(BinaryWriter writer)
+		{
+			base.Write(writer);
+
+			writer.Write(sideInformation);
+
+			writer.Write(Encoding.ASCII.GetBytes("Xing"));
+
+			writer.Write(Binary.SwitchEndianness((int)fields));
+
+			if ((fields & MpegAudioXingFields.FrameCount) != 0) writer.Write(Binary.SwitchEndianness(frameCount));
+			if ((fields & MpegAudioXingFields.AudioLength) != 0) writer.Write(Binary.SwitchEndianness(audioLength));
+			if ((fields & MpegAudioXingFields.TableOfContents) != 0) writer.Write(tableOfContents);
+			if ((fields & MpegAudioXingFields.QualityIndicator) != 0) writer.Write(Binary.SwitchEndianness(qualityIndicator));
+
+			writer.Write(padding);
 		}
 	}
 }

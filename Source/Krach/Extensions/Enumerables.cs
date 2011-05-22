@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Krach.Basics;
 
 namespace Krach.Extensions
 {
@@ -111,14 +112,17 @@ namespace Krach.Extensions
 
 			return queue;
 		}
-		public static IEnumerable<TSource> GetRange<TSource>(this IEnumerable<TSource> source, int startIndex, int endIndex)
+		public static IEnumerable<TSource> GetRange<TSource>(this IEnumerable<TSource> source, Range<int> range)
 		{
 			if (source == null) throw new ArgumentNullException("source");
-			if (startIndex < 0 || startIndex > source.Count()) throw new ArgumentOutOfRangeException("startIndex");
-			if (endIndex < 0 || endIndex > source.Count()) throw new ArgumentOutOfRangeException("endIndex");
-			if (endIndex < startIndex) throw new ArgumentException("Parameter 'endIndex' cannot be smaller than parameter 'startIndex'.");
+			if (range.Start < 0 || range.Start > source.Count()) throw new ArgumentOutOfRangeException("startIndex");
+			if (range.End < 0 || range.End > source.Count()) throw new ArgumentOutOfRangeException("endIndex");
 
-			return source.Skip(startIndex).Take(endIndex - startIndex);
+			return source.Skip(range.Start).Take(range.Length());
+		}
+		public static IEnumerable<TSource> GetRange<TSource>(this IEnumerable<TSource> source, int startIndex, int endIndex)
+		{
+			return source.GetRange(new Range<int>(startIndex, endIndex));
 		}
 		public static IEnumerable<TSource> Separate<TSource>(this IEnumerable<TSource> source, TSource separator)
 		{

@@ -33,5 +33,13 @@ namespace Krach.Formats.Mpeg
 			this.sideInformation = reader.ReadBytes(SideInformationLength);
 			this.data = reader.ReadBytes(DataLength);
 		}
+
+		public override void Write(BinaryWriter writer)
+		{
+			base.Write(writer);
+
+			writer.Write(sideInformation);
+			writer.Write(data);
+		}
 	}
 }

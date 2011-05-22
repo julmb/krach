@@ -54,18 +54,18 @@ namespace Krach.Formats.Tags.Id3v2
 			if (majorVersion != 3) throw new NotImplementedException();
 
 			BitField flags = BitField.FromBytes(reader.ReadBytes(1));
-			if (flags.GetRange(3, 8).Value != 0) throw new ArgumentException(string.Format("Found non-used but set flags '{0}'", flags));
+			if (flags[3, 8].Value != 0) throw new ArgumentException(string.Format("Found non-used but set flags '{0}'", flags));
 
-			this.unsynchronisation = flags.GetBit(0);
-			this.extendedHeader = flags.GetBit(1);
-			this.experimental = flags.GetBit(2);
+			this.unsynchronisation = flags[0];
+			this.extendedHeader = flags[1];
+			this.experimental = flags[2];
 
 			// TODO:
 			if (unsynchronisation || extendedHeader || experimental) throw new NotImplementedException();
 
 			BitField lengthData = BitField.FromBytes(reader.ReadBytes(4));
-			if (lengthData.GetBit(0) || lengthData.GetBit(8) || lengthData.GetBit(16) || lengthData.GetBit(24)) throw new ArgumentException(string.Format("Found wrongly set bits in the length field '{0}'.", lengthData));
-			lengthData = new BitField(Enumerables.Concatenate(lengthData.Bits.GetRange(1, 8), lengthData.Bits.GetRange(9, 16), lengthData.Bits.GetRange(17, 24), lengthData.Bits.GetRange(25, 32)));
+			if (lengthData[0] || lengthData[8] || lengthData[16] || lengthData[24]) throw new ArgumentException(string.Format("Found wrongly set bits in the length field '{0}'.", lengthData));
+			lengthData = BitField.FromBits(Enumerables.Concatenate(lengthData.Bits.GetRange(1, 8), lengthData.Bits.GetRange(9, 16), lengthData.Bits.GetRange(17, 24), lengthData.Bits.GetRange(25, 32)));
 			this.length = lengthData.Value;
 
 			long endPosition = reader.BaseStream.Position + length;

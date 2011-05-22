@@ -18,27 +18,26 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.IO;
-using Krach.Extensions;
-using Krach.Formats.Tags.Id3v2;
 
-namespace Krach.Formats.Mpeg
+namespace Krach.Extensions
 {
-	public class MpegAudioFile
+	static class Binary
 	{
-		readonly Id3v2Tag tag;
-		readonly List<MpegAudioFrame> frames = new List<MpegAudioFrame>();
-
-		public Id3v2Tag Tag { get { return tag; } }
-		public IEnumerable<MpegAudioFrame> Frames { get { return frames; } }
-
-		// TODO: Make the constructor take the individul components that make up an MpegAudioFile, error-correcting reading of these parts can happen elsewhere
-		public MpegAudioFile(BinaryReader reader)
+		public static UInt16 SwitchEndianness(UInt16 value)
 		{
-			if (Encoding.ASCII.GetString(reader.Peek(3)) == "ID3") tag = new Id3v2Tag(reader);
-
-			long length = reader.BaseStream.Length;
-			while (reader.BaseStream.Position < length) frames.Add(new MpegAudioDataFrame(reader));
+			return (UInt16)((UInt16)((value & 0x00FF) << 8) | (UInt16)((value & 0xFF00) >> 8));
+		}
+		public static Int16 SwitchEndianness(Int16 value)
+		{
+			return (Int16)((Int16)((value & 0x00FF) << 8) | (Int16)((value & 0xFF00) >> 8));
+		}
+		public static UInt32 SwitchEndianness(UInt32 value)
+		{
+			return (UInt32)((UInt32)((value & 0x000000FF) << 24) | (UInt32)((value & 0x0000FF00) << 8) | (UInt32)((value & 0x00FF0000) >> 8) | (UInt32)((value & 0xFF000000) >> 24));
+		}
+		public static Int32 SwitchEndianness(Int32 value)
+		{
+			return (Int32)((Int32)((value & 0x000000FF) << 24) | (Int32)((value & 0x0000FF00) << 8) | (Int32)((value & 0x00FF0000) >> 8) | (Int32)((value & 0xFF000000) >> 24));
 		}
 	}
 }

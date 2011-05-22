@@ -83,6 +83,10 @@ namespace Krach.Basics
 
 			return new Range<T>(start, end);
 		}
+		public static Range<T> Intersect(params Range<T>[] ranges)
+		{
+			return Intersect((IEnumerable<Range<T>>)ranges);
+		}
 		public static Range<T> Union(IEnumerable<Range<T>> ranges)
 		{
 			T start = ranges.Min(range => range.start);
@@ -91,6 +95,10 @@ namespace Krach.Basics
 			if (Comparer<T>.Default.Compare(start, end) > 0) return Range<T>.Default;
 
 			return new Range<T>(start, end);
+		}
+		public static Range<T> Union(params Range<T>[] ranges)
+		{
+			return Union((IEnumerable<Range<T>>)ranges);
 		}
 	}
 }

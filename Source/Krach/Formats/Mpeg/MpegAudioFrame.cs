@@ -17,12 +17,12 @@
 using System;
 using System.IO;
 using System.Linq;
-using Krach.Extensions;
 
 namespace Krach.Formats.Mpeg
 {
 	public abstract class MpegAudioFrame
 	{
+		readonly BitField header;
 		readonly BitField sync;
 		readonly MpegAudioVersion version;
 		readonly MpegAudioLayer layer;
@@ -39,6 +39,7 @@ namespace Krach.Formats.Mpeg
 		readonly MpegAudioEmphasis emphasis;
 		readonly ushort checksum;
 
+		public BitField Header { get { return header; } }
 		public BitField Sync { get { return sync; } }
 		public MpegAudioVersion Version { get { return version; } }
 		public MpegAudioLayer Layer { get { return layer; } }
@@ -64,39 +65,45 @@ namespace Krach.Formats.Mpeg
 		{
 			if (reader == null) throw new ArgumentNullException("reader");
 
-			BitField header = BitField.FromBytes(reader.ReadBytes(4));
-
-			this.sync = header.GetRange(0, 11);
-			if (sync.Bits.Any(bit => !bit)) throw new ArgumentException(string.Format("Incorrect sync '{0}', expected '11111111111'.", sync));
-			this.version = header.GetRange(11, 13).Value.ToEnumeration<MpegAudioVersion>();
+			this.header = BitField.FromBytes(reader.ReadBytes(4));
+			this.sync = header[0, 11];
+			if (sync.Value != 0x07FF) throw new ArgumentException(string.Format("Incorrect sync '{0}', expected '11111111111'.", sync));
+			this.version = (MpegAudioVersion)header[11, 13].Value;
 			if (version == MpegAudioVersion.Reserved) throw new ArgumentException(string.Format("Incorrect version '{0}'.", version));
-			this.layer = header.GetRange(13, 15).Value.ToEnumeration<MpegAudioLayer>();
+			this.layer = (MpegAudioLayer)header[13, 15].Value;
 			if (layer == MpegAudioLayer.Reserved) throw new ArgumentException(string.Format("Incorrect layer '{0}'.", layer));
-			this.hasErrorProtection = !header.GetBit(15);
-			this.dataRate = MpegAudioSpecification.GetBitRate(version, layer, header.GetRange(16, 20).Value) * 1000 / 8;
-			this.sampleRate = MpegAudioSpecification.GetSamplingRate(version, header.GetRange(20, 22).Value);
-			this.hasPadding = header.GetBit(22);
-			this.isPrivate = header.GetBit(23);
-			this.channelMode = header.GetRange(24, 26).Value.ToEnumeration<MpegAudioChannelMode>();
+			this.hasErrorProtection = !header[15];
+			this.dataRate = MpegAudioSpecification.GetBitRate(version, layer, header[16, 20].Value) * 1000 / 8;
+			this.sampleRate = MpegAudioSpecification.GetSamplingRate(version, header[20, 22].Value);
+			this.hasPadding = header[22];
+			this.isPrivate = header[23];
+			this.channelMode = (MpegAudioChannelMode)header[24, 26].Value;
 			switch (layer)
 			{
 				case MpegAudioLayer.LayerI:
 				case MpegAudioLayer.LayerII:
-					this.joinBands = header.GetRange(26, 28).Value.ToEnumeration<MpegAudioJoinBands>();
+					this.joinBands = (MpegAudioJoinBands)header[26, 28].Value;
 					this.joinMode = MpegAudioJoinMode.IntensityStereo;
 					break;
 				case MpegAudioLayer.LayerIII:
 					this.joinBands = MpegAudioJoinBands.Dynamic;
-					this.joinMode = header.GetRange(26, 28).Value.ToEnumeration<MpegAudioJoinMode>();
+					this.joinMode = (MpegAudioJoinMode)header[26, 28].Value;
 					break;
 				default: throw new InvalidOperationException();
 			}
-			this.isCopyrighted = header.GetBit(28);
-			this.isOriginal = header.GetBit(29);
-			this.emphasis = header.GetRange(30, 32).Value.ToEnumeration<MpegAudioEmphasis>();
+			this.isCopyrighted = header[28];
+			this.isOriginal = header[29];
+			this.emphasis = (MpegAudioEmphasis)header[30, 32].Value;
 
 			// TODO: Test for correctness of the checksum
 			this.checksum = hasErrorProtection ? reader.ReadUInt16() : (ushort)0;
+		}
+
+		public virtual void Write(BinaryWriter writer)
+		{
+			writer.Write(header.Bytes.ToArray());
+
+			if (hasErrorProtection) writer.Write(checksum);
 		}
 
 		public static bool AreCompatible(MpegAudioFrame frame1, MpegAudioFrame frame2)

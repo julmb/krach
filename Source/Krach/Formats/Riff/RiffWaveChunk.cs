@@ -62,6 +62,7 @@ namespace Krach.Formats.Riff
 			base.Write(writer);
 
 			writer.Write(riffID.ToCharArray());
+
 			formatChunk.Write(writer);
 			dataChunk.Write(writer);
 		}

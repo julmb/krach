@@ -19,6 +19,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using Krach;
 using System.Text;
+using Krach.Extensions;
 
 namespace Krach.Formats.Tags.Id3v2
 {
@@ -48,17 +49,17 @@ namespace Krach.Formats.Tags.Id3v2
 			this.identifier = Encoding.ASCII.GetString(reader.ReadBytes(4));
 			if (!Regex.IsMatch(identifier, "^[A-Z0-9]{4}$")) throw new ArgumentException(string.Format("Invalid frame identifier '{0}'", identifier));
 
-			this.dataLength = BitField.FromBytes(reader.ReadBytes(4)).Value;
+			this.dataLength = Binary.SwitchEndianness(reader.ReadInt32());
 
 			BitField flags = BitField.FromBytes(reader.ReadBytes(2));
-			if (flags.GetRange(3, 8).Value != 0 || flags.GetRange(11, 16).Value != 0) throw new ArgumentException(string.Format("Found non-used but set flags '{0}'", flags));
+			if (flags[3, 8].Value != 0 || flags[11, 16].Value != 0) throw new ArgumentException(string.Format("Found non-used but set flags '{0}'", flags));
 
-			this.tagAlterPreservation = !flags.GetBit(0);
-			this.fileAlterPreservation = !flags.GetBit(1);
-			this.readOnly = flags.GetBit(2);
-			this.compression = flags.GetBit(8);
-			this.encryption = flags.GetBit(9);
-			this.groupingIdentity = flags.GetBit(10);
+			this.tagAlterPreservation = !flags[0];
+			this.fileAlterPreservation = !flags[1];
+			this.readOnly = flags[2];
+			this.compression = flags[8];
+			this.encryption = flags[9];
+			this.groupingIdentity = flags[10];
 
 			// TODO:
 			if (compression || encryption || groupingIdentity) throw new NotImplementedException();

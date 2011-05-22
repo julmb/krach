@@ -17,75 +17,127 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Krach.Basics;
 using Krach.Extensions;
 
 namespace Krach
 {
-	public class BitField
+	public struct BitField
 	{
 		readonly bool[] bits;
+		readonly Range<int> range;
 
-		public IEnumerable<bool> Bits { get { return bits; } }
+		public IEnumerable<byte> Bytes
+		{
+			get
+			{
+				if (range.Length() % 8 != 0) throw new InvalidOperationException("Cannot get the bytes of a BitField which has a length that is not a multiple of 8.");
+
+				byte[] bytes = new byte[range.Length() / 8];
+
+				for (int index = range.Start; index < range.End; index++)
+				{
+					int byteIndex = (index - range.Start) / 8;
+
+					bytes[byteIndex] <<= 1;
+					bytes[byteIndex] |= (byte)(bits[index] ? 1 : 0);
+				}
+
+				return bytes;
+			}
+		}
+		public IEnumerable<bool> Bits { get { return bits.GetRange(range); } }
 		public int Value
 		{
 			get
 			{
 				int result = 0;
 
-				for (int index = 0; index < bits.Length; index++) result += (bits[index] ? 1 : 0) << ((bits.Length - 1) - index);
+				for (int index = range.Start; index < range.End; index++)
+				{
+					result <<= 1;
+					result |= bits[index] ? 1 : 0;
+				}
 
 				return result;
 			}
 		}
+		public bool this[int position]
+		{
+			get
+			{
+				if (position < range.Start || position > range.End) throw new ArgumentOutOfRangeException("position");
 
-		public BitField(IEnumerable<bool> bits)
+				return bits[range.Start + position];
+			}
+		}
+		public BitField this[Range<int> subRange]
+		{
+			get
+			{
+				subRange = new Range<int>(subRange.Start + range.Start, subRange.End + range.Start);
+
+				if (subRange.Start < range.Start || subRange.End > range.End) throw new ArgumentException("subRange");
+
+				return new BitField(bits, subRange);
+			}
+		}
+		public BitField this[int startPosition, int endPosition] { get { return this[new Range<int>(startPosition, endPosition)]; } }
+
+		BitField(bool[] bits, Range<int> range)
 		{
 			if (bits == null) throw new ArgumentNullException("bits");
+			if (range.Start < 0 || range.End > bits.Length) throw new ArgumentOutOfRangeException("range");
 
-			this.bits = bits.ToArray();
+			this.bits = bits;
+			this.range = range;
 		}
 		BitField(bool[] bits)
 		{
+			if (bits == null) throw new ArgumentNullException("bits");
+
 			this.bits = bits;
+			this.range = new Range<int>(0, bits.Length);
 		}
 
-		public BitField GetRange(int startPosition, int endPosition)
-		{
-			if (startPosition < 0 || startPosition > bits.Length) throw new ArgumentOutOfRangeException("startPosition");
-			if (endPosition < 0 || endPosition > bits.Length) throw new ArgumentOutOfRangeException("endPosition");
-			if (endPosition < startPosition) throw new ArgumentException("Parameter 'endPosition' cannot be smaller than parameter 'startPosition'.");
-
-			bool[] data = new bool[endPosition - startPosition];
-
-			Array.Copy(bits, startPosition, data, 0, data.Length);
-
-			return new BitField(data);
-		}
-		public bool GetBit(int position)
-		{
-			return bits[position];
-		}
 		public override string ToString()
 		{
-			return bits.Select(bit => bit ? 1 : 0).ToStrings().AggregateString();
+			return Bits.Select(bit => bit ? 1 : 0).ToStrings().AggregateString();
 		}
 
-		public static BitField FromBytes(IEnumerable<byte> data)
+		public static BitField FromBytes(byte[] bytes)
 		{
-			if (data == null) throw new ArgumentNullException("data");
+			if (bytes == null) throw new ArgumentNullException("bytes");
 
-			byte[] bytes = data.ToArray();
 			bool[] bits = new bool[bytes.Length * 8];
 
-			for (int position = 0; position < bits.Length; position++)
+			for (int index = 0; index < bits.Length; index++)
 			{
-				int byteIndex = position / 8;
-				int bitIndex = 7 - position % 8;
+				int byteIndex = index / 8;
+				int bitIndex = (8 - 1) - index % 8;
 
-				bits[position] = (bytes[byteIndex] & (1 << bitIndex)) != 0;
+				bits[index] = (bytes[byteIndex] & (1 << bitIndex)) != 0;
 			}
 
 			return new BitField(bits);
+		}
+		public static BitField FromBytes(IEnumerable<byte> bytes)
+		{
+			if (bytes == null) throw new ArgumentNullException("bytes");
+
+			return FromBytes(bytes.ToArray());
+		}
+		public static BitField FromBits(bool[] bits)
+		{
+			if (bits == null) throw new ArgumentNullException("bits");
+
+			return new BitField(bits);
+		}
+		public static BitField FromBits(IEnumerable<bool> bits)
+		{
+			if (bits == null) throw new ArgumentNullException("bits");
+
+			return FromBits(bits.ToArray());
 		}
 	}
 }
