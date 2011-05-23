@@ -26,32 +26,30 @@ namespace Krach.Formats.Mpeg
 	public enum MpegAudioXingFields { FrameCount = 0x0001, AudioLength = 0x0002, TableOfContents = 0x0004, QualityIndicator = 0x0008 }
 	public class MpegAudioXingFrame : MpegAudioFrame
 	{
-		readonly byte[] sideInformation;
 		readonly string identifier;
 		readonly MpegAudioXingFields fields;
 		readonly int frameCount;
 		readonly int audioLength;
 		readonly byte[] tableOfContents;
 		readonly int qualityIndicator;
-		readonly byte[] padding;
 
-		public IEnumerable<byte> SideInformation { get { return sideInformation; } }
 		public string Identifier { get { return identifier; } }
 		public MpegAudioXingFields Fields { get { return fields; } }
 		public int FrameCount { get { return frameCount; } }
 		public int AudioLength { get { return audioLength; } }
 		public IEnumerable<byte> TableOfContents { get { return tableOfContents; } }
 		public int QualityIndicator { get { return qualityIndicator; } }
-		public IEnumerable<byte> Padding { get { return padding; } }
+		public int XingHeaderLength { get { return 4 + 4; } }
 		public int FrameCountLength { get { return ((fields & MpegAudioXingFields.FrameCount) != 0) ? 4 : 0; } }
 		public int AudioLengthLength { get { return ((fields & MpegAudioXingFields.AudioLength) != 0) ? 4 : 0; } }
 		public int TableOfContentsLength { get { return ((fields & MpegAudioXingFields.TableOfContents) != 0) ? 100 : 0; } }
 		public int QualityIndicatorLength { get { return ((fields & MpegAudioXingFields.QualityIndicator) != 0) ? 4 : 0; } }
+		public int XingDataLength { get { return DataLength - (XingHeaderLength + FrameCountLength + AudioLengthLength + TableOfContentsLength + QualityIndicatorLength); } }
 
 		public MpegAudioXingFrame(BinaryReader reader)
 			: base(reader)
 		{
-			this.sideInformation = reader.ReadBytes(SideInformationLength);
+			reader.ReadBytes(SideInformationLength);
 
 			this.identifier = Encoding.ASCII.GetString(reader.ReadBytes(4));
 			if (identifier != "Xing") throw new ArgumentException(string.Format("Wrong identifier '{0}', should be 'Xing'.", identifier));
@@ -64,16 +62,16 @@ namespace Krach.Formats.Mpeg
 			if ((fields & MpegAudioXingFields.TableOfContents) != 0) this.tableOfContents = reader.ReadBytes(100);
 			if ((fields & MpegAudioXingFields.QualityIndicator) != 0) this.qualityIndicator = Binary.SwitchEndianness(reader.ReadInt32());
 
-			this.padding = reader.ReadBytes(DataLength - (4 + 4 + FrameCountLength + AudioLengthLength + TableOfContentsLength + QualityIndicatorLength));
+			reader.ReadBytes(XingDataLength);
 		}
 
 		public override void Write(BinaryWriter writer)
 		{
 			base.Write(writer);
 
-			writer.Write(sideInformation);
+			writer.Write(new byte[SideInformationLength]);
 
-			writer.Write(Encoding.ASCII.GetBytes("Xing"));
+			writer.Write(Encoding.ASCII.GetBytes(identifier));
 
 			writer.Write(Binary.SwitchEndianness((int)fields));
 
@@ -82,7 +80,7 @@ namespace Krach.Formats.Mpeg
 			if ((fields & MpegAudioXingFields.TableOfContents) != 0) writer.Write(tableOfContents);
 			if ((fields & MpegAudioXingFields.QualityIndicator) != 0) writer.Write(Binary.SwitchEndianness(qualityIndicator));
 
-			writer.Write(padding);
+			writer.Write(new byte[XingDataLength]);
 		}
 	}
 }

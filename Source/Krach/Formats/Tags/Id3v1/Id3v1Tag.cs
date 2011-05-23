@@ -158,7 +158,7 @@ namespace Krach.Formats.Tags.Id3v1
 		readonly string album;
 		readonly string year;
 		readonly string comment;
-		readonly byte genre;
+		readonly byte genreID;
 
 		public string Identifier { get { return identifier; } }
 		public string Title { get { return title; } }
@@ -166,19 +166,33 @@ namespace Krach.Formats.Tags.Id3v1
 		public string Album { get { return album; } }
 		public string Year { get { return year; } }
 		public string Comment { get { return comment; } }
-		public string Genre { get { return genreNames[genre]; } }
+		public string Genre { get { return genreID == 0xFF ? string.Empty : genreNames[genreID]; } }
 
 		public Id3v1Tag(BinaryReader reader)
 		{
-			this.identifier = Encoding.ASCII.GetString(reader.ReadBytes(4));
+			this.identifier = Encoding.ASCII.GetString(reader.ReadBytes(3));
 			if (identifier != "TAG") throw new ArgumentException(string.Format("Wrong identifier '{0}', should be 'TAG'.", identifier));
+
+			// TODO: Remove trailing zeroes from strings
 			this.title = Encoding.ASCII.GetString(reader.ReadBytes(30));
 			this.artist = Encoding.ASCII.GetString(reader.ReadBytes(30));
 			this.album = Encoding.ASCII.GetString(reader.ReadBytes(30));
 			this.year = Encoding.ASCII.GetString(reader.ReadBytes(4));
 			this.comment = Encoding.ASCII.GetString(reader.ReadBytes(30));
-			this.genre = reader.ReadByte();
-			if (genre > 125) throw new ArgumentException(string.Format("Unknown genre id '{0}'.", genre));
+			this.genreID = reader.ReadByte();
+			if (genreID != 0xFF && genreID > 125) throw new ArgumentException(string.Format("Unknown genre id '{0}'.", genreID));
+		}
+
+		public virtual void Write(BinaryWriter writer)
+		{
+			writer.Write(Encoding.ASCII.GetBytes(identifier));
+
+			writer.Write(Encoding.ASCII.GetBytes(title));
+			writer.Write(Encoding.ASCII.GetBytes(artist));
+			writer.Write(Encoding.ASCII.GetBytes(album));
+			writer.Write(Encoding.ASCII.GetBytes(year));
+			writer.Write(Encoding.ASCII.GetBytes(comment));
+			writer.Write(genreID);
 		}
 	}
 }

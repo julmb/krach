@@ -17,8 +17,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Krach.Extensions;
 using System.Text;
+using Krach.Extensions;
 
 namespace Krach.Formats.Tags.Id3v2
 {
@@ -30,7 +30,7 @@ namespace Krach.Formats.Tags.Id3v2
 		readonly bool unsynchronisation;
 		readonly bool extendedHeader;
 		readonly bool experimental;
-		readonly int length;
+		readonly int dataLength;
 		readonly List<Id3v2Frame> frames = new List<Id3v2Frame>();
 
 		public string Identifier { get { return identifier; } }
@@ -39,7 +39,9 @@ namespace Krach.Formats.Tags.Id3v2
 		public bool Unsynchronization { get { return unsynchronisation; } }
 		public bool ExtendedHeader { get { return extendedHeader; } }
 		public bool Experimental { get { return experimental; } }
-		public int Length { get { return length + 10; } }
+		public int HeaderLength { get { return 10; } }
+		public int DataLength { get { return dataLength; } }
+		public int TotalLength { get { return HeaderLength + DataLength; } }
 		public IEnumerable<Id3v2Frame> Frames { get { return frames; } }
 
 		public Id3v2Tag(BinaryReader reader)
@@ -63,19 +65,19 @@ namespace Krach.Formats.Tags.Id3v2
 			// TODO:
 			if (unsynchronisation || extendedHeader || experimental) throw new NotImplementedException();
 
-			BitField lengthData = BitField.FromBytes(reader.ReadBytes(4));
-			if (lengthData[0] || lengthData[8] || lengthData[16] || lengthData[24]) throw new ArgumentException(string.Format("Found wrongly set bits in the length field '{0}'.", lengthData));
-			lengthData = BitField.FromBits(Enumerables.Concatenate(lengthData.Bits.GetRange(1, 8), lengthData.Bits.GetRange(9, 16), lengthData.Bits.GetRange(17, 24), lengthData.Bits.GetRange(25, 32)));
-			this.length = lengthData.Value;
+			BitField dataLengthData = BitField.FromBytes(reader.ReadBytes(4));
+			if (dataLengthData[0] || dataLengthData[8] || dataLengthData[16] || dataLengthData[24]) throw new ArgumentException(string.Format("Found wrongly set bits in the length field '{0}'.", dataLengthData));
+			dataLengthData = BitField.FromBits(Enumerables.Concatenate(dataLengthData[1, 8].Bits, dataLengthData[9, 16].Bits, dataLengthData[17, 24].Bits, dataLengthData[25, 32].Bits));
+			this.dataLength = dataLengthData.Value;
 
-			long endPosition = reader.BaseStream.Position + length;
+			long endPosition = reader.BaseStream.Position + dataLength;
 
 			while (reader.BaseStream.Position < endPosition)
 			{
 				// Padding has started
 				if (reader.PeekChar() == 0) break;
 
-				string frameIdentifier = Encoding.ASCII.GetString(reader.Peek(4));;
+				string frameIdentifier = Encoding.ASCII.GetString(reader.Peek(4));
 
 				Id3v2Frame frame;
 
@@ -90,7 +92,13 @@ namespace Krach.Formats.Tags.Id3v2
 			}
 
 			// Move to the end of the tag (skip potential padding)
+			// TODO: Realize this using ReadBytes(), with proper lengths being recorded
 			reader.BaseStream.Position = endPosition;
+		}
+
+		public virtual void Write(BinaryWriter writer)
+		{
+
 		}
 	}
 }

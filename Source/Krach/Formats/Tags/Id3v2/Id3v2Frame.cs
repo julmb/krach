@@ -34,6 +34,7 @@ namespace Krach.Formats.Tags.Id3v2
 		readonly bool encryption;
 		readonly bool groupingIdentity;
 
+		public int HeaderLength { get { return 10; } }
 		public string Identifier { get { return identifier; } }
 		public int DataLength { get { return dataLength; } }
 		public bool TagAlterPreservation { get { return tagAlterPreservation; } }
@@ -42,7 +43,7 @@ namespace Krach.Formats.Tags.Id3v2
 		public bool Compression { get { return compression; } }
 		public bool Encryption { get { return encryption; } }
 		public bool GroupingIdentity { get { return groupingIdentity; } }
-		public int TotalLength { get { return dataLength + 10; } }
+		public int TotalLength { get { return HeaderLength + DataLength; } }
 
 		public Id3v2Frame(BinaryReader reader)
 		{
