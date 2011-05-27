@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License along with
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
+using System.Collections.Generic;
 using System.IO;
 
 namespace Krach.Extensions
@@ -27,6 +28,27 @@ namespace Krach.Extensions
 			reader.BaseStream.Position -= count;
 
 			return result;
+		}
+		public static byte[] ReadToPosition(this BinaryReader reader, long position)
+		{
+			List<byte> result = new List<byte>();
+
+			while (reader.BaseStream.Position < position) result.Add(reader.ReadByte());
+
+			return result.ToArray();
+		}
+		public static byte[] ReadToNextZero(this BinaryReader reader)
+		{
+			List<byte> result = new List<byte>();
+
+			while (true)
+			{
+				byte data = reader.ReadByte();
+
+				if (data == 0) return result.ToArray();
+
+				result.Add(data);
+			}
 		}
 	}
 }

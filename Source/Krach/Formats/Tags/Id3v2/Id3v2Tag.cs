@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Krach.Extensions;
 
@@ -56,7 +57,7 @@ namespace Krach.Formats.Tags.Id3v2
 			if (majorVersion != 3) throw new NotImplementedException();
 
 			BitField flags = BitField.FromBytes(reader.ReadBytes(1));
-			if (flags[3, 8].Value != 0) throw new ArgumentException(string.Format("Found non-used but set flags '{0}'", flags));
+			if (flags[3, 8].Value != 0) throw new ArgumentException(string.Format("Found non-used but set flags '{0}'.", flags));
 
 			this.unsynchronisation = flags[0];
 			this.extendedHeader = flags[1];
@@ -70,9 +71,9 @@ namespace Krach.Formats.Tags.Id3v2
 			dataLengthData = BitField.FromBits(Enumerables.Concatenate(dataLengthData[1, 8].Bits, dataLengthData[9, 16].Bits, dataLengthData[17, 24].Bits, dataLengthData[25, 32].Bits));
 			this.dataLength = dataLengthData.Value;
 
-			long endPosition = reader.BaseStream.Position + dataLength;
+			long startPosition = reader.BaseStream.Position;
 
-			while (reader.BaseStream.Position < endPosition)
+			while (reader.BaseStream.Position < startPosition + dataLength)
 			{
 				// Padding has started
 				if (reader.PeekChar() == 0) break;
@@ -86,19 +87,38 @@ namespace Krach.Formats.Tags.Id3v2
 					if (frameIdentifier == "TXXX") frame = new Id3v2UserTextFrame(reader);
 					else frame = new Id3v2TextFrame(reader);
 				}
+				else if (frameIdentifier == "APIC") frame = new Id3v2ImageFrame(reader);
 				else frame = new Id3v2GenericFrame(reader);
 
 				frames.Add(frame);
 			}
 
-			// Move to the end of the tag (skip potential padding)
-			// TODO: Realize this using ReadBytes(), with proper lengths being recorded
-			reader.BaseStream.Position = endPosition;
+			reader.ReadToPosition(startPosition + dataLength);
 		}
 
-		public virtual void Write(BinaryWriter writer)
+		public void Write(BinaryWriter writer)
 		{
+			writer.Write(Encoding.ASCII.GetBytes(identifier));
 
+			writer.Write(majorVersion);
+			writer.Write(minorVersion);
+
+			writer.Write(BitField.FromBits(Enumerables.Create(unsynchronisation, extendedHeader, experimental, false, false, false, false, false)).Bytes.Single());
+
+			int length = dataLength;
+			writer.Write((byte)(length & 0x7F));
+			length >>= 7;
+			writer.Write((byte)(length & 0x7F));
+			length >>= 7;
+			writer.Write((byte)(length & 0x7F));
+			length >>= 7;
+			writer.Write((byte)(length & 0x7F));
+
+			long startPosition = writer.BaseStream.Position;
+
+			foreach (Id3v2Frame frame in frames) frame.Write(writer);
+
+			while (writer.BaseStream.Position < startPosition + dataLength) writer.Write((byte)0);
 		}
 	}
 }

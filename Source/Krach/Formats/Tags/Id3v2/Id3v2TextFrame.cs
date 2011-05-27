@@ -22,25 +22,25 @@ namespace Krach.Formats.Tags.Id3v2
 {
 	public class Id3v2TextFrame : Id3v2Frame
 	{
-		readonly Encoding encoding;
+		readonly byte encodingID;
 		readonly string text;
 
-		public Encoding Encoding { get { return encoding; } }
+		public byte EncodingID { get { return encodingID; } }
 		public string Text { get { return text; } }
 
 		public Id3v2TextFrame(BinaryReader reader)
 			: base(reader)
 		{
-			byte encodingIdentifier = reader.ReadByte();
+			this.encodingID = reader.ReadByte();
+			this.text = GetEncoding(encodingID).GetString(reader.ReadBytes(DataLength - 1));
+		}
 
-			switch (encodingIdentifier)
-			{
-				case 0: this.encoding = Encoding.ASCII; break;
-				case 1: this.encoding = Encoding.Unicode; break;
-				default: throw new ArgumentException(string.Format("Unknown encoding identifier '{0}'.", encodingIdentifier));
-			}
+		public override void Write(BinaryWriter writer)
+		{
+			base.Write(writer);
 
-			this.text = encoding.GetString(reader.ReadBytes(DataLength - 1));
+			writer.Write(encodingID);
+			writer.Write(GetEncoding(encodingID).GetBytes(text));
 		}
 
 		public override string ToString()

@@ -16,9 +16,9 @@
 
 using System;
 using System.IO;
-using System.Text.RegularExpressions;
-using Krach;
+using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using Krach.Extensions;
 
 namespace Krach.Formats.Tags.Id3v2
@@ -53,7 +53,7 @@ namespace Krach.Formats.Tags.Id3v2
 			this.dataLength = Binary.SwitchEndianness(reader.ReadInt32());
 
 			BitField flags = BitField.FromBytes(reader.ReadBytes(2));
-			if (flags[3, 8].Value != 0 || flags[11, 16].Value != 0) throw new ArgumentException(string.Format("Found non-used but set flags '{0}'", flags));
+			if (flags[3, 8].Value != 0 || flags[11, 16].Value != 0) throw new ArgumentException(string.Format("Found unused but set flags '{0}'", flags));
 
 			this.tagAlterPreservation = !flags[0];
 			this.fileAlterPreservation = !flags[1];
@@ -64,6 +64,31 @@ namespace Krach.Formats.Tags.Id3v2
 
 			// TODO:
 			if (compression || encryption || groupingIdentity) throw new NotImplementedException();
+		}
+
+		public virtual void Write(BinaryWriter writer)
+		{
+			writer.Write(Encoding.ASCII.GetBytes(identifier));
+
+			writer.Write(Binary.SwitchEndianness(dataLength));
+
+			writer.Write(BitField.FromBits(Enumerables.Create(!tagAlterPreservation, !fileAlterPreservation, readOnly, false, false, false, false, false)).Bytes.Single());
+			writer.Write(BitField.FromBits(Enumerables.Create(compression, encryption, groupingIdentity, false, false, false, false, false)).Bytes.Single());
+		}
+
+		public override string ToString()
+		{
+			return identifier;
+		}
+
+		public static Encoding GetEncoding(byte encodingID)
+		{
+			switch (encodingID)
+			{
+				case 0: return Encoding.ASCII;
+				case 1: return Encoding.Unicode;
+				default: throw new ArgumentException(string.Format("Unknown encoding identifier '{0}'.", encodingID));
+			}
 		}
 	}
 }

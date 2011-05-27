@@ -30,5 +30,12 @@ namespace Krach.Formats.Tags.Id3v2
 		{
 			this.data = reader.ReadBytes(DataLength);
 		}
+
+		public override void Write(BinaryWriter writer)
+		{
+			base.Write(writer);
+
+			writer.Write(data);
+		}
 	}
 }

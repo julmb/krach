@@ -33,6 +33,7 @@ namespace Krach.Formats.Mpeg
 		public IEnumerable<MpegAudioFrame> Frames { get { return frames; } }
 
 		// TODO: Make the constructor take the individul components that make up an MpegAudioFile, error-correcting reading of these parts can happen elsewhere
+		// TODO: This stuff is application specific (doesn't have ID3v1 tag), move to MetaData
 		public MpegAudioFile(BinaryReader reader)
 		{
 			if (Encoding.ASCII.GetString(reader.Peek(3)) == "ID3") tag = new Id3v2Tag(reader);
