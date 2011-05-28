@@ -47,6 +47,7 @@ namespace Krach
 			}
 		}
 		public IEnumerable<bool> Bits { get { return bits.GetRange(range); } }
+		public int Length { get { return range.Length(); } }
 		public int Value
 		{
 			get
@@ -138,6 +139,16 @@ namespace Krach
 			if (bits == null) throw new ArgumentNullException("bits");
 
 			return FromBits(bits.ToArray());
+		}
+		public static BitField FromValue(int value, int length)
+		{
+			if (length < 0 || length > 32) throw new ArgumentOutOfRangeException("length");
+
+			bool[] bits = new bool[length];
+
+			for (int index = 0; index < bits.Length; index++) bits[index] = (value & (1 << ((length - 1) - index))) != 0;
+
+			return new BitField(bits);
 		}
 	}
 }

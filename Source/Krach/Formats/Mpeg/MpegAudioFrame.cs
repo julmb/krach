@@ -61,11 +61,22 @@ namespace Krach.Formats.Mpeg
 		public int DataLength { get { return MpegAudioSpecification.GetSampleCount(version, layer) * dataRate / sampleRate + (hasPadding ? MpegAudioSpecification.GetSlotLength(layer) : 0) - HeaderLength - ChecksumLength - SideInformationLength; } }
 		public int TotalLength { get { return HeaderLength + ChecksumLength + SideInformationLength + DataLength; } }
 
-		public MpegAudioFrame(BinaryReader reader)
+		public MpegAudioFrame(MpegAudioFrame referenceFrame) : this(referenceFrame.header)
+		{
+			if (referenceFrame == null) throw new ArgumentNullException("referenceFrame");
+		}
+		public MpegAudioFrame(BinaryReader reader) : this(BitField.FromBytes(reader.ReadBytes(4)))
 		{
 			if (reader == null) throw new ArgumentNullException("reader");
 
-			this.header = BitField.FromBytes(reader.ReadBytes(4));
+			// TODO: Test for correctness of the checksum
+			this.checksum = hasErrorProtection ? reader.ReadUInt16() : (ushort)0;
+		}
+		MpegAudioFrame(BitField header)
+		{
+			this.header = header;
+			if (header.Length != 32) throw new ArgumentException(string.Format("Incorrect header length '{0}', expected '32'.", header.Bits.Count()));
+
 			this.sync = header[0, 11];
 			if (sync.Value != 0x07FF) throw new ArgumentException(string.Format("Incorrect sync '{0}', expected '11111111111'.", sync));
 			this.version = (MpegAudioVersion)header[11, 13].Value;
@@ -94,9 +105,6 @@ namespace Krach.Formats.Mpeg
 			this.isCopyrighted = header[28];
 			this.isOriginal = header[29];
 			this.emphasis = (MpegAudioEmphasis)header[30, 32].Value;
-
-			// TODO: Test for correctness of the checksum
-			this.checksum = hasErrorProtection ? reader.ReadUInt16() : (ushort)0;
 		}
 
 		public virtual void Write(BinaryWriter writer)

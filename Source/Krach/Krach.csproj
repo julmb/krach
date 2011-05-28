@@ -69,7 +69,6 @@
     <Compile Include="Formats\Mpeg\MpegAudioXingFrame.cs" />
     <Compile Include="Formats\Mpeg\MpegAudioDataFrame.cs" />
     <Compile Include="Formats\Mpeg\MpegAudioSpecification.cs" />
-    <Compile Include="Formats\Mpeg\MpegAudioFile.cs" />
     <Compile Include="Formats\Mpeg\MpegAudioFrame.cs" />
     <Compile Include="Formats\Riff\RiffDataChunk.cs" />
     <Compile Include="Formats\Riff\RiffFormatChunk.cs" />
