@@ -34,7 +34,7 @@ namespace Krach.Formats.Riff
 		public RiffDataChunk(BinaryReader reader)
 			: base(reader)
 		{
-			if (ID != "data") throw new ArgumentException(string.Format("Wrong chunk ID '{0}', should be 'data'.", ID));
+			if (ID != "data") throw new InvalidDataException(string.Format("Wrong chunk ID '{0}', should be 'data'.", ID));
 
 			this.data = reader.ReadBytes((int)Size);
 		}

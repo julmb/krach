@@ -63,7 +63,7 @@ namespace Krach.Formats.Tags.ID3v2
 		public ID3v2Tag(BinaryReader reader)
 		{
 			string identifier = Encoding.ASCII.GetString(reader.ReadBytes(3));
-			if (identifier != "ID3") throw new ArgumentException(string.Format("Wrong identifier '{0}', should be 'ID3'.", identifier));
+			if (identifier != "ID3") throw new InvalidDataException(string.Format("Wrong identifier '{0}', should be 'ID3'.", identifier));
 
 			this.majorVersion = reader.ReadByte();
 			this.minorVersion = reader.ReadByte();
@@ -71,7 +71,7 @@ namespace Krach.Formats.Tags.ID3v2
 			if (majorVersion != 3) throw new NotImplementedException();
 
 			BitField flags = BitField.FromBytes(reader.ReadBytes(1));
-			if (flags[3, 8].Value != 0) throw new ArgumentException(string.Format("Found non-used but set flags '{0}'.", flags));
+			if (flags[3, 8].Value != 0) throw new InvalidDataException(string.Format("Found non-used but set flags '{0}'.", flags));
 
 			this.unsynchronisation = flags[0];
 			this.extendedHeader = flags[1];
@@ -80,7 +80,7 @@ namespace Krach.Formats.Tags.ID3v2
 			if (unsynchronisation || extendedHeader || experimental) throw new NotImplementedException();
 
 			BitField dataLengthData = BitField.FromBytes(reader.ReadBytes(4));
-			if (dataLengthData[0] || dataLengthData[8] || dataLengthData[16] || dataLengthData[24]) throw new ArgumentException(string.Format("Found wrongly set bits in the length field '{0}'.", dataLengthData));
+			if (dataLengthData[0] || dataLengthData[8] || dataLengthData[16] || dataLengthData[24]) throw new InvalidDataException(string.Format("Found wrongly set bits in the length field '{0}'.", dataLengthData));
 			dataLengthData = BitField.FromBits
 			(
 				Enumerables.Concatenate

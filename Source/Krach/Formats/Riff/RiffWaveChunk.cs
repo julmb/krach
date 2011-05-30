@@ -45,16 +45,16 @@ namespace Krach.Formats.Riff
 		public RiffWaveChunk(BinaryReader reader)
 			: base(reader)
 		{
-			if (ID != "RIFF") throw new ArgumentException(string.Format("Wrong chunk ID '{0}', should be 'RIFF'.", ID));
+			if (ID != "RIFF") throw new InvalidDataException(string.Format("Wrong chunk ID '{0}', should be 'RIFF'.", ID));
 
 			this.riffID = Encoding.ASCII.GetString(reader.ReadBytes(4));
 
-			if (riffID != "WAVE") throw new ArgumentException(string.Format("Wrong RIFF ID '{0}', should be 'WAVE'.", riffID));
+			if (riffID != "WAVE") throw new InvalidDataException(string.Format("Wrong RIFF ID '{0}', should be 'WAVE'.", riffID));
 
 			this.formatChunk = new RiffFormatChunk(reader);
 			this.dataChunk = new RiffDataChunk(reader);
 
-			if (Size != 4 + 8 + formatChunk.Size + 8 + dataChunk.Size + dataChunk.Size % 2) throw new ArgumentException(string.Format("Incorrect chunk size '{0}', should be '{1}'.", Size, 4 + 8 + formatChunk.Size + 8 + dataChunk.Size + dataChunk.Size % 2));
+			if (Size != 4 + 8 + formatChunk.Size + 8 + dataChunk.Size + dataChunk.Size % 2) throw new InvalidDataException(string.Format("Incorrect chunk size '{0}', should be '{1}'.", Size, 4 + 8 + formatChunk.Size + 8 + dataChunk.Size + dataChunk.Size % 2));
 		}
 
 		public override void Write(BinaryWriter writer)

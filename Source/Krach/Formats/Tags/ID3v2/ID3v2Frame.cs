@@ -48,12 +48,12 @@ namespace Krach.Formats.Tags.ID3v2
 		protected ID3v2Frame(BinaryReader reader)
 		{
 			this.identifier = Encoding.ASCII.GetString(reader.ReadBytes(4));
-			if (!Regex.IsMatch(identifier, "^[A-Z0-9]{4}$")) throw new ArgumentException(string.Format("Invalid frame identifier '{0}'", identifier));
+			if (!Regex.IsMatch(identifier, "^[A-Z0-9]{4}$")) throw new InvalidDataException(string.Format("Invalid frame identifier '{0}'", identifier));
 
 			this.dataLength = Binary.SwitchEndianness(reader.ReadInt32());
 
 			BitField flags = BitField.FromBytes(reader.ReadBytes(2));
-			if (flags[3, 8].Value != 0 || flags[11, 16].Value != 0) throw new ArgumentException(string.Format("Found unused but set flags '{0}'", flags));
+			if (flags[3, 8].Value != 0 || flags[11, 16].Value != 0) throw new InvalidDataException(string.Format("Found unused but set flags '{0}'", flags));
 
 			this.tagAlterPreservation = !flags[0];
 			this.fileAlterPreservation = !flags[1];

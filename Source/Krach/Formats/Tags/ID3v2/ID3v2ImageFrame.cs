@@ -47,7 +47,7 @@ namespace Krach.Formats.Tags.ID3v2
 			this.description = GetEncoding(encodingID).GetString(reader.ReadToNextZero());
 			this.imageData = reader.ReadToPosition(startPosition + DataLength);
 
-			if (reader.BaseStream.Position != startPosition + DataLength) throw new ArgumentException("Reading frame was longer than expected.");
+			if (reader.BaseStream.Position != startPosition + DataLength) throw new InvalidDataException("Reading frame was longer than expected.");
 		}
 
 		public override void Write(BinaryWriter writer)

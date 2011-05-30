@@ -48,19 +48,19 @@ namespace Krach.Formats.Riff
 		public RiffFormatChunk(BinaryReader reader)
 			: base(reader)
 		{
-			if (ID != "fmt ") throw new ArgumentException(string.Format("Wrong chunk ID '{0}', should be 'fmt '.", ID));
-			if (Size != 16) throw new ArgumentException(string.Format("Incorrect chunk size '{0}', should be '16'.", Size));
+			if (ID != "fmt ") throw new InvalidDataException(string.Format("Wrong chunk ID '{0}', should be 'fmt '.", ID));
+			if (Size != 16) throw new InvalidDataException(string.Format("Incorrect chunk size '{0}', should be '16'.", Size));
 
 			this.format = reader.ReadUInt16();
-			if (format != 1) throw new ArgumentException(string.Format("Unsupported format code '{0}'.", format));
+			if (format != 1) throw new InvalidDataException(string.Format("Unsupported format code '{0}'.", format));
 			this.channelCount = reader.ReadUInt16();
 			this.sampleRate = reader.ReadUInt32();
 			this.dataRate = reader.ReadUInt32();
 			this.blockSize = reader.ReadUInt16();
 			this.sampleSize = reader.ReadUInt16();
 
-			if (blockSize != channelCount * sampleSize / 8) throw new ArgumentException(string.Format("Incorrect block size '{0}'.", blockSize));
-			if (dataRate != sampleRate * blockSize) throw new ArgumentException(string.Format("Incorrect data rate '{0}'.", dataRate));
+			if (blockSize != channelCount * sampleSize / 8) throw new InvalidDataException(string.Format("Incorrect block size '{0}'.", blockSize));
+			if (dataRate != sampleRate * blockSize) throw new InvalidDataException(string.Format("Incorrect data rate '{0}'.", dataRate));
 		}
 
 		public override void Write(BinaryWriter writer)

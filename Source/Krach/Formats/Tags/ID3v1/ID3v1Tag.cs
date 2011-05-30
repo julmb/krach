@@ -169,7 +169,7 @@ namespace Krach.Formats.Tags.ID3v1
 		public ID3v1Tag(BinaryReader reader)
 		{
 			string identifier = Encoding.ASCII.GetString(reader.ReadBytes(3));
-			if (identifier != "TAG") throw new ArgumentException(string.Format("Wrong identifier '{0}', should be 'TAG'.", identifier));
+			if (identifier != "TAG") throw new InvalidDataException(string.Format("Wrong identifier '{0}', should be 'TAG'.", identifier));
 
 			// TODO: Remove trailing zeroes from strings
 			this.title = Encoding.ASCII.GetString(reader.ReadBytes(30));
@@ -178,7 +178,7 @@ namespace Krach.Formats.Tags.ID3v1
 			this.year = Encoding.ASCII.GetString(reader.ReadBytes(4));
 			this.comment = Encoding.ASCII.GetString(reader.ReadBytes(30));
 			this.genreID = reader.ReadByte();
-			if (genreID != 0xFF && genreID > 125) throw new ArgumentException(string.Format("Unknown genre id '{0}'.", genreID));
+			if (genreID != 0xFF && genreID > 125) throw new InvalidDataException(string.Format("Unknown genre id '{0}'.", genreID));
 		}
 
 		public virtual void Write(BinaryWriter writer)

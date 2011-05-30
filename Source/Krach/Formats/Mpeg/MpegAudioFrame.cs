@@ -100,15 +100,15 @@ namespace Krach.Formats.Mpeg
 			if (reader == null) throw new ArgumentNullException("reader");
 
 			BitField header = BitField.FromBytes(reader.ReadBytes(4));
-			if (header.Length != 32) throw new ArgumentException(string.Format("Incorrect header length '{0}', expected '32'.", header.Bits.Count()));
+			if (header.Length != 32) throw new InvalidDataException(string.Format("Incorrect header length '{0}', expected '32'.", header.Bits.Count()));
 
 			BitField sync = header[0, 11];
-			if (sync.Value != 0x07FF) throw new ArgumentException(string.Format("Incorrect sync '{0}', expected '11111111111'.", sync));
+			if (sync.Value != 0x07FF) throw new InvalidDataException(string.Format("Incorrect sync '{0}', expected '11111111111'.", sync));
 
 			this.version = (MpegAudioVersion)header[11, 13].Value;
-			if (version == MpegAudioVersion.Reserved) throw new ArgumentException(string.Format("Incorrect version '{0}'.", version));
+			if (version == MpegAudioVersion.Reserved) throw new InvalidDataException(string.Format("Incorrect version '{0}'.", version));
 			this.layer = (MpegAudioLayer)header[13, 15].Value;
-			if (layer == MpegAudioLayer.Reserved) throw new ArgumentException(string.Format("Incorrect layer '{0}'.", layer));
+			if (layer == MpegAudioLayer.Reserved) throw new InvalidDataException(string.Format("Incorrect layer '{0}'.", layer));
 			this.hasErrorProtection = !header[15];
 			this.bitRateID = header[16, 20].Value;
 			this.sampleRateID = header[20, 22].Value;

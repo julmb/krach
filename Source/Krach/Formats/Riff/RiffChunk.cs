@@ -30,7 +30,7 @@ namespace Krach.Formats.Riff
 
 		protected RiffChunk(string id, uint size)
 		{
-			if (id.Length != 4) throw new ArgumentException(string.Format("Parameter id '{0}' doesn't have a length of 4.", id));
+			if (id.Length != 4) throw new InvalidDataException(string.Format("Parameter id '{0}' doesn't have a length of 4.", id));
 
 			this.id = id;
 			this.size = size;
