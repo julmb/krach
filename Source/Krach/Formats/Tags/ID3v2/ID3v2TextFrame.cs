@@ -1,4 +1,4 @@
-// Copyright © Julian Brunner 2010 - 2011
+﻿// Copyright © Julian Brunner 2010 - 2011
 
 // This file is part of Krach.
 //
@@ -18,35 +18,34 @@ using System;
 using System.IO;
 using System.Text;
 
-namespace Krach.Formats.Riff
+namespace Krach.Formats.Tags.ID3v2
 {
-	public abstract class RiffChunk
+	public class ID3v2TextFrame : ID3v2Frame
 	{
-		readonly string id;
-		readonly uint size;
+		readonly byte encodingID;
+		readonly string text;
 
-		public string ID { get { return id; } }
-		public uint Size { get { return size; } }
+		public byte EncodingID { get { return encodingID; } }
+		public string Text { get { return text; } }
 
-		protected RiffChunk(string id, uint size)
+		public ID3v2TextFrame(BinaryReader reader)
+			: base(reader)
 		{
-			if (id.Length != 4) throw new ArgumentException(string.Format("Parameter id '{0}' doesn't have a length of 4.", id));
-
-			this.id = id;
-			this.size = size;
-		}
-		protected RiffChunk(BinaryReader reader)
-		{
-			if (reader == null) throw new ArgumentNullException("reader");
-
-			this.id = Encoding.ASCII.GetString(reader.ReadBytes(4));;
-			this.size = reader.ReadUInt32();
+			this.encodingID = reader.ReadByte();
+			this.text = GetEncoding(encodingID).GetString(reader.ReadBytes(DataLength - 1));
 		}
 
-		public virtual void Write(BinaryWriter writer)
+		public override void Write(BinaryWriter writer)
 		{
-			writer.Write(id.ToCharArray());
-			writer.Write(size);
+			base.Write(writer);
+
+			writer.Write(encodingID);
+			writer.Write(GetEncoding(encodingID).GetBytes(text));
+		}
+
+		public override string ToString()
+		{
+			return string.Format("{0}: {1}", Identifier, text);
 		}
 	}
 }

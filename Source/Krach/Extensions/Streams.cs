@@ -29,6 +29,14 @@ namespace Krach.Extensions
 
 			return result;
 		}
+		public static byte PeekByte(this BinaryReader reader)
+		{
+			byte result = reader.ReadByte();
+
+			reader.BaseStream.Position--;
+
+			return result;
+		}
 		public static byte[] ReadToPosition(this BinaryReader reader, long position)
 		{
 			List<byte> result = new List<byte>();

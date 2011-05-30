@@ -23,7 +23,6 @@ namespace Krach.Formats.Mpeg
 {
 	public abstract class MpegAudioFrame
 	{
-		readonly BitField sync;
 		readonly MpegAudioVersion version;
 		readonly MpegAudioLayer layer;
 		readonly bool hasErrorProtection;
@@ -38,7 +37,6 @@ namespace Krach.Formats.Mpeg
 		readonly MpegAudioEmphasis emphasis;
 		readonly ushort checksum;
 
-		public BitField Sync { get { return sync; } }
 		public MpegAudioVersion Version { get { return version; } }
 		public MpegAudioLayer Layer { get { return layer; } }
 		public bool HasErrorProtection { get { return hasErrorProtection; } }
@@ -66,7 +64,7 @@ namespace Krach.Formats.Mpeg
 		public int DataLength { get { return SampleCount * DataRate / SampleRate + (hasPadding ? SlotLength : 0) - HeaderLength - ChecksumLength - SideInformationLength; } }
 		public int TotalLength { get { return HeaderLength + ChecksumLength + SideInformationLength + DataLength; } }
 
-		public MpegAudioFrame
+		protected MpegAudioFrame
 		(
 			MpegAudioVersion version,
 			MpegAudioLayer layer,
@@ -80,7 +78,6 @@ namespace Krach.Formats.Mpeg
 			MpegAudioEmphasis emphasis
 		)
 		{
-			this.sync = BitField.FromValue(0x07FF, 11);
 			this.version = version;
 			if (version == MpegAudioVersion.Reserved) throw new ArgumentException(string.Format("Incorrect version '{0}'.", version));
 			this.layer = layer;
@@ -98,15 +95,16 @@ namespace Krach.Formats.Mpeg
 
 			this.checksum = 0;
 		}
-		public MpegAudioFrame(BinaryReader reader)
+		protected MpegAudioFrame(BinaryReader reader)
 		{
 			if (reader == null) throw new ArgumentNullException("reader");
 
 			BitField header = BitField.FromBytes(reader.ReadBytes(4));
 			if (header.Length != 32) throw new ArgumentException(string.Format("Incorrect header length '{0}', expected '32'.", header.Bits.Count()));
 
-			this.sync = header[0, 11];
+			BitField sync = header[0, 11];
 			if (sync.Value != 0x07FF) throw new ArgumentException(string.Format("Incorrect sync '{0}', expected '11111111111'.", sync));
+
 			this.version = (MpegAudioVersion)header[11, 13].Value;
 			if (version == MpegAudioVersion.Reserved) throw new ArgumentException(string.Format("Incorrect version '{0}'.", version));
 			this.layer = (MpegAudioLayer)header[13, 15].Value;
@@ -132,7 +130,7 @@ namespace Krach.Formats.Mpeg
 			(
 				Enumerables.Concatenate
 				(
-					sync.Bits,
+					BitField.FromValue(0x07FF, 11).Bits,
 					BitField.FromValue((int)version, 2).Bits,
 					BitField.FromValue((int)layer, 2).Bits,
 					Enumerables.Create(!hasErrorProtection),

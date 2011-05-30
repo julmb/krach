@@ -31,14 +31,12 @@ namespace Krach.Formats.Mpeg
 	public enum MpegAudioXingFields { FrameCount = 0x0001, AudioDataLength = 0x0002, TableOfContents = 0x0004, QualityIndicator = 0x0008 }
 	public class MpegAudioXingFrame : MpegAudioFrame
 	{
-		readonly string identifier;
 		readonly MpegAudioXingFields fields;
 		readonly int frameCount;
 		readonly int audioDataLength;
 		readonly byte[] tableOfContents;
 		readonly int qualityIndicator;
 
-		public string Identifier { get { return identifier; } }
 		public MpegAudioXingFields Fields { get { return fields; } }
 		public int FrameCount { get { return frameCount; } }
 		public int AudioDataLength { get { return audioDataLength; } }
@@ -68,8 +66,6 @@ namespace Krach.Formats.Mpeg
 		{
 			if (mpegAudioDataFrames == null) throw new ArgumentNullException("mpegAudioDataFrames");
 
-			this.identifier = "Xing";
-
 			this.fields = MpegAudioXingFields.FrameCount | MpegAudioXingFields.AudioDataLength | MpegAudioXingFields.TableOfContents;
 
 			this.frameCount = mpegAudioDataFrames.Count();
@@ -81,8 +77,8 @@ namespace Krach.Formats.Mpeg
 		{
 			reader.ReadBytes(SideInformationLength);
 
-			this.identifier = Encoding.ASCII.GetString(reader.ReadBytes(4));
-			if (identifier != "Xing") throw new ArgumentException(string.Format("Wrong identifier '{0}', should be 'Xing'.", identifier));
+			string identifier = Encoding.ASCII.GetString(reader.ReadBytes(4));
+			if (identifier != "Xing" && identifier != "Info") throw new ArgumentException(string.Format("Wrong identifier '{0}', should be 'Xing' or 'Info'.", identifier));
 
 			this.fields = (MpegAudioXingFields)Binary.SwitchEndianness(reader.ReadUInt32());
 			if (((int)fields & 0xFFFFFFF0) != 0) throw new ArgumentException(string.Format("Unexpected field flags '{0}' in Xing tag.", fields));
@@ -101,7 +97,7 @@ namespace Krach.Formats.Mpeg
 
 			writer.Write(new byte[SideInformationLength]);
 
-			writer.Write(Encoding.ASCII.GetBytes(identifier));
+			writer.Write(Encoding.ASCII.GetBytes("Xing"));
 
 			writer.Write(Binary.SwitchEndianness((int)fields));
 
