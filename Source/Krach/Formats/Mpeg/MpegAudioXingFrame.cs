@@ -17,9 +17,13 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Linq;
+using System.Text;
+using Krach.Basics;
 using Krach.Extensions;
+using Krach.Maps;
+using Krach.Maps.Abstract;
+using Krach.Maps.Scalar;
 
 namespace Krach.Formats.Mpeg
 {
@@ -37,7 +41,7 @@ namespace Krach.Formats.Mpeg
 		public string Identifier { get { return identifier; } }
 		public MpegAudioXingFields Fields { get { return fields; } }
 		public int FrameCount { get { return frameCount; } }
-		public int AudioLength { get { return audioDataLength; } }
+		public int AudioDataLength { get { return audioDataLength; } }
 		public IEnumerable<byte> TableOfContents { get { return tableOfContents; } }
 		public int QualityIndicator { get { return qualityIndicator; } }
 		public int XingHeaderLength { get { return 4 + 4; } }
@@ -47,15 +51,30 @@ namespace Krach.Formats.Mpeg
 		public int QualityIndicatorLength { get { return ((fields & MpegAudioXingFields.QualityIndicator) != 0) ? 4 : 0; } }
 		public int XingDataLength { get { return DataLength - (XingHeaderLength + FrameCountLength + AudioDataLengthLength + TableOfContentsLength + QualityIndicatorLength); } }
 
-		public MpegAudioXingFrame(MpegAudioDataFrame referenceFrame, IEnumerable<MpegAudioDataFrame> mpegAudioDataFrames) : base(referenceFrame)
+		public MpegAudioXingFrame(MpegAudioDataFrame referenceFrame, IEnumerable<MpegAudioDataFrame> mpegAudioDataFrames)
+			: base
+			(
+				referenceFrame.Version,
+				referenceFrame.Layer,
+				14,
+				referenceFrame.SampleRateID,
+				referenceFrame.IsPrivate,
+				referenceFrame.ChannelMode,
+				referenceFrame.JoinID,
+				referenceFrame.IsCopyrighted,
+				referenceFrame.IsOriginal,
+				referenceFrame.Emphasis
+			)
 		{
 			if (mpegAudioDataFrames == null) throw new ArgumentNullException("mpegAudioDataFrames");
 
 			this.identifier = "Xing";
 
-			this.fields = MpegAudioXingFields.FrameCount;
+			this.fields = MpegAudioXingFields.FrameCount | MpegAudioXingFields.AudioDataLength | MpegAudioXingFields.TableOfContents;
 
 			this.frameCount = mpegAudioDataFrames.Count();
+			this.audioDataLength = mpegAudioDataFrames.Sum(frame => frame.TotalLength);
+			this.tableOfContents = GenerateTableOfContents(mpegAudioDataFrames).ToArray();
 		}
 		public MpegAudioXingFrame(BinaryReader reader)
 			: base(reader)
@@ -92,6 +111,32 @@ namespace Krach.Formats.Mpeg
 			if ((fields & MpegAudioXingFields.QualityIndicator) != 0) writer.Write(Binary.SwitchEndianness(qualityIndicator));
 
 			writer.Write(new byte[XingDataLength]);
+		}
+
+		IEnumerable<byte> GenerateTableOfContents(IEnumerable<MpegAudioDataFrame> mpegAudioDataFrames)
+		{
+			double totalDataLength = mpegAudioDataFrames.Sum(frame => frame.TotalLength);
+			double totalTimeLength = mpegAudioDataFrames.Sum(frame => frame.AudioLength);
+
+			IMap<double, double> toAbsoluteTime = new RangeMap(new Range<double>(0, 99), new Range<double>(0, totalTimeLength), Mappers.Linear);
+			IMap<double, double> toRelativeData = new RangeMap(new Range<double>(0, totalDataLength), new Range<double>(0, 255), Mappers.Linear);
+
+			for (int index = 0; index < 100; index++) yield return (byte)toRelativeData.Map(GetDataPosition(mpegAudioDataFrames, toAbsoluteTime.Map(index))).Round();
+		}
+		double GetDataPosition(IEnumerable<MpegAudioDataFrame> mpegAudioDataFrames, double timePosition)
+		{
+			double currentDataPosition = 0;
+			double currentTimePosition = 0;
+
+			foreach (MpegAudioDataFrame frame in mpegAudioDataFrames)
+			{
+				if (currentTimePosition >= timePosition) return currentDataPosition;
+
+				currentDataPosition += frame.TotalLength;
+				currentTimePosition += frame.AudioLength;
+			}
+
+			return currentDataPosition;
 		}
 	}
 }

@@ -52,13 +52,13 @@ namespace Krach.Formats.Riff
 			if (Size != 16) throw new ArgumentException(string.Format("Incorrect chunk size '{0}', should be '16'.", Size));
 
 			this.format = reader.ReadUInt16();
+			if (format != 1) throw new ArgumentException(string.Format("Unsupported format code '{0}'.", format));
 			this.channelCount = reader.ReadUInt16();
 			this.sampleRate = reader.ReadUInt32();
 			this.dataRate = reader.ReadUInt32();
 			this.blockSize = reader.ReadUInt16();
 			this.sampleSize = reader.ReadUInt16();
 
-			if (format != 1) throw new ArgumentException(string.Format("Unsupported format code '{0}'.", format));
 			if (blockSize != channelCount * sampleSize / 8) throw new ArgumentException(string.Format("Incorrect block size '{0}'.", blockSize));
 			if (dataRate != sampleRate * blockSize) throw new ArgumentException(string.Format("Incorrect data rate '{0}'.", dataRate));
 		}

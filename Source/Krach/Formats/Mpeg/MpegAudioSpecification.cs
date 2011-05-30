@@ -131,5 +131,29 @@ namespace Krach.Formats.Mpeg
 				default: throw new ArgumentException("version");
 			}
 		}
+		public static MpegAudioJoinBands GetJoinBands(MpegAudioLayer layer, int joinID)
+		{
+			switch (layer)
+			{
+				case MpegAudioLayer.LayerI:
+				case MpegAudioLayer.LayerII:
+					return (MpegAudioJoinBands)joinID;
+				case MpegAudioLayer.LayerIII:
+					return MpegAudioJoinBands.Dynamic;
+				default: throw new InvalidOperationException();
+			}
+		}
+		public static MpegAudioJoinMode GetJoinMode(MpegAudioLayer layer, int joinID)
+		{
+			switch (layer)
+			{
+				case MpegAudioLayer.LayerI:
+				case MpegAudioLayer.LayerII:
+					return MpegAudioJoinMode.IntensityStereo;
+				case MpegAudioLayer.LayerIII:
+					return (MpegAudioJoinMode)joinID;
+				default: throw new InvalidOperationException();
+			}
+		}
 	}
 }
