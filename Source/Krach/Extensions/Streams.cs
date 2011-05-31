@@ -37,14 +37,6 @@ namespace Krach.Extensions
 
 			return result;
 		}
-		public static byte[] ReadToPosition(this BinaryReader reader, long position)
-		{
-			List<byte> result = new List<byte>();
-
-			while (reader.BaseStream.Position < position) result.Add(reader.ReadByte());
-
-			return result.ToArray();
-		}
 		public static byte[] ReadToNextZero(this BinaryReader reader)
 		{
 			List<byte> result = new List<byte>();

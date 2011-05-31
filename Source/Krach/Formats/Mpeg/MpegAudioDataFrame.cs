@@ -21,16 +21,13 @@ namespace Krach.Formats.Mpeg
 {
 	public class MpegAudioDataFrame : MpegAudioFrame
 	{
-		readonly byte[] sideInformation;
 		readonly byte[] data;
 
-		public IEnumerable<byte> SideInformation { get { return sideInformation; } }
 		public IEnumerable<byte> Data { get { return data; } }
 
 		public MpegAudioDataFrame(BinaryReader reader)
 			: base(reader)
 		{
-			this.sideInformation = reader.ReadBytes(SideInformationLength);
 			this.data = reader.ReadBytes(DataLength);
 		}
 
@@ -38,7 +35,6 @@ namespace Krach.Formats.Mpeg
 		{
 			base.Write(writer);
 
-			writer.Write(sideInformation);
 			writer.Write(data);
 		}
 	}

@@ -43,7 +43,7 @@ namespace Krach.Formats.Tags.ID3v2
 		public int TotalLength { get { return HeaderLength + DataLength; } }
 		public IEnumerable<ID3v2Frame> Frames { get { return frames; } }
 
-		public ID3v2Tag(byte majorVersion, byte minorVersion, bool unsynchronisation, bool extendedHeader, bool experimental, IEnumerable<ID3v2Frame> frames)
+		public ID3v2Tag(byte majorVersion, byte minorVersion, bool unsynchronisation, bool extendedHeader, bool experimental)
 		{
 			if (majorVersion != 3) throw new NotImplementedException();
 			if (unsynchronisation || extendedHeader || experimental) throw new NotImplementedException();
@@ -58,7 +58,7 @@ namespace Krach.Formats.Tags.ID3v2
 
 			this.dataLength = 0;
 
-			this.frames = frames;
+			this.frames = Enumerable.Empty<ID3v2Frame>();
 		}
 		public ID3v2Tag(BinaryReader reader)
 		{
@@ -93,11 +93,15 @@ namespace Krach.Formats.Tags.ID3v2
 			);
 			this.dataLength = dataLengthData.Value;
 
-			long startPosition = reader.BaseStream.Position;
-
+			long framesStartPosition = reader.BaseStream.Position;
 			this.frames = ReadFrames(reader).ToArray();
+			long framesEndPosition = reader.BaseStream.Position;
 
-			reader.ReadToPosition(startPosition + dataLength);
+			long paddingLength = dataLength - (framesEndPosition - framesStartPosition);
+
+			if (paddingLength < 0) throw new InvalidDataException(string.Format("Invalid padding length '{0}'.", paddingLength));
+
+			reader.ReadBytes((int)paddingLength);
 		}
 
 		public void Write(BinaryWriter writer)

@@ -47,7 +47,8 @@ namespace Krach.Formats.Mpeg
 		public int AudioDataLengthLength { get { return ((fields & MpegAudioXingFields.AudioDataLength) != 0) ? 4 : 0; } }
 		public int TableOfContentsLength { get { return ((fields & MpegAudioXingFields.TableOfContents) != 0) ? 100 : 0; } }
 		public int QualityIndicatorLength { get { return ((fields & MpegAudioXingFields.QualityIndicator) != 0) ? 4 : 0; } }
-		public int XingDataLength { get { return DataLength - (XingHeaderLength + FrameCountLength + AudioDataLengthLength + TableOfContentsLength + QualityIndicatorLength); } }
+		public int XingDataLength { get { return XingHeaderLength + FrameCountLength + AudioDataLengthLength + TableOfContentsLength + QualityIndicatorLength; } }
+		public int PaddingLength { get { return DataLength - SideInformationLength - XingDataLength; } }
 
 		public MpegAudioXingFrame(MpegAudioDataFrame referenceFrame, IEnumerable<MpegAudioDataFrame> mpegAudioDataFrames)
 			: base
@@ -88,7 +89,9 @@ namespace Krach.Formats.Mpeg
 			if ((fields & MpegAudioXingFields.TableOfContents) != 0) this.tableOfContents = reader.ReadBytes(100);
 			if ((fields & MpegAudioXingFields.QualityIndicator) != 0) this.qualityIndicator = Binary.SwitchEndianness(reader.ReadInt32());
 
-			reader.ReadBytes(XingDataLength);
+			if (PaddingLength < 0) throw new InvalidDataException(string.Format("Invalid padding length '{0}'.", PaddingLength));
+
+			reader.ReadBytes(PaddingLength);
 		}
 
 		public override void Write(BinaryWriter writer)
@@ -106,7 +109,7 @@ namespace Krach.Formats.Mpeg
 			if ((fields & MpegAudioXingFields.TableOfContents) != 0) writer.Write(tableOfContents);
 			if ((fields & MpegAudioXingFields.QualityIndicator) != 0) writer.Write(Binary.SwitchEndianness(qualityIndicator));
 
-			writer.Write(new byte[XingDataLength]);
+			writer.Write(new byte[PaddingLength]);
 		}
 
 		IEnumerable<byte> GenerateTableOfContents(IEnumerable<MpegAudioDataFrame> mpegAudioDataFrames)

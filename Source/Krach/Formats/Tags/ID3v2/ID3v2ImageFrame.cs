@@ -14,10 +14,8 @@
 // You should have received a copy of the GNU General Public License along with
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using Krach.Extensions;
 
 namespace Krach.Formats.Tags.ID3v2
@@ -39,15 +37,20 @@ namespace Krach.Formats.Tags.ID3v2
 		public ID3v2ImageFrame(BinaryReader reader)
 			: base(reader)
 		{
-			long startPosition = reader.BaseStream.Position;
+			long headerStartPosition = reader.BaseStream.Position;
 
 			this.encodingID = reader.ReadByte();
 			this.mimeType = GetEncoding(encodingID).GetString(reader.ReadToNextZero());
 			this.pictureType = reader.ReadByte();
 			this.description = GetEncoding(encodingID).GetString(reader.ReadToNextZero());
-			this.imageData = reader.ReadToPosition(startPosition + DataLength);
 
-			if (reader.BaseStream.Position != startPosition + DataLength) throw new InvalidDataException("Reading frame was longer than expected.");
+			long headerEndPosition = reader.BaseStream.Position;
+
+			long imageDataLength = DataLength - (headerEndPosition - headerStartPosition);
+
+			if (imageDataLength < 0) throw new InvalidDataException(string.Format("Invalid image data length '{0}'.", imageDataLength));
+
+			this.imageData = reader.ReadBytes((int)imageDataLength);
 		}
 
 		public override void Write(BinaryWriter writer)

@@ -57,12 +57,12 @@ namespace Krach.Formats.Mpeg
 		public int DataRate { get { return MpegAudioSpecification.GetBitRate(version, layer, bitRateID) * 1000 / 8; } }
 		public int SampleRate { get { return MpegAudioSpecification.GetSamplingRate(version, sampleRateID); } }
 		public int SlotLength { get { return MpegAudioSpecification.GetSlotLength(layer); } }
+		public int SideInformationLength { get { return MpegAudioSpecification.GetSideInformationLength(version, channelMode); } }
 		public double AudioLength { get { return (double)SampleCount / (double)SampleRate; } }
 		public int HeaderLength { get { return 4; } }
 		public int ChecksumLength { get { return hasErrorProtection ? 2 : 0; } }
-		public int SideInformationLength { get { return MpegAudioSpecification.GetSideInformationLength(version, channelMode); } }
-		public int DataLength { get { return SampleCount * DataRate / SampleRate + (hasPadding ? SlotLength : 0) - HeaderLength - ChecksumLength - SideInformationLength; } }
-		public int TotalLength { get { return HeaderLength + ChecksumLength + SideInformationLength + DataLength; } }
+		public int DataLength { get { return SampleCount * DataRate / SampleRate + (hasPadding ? SlotLength : 0) - HeaderLength - ChecksumLength; } }
+		public int TotalLength { get { return HeaderLength + ChecksumLength + DataLength; } }
 
 		protected MpegAudioFrame
 		(
@@ -84,7 +84,9 @@ namespace Krach.Formats.Mpeg
 			if (layer == MpegAudioLayer.Reserved) throw new ArgumentException(string.Format("Incorrect layer '{0}'.", layer));
 			this.hasErrorProtection = false;
 			this.bitRateID = bitRateID;
+			if (bitRateID <= 0 || bitRateID >= 15) throw new ArgumentException(string.Format("Incorrect bit rate ID '{0}'.", bitRateID));
 			this.sampleRateID = sampleRateID;
+			if (sampleRateID < 0 || sampleRateID >= 3) throw new ArgumentException(string.Format("Incorrect sample rate ID '{0}'.", sampleRateID));
 			this.hasPadding = false;
 			this.isPrivate = isPrivate;
 			this.channelMode = channelMode;
@@ -111,7 +113,9 @@ namespace Krach.Formats.Mpeg
 			if (layer == MpegAudioLayer.Reserved) throw new InvalidDataException(string.Format("Incorrect layer '{0}'.", layer));
 			this.hasErrorProtection = !header[15];
 			this.bitRateID = header[16, 20].Value;
+			if (bitRateID <= 0 || bitRateID >= 15) throw new InvalidDataException(string.Format("Incorrect bit rate ID '{0}'.", bitRateID));
 			this.sampleRateID = header[20, 22].Value;
+			if (sampleRateID < 0 || sampleRateID >= 3) throw new InvalidDataException(string.Format("Incorrect sample rate ID '{0}'.", sampleRateID));
 			this.hasPadding = header[22];
 			this.isPrivate = header[23];
 			this.channelMode = (MpegAudioChannelMode)header[24, 26].Value;
@@ -159,11 +163,7 @@ namespace Krach.Formats.Mpeg
 			return
 				frame1.version == frame2.version &&
 				frame1.layer == frame2.layer &&
-				frame1.sampleRateID == frame2.sampleRateID &&
-				frame1.channelMode == frame2.channelMode &&
-				frame1.isPrivate == frame2.isPrivate &&
-				frame1.isCopyrighted == frame2.isCopyrighted &&
-				frame1.isOriginal == frame2.isOriginal;
+				frame1.sampleRateID == frame2.sampleRateID;
 		}
 	}
 }
