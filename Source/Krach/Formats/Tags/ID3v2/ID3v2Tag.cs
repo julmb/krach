@@ -47,7 +47,6 @@ namespace Krach.Formats.Tags.ID3v2
 		{
 			if (majorVersion != 3) throw new NotImplementedException();
 			if (unsynchronisation || extendedHeader || experimental) throw new NotImplementedException();
-			if (frames == null) throw new ArgumentNullException("frames");
 
 			this.majorVersion = majorVersion;
 			this.minorVersion = minorVersion;

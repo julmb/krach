@@ -50,12 +50,12 @@ namespace Krach.Formats.Mpeg
 		public int XingDataLength { get { return XingHeaderLength + FrameCountLength + AudioDataLengthLength + TableOfContentsLength + QualityIndicatorLength; } }
 		public int PaddingLength { get { return DataLength - SideInformationLength - XingDataLength; } }
 
-		public MpegAudioXingFrame(MpegAudioDataFrame referenceFrame, IEnumerable<MpegAudioDataFrame> mpegAudioDataFrames)
+		public MpegAudioXingFrame(MpegAudioFrame referenceFrame, IEnumerable<MpegAudioDataFrame> mpegAudioDataFrames)
 			: base
 			(
 				referenceFrame.Version,
 				referenceFrame.Layer,
-				14,
+				FindLowestBitRateID(referenceFrame),
 				referenceFrame.SampleRateID,
 				referenceFrame.IsPrivate,
 				referenceFrame.ChannelMode,
@@ -136,6 +136,15 @@ namespace Krach.Formats.Mpeg
 			}
 
 			return currentDataPosition;
+		}
+
+		static int FindLowestBitRateID(MpegAudioFrame referenceFrame)
+		{
+			for (int bitRateID = 1; bitRateID < 15; bitRateID++)
+				if (MpegAudioFrame.GetTotalLength(referenceFrame.Version, referenceFrame.Layer, bitRateID, referenceFrame.SampleRateID) >= 156)
+					return bitRateID;
+
+			throw new InvalidOperationException("Found no bit rate ID for the requested frame size.");
 		}
 	}
 }

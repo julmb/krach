@@ -61,7 +61,7 @@ namespace Krach.Formats.Mpeg
 		public double AudioLength { get { return (double)SampleCount / (double)SampleRate; } }
 		public int HeaderLength { get { return 4; } }
 		public int ChecksumLength { get { return hasErrorProtection ? 2 : 0; } }
-		public int DataLength { get { return SampleCount * DataRate / SampleRate + (hasPadding ? SlotLength : 0) - HeaderLength - ChecksumLength; } }
+		public int DataLength { get { return GetTotalLength(version, layer, bitRateID, sampleRateID) + (hasPadding ? SlotLength : 0) - HeaderLength - ChecksumLength; } }
 		public int TotalLength { get { return HeaderLength + ChecksumLength + DataLength; } }
 
 		protected MpegAudioFrame
@@ -164,6 +164,14 @@ namespace Krach.Formats.Mpeg
 				frame1.version == frame2.version &&
 				frame1.layer == frame2.layer &&
 				frame1.sampleRateID == frame2.sampleRateID;
+		}
+		public static int GetTotalLength(MpegAudioVersion version, MpegAudioLayer layer, int bitRateID, int sampleRateID)
+		{
+			int sampleCount = MpegAudioSpecification.GetSampleCount(version, layer);
+			int dataRate = MpegAudioSpecification.GetBitRate(version, layer, bitRateID) * 1000 / 8;
+			int sampleRate = MpegAudioSpecification.GetSamplingRate(version, sampleRateID);
+
+			return sampleCount * dataRate / sampleRate;
 		}
 	}
 }
