@@ -15,6 +15,8 @@
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace Krach.Extensions
 {
@@ -27,6 +29,10 @@ namespace Krach.Extensions
 			if (!Enum.IsDefined(typeof(T), value)) throw new ArgumentOutOfRangeException("value");
 
 			return result;
+		}
+		public static IEnumerable<T> GetValues<T>()
+		{
+			return Enum.GetValues(typeof(T)).Cast<T>();
 		}
 	}
 }

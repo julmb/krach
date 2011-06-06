@@ -1,8 +1,6 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{132A3E13-29BF-4322-B17F-E5E5D86C22EF}</ProjectGuid>
@@ -12,8 +10,10 @@
     <AssemblyName>Krach</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,7 +22,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -30,10 +30,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-  </ItemGroup>
   <ItemGroup>
     <Compile Include="Audio\PcmBlock.cs" />
     <Compile Include="Audio\PcmAudio.cs" />
@@ -77,13 +73,9 @@
     <Compile Include="Formats\Tags\ID3v1\ID3v1Tag.cs" />
     <Compile Include="Formats\Tags\ID3v2\ID3v2ImageFrame.cs" />
     <Compile Include="Formats\Tags\ID3v2\ID3v2UserTextFrame.cs" />
-    <Compile Include="Formats\Tags\ID3v2\ID3v2Frame.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Formats\Tags\ID3v2\ID3v2Frame.cs" />
     <Compile Include="Formats\Tags\ID3v2\ID3v2GenericFrame.cs" />
-    <Compile Include="Formats\Tags\ID3v2\ID3v2Tag.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Formats\Tags\ID3v2\ID3v2Tag.cs" />
     <Compile Include="Formats\Tags\ID3v2\ID3v2TextFrame.cs" />
     <Compile Include="SignalProcessing\Wave.cs" />
     <Compile Include="SignalProcessing\DiscreteFourierTransform.cs" />
@@ -121,7 +113,10 @@
     <Compile Include="Maps\Vectors\SymmetricOrthotope1DoubleMap.cs" />
     <Compile Include="Maps\Vectors\Orthotope1DoubleMap.cs" />
     <Compile Include="Maps\Vectors\Orthotope2DoubleMap.cs" />
+    <Compile Include="Formats\Mpeg\MpegAudioFrameType.cs" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
 </Project>

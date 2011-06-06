@@ -15,11 +15,12 @@
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using System.Collections.Generic;
 
 namespace Krach.Formats.Mpeg
 {
 	public enum MpegAudioVersion { Mpeg25 = 0x0, Reserved = 0x1, Mpeg2 = 0x2, Mpeg1 = 0x3 }
-	public enum MpegAudioLayer { Reserved = 0x0, LayerIII = 0x1, LayerII = 0x2, LayerI = 0x3 }
+	public enum MpegAudioLayer { Reserved = 0x0, III = 0x1, II = 0x2, I = 0x3 }
 	public enum MpegAudioChannelMode { Stereo = 0x0, JointStereo = 0x1, DualChannel = 0x2, Mono = 0x3 }
 	public enum MpegAudioJoinBands { Bands4_31 = 0x0, Bands8_31 = 0x1, Bands12_31 = 0x2, Bands16_31 = 0x3, Dynamic = 0x4 }
 	public enum MpegAudioJoinMode { None = 0x0, IntensityStereo = 0x1, MSStereo = 0x2, IntensityAndMSStereo = 0x3 }
@@ -45,18 +46,18 @@ namespace Krach.Formats.Mpeg
 				case MpegAudioVersion.Mpeg1:
 					switch (layer)
 					{
-						case MpegAudioLayer.LayerI: return version1Layer1Bitrates[value];
-						case MpegAudioLayer.LayerII: return version1Layer2Bitrates[value];
-						case MpegAudioLayer.LayerIII: return version1Layer3Bitrates[value];
+						case MpegAudioLayer.I: return version1Layer1Bitrates[value];
+						case MpegAudioLayer.II: return version1Layer2Bitrates[value];
+						case MpegAudioLayer.III: return version1Layer3Bitrates[value];
 						default: throw new ArgumentOutOfRangeException("layer");
 					}
 				case MpegAudioVersion.Mpeg2:
 				case MpegAudioVersion.Mpeg25:
 					switch (layer)
 					{
-						case MpegAudioLayer.LayerI: return version2Layer1Bitrates[value];
-						case MpegAudioLayer.LayerII: return version2Layer2Bitrates[value];
-						case MpegAudioLayer.LayerIII: return version2Layer3Bitrates[value];
+						case MpegAudioLayer.I: return version2Layer1Bitrates[value];
+						case MpegAudioLayer.II: return version2Layer2Bitrates[value];
+						case MpegAudioLayer.III: return version2Layer3Bitrates[value];
 						default: throw new ArgumentOutOfRangeException("layer");
 					}
 				default: throw new ArgumentOutOfRangeException("version");
@@ -78,9 +79,9 @@ namespace Krach.Formats.Mpeg
 		{
 			switch (layer)
 			{
-				case MpegAudioLayer.LayerI: return 0x180;
-				case MpegAudioLayer.LayerII: return 0x480;
-				case MpegAudioLayer.LayerIII:
+				case MpegAudioLayer.I: return 0x180;
+				case MpegAudioLayer.II: return 0x480;
+				case MpegAudioLayer.III:
 					switch (version)
 					{
 						case MpegAudioVersion.Mpeg1: return 0x480;
@@ -95,9 +96,9 @@ namespace Krach.Formats.Mpeg
 		{
 			switch (layer)
 			{
-				case MpegAudioLayer.LayerI: return 4;
-				case MpegAudioLayer.LayerII: return 1;
-				case MpegAudioLayer.LayerIII: return 1;
+				case MpegAudioLayer.I: return 4;
+				case MpegAudioLayer.II: return 1;
+				case MpegAudioLayer.III: return 1;
 				default: throw new InvalidOperationException();
 			}
 		}
@@ -135,10 +136,10 @@ namespace Krach.Formats.Mpeg
 		{
 			switch (layer)
 			{
-				case MpegAudioLayer.LayerI:
-				case MpegAudioLayer.LayerII:
+				case MpegAudioLayer.I:
+				case MpegAudioLayer.II:
 					return (MpegAudioJoinBands)joinID;
-				case MpegAudioLayer.LayerIII:
+				case MpegAudioLayer.III:
 					return MpegAudioJoinBands.Dynamic;
 				default: throw new InvalidOperationException();
 			}
@@ -147,10 +148,10 @@ namespace Krach.Formats.Mpeg
 		{
 			switch (layer)
 			{
-				case MpegAudioLayer.LayerI:
-				case MpegAudioLayer.LayerII:
+				case MpegAudioLayer.I:
+				case MpegAudioLayer.II:
 					return MpegAudioJoinMode.IntensityStereo;
-				case MpegAudioLayer.LayerIII:
+				case MpegAudioLayer.III:
 					return (MpegAudioJoinMode)joinID;
 				default: throw new InvalidOperationException();
 			}

@@ -50,19 +50,19 @@ namespace Krach.Formats.Mpeg
 		public int XingDataLength { get { return XingHeaderLength + FrameCountLength + AudioDataLengthLength + TableOfContentsLength + QualityIndicatorLength; } }
 		public int PaddingLength { get { return DataLength - SideInformationLength - XingDataLength; } }
 
-		public MpegAudioXingFrame(MpegAudioFrame referenceFrame, IEnumerable<MpegAudioDataFrame> mpegAudioDataFrames)
+		public MpegAudioXingFrame(IEnumerable<MpegAudioDataFrame> mpegAudioDataFrames)
 			: base
 			(
-				referenceFrame.Version,
-				referenceFrame.Layer,
-				FindLowestBitRateID(referenceFrame),
-				referenceFrame.SampleRateID,
-				referenceFrame.IsPrivate,
-				referenceFrame.ChannelMode,
-				referenceFrame.JoinID,
-				referenceFrame.IsCopyrighted,
-				referenceFrame.IsOriginal,
-				referenceFrame.Emphasis
+				mpegAudioDataFrames.First().Version,
+				mpegAudioDataFrames.First().Layer,
+				FindLowestBitRateID(mpegAudioDataFrames.First()),
+				mpegAudioDataFrames.First().SampleRateID,
+				mpegAudioDataFrames.First().IsPrivate,
+				mpegAudioDataFrames.First().ChannelMode,
+				mpegAudioDataFrames.First().JoinID,
+				mpegAudioDataFrames.First().IsCopyrighted,
+				mpegAudioDataFrames.First().IsOriginal,
+				mpegAudioDataFrames.First().Emphasis
 			)
 		{
 			if (mpegAudioDataFrames == null) throw new ArgumentNullException("mpegAudioDataFrames");

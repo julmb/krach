@@ -162,7 +162,7 @@ namespace Krach.Extensions
 
 			return source.Aggregate(string.Empty, (seed, current) => seed + current);
 		}
-		public static IEnumerable<TSource> Concatenate<TSource>(params IEnumerable<TSource>[] sources)
+		public static IEnumerable<TSource> Concatenate<TSource>(IEnumerable<IEnumerable<TSource>> sources)
 		{
 			if (sources == null) throw new ArgumentNullException("sources");
 
@@ -173,6 +173,10 @@ namespace Krach.Extensions
 				foreach (TSource item in source)
 					yield return item;
 			}
+		}
+		public static IEnumerable<TSource> Concatenate<TSource>(params IEnumerable<TSource>[] sources)
+		{
+			return Concatenate((IEnumerable<IEnumerable<TSource>>)sources);
 		}
 		public static IEnumerable<TSource> Union<TSource>(params IEnumerable<TSource>[] sources)
 		{
