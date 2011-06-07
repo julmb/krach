@@ -63,7 +63,7 @@ namespace Krach.Formats.Mpeg
 		public int ChecksumLength { get { return hasErrorProtection ? 2 : 0; } }
 		public int DataLength { get { return GetTotalLength(version, layer, bitRateID, sampleRateID) + (hasPadding ? SlotLength : 0) - HeaderLength - ChecksumLength; } }
 		public int TotalLength { get { return HeaderLength + ChecksumLength + DataLength; } }
-		public MpegAudioFrameType Type { get { return new MpegAudioFrameType(version, layer, sampleRateID); } }
+		public MpegAudioFrameType Type { get { return new MpegAudioFrameType(version, layer, sampleRateID, channelMode == MpegAudioChannelMode.Mono ? 1 : 2); } }
 
 		protected MpegAudioFrame
 		(

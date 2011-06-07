@@ -22,15 +22,17 @@ using System.Collections.Generic;
 
 namespace Krach.Formats.Mpeg
 {
-	public struct MpegAudioFrameType : IEquatable<MpegAudioFrameType>
+	public class MpegAudioFrameType : IEquatable<MpegAudioFrameType>
 	{
 		readonly MpegAudioVersion version;
 		readonly MpegAudioLayer layer;
 		readonly int sampleRateID;
+		readonly int channelCount;
 		
 		public MpegAudioVersion Version { get { return version; } }
 		public MpegAudioLayer Layer { get { return layer; } }
 		public int SampleRateID { get { return sampleRateID; } }
+		public int ChannelCount { get { return channelCount; } }
 		
 		public static IEnumerable<MpegAudioFrameType> AllTypes
 		{
@@ -39,19 +41,22 @@ namespace Krach.Formats.Mpeg
 				foreach (MpegAudioVersion version in Enumerations.GetValues<MpegAudioVersion>().Except(MpegAudioVersion.Reserved))
 					foreach (MpegAudioLayer layer in Enumerations.GetValues<MpegAudioLayer>().Except(MpegAudioLayer.Reserved))
 						for (int sampleRateID = 0; sampleRateID < 3; sampleRateID++)
-							yield return new MpegAudioFrameType(version, layer, sampleRateID);
+							for (int channelCount = 1; channelCount <= 2; channelCount++)
+								yield return new MpegAudioFrameType(version, layer, sampleRateID, channelCount);
 			}
 		}
 		
-		public MpegAudioFrameType(MpegAudioVersion version, MpegAudioLayer layer, int sampleRateID)
+		public MpegAudioFrameType(MpegAudioVersion version, MpegAudioLayer layer, int sampleRateID, int channelCount)
 		{
 			if (version == MpegAudioVersion.Reserved) throw new ArgumentOutOfRangeException("version");
 			if (layer == MpegAudioLayer.Reserved) throw new ArgumentOutOfRangeException("layer");
 			if (sampleRateID < 0 || sampleRateID >= 3) throw new ArgumentOutOfRangeException("sampleRateID");
+			if (channelCount < 1 || channelCount > 2) throw new ArgumentOutOfRangeException("channelCount");
 			
 			this.version = version;
 			this.layer = layer;
 			this.sampleRateID = sampleRateID;
+			this.channelCount = channelCount;
 		}
 		
 		public override bool Equals(object obj)
@@ -73,11 +78,25 @@ namespace Krach.Formats.Mpeg
 
 		public static bool operator ==(MpegAudioFrameType type1, MpegAudioFrameType type2)
 		{
-			return type1.version == type2.version && type1.layer == type2.layer && type1.sampleRateID == type2.sampleRateID;
+			if (object.ReferenceEquals(type1, type2)) return true;
+			if (object.ReferenceEquals(type1, null) || object.ReferenceEquals(type2, null)) return false;
+			
+			return
+				type1.version == type2.version &&
+				type1.layer == type2.layer &&
+				type1.sampleRateID == type2.sampleRateID &&
+				type1.channelCount == type2.channelCount;
 		}
 		public static bool operator !=(MpegAudioFrameType type1, MpegAudioFrameType type2)
 		{
-			return type1.version != type2.version || type1.layer != type2.layer || type1.sampleRateID != type2.sampleRateID;
+			if (object.ReferenceEquals(type1, type2)) return false;
+			if (object.ReferenceEquals(type1, null) || object.ReferenceEquals(type2, null)) return true;
+			
+			return
+				type1.version != type2.version ||
+				type1.layer != type2.layer ||
+				type1.sampleRateID != type2.sampleRateID ||
+				type1.channelCount != type2.channelCount;
 		}
 	}
 }

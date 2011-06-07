@@ -35,7 +35,7 @@ namespace Krach.Formats.Tags.ID3v2
 			long headerStartPosition = reader.BaseStream.Position;
 
 			this.encodingID = reader.ReadByte();
-			this.description = GetEncoding(encodingID).GetString(reader.ReadToNextZero());
+			this.description = reader.ReadToNextZero(GetEncoding(encodingID));
 
 			long headerEndPosition = reader.BaseStream.Position;
 
@@ -51,10 +51,7 @@ namespace Krach.Formats.Tags.ID3v2
 			base.Write(writer);
 
 			writer.Write(encodingID);
-
-			writer.Write(GetEncoding(encodingID).GetBytes(description));
-			writer.Write((byte)0);
-
+			writer.Write(GetEncoding(encodingID).GetBytes(description + '\0'));
 			writer.Write(GetEncoding(encodingID).GetBytes(text));
 		}
 

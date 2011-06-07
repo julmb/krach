@@ -17,6 +17,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Krach.Extensions;
+using System.Text;
 
 namespace Krach.Formats.Tags.ID3v2
 {
@@ -40,9 +41,9 @@ namespace Krach.Formats.Tags.ID3v2
 			long headerStartPosition = reader.BaseStream.Position;
 
 			this.encodingID = reader.ReadByte();
-			this.mimeType = GetEncoding(encodingID).GetString(reader.ReadToNextZero());
+			this.mimeType = reader.ReadToNextZero(Encoding.ASCII);
 			this.pictureType = reader.ReadByte();
-			this.description = GetEncoding(encodingID).GetString(reader.ReadToNextZero());
+			this.description = reader.ReadToNextZero(GetEncoding(encodingID));
 
 			long headerEndPosition = reader.BaseStream.Position;
 
@@ -58,15 +59,9 @@ namespace Krach.Formats.Tags.ID3v2
 			base.Write(writer);
 
 			writer.Write(encodingID);
-
-			writer.Write(GetEncoding(encodingID).GetBytes(mimeType));
-			writer.Write((byte)0);
-
+			writer.Write(Encoding.ASCII.GetBytes(mimeType + '\0'));
 			writer.Write(pictureType);
-
-			writer.Write(GetEncoding(encodingID).GetBytes(description));
-			writer.Write((byte)0);
-
+			writer.Write(GetEncoding(encodingID).GetBytes(description + '\0'));
 			writer.Write(imageData);
 		}
 	}

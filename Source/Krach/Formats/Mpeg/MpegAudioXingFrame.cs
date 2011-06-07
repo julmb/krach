@@ -79,7 +79,7 @@ namespace Krach.Formats.Mpeg
 			reader.ReadBytes(SideInformationLength);
 
 			string identifier = Encoding.ASCII.GetString(reader.ReadBytes(4));
-			if (identifier != "Xing" && identifier != "Info") throw new InvalidDataException(string.Format("Wrong identifier '{0}', should be 'Xing' or 'Info'.", identifier));
+			if (identifier != "Xing") throw new InvalidDataException(string.Format("Wrong identifier '{0}', should be 'Xing'.", identifier));
 
 			this.fields = (MpegAudioXingFields)Binary.SwitchEndianness(reader.ReadUInt32());
 			if (((int)fields & 0xFFFFFFF0) != 0) throw new InvalidDataException(string.Format("Unexpected field flags '{0}' in Xing tag.", fields));

@@ -16,6 +16,8 @@
 
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
+using System.Linq;
 
 namespace Krach.Extensions
 {
@@ -37,17 +39,17 @@ namespace Krach.Extensions
 
 			return result;
 		}
-		public static byte[] ReadToNextZero(this BinaryReader reader)
-		{
-			List<byte> result = new List<byte>();
-
+		public static string ReadToNextZero(this BinaryReader reader, Encoding encoding)
+		{			
+			List<byte> data = new List<byte>();
+			
 			while (true)
 			{
-				byte data = reader.ReadByte();
-
-				if (data == 0) return result.ToArray();
-
-				result.Add(data);
+				data.Add(reader.ReadByte());
+				
+				char[] characters = encoding.GetChars(data.ToArray());
+				
+				if (characters.Length > 0 && characters[characters.Length - 1] == 0) return new string(characters.SkipLast(1).ToArray());
 			}
 		}
 	}
