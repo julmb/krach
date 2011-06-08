@@ -22,17 +22,21 @@ namespace Krach.Extensions
 	{
 		public static void Write(int column, string text)
 		{
-			Console.CursorLeft = column;
-			foreach (string word in text.Split(' '))
+			if (Console.BufferWidth == 0) Console.Write(new string(' ', column) + text);
+			else
 			{
-				if (Console.CursorLeft + word.Length + 1 + 1 > Console.BufferWidth)
+				Console.CursorLeft = column;
+				foreach (string word in text.Split(' '))
 				{
-					Console.WriteLine();
-					Console.CursorLeft = column;
+					if (Console.CursorLeft + word.Length + 1 + 1 > Console.BufferWidth)
+					{
+						Console.WriteLine();
+						Console.CursorLeft = column;
+					}
+	
+					Console.Write(word);
+					Console.Write(" ");
 				}
-
-				Console.Write(word);
-				Console.Write(" ");
 			}
 		}
 		public static void WriteLine(int column, string text)
