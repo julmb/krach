@@ -51,7 +51,7 @@ namespace Krach.Formats.Mpeg
 		{
 			this.id3v2Tag = new ID3v2Tag(reader);
 			this.mpegAudioXingFrame = new MpegAudioXingFrame(reader);
-			this.mpegAudioDataFrames = ReadFrames(reader, new MpegAudioDataFrame(reader)).ToArray();
+			this.mpegAudioDataFrames = ReadFrames(reader, new MpegAudioDataFrame(reader), reader.BaseStream.Length).ToArray();
 		}
 
 		public void Write(BinaryWriter writer)
@@ -61,11 +61,11 @@ namespace Krach.Formats.Mpeg
 			foreach (MpegAudioDataFrame mpegAudioDataFrame in mpegAudioDataFrames) mpegAudioDataFrame.Write(writer);
 		}
 
-		static IEnumerable<MpegAudioDataFrame> ReadFrames(BinaryReader reader, MpegAudioDataFrame referenceFrame)
+		static IEnumerable<MpegAudioDataFrame> ReadFrames(BinaryReader reader, MpegAudioDataFrame referenceFrame, long framesEndPosition)
 		{
 			yield return referenceFrame;
 
-			while (reader.BaseStream.Position < reader.BaseStream.Length)
+			while (reader.BaseStream.Position < framesEndPosition)
 			{
 				MpegAudioDataFrame frame = new MpegAudioDataFrame(reader);
 
