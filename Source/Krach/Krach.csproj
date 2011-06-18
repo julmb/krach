@@ -113,6 +113,8 @@
     <Compile Include="Maps\Vectors\Orthotope2DoubleMap.cs" />
     <Compile Include="Formats\Mpeg\MpegAudioFrameType.cs" />
     <Compile Include="Design\Option.cs" />
+    <Compile Include="Formats\IParseItem.cs" />
+    <Compile Include="Formats\Mpeg\MpegAudioFile.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

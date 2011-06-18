@@ -21,7 +21,7 @@ using Krach.Extensions;
 
 namespace Krach.Formats.Mpeg
 {
-	public abstract class MpegAudioFrame
+	public abstract class MpegAudioFrame : IParseItem
 	{
 		readonly MpegAudioVersion version;
 		readonly MpegAudioLayer layer;
@@ -64,7 +64,8 @@ namespace Krach.Formats.Mpeg
 		public int DataLength { get { return GetTotalLength(version, layer, bitRateID, sampleRateID) + (hasPadding ? SlotLength : 0) - HeaderLength - ChecksumLength; } }
 		public int TotalLength { get { return HeaderLength + ChecksumLength + DataLength; } }
 		public MpegAudioFrameType Type { get { return new MpegAudioFrameType(version, layer, sampleRateID, channelMode == MpegAudioChannelMode.Mono ? 1 : 2); } }
-
+		public virtual bool HasChanged { get { return false; } }
+		
 		protected MpegAudioFrame
 		(
 			MpegAudioVersion version,

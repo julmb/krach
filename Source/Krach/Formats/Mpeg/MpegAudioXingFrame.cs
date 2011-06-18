@@ -36,6 +36,7 @@ namespace Krach.Formats.Mpeg
 		readonly int audioDataLength;
 		readonly byte[] tableOfContents;
 		readonly int qualityIndicator;
+		readonly bool hasChanged = false;
 
 		public MpegAudioXingFields Fields { get { return fields; } }
 		public int FrameCount { get { return frameCount; } }
@@ -49,6 +50,7 @@ namespace Krach.Formats.Mpeg
 		public int QualityIndicatorLength { get { return ((fields & MpegAudioXingFields.QualityIndicator) != 0) ? 4 : 0; } }
 		public int XingDataLength { get { return XingHeaderLength + FrameCountLength + AudioDataLengthLength + TableOfContentsLength + QualityIndicatorLength; } }
 		public int PaddingLength { get { return DataLength - SideInformationLength - XingDataLength; } }
+		public override bool HasChanged { get { return base.HasChanged || hasChanged; } }
 
 		public MpegAudioXingFrame(IEnumerable<MpegAudioDataFrame> mpegAudioDataFrames)
 			: base
@@ -79,7 +81,8 @@ namespace Krach.Formats.Mpeg
 			reader.ReadBytes(SideInformationLength);
 
 			string identifier = Encoding.ASCII.GetString(reader.ReadBytes(4));
-			if (identifier != "Xing") throw new InvalidDataException(string.Format("Wrong identifier '{0}', should be 'Xing'.", identifier));
+			if (identifier != "Xing" && identifier != "Info") throw new InvalidDataException(string.Format("Wrong identifier '{0}', should be 'Xing'.", identifier));
+			if (identifier != "Xing") hasChanged = true;
 
 			this.fields = (MpegAudioXingFields)Binary.SwitchEndianness(reader.ReadUInt32());
 			if (((int)fields & 0xFFFFFFF0) != 0) throw new InvalidDataException(string.Format("Unexpected field flags '{0}' in Xing tag.", fields));

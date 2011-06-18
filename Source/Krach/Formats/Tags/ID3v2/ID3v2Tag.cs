@@ -23,15 +23,15 @@ using Krach.Extensions;
 
 namespace Krach.Formats.Tags.ID3v2
 {
-	public class ID3v2Tag
+	public class ID3v2Tag : IParseItem
 	{
 		readonly byte majorVersion;
 		readonly byte minorVersion;
 		readonly bool unsynchronisation;
 		readonly bool extendedHeader;
 		readonly bool experimental;
-		readonly int dataLength;
 		readonly IEnumerable<ID3v2Frame> frames;
+		readonly bool hasChanged = false;
 
 		public byte MajorVersion { get { return majorVersion; } }
 		public byte MinorVersion { get { return minorVersion; } }
@@ -39,14 +39,16 @@ namespace Krach.Formats.Tags.ID3v2
 		public bool ExtendedHeader { get { return extendedHeader; } }
 		public bool Experimental { get { return experimental; } }
 		public int HeaderLength { get { return 10; } }
-		public int DataLength { get { return dataLength; } }
+		public int DataLength { get { return frames.Sum(frame => frame.TotalLength); } }
 		public int TotalLength { get { return HeaderLength + DataLength; } }
 		public IEnumerable<ID3v2Frame> Frames { get { return frames; } }
-
-		public ID3v2Tag(byte majorVersion, byte minorVersion, bool unsynchronisation, bool extendedHeader, bool experimental)
+		public virtual bool HasChanged { get { return hasChanged; } }
+		
+		public ID3v2Tag(byte majorVersion, byte minorVersion, bool unsynchronisation, bool extendedHeader, bool experimental, IEnumerable<ID3v2Frame> frames)
 		{
 			if (majorVersion != 3) throw new NotImplementedException();
 			if (unsynchronisation || extendedHeader || experimental) throw new NotImplementedException();
+			if (frames == null) throw new ArgumentNullException("frames");
 
 			this.majorVersion = majorVersion;
 			this.minorVersion = minorVersion;
@@ -55,9 +57,7 @@ namespace Krach.Formats.Tags.ID3v2
 			this.extendedHeader = extendedHeader;
 			this.experimental = experimental;
 
-			this.dataLength = 0;
-
-			this.frames = Enumerable.Empty<ID3v2Frame>();
+			this.frames = frames;
 		}
 		public ID3v2Tag(BinaryReader reader)
 		{
@@ -78,29 +78,30 @@ namespace Krach.Formats.Tags.ID3v2
 
 			if (unsynchronisation || extendedHeader || experimental) throw new NotImplementedException();
 
-			BitField dataLengthData = BitField.FromBytes(reader.ReadBytes(4));
-			if (dataLengthData[0] || dataLengthData[8] || dataLengthData[16] || dataLengthData[24]) throw new InvalidDataException(string.Format("Found wrongly set bits in the length field '{0}'.", dataLengthData));
-			dataLengthData = BitField.FromBits
+			BitField dataLength = BitField.FromBytes(reader.ReadBytes(4));
+			if (dataLength[0] || dataLength[8] || dataLength[16] || dataLength[24]) throw new InvalidDataException(string.Format("Found wrongly set bits in the length field '{0}'.", dataLength));
+			dataLength = BitField.FromBits
 			(
 				Enumerables.Concatenate
 				(
-					dataLengthData[1, 8].Bits,
-					dataLengthData[9, 16].Bits,
-					dataLengthData[17, 24].Bits,
-					dataLengthData[25, 32].Bits
+					dataLength[1, 8].Bits,
+					dataLength[9, 16].Bits,
+					dataLength[17, 24].Bits,
+					dataLength[25, 32].Bits
 				)
 			);
-			this.dataLength = dataLengthData.Value;
-
+			
 			long framesStartPosition = reader.BaseStream.Position;
-			this.frames = ReadFrames(reader).ToArray();
-			long framesEndPosition = reader.BaseStream.Position;
-
-			long paddingLength = dataLength - (framesEndPosition - framesStartPosition);
-
-			if (paddingLength < 0) throw new InvalidDataException(string.Format("Invalid padding length '{0}'.", paddingLength));
-
-			reader.ReadBytes((int)paddingLength);
+			long framesEndPosition = framesStartPosition + dataLength.Value;;
+			
+			this.frames = ReadFrames(reader, framesEndPosition).ToArray();
+			
+			if (reader.BaseStream.Position != framesEndPosition)
+			{
+				reader.ReadBytes((int)(framesEndPosition - reader.BaseStream.Position));
+				
+				hasChanged = true;
+			}
 		}
 
 		public void Write(BinaryWriter writer)
@@ -112,39 +113,30 @@ namespace Krach.Formats.Tags.ID3v2
 
 			writer.Write(BitField.FromBits(Enumerables.Create(unsynchronisation, extendedHeader, experimental, false, false, false, false, false)).Bytes.Single());
 
-			BitField dataLengthData = BitField.FromValue(dataLength, 28);
-			dataLengthData = BitField.FromBits
+			BitField dataLength = BitField.FromValue(DataLength, 28);
+			dataLength = BitField.FromBits
 			(
 				Enumerables.Concatenate
 				(
 					Enumerables.Create(false),
-					dataLengthData[0, 7].Bits,
+					dataLength[0, 7].Bits,
 					Enumerables.Create(false),
-					dataLengthData[7, 14].Bits,
+					dataLength[7, 14].Bits,
 					Enumerables.Create(false),
-					dataLengthData[14, 21].Bits,
+					dataLength[14, 21].Bits,
 					Enumerables.Create(false),
-					dataLengthData[21, 28].Bits
+					dataLength[21, 28].Bits
 				)
 			);
-			writer.Write(dataLengthData.Bytes.ToArray());
-
-			long startPosition = writer.BaseStream.Position;
+			writer.Write(dataLength.Bytes.ToArray());
 
 			foreach (ID3v2Frame frame in frames) frame.Write(writer);
-
-			while (writer.BaseStream.Position < startPosition + dataLength) writer.Write((byte)0);
 		}
 
-		IEnumerable<ID3v2Frame> ReadFrames(BinaryReader reader)
+		IEnumerable<ID3v2Frame> ReadFrames(BinaryReader reader, long endPosition)
 		{
-			long startPosition = reader.BaseStream.Position;
-
-			while (reader.BaseStream.Position < startPosition + dataLength)
+			while (reader.BaseStream.Position < endPosition && reader.PeekByte() != 0)
 			{
-				// Padding has started
-				if (reader.PeekChar() == 0) break;
-
 				string frameIdentifier = Encoding.ASCII.GetString(reader.Peek(4));
 
 				if (frameIdentifier[0] == 'T')
