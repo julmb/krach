@@ -78,7 +78,7 @@ namespace Krach.Formats.Mpeg
 		public MpegAudioXingFrame(BinaryReader reader)
 			: base(reader)
 		{
-			reader.ReadBytes(SideInformationLength);
+			if (reader.ReadBytes(SideInformationLength).Length != SideInformationLength) throw new InvalidDataException("Invalid side information length.");
 
 			string identifier = Encoding.ASCII.GetString(reader.ReadBytes(4));
 			if (identifier != "Xing" && identifier != "Info") throw new InvalidDataException(string.Format("Wrong identifier '{0}', should be 'Xing'.", identifier));
@@ -94,7 +94,7 @@ namespace Krach.Formats.Mpeg
 
 			if (PaddingLength < 0) throw new InvalidDataException(string.Format("Invalid padding length '{0}'.", PaddingLength));
 
-			reader.ReadBytes(PaddingLength);
+			if (reader.ReadBytes(PaddingLength).Length != PaddingLength) throw new InvalidDataException("Invalid padding length");
 		}
 
 		public override void Write(BinaryWriter writer)

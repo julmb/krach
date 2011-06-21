@@ -15,15 +15,29 @@
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using System.IO;
 
 namespace Krach.Extensions
 {
 	public static class Terminal
 	{
+		public static bool IsTerminal
+		{
+			get
+			{
+				try
+				{
+					bool cursorVisible = Console.CursorVisible;
+
+					return true;
+				}
+				catch (IOException) { return false; }
+			}
+		}
+
 		public static void Write(int column, string text)
 		{
-			if (Console.BufferWidth == 0) Console.Write(new string(' ', column) + text);
-			else
+			if (IsTerminal)
 			{
 				Console.CursorLeft = column;
 				foreach (string word in text.Split(' '))
@@ -38,6 +52,7 @@ namespace Krach.Extensions
 					Console.Write(" ");
 				}
 			}
+			else Console.Write(new string(' ', column) + text);
 		}
 		public static void WriteLine(int column, string text)
 		{

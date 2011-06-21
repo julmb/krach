@@ -39,18 +39,13 @@ namespace Krach.Extensions
 
 			return result;
 		}
-		public static string ReadToNextZero(this BinaryReader reader, Encoding encoding)
-		{			
+		public static byte[] ReadToZero(this BinaryReader reader)
+		{
 			List<byte> data = new List<byte>();
-			
-			while (true)
-			{
-				data.Add(reader.ReadByte());
-				
-				char[] characters = encoding.GetChars(data.ToArray());
-				
-				if (characters.Length > 0 && characters[characters.Length - 1] == 0) return new string(characters.SkipLast(1).ToArray());
-			}
+
+			while (reader.PeekByte() != 0) data.Add(reader.ReadByte());
+
+			return data.ToArray();
 		}
 	}
 }

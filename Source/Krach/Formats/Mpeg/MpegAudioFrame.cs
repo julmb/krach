@@ -80,15 +80,16 @@ namespace Krach.Formats.Mpeg
 			MpegAudioEmphasis emphasis
 		)
 		{
-			this.version = version;
 			if (version == MpegAudioVersion.Reserved) throw new ArgumentException(string.Format("Incorrect version '{0}'.", version));
-			this.layer = layer;
 			if (layer == MpegAudioLayer.Reserved) throw new ArgumentException(string.Format("Incorrect layer '{0}'.", layer));
+			if (bitRateID <= 0 || bitRateID >= 15) throw new ArgumentException(string.Format("Incorrect bit rate ID '{0}'.", bitRateID));
+			if (sampleRateID < 0 || sampleRateID >= 3) throw new ArgumentException(string.Format("Incorrect sample rate ID '{0}'.", sampleRateID));
+
+			this.version = version;
+			this.layer = layer;
 			this.hasErrorProtection = false;
 			this.bitRateID = bitRateID;
-			if (bitRateID <= 0 || bitRateID >= 15) throw new ArgumentException(string.Format("Incorrect bit rate ID '{0}'.", bitRateID));
 			this.sampleRateID = sampleRateID;
-			if (sampleRateID < 0 || sampleRateID >= 3) throw new ArgumentException(string.Format("Incorrect sample rate ID '{0}'.", sampleRateID));
 			this.hasPadding = false;
 			this.isPrivate = isPrivate;
 			this.channelMode = channelMode;
@@ -106,18 +107,16 @@ namespace Krach.Formats.Mpeg
 			BitField header = BitField.FromBytes(reader.ReadBytes(4));
 			if (header.Length != 32) throw new InvalidDataException(string.Format("Incorrect header length '{0}', expected '32'.", header.Bits.Count()));
 
-			BitField sync = header[0, 11];
-			if (sync.Value != 0x07FF) throw new InvalidDataException(string.Format("Incorrect sync '{0}', expected '11111111111'.", sync));
-
+			if (header[0, 11].Value != 0x07FF) throw new InvalidDataException(string.Format("Incorrect sync '{0}', expected '11111111111'.", header[0, 11]));
 			this.version = (MpegAudioVersion)header[11, 13].Value;
 			if (version == MpegAudioVersion.Reserved) throw new InvalidDataException(string.Format("Incorrect version '{0}'.", version));
 			this.layer = (MpegAudioLayer)header[13, 15].Value;
 			if (layer == MpegAudioLayer.Reserved) throw new InvalidDataException(string.Format("Incorrect layer '{0}'.", layer));
 			this.hasErrorProtection = !header[15];
 			this.bitRateID = header[16, 20].Value;
-			if (bitRateID <= 0 || bitRateID >= 15) throw new InvalidDataException(string.Format("Incorrect bit rate ID '{0}'.", bitRateID));
+			if (bitRateID == 0 || bitRateID == 15) throw new InvalidDataException(string.Format("Incorrect bit rate ID '{0}'.", bitRateID));
 			this.sampleRateID = header[20, 22].Value;
-			if (sampleRateID < 0 || sampleRateID >= 3) throw new InvalidDataException(string.Format("Incorrect sample rate ID '{0}'.", sampleRateID));
+			if (sampleRateID == 3) throw new InvalidDataException(string.Format("Incorrect sample rate ID '{0}'.", sampleRateID));
 			this.hasPadding = header[22];
 			this.isPrivate = header[23];
 			this.channelMode = (MpegAudioChannelMode)header[24, 26].Value;
@@ -126,7 +125,6 @@ namespace Krach.Formats.Mpeg
 			this.isOriginal = header[29];
 			this.emphasis = (MpegAudioEmphasis)header[30, 32].Value;
 
-			// TODO: Test for correctness of the checksum
 			this.checksum = hasErrorProtection ? reader.ReadUInt16() : (ushort)0;
 		}
 

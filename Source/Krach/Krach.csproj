@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -42,6 +42,7 @@
     <Compile Include="BitField.cs" />
     <Compile Include="Collections\BatchCollection.cs" />
     <Compile Include="Collections\SearchList.cs" />
+    <Compile Include="Design\InstantEqualityComparer.cs" />
     <Compile Include="Design\Factory.cs" />
     <Compile Include="Design\IFactory.cs" />
     <Compile Include="Delegates.cs" />
@@ -69,12 +70,13 @@
     <Compile Include="Formats\Riff\RiffChunk.cs" />
     <Compile Include="Formats\Riff\RiffWaveChunk.cs" />
     <Compile Include="Formats\Tags\ID3v1\ID3v1Tag.cs" />
+    <Compile Include="Formats\Tags\ID3v2\ID3v2TextFrame.cs" />
     <Compile Include="Formats\Tags\ID3v2\ID3v2ImageFrame.cs" />
     <Compile Include="Formats\Tags\ID3v2\ID3v2UserTextFrame.cs" />
     <Compile Include="Formats\Tags\ID3v2\ID3v2Frame.cs" />
     <Compile Include="Formats\Tags\ID3v2\ID3v2GenericFrame.cs" />
     <Compile Include="Formats\Tags\ID3v2\ID3v2Tag.cs" />
-    <Compile Include="Formats\Tags\ID3v2\ID3v2TextFrame.cs" />
+    <Compile Include="Formats\Tags\ID3v2\ID3v2EncodedFrame.cs" />
     <Compile Include="SignalProcessing\Wave.cs" />
     <Compile Include="SignalProcessing\DiscreteFourierTransform.cs" />
     <Compile Include="SignalProcessing\SpectralAnalysis.cs" />

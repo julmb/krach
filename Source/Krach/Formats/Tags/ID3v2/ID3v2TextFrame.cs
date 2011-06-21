@@ -20,27 +20,23 @@ using System.Text;
 
 namespace Krach.Formats.Tags.ID3v2
 {
-	public class ID3v2TextFrame : ID3v2Frame
+	public class ID3v2TextFrame : ID3v2EncodedFrame
 	{
-		readonly byte encodingID;
 		readonly string text;
 
-		public byte EncodingID { get { return encodingID; } }
 		public string Text { get { return text; } }
 
 		public ID3v2TextFrame(BinaryReader reader)
 			: base(reader)
 		{
-			this.encodingID = reader.ReadByte();
-			this.text = GetEncoding(encodingID).GetString(reader.ReadBytes(DataLength - 1));
+			this.text = ReadString(reader, Encoding, DataLength - 1);
 		}
 
 		public override void Write(BinaryWriter writer)
 		{
 			base.Write(writer);
 
-			writer.Write(encodingID);
-			writer.Write(GetEncoding(encodingID).GetBytes(text));
+			WriteString(writer, Encoding, text);
 		}
 
 		public override string ToString()

@@ -19,13 +19,11 @@ using Krach.Extensions;
 
 namespace Krach.Formats.Tags.ID3v2
 {
-	public class ID3v2UserTextFrame : ID3v2Frame
+	public class ID3v2UserTextFrame : ID3v2EncodedFrame
 	{
-		readonly byte encodingID;
 		readonly string description;
 		readonly string text;
 
-		public byte EncodingID { get { return encodingID; } }
 		public string Description { get { return description; } }
 		public string Text { get { return text; } }
 
@@ -34,25 +32,23 @@ namespace Krach.Formats.Tags.ID3v2
 		{
 			long headerStartPosition = reader.BaseStream.Position;
 
-			this.encodingID = reader.ReadByte();
-			this.description = reader.ReadToNextZero(GetEncoding(encodingID));
+			this.description = ReadString(reader, Encoding);
 
 			long headerEndPosition = reader.BaseStream.Position;
 
-			long textDataLength = DataLength - (headerEndPosition - headerStartPosition);
+			long textDataLength = DataLength - 1 - (headerEndPosition - headerStartPosition);
 
 			if (textDataLength < 0) throw new InvalidDataException(string.Format("Invalid text data length '{0}'.", textDataLength));
 
-			this.text = GetEncoding(encodingID).GetString(reader.ReadBytes((int)textDataLength));
+			this.text = ReadString(reader, Encoding, (int)textDataLength);
 		}
 
 		public override void Write(BinaryWriter writer)
 		{
 			base.Write(writer);
 
-			writer.Write(encodingID);
-			writer.Write(GetEncoding(encodingID).GetBytes(description + '\0'));
-			writer.Write(GetEncoding(encodingID).GetBytes(text));
+			WriteString(writer, Encoding, description + '\0');
+			WriteString(writer, Encoding, text);
 		}
 
 		public override string ToString()

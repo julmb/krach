@@ -20,15 +20,28 @@ using System.Linq;
 
 namespace Krach.Design
 {
-	public class Option<TItem>
+	public class InstantEqualityComparer<TItem> : IEqualityComparer<TItem>
 	{
-		readonly TItem item;
-		
-		public TItem Item { get { return item; } }
-		
-		public Option(TItem item)
+		readonly Func<TItem, TItem, bool> equals;
+		readonly Func<TItem, int> getHashCode;
+
+		public InstantEqualityComparer(Func<TItem, TItem, bool> equals, Func<TItem, int> getHashCode)
 		{
-			this.item = item;
+			if (equals == null) throw new ArgumentNullException("equals");
+			if (getHashCode == null) throw new ArgumentNullException("getHashCode");
+
+			this.equals = equals;
+			this.getHashCode = getHashCode;
+		}
+		public InstantEqualityComparer(Func<TItem, TItem, bool> equals) : this(equals, item => item.GetHashCode()) { }
+
+		public bool Equals(TItem item1, TItem item2)
+		{
+			return equals(item1, item2);
+		}
+		public int GetHashCode(TItem item)
+		{
+			return getHashCode(item);
 		}
 	}
 }

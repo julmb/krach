@@ -21,15 +21,13 @@ using System.Text;
 
 namespace Krach.Formats.Tags.ID3v2
 {
-	public class ID3v2ImageFrame : ID3v2Frame
+	public class ID3v2ImageFrame : ID3v2EncodedFrame
 	{
-		readonly byte encodingID;
 		readonly string mimeType;
 		readonly byte pictureType;
 		readonly string description;
 		readonly byte[] imageData;
 
-		public byte EncodingID { get { return encodingID; } }
 		public string MimeType { get { return mimeType; } }
 		public byte PictureType { get { return pictureType; } }
 		public string Description { get { return description; } }
@@ -40,14 +38,13 @@ namespace Krach.Formats.Tags.ID3v2
 		{
 			long headerStartPosition = reader.BaseStream.Position;
 
-			this.encodingID = reader.ReadByte();
-			this.mimeType = reader.ReadToNextZero(Encoding.ASCII);
+			this.mimeType = ReadString(reader, Encoding.ASCII);
 			this.pictureType = reader.ReadByte();
-			this.description = reader.ReadToNextZero(GetEncoding(encodingID));
+			this.description = ReadString(reader, Encoding);
 
 			long headerEndPosition = reader.BaseStream.Position;
 
-			long imageDataLength = DataLength - (headerEndPosition - headerStartPosition);
+			long imageDataLength = DataLength - 1 - (headerEndPosition - headerStartPosition);
 
 			if (imageDataLength < 0) throw new InvalidDataException(string.Format("Invalid image data length '{0}'.", imageDataLength));
 
@@ -58,10 +55,9 @@ namespace Krach.Formats.Tags.ID3v2
 		{
 			base.Write(writer);
 
-			writer.Write(encodingID);
-			writer.Write(Encoding.ASCII.GetBytes(mimeType + '\0'));
+			WriteString(writer, Encoding.ASCII, mimeType + '\0');
 			writer.Write(pictureType);
-			writer.Write(GetEncoding(encodingID).GetBytes(description + '\0'));
+			WriteString(writer, Encoding, description + '\0');
 			writer.Write(imageData);
 		}
 	}

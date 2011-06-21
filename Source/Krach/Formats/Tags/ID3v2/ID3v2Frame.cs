@@ -80,15 +80,5 @@ namespace Krach.Formats.Tags.ID3v2
 		{
 			return identifier;
 		}
-
-		public static Encoding GetEncoding(byte encodingID)
-		{
-			switch (encodingID)
-			{
-				case 0: return Encoding.ASCII;
-				case 1: return Encoding.Unicode;
-				default: throw new ArgumentException(string.Format("Unknown encoding identifier '{0}'.", encodingID));
-			}
-		}
 	}
 }

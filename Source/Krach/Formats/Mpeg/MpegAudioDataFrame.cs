@@ -29,6 +29,7 @@ namespace Krach.Formats.Mpeg
 			: base(reader)
 		{
 			this.data = reader.ReadBytes(DataLength);
+			if (data.Length != DataLength) throw new InvalidDataException("Invalid data length.");
 		}
 
 		public override void Write(BinaryWriter writer)

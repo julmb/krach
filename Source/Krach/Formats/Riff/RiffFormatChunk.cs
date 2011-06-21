@@ -38,6 +38,8 @@ namespace Krach.Formats.Riff
 		public RiffFormatChunk(ushort channelCount, uint sampleRate, ushort sampleSize)
 			: base("fmt ", 16)
 		{
+			if (sampleSize % 8 != 0) throw new ArgumentException("Sample size cannot be a fractional number of bytes.");
+
 			this.format = 1;
 			this.channelCount = channelCount;
 			this.sampleRate = sampleRate;
