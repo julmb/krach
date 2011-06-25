@@ -27,9 +27,11 @@ namespace Krach.Extensions
 			{
 				try
 				{
+					#pragma warning disable 0219
 					bool cursorVisible = Console.CursorVisible;
+					#pragma warning restore 0219
 
-					return true;
+					return Console.BufferWidth > 0;
 				}
 				catch (IOException) { return false; }
 			}

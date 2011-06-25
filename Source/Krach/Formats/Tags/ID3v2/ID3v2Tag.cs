@@ -93,7 +93,6 @@ namespace Krach.Formats.Tags.ID3v2
 
 			if (reader.BaseStream.Position + dataLength.Value > reader.BaseStream.Length) throw new InvalidDataException("Invalid frame data length.");
 
-			long framesStartPosition = reader.BaseStream.Position + 0;
 			long framesEndPosition = reader.BaseStream.Position + dataLength.Value;
 			
 			this.frames = ReadFrames(reader, framesEndPosition).ToArray();
