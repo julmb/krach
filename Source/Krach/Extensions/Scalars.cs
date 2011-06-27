@@ -104,6 +104,10 @@ namespace Krach.Extensions
 			return Math.Atan2(y, x);
 		}
 		// Absolute
+		public static int Absolute(this int value)
+		{
+			return Math.Abs(value);
+		}
 		public static double Absolute(this double value)
 		{
 			return Math.Abs(value);

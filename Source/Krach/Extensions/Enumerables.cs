@@ -244,5 +244,11 @@ namespace Krach.Extensions
 		{
 			while (true) yield return getItem();
 		}
+		public static int GetSequenceHashCode<TSource>(IEnumerable<TSource> source)
+		{
+			if (source == null) throw new ArgumentNullException("source");
+			
+			return source.Aggregate(0, (seed, current) => seed ^ current.GetHashCode());
+		}
 	}
 }

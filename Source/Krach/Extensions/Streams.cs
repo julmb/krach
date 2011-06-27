@@ -27,7 +27,7 @@ namespace Krach.Extensions
 		{
 			byte[] result = reader.ReadBytes(count);
 
-			reader.BaseStream.Position -= count;
+			reader.BaseStream.Position -= result.Length;
 
 			return result;
 		}
