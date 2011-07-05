@@ -44,7 +44,23 @@ namespace Krach.Formats.Tags.ID3v2
 		public bool Encryption { get { return encryption; } }
 		public bool GroupingIdentity { get { return groupingIdentity; } }
 		public int TotalLength { get { return HeaderLength + DataLength; } }
-
+		
+		protected ID3v2Frame(string identifier, int dataLength, bool tagAlterPreservation, bool fileAlterPreservation, bool readOnly, bool compression, bool encryption, bool groupingIdentity)
+		{
+			if (identifier == null) throw new ArgumentNullException("identifier");
+			if (dataLength < 0) throw new ArgumentOutOfRangeException("dataLength");
+			
+			this.identifier = identifier;
+			this.dataLength = dataLength;
+			this.tagAlterPreservation = tagAlterPreservation;
+			this.fileAlterPreservation = fileAlterPreservation;
+			this.readOnly = readOnly;
+			this.compression = compression;
+			this.encryption = encryption;
+			this.groupingIdentity = groupingIdentity;
+			
+			if (compression || encryption || groupingIdentity) throw new NotImplementedException();
+		}
 		protected ID3v2Frame(BinaryReader reader)
 		{
 			this.identifier = Encoding.ASCII.GetString(reader.ReadBytes(4));
@@ -62,7 +78,6 @@ namespace Krach.Formats.Tags.ID3v2
 			this.encryption = flags[9];
 			this.groupingIdentity = flags[10];
 
-			// TODO:
 			if (compression || encryption || groupingIdentity) throw new NotImplementedException();
 		}
 

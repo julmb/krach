@@ -38,8 +38,8 @@ namespace Krach.Formats.Mpeg
 		{
 			get
 			{
-				foreach (MpegAudioVersion version in Enumerations.GetValues<MpegAudioVersion>().Except(MpegAudioVersion.Reserved))
-					foreach (MpegAudioLayer layer in Enumerations.GetValues<MpegAudioLayer>().Except(MpegAudioLayer.Reserved))
+				foreach (MpegAudioVersion version in Enumerations.GetValues<MpegAudioVersion>().Except(Enumerables.Create(MpegAudioVersion.Reserved)))
+					foreach (MpegAudioLayer layer in Enumerations.GetValues<MpegAudioLayer>().Except(Enumerables.Create(MpegAudioLayer.Reserved)))
 						for (int sampleRateID = 0; sampleRateID < 3; sampleRateID++)
 							for (int channelCount = 1; channelCount <= 2; channelCount++)
 								yield return new MpegAudioFrameType(version, layer, sampleRateID, channelCount);

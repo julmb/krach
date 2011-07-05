@@ -86,12 +86,6 @@ namespace Krach.Extensions
 
 			return Enumerable.Concat(source, Create(item));
 		}
-		public static IEnumerable<TSource> Except<TSource>(this IEnumerable<TSource> source, TSource item)
-		{
-			if (source == null) throw new ArgumentNullException("source");
-
-			return source.Except(Create(item));
-		}
 		public static IEnumerable<TSource> SkipLast<TSource>(this IEnumerable<TSource> source, int count)
 		{
 			if (source == null) throw new ArgumentNullException("source");

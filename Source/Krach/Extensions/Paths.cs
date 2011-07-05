@@ -25,9 +25,11 @@ namespace Krach.Extensions
 {
 	public static class Paths
 	{
+		readonly static char[] invalidCharacters = new char[] { '\0', '/' };
+		
 		public static string ToFileName(string text)
 		{
-			return Regex.Replace(text, string.Format("[{0}]+", Regex.Escape(new string(Path.GetInvalidFileNameChars()))), string.Empty);
+			return Regex.Replace(text, string.Format("[{0}]+", Regex.Escape(new string(invalidCharacters))), string.Empty);
 		}
 	}
 }
