@@ -38,9 +38,9 @@ namespace Krach.Formats.Tags.ID3v2
 		{
 			long headerStartPosition = reader.BaseStream.Position;
 
-			this.mimeType = ReadString(reader, Encoding.ASCII);
+			this.mimeType = ReadText(reader, Encoding.ASCII);
 			this.pictureType = reader.ReadByte();
-			this.description = ReadString(reader, Encoding);
+			this.description = ReadText(reader, Encoding);
 
 			long headerEndPosition = reader.BaseStream.Position;
 
@@ -55,9 +55,9 @@ namespace Krach.Formats.Tags.ID3v2
 		{
 			base.Write(writer);
 
-			WriteString(writer, Encoding.ASCII, mimeType + '\0');
+			WriteText(writer, Encoding.ASCII, mimeType + '\0');
 			writer.Write(pictureType);
-			WriteString(writer, Encoding, description + '\0');
+			WriteText(writer, Encoding, description + '\0');
 			writer.Write(imageData);
 		}
 	}

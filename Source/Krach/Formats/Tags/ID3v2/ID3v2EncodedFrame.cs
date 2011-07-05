@@ -18,30 +18,24 @@ using System;
 using System.IO;
 using System.Text;
 using Krach.Extensions;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Krach.Formats.Tags.ID3v2
 {
-	public class ID3v2EncodedFrame : ID3v2Frame
+	public abstract class ID3v2EncodedFrame : ID3v2Frame
 	{
 		readonly byte encodingID;
 
 		public byte EncodingID { get { return encodingID; } }
-		public Encoding Encoding
-		{
-			get
-			{
-				switch (encodingID)
-				{
-					case 0: return Encoding.GetEncoding("ISO-8859-1");
-					case 1: return Encoding.GetEncoding("UTF-16");
-					default: throw new InvalidOperationException();
-				}
-			}
-		}
+		public Encoding Encoding { get { return GetEncoding(encodingID); } }
 
-		public ID3v2EncodedFrame(BinaryReader reader)
+		protected ID3v2EncodedFrame(string identifier, int dataLength, byte encodingID)
+			: base(identifier, dataLength, true, true, false, false, false, false)
+		{
+			if (encodingID < 0 || encodingID > 1) throw new InvalidDataException(string.Format("Invalid encoding identifier: {0}.", encodingID));
+
+			this.encodingID = encodingID;
+		}
+		protected ID3v2EncodedFrame(BinaryReader reader)
 			: base(reader)
 		{
 			this.encodingID = reader.ReadByte();
@@ -55,29 +49,44 @@ namespace Krach.Formats.Tags.ID3v2
 			writer.Write(encodingID);
 		}
 
-		protected string ReadString(BinaryReader reader, Encoding encoding, int length)
+		protected static Encoding GetEncoding(byte encodingID)
 		{
-			using (MemoryStream memoryStream = new MemoryStream(reader.ReadBytes(length)))
-			using (StreamReader streamReader = new StreamReader(memoryStream, encoding))
-				return streamReader.ReadToEnd();
-		}
-		protected string ReadString(BinaryReader reader, Encoding encoding)
-		{
-			using (MemoryStream memoryStream = new MemoryStream(reader.ReadToZero()))
-			using (StreamReader streamReader = new StreamReader(memoryStream, encoding))
+			switch (encodingID)
 			{
-				reader.ReadBytes(encoding.GetByteCount("\0"));
-
-				return streamReader.ReadToEnd();
+				case 0: return Encoding.GetEncoding("ISO-8859-1");
+				case 1: return Encoding.GetEncoding("UTF-16");
+				default: throw new InvalidOperationException();
 			}
 		}
-		protected void WriteString(BinaryWriter writer, Encoding encoding, string text)
+		protected static string ReadText(BinaryReader reader, Encoding encoding, int length)
+		{
+			return DataToText(encoding, reader.ReadBytes(length));
+		}
+		protected static string ReadText(BinaryReader reader, Encoding encoding)
+		{
+			byte[] data = reader.ReadToZero();
+
+			reader.ReadBytes(encoding.GetByteCount("\0"));
+
+			return DataToText(encoding, data);
+		}
+		protected static void WriteText(BinaryWriter writer, Encoding encoding, string text)
+		{
+			writer.Write(TextToData(encoding, text));
+		}
+		protected static string DataToText(Encoding encoding, byte[] data)
+		{
+			using (MemoryStream memoryStream = new MemoryStream(data))
+			using (StreamReader streamReader = new StreamReader(memoryStream, encoding))
+				return streamReader.ReadToEnd();
+		}
+		protected static byte[] TextToData(Encoding encoding, string text)
 		{
 			using (MemoryStream memoryStream = new MemoryStream())
 			{
 				using (StreamWriter streamWriter = new StreamWriter(memoryStream, encoding)) streamWriter.Write(text);
 
-				writer.Write(memoryStream.ToArray());
+				return memoryStream.ToArray();
 			}
 		}
 	}

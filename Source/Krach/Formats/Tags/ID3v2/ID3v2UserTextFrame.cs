@@ -32,7 +32,7 @@ namespace Krach.Formats.Tags.ID3v2
 		{
 			long headerStartPosition = reader.BaseStream.Position;
 
-			this.description = ReadString(reader, Encoding);
+			this.description = ReadText(reader, Encoding);
 
 			long headerEndPosition = reader.BaseStream.Position;
 
@@ -40,15 +40,15 @@ namespace Krach.Formats.Tags.ID3v2
 
 			if (textDataLength < 0) throw new InvalidDataException(string.Format("Invalid text data length '{0}'.", textDataLength));
 
-			this.text = ReadString(reader, Encoding, (int)textDataLength);
+			this.text = ReadText(reader, Encoding, (int)textDataLength);
 		}
 
 		public override void Write(BinaryWriter writer)
 		{
 			base.Write(writer);
 
-			WriteString(writer, Encoding, description + '\0');
-			WriteString(writer, Encoding, text);
+			WriteText(writer, Encoding, description + '\0');
+			WriteText(writer, Encoding, text);
 		}
 
 		public override string ToString()

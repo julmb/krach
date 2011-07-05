@@ -14,22 +14,17 @@
 // You should have received a copy of the GNU General Public License along with
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.IO;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Krach.Extensions
 {
 	public static class Paths
 	{
-		readonly static char[] invalidCharacters = new char[] { '\0', '/' };
-		
+		readonly static char[] invalidCharacters = new char[] { '\0', '/', '\\' };
+
 		public static string ToFileName(string text)
 		{
-			return Regex.Replace(text, string.Format("[{0}]+", Regex.Escape(new string(invalidCharacters))), string.Empty);
+			return Regex.Replace(text, string.Format("[{0}]+", Regex.Escape(new string(invalidCharacters))), string.Empty).TrimEnd('.');
 		}
 	}
 }
