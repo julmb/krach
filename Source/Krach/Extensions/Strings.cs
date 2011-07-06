@@ -28,27 +28,31 @@ namespace Krach.Extensions
 			text1 = text1.ToLowerInvariant();
 			text2 = text2.ToLowerInvariant();
 
-			int rows = text1.Length + 1;
-			int columns = text2.Length + 1;
+			int rowCount = text1.Length + 1;
+			int columnCount = text2.Length + 1;
 
-			int[,] distance = new int[rows, columns];
+			int[,] distance = new int[rowCount, columnCount];
 
-			for (int row = 0; row < rows; row++) distance[row, 0] = row;
-			for (int column = 0; column < columns; column++) distance[0, column] = column;
+			for (int rowIndex = 0; rowIndex < rowCount; rowIndex++) distance[rowIndex, 0] = rowIndex;
+			for (int columnIndex = 0; columnIndex < columnCount; columnIndex++) distance[0, columnIndex] = columnIndex;
 
-			for (int row = 1; row < rows; row++)
-				for (int column = 1; column < columns; column++)
-					if (text1[row - 1] == text2[column - 1]) distance[row, column] = distance[row - 1, column - 1];
+			for (int rowIndex = 1; rowIndex < rowCount; rowIndex++)
+				for (int columnIndex = 1; columnIndex < columnCount; columnIndex++)
+					if (text1[rowIndex - 1] == text2[columnIndex - 1]) distance[rowIndex, columnIndex] = distance[rowIndex - 1, columnIndex - 1];
 					else
 					{
-						int deletionDistance = distance[row - 1, column] + 1;
-						int insertionDistance = distance[row, column - 1] + 1;
-						int replacementDistance = distance[row - 1, column - 1] + 1;
+						int deletionDistance = distance[rowIndex - 1, columnIndex] + 1;
+						int insertionDistance = distance[rowIndex, columnIndex - 1] + 1;
+						int replacementDistance = distance[rowIndex - 1, columnIndex - 1] + 1;
 
-						distance[row, column] = Comparables.Minimum(deletionDistance, insertionDistance, replacementDistance);
+						distance[rowIndex, columnIndex] = int.MaxValue;
+
+						if (deletionDistance < distance[rowIndex, columnIndex]) distance[rowIndex, columnIndex] = deletionDistance;
+						if (insertionDistance < distance[rowIndex, columnIndex]) distance[rowIndex, columnIndex] = insertionDistance;
+						if (replacementDistance < distance[rowIndex, columnIndex]) distance[rowIndex, columnIndex] = replacementDistance;
 					}
 
-			return distance[rows - 1, columns - 1];
+			return distance[rowCount - 1, columnCount - 1];
 		}
 	}
 }

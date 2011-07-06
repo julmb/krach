@@ -49,6 +49,9 @@ namespace Krach.Formats.Tags.ID3v2
 			if (majorVersion != 3) throw new NotImplementedException();
 			if (unsynchronisation || extendedHeader || experimental) throw new NotImplementedException();
 			if (frames == null) throw new ArgumentNullException("frames");
+			if (frames.OfType<ID3v2TextFrame>().Any(frame => frame.Identifier[0] != 'T' || frame.Identifier == "TXXX")) throw new ArgumentException("Found text frame with invalid identifier.");
+			if (frames.OfType<ID3v2UserTextFrame>().Any(frame => frame.Identifier != "TXXX")) throw new ArgumentException("Found user text frame with invalid identifier.");
+			if (frames.OfType<ID3v2ImageFrame>().Any(frame => frame.Identifier != "APIC")) throw new ArgumentException("Found image frame with invalid identifier.");
 
 			this.majorVersion = majorVersion;
 			this.minorVersion = minorVersion;
