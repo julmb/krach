@@ -39,13 +39,18 @@ namespace Krach.Extensions
 
 			return result;
 		}
-		public static byte[] ReadToZero(this BinaryReader reader)
+		public static byte[] ReadToZero(this BinaryReader reader, Encoding encoding)
 		{
 			List<byte> data = new List<byte>();
 
-			while (reader.PeekByte() != 0) data.Add(reader.ReadByte());
+			while (reader.BaseStream.Position < reader.BaseStream.Length)
+			{
+				data.Add(reader.ReadByte());
+				
+				if (encoding.GetString(data.ToArray()).Last() == '\0') return data.SkipLast(encoding.GetByteCount("\0")).ToArray();
+			}
 
-			return data.ToArray();
+			throw new InvalidDataException("Hit end of stream while reading null-terminated string.");
 		}
 	}
 }

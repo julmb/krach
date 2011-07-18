@@ -64,11 +64,7 @@ namespace Krach.Formats.Tags.ID3v2
 		}
 		protected static string ReadText(BinaryReader reader, Encoding encoding)
 		{
-			byte[] data = reader.ReadToZero();
-
-			reader.ReadBytes(encoding.GetByteCount("\0"));
-
-			return DataToText(encoding, data);
+			return DataToText(encoding, reader.ReadToZero(encoding));
 		}
 		protected static void WriteText(BinaryWriter writer, Encoding encoding, string text)
 		{

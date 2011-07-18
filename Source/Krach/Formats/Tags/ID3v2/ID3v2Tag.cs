@@ -31,7 +31,6 @@ namespace Krach.Formats.Tags.ID3v2
 		readonly bool extendedHeader;
 		readonly bool experimental;
 		readonly IEnumerable<ID3v2Frame> frames;
-		readonly bool hasChanged = false;
 
 		public byte MajorVersion { get { return majorVersion; } }
 		public byte MinorVersion { get { return minorVersion; } }
@@ -42,7 +41,7 @@ namespace Krach.Formats.Tags.ID3v2
 		public int DataLength { get { return frames.Sum(frame => frame.TotalLength); } }
 		public int TotalLength { get { return HeaderLength + DataLength; } }
 		public IEnumerable<ID3v2Frame> Frames { get { return frames; } }
-		public virtual bool HasChanged { get { return hasChanged; } }
+		public virtual bool HasChanged { get { return false; } }
 		
 		public ID3v2Tag(byte majorVersion, byte minorVersion, bool unsynchronisation, bool extendedHeader, bool experimental, IEnumerable<ID3v2Frame> frames)
 		{
@@ -100,12 +99,7 @@ namespace Krach.Formats.Tags.ID3v2
 			
 			this.frames = ReadFrames(reader, framesEndPosition).ToArray();
 			
-			if (reader.BaseStream.Position != framesEndPosition)
-			{
-				reader.ReadBytes((int)(framesEndPosition - reader.BaseStream.Position));
-				
-				hasChanged = true;
-			}
+			if (reader.BaseStream.Position != framesEndPosition) reader.ReadBytes((int)(framesEndPosition - reader.BaseStream.Position));
 		}
 
 		public void Write(BinaryWriter writer)
