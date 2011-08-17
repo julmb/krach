@@ -152,6 +152,10 @@ namespace Krach.Extensions
 
 			while (enumerator.MoveNext()) yield return Tuple.Create(last, last = enumerator.Current);
 		}
+		public static IEnumerable<TSource> WhereNot<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+		{
+			return source.Where(item => !predicate(item));
+		}
 		public static IEnumerable<string> ToStrings<TSource>(this IEnumerable<TSource> source)
 		{
 			if (source == null) throw new ArgumentNullException("source");
