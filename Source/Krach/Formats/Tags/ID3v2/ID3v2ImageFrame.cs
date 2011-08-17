@@ -14,9 +14,10 @@
 // You should have received a copy of the GNU General Public License along with
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
+using System;
 using System.Collections.Generic;
 using System.IO;
-using Krach.Extensions;
+using System.Linq;
 using System.Text;
 
 namespace Krach.Formats.Tags.ID3v2
@@ -57,6 +58,29 @@ namespace Krach.Formats.Tags.ID3v2
 		public string Description { get { return description; } }
 		public IEnumerable<byte> ImageData { get { return imageData; } }
 
+		public ID3v2ImageFrame(string mimeType, IEnumerable<byte> imageData)
+			: base("APIC", 1 + TextToData(Encoding.ASCII, mimeType).Length + 1 + 1 + 1 + imageData.Count(), 0)
+		{
+			if (mimeType == null) throw new ArgumentNullException("mimeType");
+			if (imageData == null) throw new ArgumentNullException("imageData");
+
+			this.mimeType = mimeType;
+			this.imageType = ID3v2ImageType.FrontCover;
+			this.description = string.Empty;
+			this.imageData = imageData.ToArray();
+		}
+		public ID3v2ImageFrame(string mimeType, ID3v2ImageType imageType, string description, IEnumerable<byte> imageData)
+			: base("APIC", 1 + TextToData(Encoding.ASCII, mimeType).Length + 1 + 1 + TextToData(GetEncoding(1), description).Length + 1 + imageData.Count(), 1)
+		{
+			if (mimeType == null) throw new ArgumentNullException("mimeType");
+			if (description == null) throw new ArgumentNullException("description");
+			if (imageData == null) throw new ArgumentNullException("imageData");
+
+			this.mimeType = mimeType;
+			this.imageType = imageType;
+			this.description = description;
+			this.imageData = imageData.ToArray();
+		}
 		public ID3v2ImageFrame(BinaryReader reader)
 			: base(reader)
 		{

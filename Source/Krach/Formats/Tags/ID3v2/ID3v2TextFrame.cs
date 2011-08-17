@@ -15,6 +15,7 @@
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
 using System.IO;
+using System;
 
 namespace Krach.Formats.Tags.ID3v2
 {
@@ -27,6 +28,8 @@ namespace Krach.Formats.Tags.ID3v2
 		public ID3v2TextFrame(string identifier, string text)
 			: base(identifier, 1 + TextToData(GetEncoding(1), text).Length, 1)
 		{
+			if (text == null) throw new ArgumentNullException("text");
+
 			this.text = text;
 		}
 		public ID3v2TextFrame(BinaryReader reader)
