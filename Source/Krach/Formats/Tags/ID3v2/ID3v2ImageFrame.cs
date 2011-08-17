@@ -21,15 +21,39 @@ using System.Text;
 
 namespace Krach.Formats.Tags.ID3v2
 {
+	public enum ID3v2ImageType : byte
+	{
+		Other,
+		FileIcon,
+		OtherFileIcon,
+		FrontCover,
+		BackCover,
+		LeafletPage,
+		Media,
+		LeadArtist,
+		Artist,
+		Conductor,
+		Band,
+		Composer,
+		Lyricist,
+		RecordingLocation,
+		DuringRecording,
+		DuringPerformance,
+		MovieScreenCapture,
+		ABrightColouredFish,
+		Illustration,
+		BandLogotype,
+		PublisherLogotype
+	}
 	public class ID3v2ImageFrame : ID3v2EncodedFrame
 	{
 		readonly string mimeType;
-		readonly byte pictureType;
+		readonly ID3v2ImageType imageType;
 		readonly string description;
 		readonly byte[] imageData;
 
 		public string MimeType { get { return mimeType; } }
-		public byte PictureType { get { return pictureType; } }
+		public ID3v2ImageType ImageType { get { return imageType; } }
 		public string Description { get { return description; } }
 		public IEnumerable<byte> ImageData { get { return imageData; } }
 
@@ -39,7 +63,7 @@ namespace Krach.Formats.Tags.ID3v2
 			long headerStartPosition = reader.BaseStream.Position;
 
 			this.mimeType = ReadText(reader, Encoding.ASCII);
-			this.pictureType = reader.ReadByte();
+			this.imageType = (ID3v2ImageType)reader.ReadByte();
 			this.description = ReadText(reader, Encoding);
 
 			long headerEndPosition = reader.BaseStream.Position;
@@ -56,7 +80,7 @@ namespace Krach.Formats.Tags.ID3v2
 			base.Write(writer);
 
 			WriteText(writer, Encoding.ASCII, mimeType + '\0');
-			writer.Write(pictureType);
+			writer.Write((byte)imageType);
 			WriteText(writer, Encoding, description + '\0');
 			writer.Write(imageData);
 		}
