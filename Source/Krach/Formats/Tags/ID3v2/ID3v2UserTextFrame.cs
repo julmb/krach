@@ -15,7 +15,6 @@
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
 using System.IO;
-using Krach.Extensions;
 
 namespace Krach.Formats.Tags.ID3v2
 {
@@ -26,6 +25,7 @@ namespace Krach.Formats.Tags.ID3v2
 
 		public string Description { get { return description; } }
 		public string Text { get { return text; } }
+		public override int DataLength { get { return base.DataLength + TextToData(Encoding, description + '\0').Length + TextToData(Encoding, text).Length; } }
 
 		public ID3v2UserTextFrame(BinaryReader reader)
 			: base(reader)
@@ -36,7 +36,7 @@ namespace Krach.Formats.Tags.ID3v2
 
 			long headerEndPosition = reader.BaseStream.Position;
 
-			long textDataLength = DataLength - 1 - (headerEndPosition - headerStartPosition);
+			long textDataLength = ParsedDataLength - base.DataLength - (headerEndPosition - headerStartPosition);
 
 			if (textDataLength < 0) throw new InvalidDataException(string.Format("Invalid text data length '{0}'.", textDataLength));
 

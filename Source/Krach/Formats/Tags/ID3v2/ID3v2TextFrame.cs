@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU General Public License along with
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
-using System.IO;
 using System;
+using System.IO;
 
 namespace Krach.Formats.Tags.ID3v2
 {
@@ -24,9 +24,10 @@ namespace Krach.Formats.Tags.ID3v2
 		readonly string text;
 
 		public string Text { get { return text; } }
+		public override int DataLength { get { return base.DataLength + TextToData(Encoding, text).Length; } }
 
 		public ID3v2TextFrame(string identifier, string text)
-			: base(identifier, 1 + TextToData(GetEncoding(1), text).Length, 1)
+			: base(identifier, 1)
 		{
 			if (text == null) throw new ArgumentNullException("text");
 
@@ -35,7 +36,7 @@ namespace Krach.Formats.Tags.ID3v2
 		public ID3v2TextFrame(BinaryReader reader)
 			: base(reader)
 		{
-			this.text = ReadText(reader, Encoding, DataLength - 1);
+			this.text = ReadText(reader, Encoding, ParsedDataLength - base.DataLength);
 		}
 
 		public override void Write(BinaryWriter writer)

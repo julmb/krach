@@ -57,9 +57,10 @@ namespace Krach.Formats.Tags.ID3v2
 		public ID3v2ImageType ImageType { get { return imageType; } }
 		public string Description { get { return description; } }
 		public IEnumerable<byte> ImageData { get { return imageData; } }
+		public override int DataLength { get { return base.DataLength + TextToData(Encoding.ASCII, mimeType + '\0').Length + 1 + TextToData(Encoding, description + '\0').Length + imageData.Length; } }
 
 		public ID3v2ImageFrame(string mimeType, IEnumerable<byte> imageData)
-			: base("APIC", 1 + TextToData(Encoding.ASCII, mimeType).Length + 1 + 1 + 1 + imageData.Count(), 0)
+			: base("APIC", 0)
 		{
 			if (mimeType == null) throw new ArgumentNullException("mimeType");
 			if (imageData == null) throw new ArgumentNullException("imageData");
@@ -70,7 +71,7 @@ namespace Krach.Formats.Tags.ID3v2
 			this.imageData = imageData.ToArray();
 		}
 		public ID3v2ImageFrame(string mimeType, ID3v2ImageType imageType, string description, IEnumerable<byte> imageData)
-			: base("APIC", 1 + TextToData(Encoding.ASCII, mimeType).Length + 1 + 1 + TextToData(GetEncoding(1), description).Length + 1 + imageData.Count(), 1)
+			: base("APIC", 1)
 		{
 			if (mimeType == null) throw new ArgumentNullException("mimeType");
 			if (description == null) throw new ArgumentNullException("description");
@@ -92,7 +93,7 @@ namespace Krach.Formats.Tags.ID3v2
 
 			long headerEndPosition = reader.BaseStream.Position;
 
-			long imageDataLength = DataLength - 1 - (headerEndPosition - headerStartPosition);
+			long imageDataLength = ParsedDataLength - base.DataLength - (headerEndPosition - headerStartPosition);
 
 			if (imageDataLength < 0) throw new InvalidDataException(string.Format("Invalid image data length '{0}'.", imageDataLength));
 

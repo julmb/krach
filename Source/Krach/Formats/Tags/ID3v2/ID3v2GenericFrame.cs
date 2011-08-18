@@ -24,11 +24,12 @@ namespace Krach.Formats.Tags.ID3v2
 		readonly byte[] data;
 
 		public IEnumerable<byte> Data { get { return data; } }
+		public override int DataLength { get { return data.Length; } }
 
 		public ID3v2GenericFrame(BinaryReader reader)
 			: base(reader)
 		{
-			this.data = reader.ReadBytes(DataLength);
+			this.data = reader.ReadBytes(ParsedDataLength);
 		}
 
 		public override void Write(BinaryWriter writer)

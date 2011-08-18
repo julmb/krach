@@ -27,9 +27,10 @@ namespace Krach.Formats.Tags.ID3v2
 
 		public byte EncodingID { get { return encodingID; } }
 		public Encoding Encoding { get { return GetEncoding(encodingID); } }
+		public override int DataLength { get { return 1; } }
 
-		protected ID3v2EncodedFrame(string identifier, int dataLength, byte encodingID)
-			: base(identifier, dataLength, true, true, false, false, false, false)
+		protected ID3v2EncodedFrame(string identifier, byte encodingID)
+			: base(identifier, true, true, false, false, false, false)
 		{
 			if (encodingID < 0 || encodingID > 1) throw new InvalidDataException(string.Format("Invalid encoding identifier: {0}.", encodingID));
 
