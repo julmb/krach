@@ -18,6 +18,9 @@ namespace Krach.Collections
 		
 		public void Add(TSource source, TDestination destination) 
 		{
+			if (forward.ContainsKey(source)) throw new ArgumentException("The parameter 'source' is already mapped to some destination.");
+			if (reverse.ContainsKey(destination)) throw new ArgumentException("The parameter 'destination' is already mapped to some source.");
+
 			forward.Add(source, destination);
 			reverse.Add(destination, source);
 		}
