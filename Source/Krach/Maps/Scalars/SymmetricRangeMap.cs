@@ -26,10 +26,8 @@ namespace Krach.Maps.Scalar
 			: base(source, destination, GetFactory(mapper), GetFactory(mapper))
 		{
 		}
-		public SymmetricRangeMap(Range<double> source, IFactory<IMap<double, double>, Range<double>, Range<double>> mapper)
-			: this(source, new Range<double>(0, 1), mapper)
-		{
-		}
+		public SymmetricRangeMap(Range<double> source, IFactory<IMap<double, double>, Range<double>, Range<double>> mapper) : this(source, new Range<double>(0, 1), mapper) { }
+		public SymmetricRangeMap(IFactory<IMap<double, double>, Range<double>, Range<double>> mapper) : this(new Range<double>(0, 1), new Range<double>(0, 1), mapper) { }
 
 		static IFactory<RangeMap, Range<double>, Range<double>> GetFactory(IFactory<IMap<double, double>, Range<double>, Range<double>> mapper)
 		{

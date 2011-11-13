@@ -19,6 +19,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Krach.Audio;
+using Krach.Extensions;
 
 namespace Krach.Formats.Riff
 {
@@ -109,8 +110,11 @@ namespace Krach.Formats.Riff
 				double[] samples = blocks[blockIndex].Samples.ToArray();
 
 				for (int sampleIndex = 0; sampleIndex < samples.Length; sampleIndex++)
-					foreach (byte part in BitConverter.GetBytes((short)(samples[sampleIndex] * 0x8000)))
-						data[position++] = part;
+				{
+					if (samples[sampleIndex] < -1 || samples[sampleIndex] >= +1) throw new InvalidDataException(string.Format("Sample at index {0} was out of range ({1}).", sampleIndex, samples[sampleIndex]));
+
+					foreach (byte part in BitConverter.GetBytes((short)(samples[sampleIndex] * 0x8000))) data[position++] = part;
+				}
 			}
 
 			RiffDataChunk dataChunk = new RiffDataChunk(data);

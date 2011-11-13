@@ -37,6 +37,7 @@ namespace Krach.Maps.Basic
 			if (value < source.Start || value > source.End) throw new ArgumentOutOfRangeException("value");
 
 			double fraction = (value - source.Start) / (source.End - source.Start);
+
 			return Scalars.InterpolateCosine(destination.Start, destination.End, fraction);
 		}
 	}

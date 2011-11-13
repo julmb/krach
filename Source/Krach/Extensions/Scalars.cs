@@ -226,11 +226,12 @@ namespace Krach.Extensions
 
 			return (1 - fraction) * value1 + fraction * value2;
 		}
+		// TODO: Rename to InterpolateSine, together with stuff in Krach.Maps
 		public static double InterpolateCosine(double value1, double value2, double fraction)
 		{
 			if (fraction < 0 || fraction > 1) throw new ArgumentOutOfRangeException("fraction");
 
-			return InterpolateLinear(value1, value2, 0.5 * (1 + Scalars.PSine(0.5 * fraction + 0.25)));
+			return InterpolateLinear(value1, value2, 0.5 * (1 - Scalars.PSine(0.25 + 0.5 * fraction)));
 		}
 		public static IEnumerable<double> GetIntermediateValues(double start, double end, int count)
 		{
