@@ -42,6 +42,9 @@
     <Compile Include="BitField.cs" />
     <Compile Include="Collections\BatchCollection.cs" />
     <Compile Include="Collections\SearchList.cs" />
+    <Compile Include="Combinatorics\BacktrackingSolver.cs" />
+    <Compile Include="Combinatorics\CombinatoricsProblemState.cs" />
+    <Compile Include="Combinatorics\ICombinatoricsProblem.cs" />
     <Compile Include="Design\InstantEqualityComparer.cs" />
     <Compile Include="Design\Factory.cs" />
     <Compile Include="Design\IFactory.cs" />
