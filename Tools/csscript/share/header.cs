@@ -1,6 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.IO;
+using System.Net;
+using System.Web;
 using Krach.Extensions;
 using Krach.Basics;
 using Krach.Collections;
