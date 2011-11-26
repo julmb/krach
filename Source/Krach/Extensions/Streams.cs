@@ -16,41 +16,52 @@
 
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Linq;
+using System.Text;
 
 namespace Krach.Extensions
 {
 	public static class Streams
 	{
-		public static byte[] Peek(this BinaryReader reader, int count)
+		public static byte[] Peek(this BinaryReader binaryReader, int count)
 		{
-			byte[] result = reader.ReadBytes(count);
+			byte[] result = binaryReader.ReadBytes(count);
 
-			reader.BaseStream.Position -= result.Length;
+			binaryReader.BaseStream.Position -= result.Length;
 
 			return result;
 		}
-		public static byte PeekByte(this BinaryReader reader)
+		public static byte PeekByte(this BinaryReader binaryReader)
 		{
-			byte result = reader.ReadByte();
+			byte result = binaryReader.ReadByte();
 
-			reader.BaseStream.Position--;
+			binaryReader.BaseStream.Position--;
 
 			return result;
 		}
-		public static byte[] ReadToZero(this BinaryReader reader, Encoding encoding)
+		public static byte[] ReadToZero(this BinaryReader binaryReader, Encoding encoding)
 		{
 			List<byte> data = new List<byte>();
 
-			while (reader.BaseStream.Position < reader.BaseStream.Length)
+			while (binaryReader.BaseStream.Position < binaryReader.BaseStream.Length)
 			{
-				data.Add(reader.ReadByte());
+				data.Add(binaryReader.ReadByte());
 				
 				if (encoding.GetString(data.ToArray()).Last() == '\0') return data.SkipLast(encoding.GetByteCount("\0")).ToArray();
 			}
 
 			throw new InvalidDataException("Hit end of stream while reading null-terminated string.");
+		}
+		public static IEnumerable<string> ReadAllLines(this TextReader textReader)
+		{
+			while (true)
+			{
+				string line = textReader.ReadLine();
+
+				if (line == null) break;
+				
+				yield return line;
+			}
 		}
 	}
 }
