@@ -6,28 +6,19 @@ using Krach.Extensions;
 
 namespace Krach.Combinatorics
 {
-	public class BacktrackingSolver<TPart>
+	public static class BacktrackingSolver
 	{
-		readonly ICombinatoricsProblem<TPart> problem;
-
-		public BacktrackingSolver(ICombinatoricsProblem<TPart> problem)
+		public static IEnumerable<IEnumerable<TPart>> GetSolutions<TPart>(ICombinatoricsProblem<TPart> problem)
 		{
-			if (problem == null) throw new ArgumentNullException("problem");
-
-			this.problem = problem;
+			return GetSolutions(problem, Enumerable.Empty<TPart>());
 		}
-
-		public IEnumerable<IEnumerable<TPart>> GetSolutions()
-		{
-			return GetSolutions(Enumerable.Empty<TPart>());
-		}
-		public IEnumerable<IEnumerable<TPart>> GetSolutions(IEnumerable<TPart> configuration)
+		public static IEnumerable<IEnumerable<TPart>> GetSolutions<TPart>(ICombinatoricsProblem<TPart> problem, IEnumerable<TPart> configuration)
 		{
 			switch (problem.GetState(configuration))
 			{
 				case CombinatoricsProblemState.IncompleteSolution:
 					foreach (TPart part in problem.Parts)
-						foreach (IEnumerable<TPart> solution in GetSolutions(configuration.Append(part).ToArray()))
+						foreach (IEnumerable<TPart> solution in GetSolutions(problem, configuration.Append(part).ToArray()))
 							yield return solution;
 					break;
 				case CombinatoricsProblemState.Solution:

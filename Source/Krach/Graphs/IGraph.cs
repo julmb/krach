@@ -18,8 +18,8 @@ using System.Collections.Generic;
 
 namespace Krach.Graphs
 {
-	public interface IGraph<T>
+	public interface IGraph<TNode>
 	{
-		IEnumerable<T> GetChildren(T node);
+		IEnumerable<TNode> GetChildren(TNode node);
 	}
 }

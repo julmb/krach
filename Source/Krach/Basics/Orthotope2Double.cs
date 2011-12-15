@@ -76,6 +76,10 @@ namespace Krach.Basics
 		{
 			return new Orthotope2Double(rangeX.Inflate(value), rangeY.Inflate(value));
 		}
+		public bool Contains(Vector2Double vector)
+		{
+			return rangeX.Contains(vector.X) && rangeY.Contains(vector.Y);
+		}
 
 		public static bool operator ==(Orthotope2Double orthotope1, Orthotope2Double orthotope2)
 		{
