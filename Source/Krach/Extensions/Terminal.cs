@@ -37,6 +37,26 @@ namespace Krach.Extensions
 			}
 		}
 
+		public static void Write(string text)
+		{
+			Console.Write(text);
+		}
+		public static void Write(string text, ConsoleColor foregroundColor)
+		{
+			ConsoleColor oldForegroundColor = Console.ForegroundColor;
+
+			Console.ForegroundColor = foregroundColor;
+			Write(text);
+			Console.ForegroundColor = oldForegroundColor;
+		}
+		public static void Write(string text, ConsoleColor foregroundColor, ConsoleColor backgroundColor)
+		{
+			ConsoleColor oldBackgroundColor = Console.BackgroundColor;
+
+			Console.BackgroundColor = backgroundColor;
+			Write(text, foregroundColor);
+			Console.BackgroundColor = oldBackgroundColor;
+		}
 		public static void Write(int column, string text)
 		{
 			if (IsTerminal)
@@ -56,10 +76,11 @@ namespace Krach.Extensions
 			}
 			else Console.Write(new string(' ', column) + text);
 		}
-		public static void WriteLine(int column, string text)
+		public static string ReadLine(string caption)
 		{
-			Write(column, text);
-			Console.WriteLine();
+			Write(caption);
+
+			return Console.ReadLine();
 		}
 	}
 }

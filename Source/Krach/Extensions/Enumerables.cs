@@ -52,7 +52,7 @@ namespace Krach.Extensions
 		public static int GetIndex<TSource>(this IEnumerable<TSource> source, TSource item, Func<TSource, TSource, bool> areEqual)
 		{
 			if (source == null) throw new ArgumentNullException("source");
-			
+
 			int index = 0;
 
 			foreach (TSource currentItem in source)
@@ -239,7 +239,7 @@ namespace Krach.Extensions
 		public static int GetSequenceHashCode<TSource>(IEnumerable<TSource> source)
 		{
 			if (source == null) throw new ArgumentNullException("source");
-			
+
 			return source.Aggregate(0, (seed, current) => seed ^ current.GetHashCode());
 		}
 	}
