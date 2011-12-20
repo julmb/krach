@@ -22,17 +22,17 @@ namespace Krach.Extensions
 {
 	public static class Enumerations
 	{
-		public static T ToEnumeration<T>(this int value)
+		public static TEnumeration ToEnumeration<TEnumeration>(this int value)
 		{
-			T result = (T)Enum.ToObject(typeof(T), value);
+			TEnumeration result = (TEnumeration)Enum.ToObject(typeof(TEnumeration), value);
 
-			if (!Enum.IsDefined(typeof(T), value)) throw new ArgumentOutOfRangeException("value");
+			if (!Enum.IsDefined(typeof(TEnumeration), value)) throw new ArgumentOutOfRangeException("value");
 
 			return result;
 		}
-		public static IEnumerable<T> GetValues<T>()
+		public static IEnumerable<TEnumeration> GetValues<TEnumeration>()
 		{
-			return Enum.GetValues(typeof(T)).Cast<T>();
+			return Enum.GetValues(typeof(TEnumeration)).Cast<TEnumeration>();
 		}
 	}
 }

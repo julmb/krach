@@ -33,6 +33,7 @@
     <Compile Include="Audio\PcmAudio.cs" />
     <Compile Include="Basics\Complex.cs" />
     <Compile Include="Basics\MatrixComplex.cs" />
+    <Compile Include="Basics\ProbabilityEntry.cs" />
     <Compile Include="Basics\Vector1Integer.cs" />
     <Compile Include="Basics\Vector2Integer.cs" />
     <Compile Include="Basics\Matrix.cs" />
