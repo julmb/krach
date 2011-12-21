@@ -78,6 +78,22 @@ namespace Krach.Graphics
 		{
 			return new Color(new HsvColor(hue, saturation, value));
 		}
+		public static Color FromArgbBinary(uint binary)
+		{
+			byte alpha = (byte)((binary & 0xFF000000) >> 24);
+			byte red = (byte)((binary & 0x00FF0000) >> 16);
+			byte green = (byte)((binary & 0x0000FF00) >> 8);
+			byte blue = (byte)((binary & 0x000000FF) >> 0);
+			return Color.FromRgba(red / 255.0, green / 255.0, blue / 255.0, alpha / 255.0);
+		}
+		public static Color FromRgbaBinary(uint binary)
+		{
+			byte red = (byte)((binary & 0xFF000000) >> 24);
+			byte green = (byte)((binary & 0x00FF0000) >> 16);
+			byte blue = (byte)((binary & 0x0000FF00) >> 8);
+			byte alpha = (byte)((binary & 0x000000FF) >> 0);
+			return Color.FromRgba(red / 255.0, green / 255.0, blue / 255.0, alpha / 255.0);
+		}
 		public static Color FromHtmlString(string text)
 		{
 			if (text.Length != 6) throw new ArgumentException("Parameter 'text' must be exactly 6 characters long.");
