@@ -56,7 +56,7 @@ namespace Krach.Basics
 		{
 			return this == other;
 		}
-		public bool Contains(T value) 
+		public bool Contains(T value)
 		{
 			return Comparer<T>.Default.Compare(value, start) >= 0 && Comparer<T>.Default.Compare(value, end) <= 0;
 		}

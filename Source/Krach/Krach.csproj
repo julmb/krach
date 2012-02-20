@@ -22,16 +22,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
+    <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Audio\PcmBlock.cs" />
     <Compile Include="Audio\PcmAudio.cs" />
     <Compile Include="Basics\Complex.cs" />
+    <Compile Include="Basics\ProbabilityEntries.cs" />
     <Compile Include="Basics\MatrixComplex.cs" />
     <Compile Include="Basics\ProbabilityEntry.cs" />
     <Compile Include="Basics\Vector1Integer.cs" />

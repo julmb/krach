@@ -178,6 +178,10 @@ namespace Krach.Extensions
 
 			return floor << (2.0.Logarithm(value) - 2.0.Logarithm((double)floor) <= 0.5 ? 0 : 1);
 		}
+		public static bool AreWithinBound(double value1, double value2, double bound)
+		{
+			return Absolute(value1 - value2) <= bound;
+		}
 		// Target rounding
 		public static double Round(this double value, IEnumerable<double> targets)
 		{

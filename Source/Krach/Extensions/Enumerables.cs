@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Krach.Basics;
+using System.Security.Cryptography;
 
 namespace Krach.Extensions
 {
@@ -240,7 +241,15 @@ namespace Krach.Extensions
 		{
 			if (source == null) throw new ArgumentNullException("source");
 
-			return source.Aggregate(0, (seed, current) => seed ^ current.GetHashCode());
+			uint result = 0;
+
+			foreach (TSource item in source)
+			{
+				result = (result << 1) | (result >> 31);
+				result ^= (uint)item.GetHashCode();
+			}
+
+			return (int)result;
 		}
 	}
 }
