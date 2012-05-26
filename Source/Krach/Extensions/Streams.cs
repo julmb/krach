@@ -18,14 +18,18 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System;
 
 namespace Krach.Extensions
 {
 	public static class Streams
 	{
-		public static byte[] Peek(this BinaryReader binaryReader, int count)
+		public static byte[] Peek(this BinaryReader binaryReader, int byteCount)
 		{
-			byte[] result = binaryReader.ReadBytes(count);
+			if (binaryReader == null) throw new ArgumentNullException("binaryReader");
+			if (byteCount < 0) throw new ArgumentOutOfRangeException("byteCount");
+
+			byte[] result = binaryReader.ReadBytes(byteCount);
 
 			binaryReader.BaseStream.Position -= result.Length;
 
@@ -33,6 +37,8 @@ namespace Krach.Extensions
 		}
 		public static byte PeekByte(this BinaryReader binaryReader)
 		{
+			if (binaryReader == null) throw new ArgumentNullException("binaryReader");
+
 			byte result = binaryReader.ReadByte();
 
 			binaryReader.BaseStream.Position--;
@@ -41,6 +47,9 @@ namespace Krach.Extensions
 		}
 		public static byte[] ReadToZero(this BinaryReader binaryReader, Encoding encoding)
 		{
+			if (binaryReader == null) throw new ArgumentNullException("binaryReader");
+			if (encoding == null) throw new ArgumentNullException("encoding");
+
 			List<byte> data = new List<byte>();
 
 			while (binaryReader.BaseStream.Position < binaryReader.BaseStream.Length)
@@ -54,6 +63,8 @@ namespace Krach.Extensions
 		}
 		public static IEnumerable<string> ReadAllLines(this TextReader textReader)
 		{
+			if (textReader == null) throw new ArgumentNullException("textReader");
+
 			while (true)
 			{
 				string line = textReader.ReadLine();
@@ -62,6 +73,12 @@ namespace Krach.Extensions
 				
 				yield return line;
 			}
+		}
+		public static char PeekCharacter(this TextReader textReader)
+		{
+			if (textReader == null) throw new ArgumentNullException("textReader");
+
+			return (char)textReader.Peek();
 		}
 	}
 }
