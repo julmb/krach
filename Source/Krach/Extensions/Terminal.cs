@@ -76,6 +76,10 @@ namespace Krach.Extensions
 			}
 			else Console.Write(new string(' ', column) + text);
 		}
+		public static void WriteLine()
+		{
+			Console.WriteLine();
+		}
 		public static string ReadLine(string caption)
 		{
 			Write(caption);
