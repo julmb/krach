@@ -58,6 +58,15 @@ namespace Krach.Extensions
 				select distinctItem
 			);
 		}
+		public static IEnumerable<Tuple<TSource, TSource>> SequenceDifference<TSource>(IEnumerable<TSource> source1, IEnumerable<TSource> source2)
+		{
+			if (source1 == null) throw new ArgumentNullException("source1");
+			if (source2 == null) throw new ArgumentNullException("source2");
+
+			foreach (Tuple<TSource, TSource> item in Enumerable.Zip(source1, source2, Tuple.Create))
+				if (!EqualityComparer<TSource>.Default.Equals(item.Item1, item.Item2))
+					yield return item;
+		}
 		public static int GetIndex<TSource>(this IEnumerable<TSource> source, TSource item)
 		{
 			return GetIndex(source, item, EqualityComparer<TSource>.Default.Equals);
