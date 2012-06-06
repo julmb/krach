@@ -46,6 +46,18 @@ namespace Krach.Extensions
 
 			return Enumerable.SequenceEqual(source, source.Distinct());
 		}
+		public static IEnumerable<TSource> NonDistinct<TSource>(this IEnumerable<TSource> source)
+		{
+			if (source == null) throw new ArgumentNullException("source");
+
+			return
+			(
+				from distinctItem in source.Distinct()
+				let count = source.Count(item => EqualityComparer<TSource>.Default.Equals(distinctItem, item))
+				where count > 2
+				select distinctItem
+			);
+		}
 		public static int GetIndex<TSource>(this IEnumerable<TSource> source, TSource item)
 		{
 			return GetIndex(source, item, EqualityComparer<TSource>.Default.Equals);
