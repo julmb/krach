@@ -54,7 +54,7 @@ namespace Krach.Extensions
 			(
 				from distinctItem in source.Distinct()
 				let count = source.Count(item => EqualityComparer<TSource>.Default.Equals(distinctItem, item))
-				where count > 2
+				where count > 1
 				select distinctItem
 			);
 		}
