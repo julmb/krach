@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Krach.Extensions;
 
@@ -12,7 +12,7 @@ namespace Krach.Basics
 
 		public double this[TKey key]
 		{
-			get 
+			get
 			{
 				foreach (ProbabilityEntry<TKey> entry in entries)
 					if (EqualityComparer<TKey>.Default.Equals(entry.Key, key))

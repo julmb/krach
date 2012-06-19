@@ -262,11 +262,13 @@ namespace Krach.Extensions
 		{
 			if (source == null) throw new ArgumentNullException("source");
 
+			const int rotationLength = 7;
+
 			uint result = 0;
 
 			foreach (TSource item in source)
 			{
-				result = (result << 1) | (result >> 31);
+				result = (result << (0 + rotationLength) | (result >> (32 - rotationLength)));
 				result ^= (uint)item.GetHashCode();
 			}
 
