@@ -269,7 +269,7 @@ namespace Krach.Extensions
 			foreach (TSource item in source)
 			{
 				result = (result << (0 + rotationLength) | (result >> (32 - rotationLength)));
-				result ^= (uint)item.GetHashCode();
+				result ^= item == null ? (uint)0.GetHashCode() : (uint)item.GetHashCode();
 			}
 
 			return (int)result;

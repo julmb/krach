@@ -160,7 +160,12 @@ namespace Krach.Extensions
 		}
 		public static double Round(this double value)
 		{
-			return Math.Round(value, MidpointRounding.AwayFromZero);
+			double fraction = (value - (int)value).Absolute();
+
+			if (fraction < 0.5) return value.Floor();
+			if (fraction >= 0.5) return value.Ceiling();
+
+			throw new InvalidOperationException();
 		}
 		public static double Round(this double value, double interval)
 		{

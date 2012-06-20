@@ -15,8 +15,9 @@
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace Krach.Extensions
 {
@@ -32,7 +33,9 @@ namespace Krach.Extensions
 		}
 		public static IEnumerable<TEnumeration> GetValues<TEnumeration>()
 		{
-			return Enum.GetValues(typeof(TEnumeration)).Cast<TEnumeration>();
+			if (!typeof(TEnumeration).IsEnum) throw new ArgumentException("Parameter TEnumeration is not an enumeration.");
+
+			return typeof(TEnumeration).GetFields(BindingFlags.Public | BindingFlags.Static).Select(field => (TEnumeration)field.GetValue(null)).ToArray();
 		}
 	}
 }
