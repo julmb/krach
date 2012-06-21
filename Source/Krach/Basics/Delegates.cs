@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along with
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
-namespace Krach
+namespace Krach.Basics
 {
 	public delegate T Interpolation<T>(T source, T destination, double fraction);
 	public delegate bool EqualityComparison<T>(T item1, T item2);

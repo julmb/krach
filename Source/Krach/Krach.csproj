@@ -51,7 +51,7 @@
     <Compile Include="Design\InstantEqualityComparer.cs" />
     <Compile Include="Design\Factory.cs" />
     <Compile Include="Design\IFactory.cs" />
-    <Compile Include="Delegates.cs" />
+    <Compile Include="Basics\Delegates.cs" />
     <Compile Include="Extensions\Binary.cs" />
     <Compile Include="Extensions\Collections.cs" />
     <Compile Include="Extensions\Comparables.cs" />
