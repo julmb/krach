@@ -1,4 +1,4 @@
-﻿// Copyright © Julian Brunner 2010 - 2011
+// Copyright © Julian Brunner 2010 - 2011
 
 // This file is part of Krach.
 //
@@ -14,12 +14,13 @@
 // You should have received a copy of the GNU General Public License along with
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Krach.Combinatorics
+namespace Krach
 {
-	public enum CombinatoricsProblemState { IncompleteSolution, Solution, Contradiction }
+	public interface IAction<TResult>
+	{
+		TResult Result { get; }
+		double Progress { get; }
+
+		bool PerformStep();
+	}
 }

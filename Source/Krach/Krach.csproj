@@ -48,6 +48,8 @@
     <Compile Include="Combinatorics\BacktrackingSolver.cs" />
     <Compile Include="Combinatorics\CombinatoricsProblemState.cs" />
     <Compile Include="Combinatorics\ICombinatoricsProblem.cs" />
+    <Compile Include="Extensions\Actions.cs" />
+    <Compile Include="IAction.cs" />
     <Compile Include="Design\InstantEqualityComparer.cs" />
     <Compile Include="Design\Factory.cs" />
     <Compile Include="Design\IFactory.cs" />
