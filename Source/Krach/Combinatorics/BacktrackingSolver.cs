@@ -27,8 +27,19 @@ namespace Krach.Combinatorics
 		readonly IEnumerator<IEnumerable<TPart>> enumerator;
 		readonly List<IEnumerable<TPart>> result;
 
+		bool finished = false;
+
 		public IEnumerable<IEnumerable<TPart>> Result { get { return result; } }
-		public double Progress { get { return result.Count == 0 ? 0 : GetPosition(problem, result[result.Count - 1]); } }
+		public double Progress
+		{
+			get
+			{
+				if (result.Count == 0) return 0;
+				if (finished) return 1;
+
+				return GetPosition(problem, result[result.Count - 1]);
+			}
+		}
 
 		public BacktrackingSolver(ICombinatoricsProblem<TPart> problem)
 		{
@@ -41,7 +52,12 @@ namespace Krach.Combinatorics
 
 		public bool PerformStep()
 		{
-			if (!enumerator.MoveNext()) return false;
+			if (!enumerator.MoveNext())
+			{
+				finished = true;
+
+				return false;
+			}
 
 			result.Add(enumerator.Current);
 
