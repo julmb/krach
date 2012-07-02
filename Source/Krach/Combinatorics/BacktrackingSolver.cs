@@ -23,61 +23,41 @@ namespace Krach.Combinatorics
 {
 	public class BacktrackingSolver<TPart> : IAction<IEnumerable<IEnumerable<TPart>>>
 	{
+		readonly Stack<IEnumerable<TPart>> prefixes = new Stack<IEnumerable<TPart>>(Enumerables.Create(Enumerable.Empty<TPart>()));
+		readonly List<IEnumerable<TPart>> solutions = new List<IEnumerable<TPart>>();
 		readonly ICombinatoricsProblem<TPart> problem;
-		readonly IEnumerator<IEnumerable<TPart>> enumerator;
-		readonly List<IEnumerable<TPart>> result;
 
-		bool finished = false;
-
-		public IEnumerable<IEnumerable<TPart>> Result { get { return result; } }
-		public double Progress
-		{
-			get
-			{
-				if (result.Count == 0) return 0;
-				if (finished) return 1;
-
-				return GetPosition(problem, result[result.Count - 1]);
-			}
-		}
+		public IEnumerable<IEnumerable<TPart>> Result { get { return solutions; } }
+		public double Progress { get { return prefixes.Count == 0 ? 1 : GetPosition(problem, prefixes.Peek()); } }
 
 		public BacktrackingSolver(ICombinatoricsProblem<TPart> problem)
 		{
 			if (problem == null) throw new ArgumentNullException("problem");
 
 			this.problem = problem;
-			this.enumerator = GetSolutions(problem, Enumerable.Empty<TPart>()).GetEnumerator();
-			this.result = new List<IEnumerable<TPart>>();
 		}
 
 		public bool PerformStep()
 		{
-			if (!enumerator.MoveNext())
+			if (prefixes.Count == 0) return false;
+
+			IEnumerable<TPart> configuration = prefixes.Pop();
+
+			switch (problem.GetState(configuration))
 			{
-				finished = true;
-
-				return false;
+				case CombinatoricsProblemState.IncompleteSolution:
+					foreach (TPart part in problem.Parts.Reverse()) prefixes.Push(configuration.Append(part).ToArray());
+					break;
+				case CombinatoricsProblemState.Solution:
+					solutions.Add(configuration);
+					break;
+				case CombinatoricsProblemState.Contradiction:
+					break;
 			}
-
-			result.Add(enumerator.Current);
 
 			return true;
 		}
 
-		static IEnumerable<IEnumerable<TPart>> GetSolutions(ICombinatoricsProblem<TPart> problem, IEnumerable<TPart> configuration)
-		{
-			switch (problem.GetState(configuration))
-			{
-				case CombinatoricsProblemState.IncompleteSolution:
-					foreach (TPart part in problem.Parts)
-						foreach (IEnumerable<TPart> solution in GetSolutions(problem, configuration.Append(part).ToArray()))
-							yield return solution;
-					break;
-				case CombinatoricsProblemState.Solution:
-					yield return configuration;
-					break;
-			}
-		}
 		static double GetPosition(ICombinatoricsProblem<TPart> problem, IEnumerable<TPart> configuration)
 		{
 			if (!configuration.Any()) return 0;
