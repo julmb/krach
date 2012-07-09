@@ -25,7 +25,8 @@ namespace Krach.Basics
 		public ProbabilityEntries(IEnumerable<ProbabilityEntry<TKey>> entries)
 		{
 			if (entries == null) throw new ArgumentNullException("entries");
-			if (entries.Sum(entry => entry.Probability).Round(0.0001) != 1) throw new ArgumentException("The entries in parameter 'entries' do not sum up to 1.");
+			double sum = entries.Sum(entry => entry.Probability).Round(0.0001);
+			if (sum != 1.0) throw new ArgumentException(String.Format("The entries in parameter 'entries' do not sum up to 1, the sum is {0}.", sum));
 
 			this.entries = entries;
 		}
