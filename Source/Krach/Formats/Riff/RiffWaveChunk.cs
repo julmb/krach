@@ -20,6 +20,7 @@ using System.Linq;
 using System.Text;
 using Krach.Audio;
 using Krach.Extensions;
+using System.Collections.Generic;
 
 namespace Krach.Formats.Riff
 {
@@ -73,7 +74,7 @@ namespace Krach.Formats.Riff
 			int half = 1 << waveChunk.formatChunk.SampleSize - 1;
 			int full = 1 << waveChunk.formatChunk.SampleSize;
 
-			PcmBlock[] blocks = new PcmBlock[waveChunk.dataChunk.Size / waveChunk.formatChunk.BlockSize];
+			IEnumerable<double>[] blocks = new IEnumerable<double>[waveChunk.dataChunk.Size / waveChunk.formatChunk.BlockSize];
 
 			for (int blockIndex = 0; blockIndex < blocks.Length; blockIndex++)
 			{
@@ -91,23 +92,23 @@ namespace Krach.Formats.Riff
 					samples[sampleIndex] = (double)sample / (double)half;
 				}
 
-				blocks[blockIndex] = new PcmBlock(samples);
+				blocks[blockIndex] = samples;
 			}
 
-			return new PcmAudio(blocks, (double)blocks.Length / (double)waveChunk.formatChunk.SampleRate);
+			return PcmAudio.FromBlocks(blocks, (double)blocks.Length / (double)waveChunk.formatChunk.SampleRate);
 		}
 		public static RiffWaveChunk FromPcmAudio(PcmAudio pcmAudio)
 		{
-			PcmBlock[] blocks = pcmAudio.Blocks.ToArray();
+			IEnumerable<double>[] blocks = pcmAudio.Blocks.ToArray();
 
-			RiffFormatChunk formatChunk = new RiffFormatChunk((ushort)pcmAudio.ChannelCount, (ushort)(blocks.Length / pcmAudio.Length), 16);
+			RiffFormatChunk formatChunk = new RiffFormatChunk((ushort)pcmAudio.Channels.Count(), (ushort)(blocks.Length / pcmAudio.Length), 16);
 
 			byte[] data = new byte[formatChunk.BlockSize * blocks.Length];
 			int position = 0;
 
 			for (int blockIndex = 0; blockIndex < blocks.Length; blockIndex++)
 			{
-				double[] samples = blocks[blockIndex].Samples.ToArray();
+				double[] samples = blocks[blockIndex].ToArray();
 
 				for (int sampleIndex = 0; sampleIndex < samples.Length; sampleIndex++)
 				{

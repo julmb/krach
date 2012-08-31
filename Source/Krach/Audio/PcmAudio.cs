@@ -17,30 +17,50 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Krach.Extensions;
 
 namespace Krach.Audio
 {
 	public class PcmAudio
 	{
-		readonly IEnumerable<PcmBlock> blocks;
+		readonly IEnumerable<IEnumerable<double>> blocks;
+		readonly IEnumerable<IEnumerable<double>> channels;
 		readonly double length;
-		readonly int channelCount;
 
-		public IEnumerable<PcmBlock> Blocks { get { return blocks; } }
+		public IEnumerable<IEnumerable<double>> Blocks { get { return blocks; } }
+		public IEnumerable<IEnumerable<double>> Channels { get { return channels; } }
 		public double Length { get { return length; } }
-		public int ChannelCount { get { return channelCount; } }
 
-		public PcmAudio(IEnumerable<PcmBlock> blocks, double length)
+		PcmAudio(IEnumerable<IEnumerable<double>> blocks, IEnumerable<IEnumerable<double>> channels, double length)
+		{
+			if (blocks == null) throw new ArgumentNullException("blocks");
+			if (!blocks.Any()) throw new ArgumentException("Parameter blocks cannot be empty.");
+			if (channels == null) throw new ArgumentNullException("channels");
+			if (!channels.Any()) throw new ArgumentException("Parameter 'channels' did not contains any items.");
+			if (length <= 0) throw new ArgumentOutOfRangeException("length");
+
+			this.blocks = blocks;
+			this.channels = channels;
+			this.length = length;
+		}
+
+		public static PcmAudio FromBlocks(IEnumerable<IEnumerable<double>> blocks, double length)
 		{
 			if (blocks == null) throw new ArgumentNullException("blocks");
 			if (!blocks.Any()) throw new ArgumentException("Parameter blocks cannot be empty.");
 			if (length <= 0) throw new ArgumentOutOfRangeException("length");
+			if (blocks.Select(block => block.Count()).Distinct().Count() > 1) throw new ArgumentException("All blocks must have the same channel count.");
 
-			this.blocks = blocks;
-			this.length = length;
-			this.channelCount = blocks.First().Samples.Count();
+			return new PcmAudio(blocks, blocks.Flip().ToArray(), length);
+		}
+		public static PcmAudio FromChannels(IEnumerable<IEnumerable<double>> channels, double length)
+		{
+			if (channels == null) throw new ArgumentNullException("channels");
+			if (!channels.Any()) throw new ArgumentException("Parameter 'channels' did not contains any items.");
+			if (length <= 0) throw new ArgumentOutOfRangeException("length");
+			if (channels.Select(channel => channel.Count()).Distinct().Count() > 1) throw new ArgumentException("All channels must have the same block count.");
 
-			if (!blocks.All(block => block.Samples.Count() == channelCount)) throw new ArgumentException("All blocks must have the same channel count.");
+			return new PcmAudio(channels.Flip().ToArray(), channels, length);
 		}
 	}
 }

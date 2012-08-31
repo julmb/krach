@@ -43,7 +43,7 @@ namespace Krach.Formats.Riff
 			this.format = 1;
 			this.channelCount = channelCount;
 			this.sampleRate = sampleRate;
-			this.dataRate = sampleRate * blockSize;
+			this.dataRate = sampleRate * (ushort)(channelCount * sampleSize / 8);
 			this.blockSize = (ushort)(channelCount * sampleSize / 8);
 			this.sampleSize = sampleSize;
 		}
