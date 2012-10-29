@@ -55,8 +55,10 @@ namespace Krach.Extensions
 			while (binaryReader.BaseStream.Position < binaryReader.BaseStream.Length)
 			{
 				data.Add(binaryReader.ReadByte());
+
+				string partialString = encoding.GetString(data.ToArray(), 0, data.Count);
 				
-				if (encoding.GetString(data.ToArray(), 0, data.Count).Last() == '\0') return data.SkipLast(encoding.GetByteCount("\0")).ToArray();
+				if (partialString.Length > 0 && partialString.Last() == '\0') return data.SkipLast(encoding.GetByteCount("\0")).ToArray();
 			}
 
 			throw new InvalidDataException("Hit end of stream while reading null-terminated string.");
