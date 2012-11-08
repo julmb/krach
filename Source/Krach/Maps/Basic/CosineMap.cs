@@ -23,10 +23,10 @@ namespace Krach.Maps.Basic
 {
 	public class CosineMap : IMap<double, double>
 	{
-		readonly Range<double> source;
-		readonly Range<double> destination;
+		readonly OrderedRange<double> source;
+		readonly OrderedRange<double> destination;
 
-		public CosineMap(Range<double> source, Range<double> destination)
+		public CosineMap(OrderedRange<double> source, OrderedRange<double> destination)
 		{
 			this.source = source;
 			this.destination = destination;

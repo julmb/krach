@@ -46,7 +46,7 @@ namespace Krach.Extensions
 
 			return value;
 		}
-		public static T Clamp<T>(this T value, Range<T> range) where T : IEquatable<T>, IComparable<T>
+		public static T Clamp<T>(this T value, OrderedRange<T> range) where T : IEquatable<T>, IComparable<T>
 		{
 			return value.Clamp(range.Start, range.End);
 		}

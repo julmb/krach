@@ -23,13 +23,13 @@ namespace Krach.Basics
 {
 	public struct Orthotope2Integer : IEquatable<Orthotope2Integer>
 	{
-		readonly Range<int> rangeX;
-		readonly Range<int> rangeY;
+		readonly OrderedRange<int> rangeX;
+		readonly OrderedRange<int> rangeY;
 
-		public static Orthotope2Integer Empty { get { return new Orthotope2Integer(Range<int>.Default, Range<int>.Default); } }
+		public static Orthotope2Integer Empty { get { return new Orthotope2Integer(OrderedRange<int>.Default, OrderedRange<int>.Default); } }
 
-		public Range<int> RangeX { get { return rangeX; } }
-		public Range<int> RangeY { get { return rangeY; } }
+		public OrderedRange<int> RangeX { get { return rangeX; } }
+		public OrderedRange<int> RangeY { get { return rangeY; } }
 		public Vector2Integer Start { get { return new Vector2Integer(rangeX.Start, rangeY.Start); } }
 		public Vector2Integer End { get { return new Vector2Integer(rangeX.End, rangeY.End); } }
 		public int StartX { get { return rangeX.Start; } }
@@ -40,20 +40,20 @@ namespace Krach.Basics
 		public int Volume { get { return Size.X * Size.Y; } }
 		public bool IsEmpty { get { return Size.X <= 0 || Size.Y <= 0; } }
 
-		public Orthotope2Integer(Range<int> rangeX, Range<int> rangeY)
+		public Orthotope2Integer(OrderedRange<int> rangeX, OrderedRange<int> rangeY)
 		{
 			this.rangeX = rangeX;
 			this.rangeY = rangeY;
 		}
 		public Orthotope2Integer(Vector2Integer start, Vector2Integer end)
 		{
-			this.rangeX = new Range<int>(start.X, end.X);
-			this.rangeY = new Range<int>(start.Y, end.Y);
+			this.rangeX = new OrderedRange<int>(start.X, end.X);
+			this.rangeY = new OrderedRange<int>(start.Y, end.Y);
 		}
 		public Orthotope2Integer(int startX, int endX, int startY, int endY)
 		{
-			this.rangeX = new Range<int>(startX, endX);
-			this.rangeY = new Range<int>(startY, endY);
+			this.rangeX = new OrderedRange<int>(startX, endX);
+			this.rangeY = new OrderedRange<int>(startY, endY);
 		}
 
 		public override bool Equals(object obj)
@@ -97,11 +97,11 @@ namespace Krach.Basics
 
 		public static Orthotope2Integer Intersect(IEnumerable<Orthotope2Integer> orthotopes)
 		{
-			return new Orthotope2Integer(Range<int>.Intersect(orthotopes.Select(orthotope => orthotope.rangeX)), Range<int>.Intersect(orthotopes.Select(orthotope => orthotope.rangeY)));
+			return new Orthotope2Integer(OrderedRange<int>.Intersect(orthotopes.Select(orthotope => orthotope.rangeX)), OrderedRange<int>.Intersect(orthotopes.Select(orthotope => orthotope.rangeY)));
 		}
 		public static Orthotope2Integer Union(IEnumerable<Orthotope2Integer> orthotopes)
 		{
-			return new Orthotope2Integer(Range<int>.Union(orthotopes.Select(orthotope => orthotope.rangeX)), Range<int>.Union(orthotopes.Select(orthotope => orthotope.rangeY)));
+			return new Orthotope2Integer(OrderedRange<int>.Union(orthotopes.Select(orthotope => orthotope.rangeX)), OrderedRange<int>.Union(orthotopes.Select(orthotope => orthotope.rangeY)));
 		}
 		public static IEnumerable<Orthotope2Integer> Exclude(Orthotope2Integer orthotope, Orthotope2Integer exclusion)
 		{

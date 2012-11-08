@@ -23,21 +23,21 @@ namespace Krach.Maps
 {
 	public static class Mappers
 	{
-		public static IFactory<IMap<double, double>, Range<double>, Range<double>> Linear
+		public static IFactory<IMap<double, double>, OrderedRange<double>, OrderedRange<double>> Linear
 		{
 			get
 			{
-				return new Factory<IMap<double, double>, Range<double>, Range<double>>
+				return new Factory<IMap<double, double>, OrderedRange<double>, OrderedRange<double>>
 				(
 					(source, destination) => new LinearMap(source, destination)
 				);
 			}
 		}
-		public static IFactory<IMap<double, double>, Range<double>, Range<double>> Cosine
+		public static IFactory<IMap<double, double>, OrderedRange<double>, OrderedRange<double>> Cosine
 		{
 			get
 			{
-				return new Factory<IMap<double, double>, Range<double>, Range<double>>
+				return new Factory<IMap<double, double>, OrderedRange<double>, OrderedRange<double>>
 				(
 					(source, destination) => new CosineMap(source, destination)
 				);

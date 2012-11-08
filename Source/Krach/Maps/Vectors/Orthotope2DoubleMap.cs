@@ -28,14 +28,14 @@ namespace Krach.Maps.Vectors
 		public Orthotope2Double Source { get { return source; } }
 		public Orthotope2Double Destination { get { return destination; } }
 
-		public Orthotope2DoubleMap(Orthotope2Double source, Orthotope2Double destination, IFactory<IMap<double, double>, Range<double>, Range<double>> mapper)
+		public Orthotope2DoubleMap(Orthotope2Double source, Orthotope2Double destination, IFactory<IMap<double, double>, OrderedRange<double>, OrderedRange<double>> mapper)
 			: base(mapper.Create(source.RangeX, destination.RangeX), mapper.Create(source.RangeY, destination.RangeY))
 		{
 			this.source = source;
 			this.destination = destination;
 		}
-		public Orthotope2DoubleMap(Orthotope2Double source, IFactory<IMap<double, double>, Range<double>, Range<double>> mapper)
-			: this(source, new Orthotope2Double(new Range<double>(0, 1), new Range<double>(0, 1)), mapper)
+		public Orthotope2DoubleMap(Orthotope2Double source, IFactory<IMap<double, double>, OrderedRange<double>, OrderedRange<double>> mapper)
+			: this(source, new Orthotope2Double(new OrderedRange<double>(0, 1), new OrderedRange<double>(0, 1)), mapper)
 		{
 		}
 	}

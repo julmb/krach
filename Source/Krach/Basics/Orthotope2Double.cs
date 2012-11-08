@@ -23,13 +23,13 @@ namespace Krach.Basics
 {
 	public struct Orthotope2Double : IEquatable<Orthotope2Double>
 	{
-		readonly Range<double> rangeX;
-		readonly Range<double> rangeY;
+		readonly OrderedRange<double> rangeX;
+		readonly OrderedRange<double> rangeY;
 
-		public static Orthotope2Double Empty { get { return new Orthotope2Double(Range<double>.Default, Range<double>.Default); } }
+		public static Orthotope2Double Empty { get { return new Orthotope2Double(OrderedRange<double>.Default, OrderedRange<double>.Default); } }
 
-		public Range<double> RangeX { get { return rangeX; } }
-		public Range<double> RangeY { get { return rangeY; } }
+		public OrderedRange<double> RangeX { get { return rangeX; } }
+		public OrderedRange<double> RangeY { get { return rangeY; } }
 		public Vector2Double Start { get { return new Vector2Double(rangeX.Start, rangeY.Start); } }
 		public Vector2Double End { get { return new Vector2Double(rangeX.End, rangeY.End); } }
 		public double StartX { get { return rangeX.Start; } }
@@ -40,20 +40,20 @@ namespace Krach.Basics
 		public double Volume { get { return Size.X * Size.Y; } }
 		public bool IsEmpty { get { return Size.X <= 0 || Size.Y <= 0; } }
 
-		public Orthotope2Double(Range<double> rangeX, Range<double> rangeY)
+		public Orthotope2Double(OrderedRange<double> rangeX, OrderedRange<double> rangeY)
 		{
 			this.rangeX = rangeX;
 			this.rangeY = rangeY;
 		}
 		public Orthotope2Double(Vector2Double start, Vector2Double end)
 		{
-			this.rangeX = new Range<double>(start.X, end.X);
-			this.rangeY = new Range<double>(start.Y, end.Y);
+			this.rangeX = new OrderedRange<double>(start.X, end.X);
+			this.rangeY = new OrderedRange<double>(start.Y, end.Y);
 		}
 		public Orthotope2Double(double startX, double endX, double startY, double endY)
 		{
-			this.rangeX = new Range<double>(startX, endX);
-			this.rangeY = new Range<double>(startY, endY);
+			this.rangeX = new OrderedRange<double>(startX, endX);
+			this.rangeY = new OrderedRange<double>(startY, endY);
 		}
 
 		public override bool Equals(object obj)
@@ -96,11 +96,11 @@ namespace Krach.Basics
 		}
 		public static Orthotope2Double Intersect(IEnumerable<Orthotope2Double> orthotopes)
 		{
-			return new Orthotope2Double(Range<double>.Intersect(orthotopes.Select(orthotope => orthotope.rangeX)), Range<double>.Intersect(orthotopes.Select(orthotope => orthotope.rangeY)));
+			return new Orthotope2Double(OrderedRange<double>.Intersect(orthotopes.Select(orthotope => orthotope.rangeX)), OrderedRange<double>.Intersect(orthotopes.Select(orthotope => orthotope.rangeY)));
 		}
 		public static Orthotope2Double Union(IEnumerable<Orthotope2Double> orthotopes)
 		{
-			return new Orthotope2Double(Range<double>.Union(orthotopes.Select(orthotope => orthotope.rangeX)), Range<double>.Union(orthotopes.Select(orthotope => orthotope.rangeY)));
+			return new Orthotope2Double(OrderedRange<double>.Union(orthotopes.Select(orthotope => orthotope.rangeX)), OrderedRange<double>.Union(orthotopes.Select(orthotope => orthotope.rangeY)));
 		}
 		public static IEnumerable<Orthotope2Double> Exclude(Orthotope2Double orthotope, Orthotope2Double exclusion)
 		{

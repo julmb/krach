@@ -23,11 +23,11 @@ namespace Krach.Basics
 {
 	public struct Orthotope1Double : IEquatable<Orthotope1Double>
 	{
-		readonly Range<double> rangeX;
+		readonly OrderedRange<double> rangeX;
 
-		public static Orthotope1Double Empty { get { return new Orthotope1Double(Range<double>.Default); } }
+		public static Orthotope1Double Empty { get { return new Orthotope1Double(OrderedRange<double>.Default); } }
 
-		public Range<double> RangeX { get { return rangeX; } }
+		public OrderedRange<double> RangeX { get { return rangeX; } }
 		public Vector1Double Start { get { return new Vector1Double(rangeX.Start); } }
 		public Vector1Double End { get { return new Vector1Double(rangeX.End); } }
 		public double StartX { get { return rangeX.Start; } }
@@ -36,17 +36,17 @@ namespace Krach.Basics
 		public double Volume { get { return Size.X; } }
 		public bool IsEmpty { get { return Size.X <= 0; } }
 
-		public Orthotope1Double(Range<double> rangeX)
+		public Orthotope1Double(OrderedRange<double> rangeX)
 		{
 			this.rangeX = rangeX;
 		}
 		public Orthotope1Double(Vector1Double start, Vector1Double end)
 		{
-			this.rangeX = new Range<double>(start.X, end.X);
+			this.rangeX = new OrderedRange<double>(start.X, end.X);
 		}
 		public Orthotope1Double(double startX, double endX)
 		{
-			this.rangeX = new Range<double>(startX, endX);
+			this.rangeX = new OrderedRange<double>(startX, endX);
 		}
 
 		public override bool Equals(object obj)
@@ -89,11 +89,11 @@ namespace Krach.Basics
 		}
 		public static Orthotope1Double Intersect(IEnumerable<Orthotope1Double> orthotopes)
 		{
-			return new Orthotope1Double(Range<double>.Intersect(orthotopes.Select(orthotope => orthotope.rangeX)));
+			return new Orthotope1Double(OrderedRange<double>.Intersect(orthotopes.Select(orthotope => orthotope.rangeX)));
 		}
 		public static Orthotope1Double Union(IEnumerable<Orthotope1Double> orthotopes)
 		{
-			return new Orthotope1Double(Range<double>.Union(orthotopes.Select(orthotope => orthotope.rangeX)));
+			return new Orthotope1Double(OrderedRange<double>.Union(orthotopes.Select(orthotope => orthotope.rangeX)));
 		}
 		public static IEnumerable<Orthotope1Double> Exclude(Orthotope1Double orthotope, Orthotope1Double exclusion)
 		{

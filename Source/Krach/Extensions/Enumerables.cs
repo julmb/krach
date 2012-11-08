@@ -130,7 +130,7 @@ namespace Krach.Extensions
 
 			return queue;
 		}
-		public static IEnumerable<TSource> GetRange<TSource>(this IEnumerable<TSource> source, Range<int> range)
+		public static IEnumerable<TSource> GetRange<TSource>(this IEnumerable<TSource> source, OrderedRange<int> range)
 		{
 			if (source == null) throw new ArgumentNullException("source");
 			if (range.Start < 0 || range.Start > source.Count()) throw new ArgumentOutOfRangeException("startIndex");
@@ -140,7 +140,7 @@ namespace Krach.Extensions
 		}
 		public static IEnumerable<TSource> GetRange<TSource>(this IEnumerable<TSource> source, int startIndex, int endIndex)
 		{
-			return source.GetRange(new Range<int>(startIndex, endIndex));
+			return source.GetRange(new OrderedRange<int>(startIndex, endIndex));
 		}
 		public static IEnumerable<TSource> Separate<TSource>(this IEnumerable<TSource> source, TSource separator)
 		{

@@ -23,11 +23,11 @@ namespace Krach.Basics
 {
 	public struct Orthotope1Integer : IEquatable<Orthotope1Integer>
 	{
-		readonly Range<int> rangeX;
+		readonly OrderedRange<int> rangeX;
 
-		public static Orthotope1Integer Empty { get { return new Orthotope1Integer(Range<int>.Default); } }
+		public static Orthotope1Integer Empty { get { return new Orthotope1Integer(OrderedRange<int>.Default); } }
 
-		public Range<int> RangeX { get { return rangeX; } }
+		public OrderedRange<int> RangeX { get { return rangeX; } }
 		public Vector1Integer Start { get { return new Vector1Integer(rangeX.Start); } }
 		public Vector1Integer End { get { return new Vector1Integer(rangeX.End); } }
 		public int StartX { get { return rangeX.Start; } }
@@ -36,17 +36,17 @@ namespace Krach.Basics
 		public int Volume { get { return Size.X; } }
 		public bool IsEmpty { get { return Size.X <= 0; } }
 
-		public Orthotope1Integer(Range<int> rangeX)
+		public Orthotope1Integer(OrderedRange<int> rangeX)
 		{
 			this.rangeX = rangeX;
 		}
 		public Orthotope1Integer(Vector1Integer start, Vector1Integer end)
 		{
-			this.rangeX = new Range<int>(start.X, end.X);
+			this.rangeX = new OrderedRange<int>(start.X, end.X);
 		}
 		public Orthotope1Integer(int startX, int endX)
 		{
-			this.rangeX = new Range<int>(startX, endX);
+			this.rangeX = new OrderedRange<int>(startX, endX);
 		}
 
 		public override bool Equals(object obj)
@@ -90,11 +90,11 @@ namespace Krach.Basics
 
 		public static Orthotope1Integer Intersect(IEnumerable<Orthotope1Integer> orthotopes)
 		{
-			return new Orthotope1Integer(Range<int>.Intersect(orthotopes.Select(orthotope => orthotope.rangeX)));
+			return new Orthotope1Integer(OrderedRange<int>.Intersect(orthotopes.Select(orthotope => orthotope.rangeX)));
 		}
 		public static Orthotope1Integer Union(IEnumerable<Orthotope1Integer> orthotope2)
 		{
-			return new Orthotope1Integer(Range<int>.Union(orthotope2.Select(orthotope => orthotope.rangeX)));
+			return new Orthotope1Integer(OrderedRange<int>.Union(orthotope2.Select(orthotope => orthotope.rangeX)));
 		}
 		public static IEnumerable<Orthotope1Integer> Exclude(Orthotope1Integer orthotope, Orthotope1Integer exclusion)
 		{

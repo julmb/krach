@@ -9,7 +9,6 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Krach</RootNamespace>
     <AssemblyName>Krach</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <ProductVersion>10.0.0</ProductVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -125,6 +124,7 @@
     <Compile Include="Formats\IParseItem.cs" />
     <Compile Include="Formats\Mpeg\MpegAudioFile.cs" />
     <Compile Include="Extensions\Paths.cs" />
+    <Compile Include="Basics\OrderedRange.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

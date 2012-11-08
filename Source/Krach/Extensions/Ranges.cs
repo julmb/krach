@@ -20,25 +20,25 @@ namespace Krach.Extensions
 {
 	public static class Ranges
 	{
-		public static int Length(this Range<int> range)
+		public static int Length(this OrderedRange<int> range)
 		{
 			return range.End - range.Start;
 		}
-		public static Range<int> Inflate(this Range<int> range, int value)
+		public static OrderedRange<int> Inflate(this OrderedRange<int> range, int value)
 		{
-			return new Range<int>(range.Start - value, range.End + value);
+			return new OrderedRange<int>(range.Start - value, range.End + value);
 		}
-		public static double Length(this Range<double> range)
+		public static double Length(this OrderedRange<double> range)
 		{
 			return range.End - range.Start;
 		}
-		public static Range<double> Inflate(this Range<double> range, double value)
+		public static OrderedRange<double> Inflate(this OrderedRange<double> range, double value)
 		{
-			return new Range<double>(range.Start - value, range.End + value);
+			return new OrderedRange<double>(range.Start - value, range.End + value);
 		}
-		public static Range<double> Interpolate(Range<double> range1, Range<double> range2, Interpolation<double> interpolate, double fraction)
+		public static OrderedRange<double> Interpolate(OrderedRange<double> range1, OrderedRange<double> range2, Interpolation<double> interpolate, double fraction)
 		{
-			return new Range<double>(interpolate(range1.Start, range2.Start, fraction), interpolate(range1.End, range2.End, fraction));
+			return new OrderedRange<double>(interpolate(range1.Start, range2.Start, fraction), interpolate(range1.End, range2.End, fraction));
 		}
 	}
 }

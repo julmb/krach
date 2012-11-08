@@ -20,18 +20,18 @@ using Krach.Maps.Abstract;
 
 namespace Krach.Maps.Scalar
 {
-	public class SymmetricRangeMap : SymmetricMap<Range<double>, Range<double>, double, double, RangeMap, RangeMap>
+	public class SymmetricRangeMap : SymmetricMap<OrderedRange<double>, OrderedRange<double>, double, double, RangeMap, RangeMap>
 	{
-		public SymmetricRangeMap(Range<double> source, Range<double> destination, IFactory<IMap<double, double>, Range<double>, Range<double>> mapper)
+		public SymmetricRangeMap(OrderedRange<double> source, OrderedRange<double> destination, IFactory<IMap<double, double>, OrderedRange<double>, OrderedRange<double>> mapper)
 			: base(source, destination, GetFactory(mapper), GetFactory(mapper))
 		{
 		}
-		public SymmetricRangeMap(Range<double> source, IFactory<IMap<double, double>, Range<double>, Range<double>> mapper) : this(source, new Range<double>(0, 1), mapper) { }
-		public SymmetricRangeMap(IFactory<IMap<double, double>, Range<double>, Range<double>> mapper) : this(new Range<double>(0, 1), new Range<double>(0, 1), mapper) { }
+		public SymmetricRangeMap(OrderedRange<double> source, IFactory<IMap<double, double>, OrderedRange<double>, OrderedRange<double>> mapper) : this(source, new OrderedRange<double>(0, 1), mapper) { }
+		public SymmetricRangeMap(IFactory<IMap<double, double>, OrderedRange<double>, OrderedRange<double>> mapper) : this(new OrderedRange<double>(0, 1), new OrderedRange<double>(0, 1), mapper) { }
 
-		static IFactory<RangeMap, Range<double>, Range<double>> GetFactory(IFactory<IMap<double, double>, Range<double>, Range<double>> mapper)
+		static IFactory<RangeMap, OrderedRange<double>, OrderedRange<double>> GetFactory(IFactory<IMap<double, double>, OrderedRange<double>, OrderedRange<double>> mapper)
 		{
-			return new Factory<RangeMap, Range<double>, Range<double>>
+			return new Factory<RangeMap, OrderedRange<double>, OrderedRange<double>>
 			(
 				(source, destination) => new RangeMap(source, destination, mapper)
 			);

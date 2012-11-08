@@ -120,8 +120,8 @@ namespace Krach.Formats.Mpeg
 			double totalDataLength = mpegAudioDataFrames.Sum(frame => frame.TotalLength);
 			double totalTimeLength = mpegAudioDataFrames.Sum(frame => frame.AudioLength);
 
-			IMap<double, double> toAbsoluteTime = new RangeMap(new Range<double>(0, 99), new Range<double>(0, totalTimeLength), Mappers.Linear);
-			IMap<double, double> toRelativeData = new RangeMap(new Range<double>(0, totalDataLength), new Range<double>(0, 255), Mappers.Linear);
+			IMap<double, double> toAbsoluteTime = new RangeMap(new OrderedRange<double>(0, 99), new OrderedRange<double>(0, totalTimeLength), Mappers.Linear);
+			IMap<double, double> toRelativeData = new RangeMap(new OrderedRange<double>(0, totalDataLength), new OrderedRange<double>(0, 255), Mappers.Linear);
 
 			for (int index = 0; index < 100; index++) yield return (byte)toRelativeData.Map(GetDataPosition(mpegAudioDataFrames, toAbsoluteTime.Map(index))).Round();
 		}

@@ -25,7 +25,7 @@ namespace Krach
 	public struct BitField
 	{
 		readonly bool[] bits;
-		readonly Range<int> range;
+		readonly OrderedRange<int> range;
 
 		public IEnumerable<byte> Bytes
 		{
@@ -72,20 +72,20 @@ namespace Krach
 				return bits[range.Start + position];
 			}
 		}
-		public BitField this[Range<int> subRange]
+		public BitField this[OrderedRange<int> subRange]
 		{
 			get
 			{
-				subRange = new Range<int>(subRange.Start + range.Start, subRange.End + range.Start);
+				subRange = new OrderedRange<int>(subRange.Start + range.Start, subRange.End + range.Start);
 
 				if (subRange.Start < range.Start || subRange.End > range.End) throw new ArgumentException("subRange");
 
 				return new BitField(bits, subRange);
 			}
 		}
-		public BitField this[int startPosition, int endPosition] { get { return this[new Range<int>(startPosition, endPosition)]; } }
+		public BitField this[int startPosition, int endPosition] { get { return this[new OrderedRange<int>(startPosition, endPosition)]; } }
 
-		BitField(bool[] bits, Range<int> range)
+		BitField(bool[] bits, OrderedRange<int> range)
 		{
 			if (bits == null) throw new ArgumentNullException("bits");
 			if (range.Start < 0 || range.End > bits.Length) throw new ArgumentOutOfRangeException("range");
@@ -98,7 +98,7 @@ namespace Krach
 			if (bits == null) throw new ArgumentNullException("bits");
 
 			this.bits = bits;
-			this.range = new Range<int>(0, bits.Length);
+			this.range = new OrderedRange<int>(0, bits.Length);
 		}
 
 		public override string ToString()

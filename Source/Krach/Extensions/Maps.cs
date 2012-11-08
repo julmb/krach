@@ -22,11 +22,11 @@ namespace Krach.Extensions
 {
 	public static class Maps
 	{
-		public static Range<TDestination> Map<TSource, TDestination>(this IMap<TSource, TDestination> map, Range<TSource> value)
+		public static OrderedRange<TDestination> Map<TSource, TDestination>(this IMap<TSource, TDestination> map, OrderedRange<TSource> value)
 			where TSource : IEquatable<TSource>, IComparable<TSource>
 			where TDestination : IEquatable<TDestination>, IComparable<TDestination>
 		{
-			return new Range<TDestination>(map.Map(value.Start), map.Map(value.End));
+			return new OrderedRange<TDestination>(map.Map(value.Start), map.Map(value.End));
 		}
 		public static Orthotope1Double Map(this IMap<Vector1Double, Vector1Double> map, Orthotope1Double orthotope)
 		{
