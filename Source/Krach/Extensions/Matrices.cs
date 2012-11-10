@@ -34,9 +34,9 @@ namespace Krach.Extensions
 		}
 		public static IEnumerable<double> MatrixToValues(Matrix matrix)
 		{
-			if (matrix.Columns != 1) throw new ArgumentException("Cannot convert non-vector to values.");
+			if (matrix.ColumnCount != 1) throw new ArgumentException("Cannot convert non-vector to values.");
 
-			double[] items = new double[matrix.Rows];
+			double[] items = new double[matrix.RowCount];
 			for (int index = 0; index < items.Length; index++) items[index] = matrix[index, 0];
 
 			return items;
@@ -52,9 +52,9 @@ namespace Krach.Extensions
 		}
 		public static IEnumerable<Complex> MatrixToValues(MatrixComplex matrix)
 		{
-			if (matrix.Columns != 1) throw new ArgumentException("Cannot convert non-vector to values.");
+			if (matrix.ColumnCount != 1) throw new ArgumentException("Cannot convert non-vector to values.");
 
-			Complex[] items = new Complex[matrix.Rows];
+			Complex[] items = new Complex[matrix.RowCount];
 			for (int index = 0; index < items.Length; index++) items[index] = matrix[index, 0];
 
 			return items;

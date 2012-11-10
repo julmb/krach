@@ -29,16 +29,16 @@ namespace Krach.Basics
 			get { return values[row, column]; }
 			set { values[row, column] = value; }
 		}
-		public int Rows { get { return values.GetLength(0); } }
-		public int Columns { get { return values.GetLength(1); } }
+		public int RowCount { get { return values.GetLength(0); } }
+		public int ColumnCount { get { return values.GetLength(1); } }
 		public MatrixComplex Transpose
 		{
 			get
 			{
-				MatrixComplex matrix = new MatrixComplex(Rows, Columns);
+				MatrixComplex matrix = new MatrixComplex(RowCount, ColumnCount);
 
-				for (int row = 0; row < Rows; row++)
-					for (int column = 0; column < Columns; column++)
+				for (int row = 0; row < RowCount; row++)
+					for (int column = 0; column < ColumnCount; column++)
 						matrix[row, column] = values[column, row];
 
 				return matrix;
@@ -62,8 +62,8 @@ namespace Krach.Basics
 		{
 			int result = 0;
 
-			for (int row = 0; row < Rows; row++)
-				for (int column = 0; column < Columns; column++)
+			for (int row = 0; row < RowCount; row++)
+				for (int column = 0; column < ColumnCount; column++)
 					result ^= values[row, column].GetHashCode();
 
 			return result;
@@ -72,9 +72,9 @@ namespace Krach.Basics
 		{
 			StringBuilder result = new StringBuilder();
 
-			for (int row = 0; row < Rows; row++)
+			for (int row = 0; row < RowCount; row++)
 			{
-				for (int column = 0; column < Columns; column++)
+				for (int column = 0; column < ColumnCount; column++)
 				{
 					result.Append(values[row, column]);
 					result.Append(", ");
@@ -92,9 +92,9 @@ namespace Krach.Basics
 
 		public MatrixComplex Power(int exponent)
 		{
-			if (Rows != Columns) throw new InvalidOperationException();
+			if (RowCount != ColumnCount) throw new InvalidOperationException();
 
-			MatrixComplex matrix = Identity(Items.Equal(Rows, Columns));
+			MatrixComplex matrix = Identity(Items.Equal(RowCount, ColumnCount));
 
 			for (int i = 0; i < exponent; i++) matrix *= this;
 
@@ -103,11 +103,11 @@ namespace Krach.Basics
 
 		public static bool operator ==(MatrixComplex matrix1, MatrixComplex matrix2)
 		{
-			if (matrix1.Rows != matrix2.Rows) throw new ArgumentException("The row counts do not match.");
-			if (matrix1.Columns != matrix2.Columns) throw new ArgumentException("The column counts do not match.");
+			if (matrix1.RowCount != matrix2.RowCount) throw new ArgumentException("The row counts do not match.");
+			if (matrix1.ColumnCount != matrix2.ColumnCount) throw new ArgumentException("The column counts do not match.");
 
-			int rows = Items.Equal(matrix1.Rows, matrix2.Rows);
-			int columns = Items.Equal(matrix1.Columns, matrix2.Columns);
+			int rows = Items.Equal(matrix1.RowCount, matrix2.RowCount);
+			int columns = Items.Equal(matrix1.ColumnCount, matrix2.ColumnCount);
 
 			for (int row = 0; row < rows; row++)
 				for (int column = 0; column < columns; column++)
@@ -118,11 +118,11 @@ namespace Krach.Basics
 		}
 		public static bool operator !=(MatrixComplex matrix1, MatrixComplex matrix2)
 		{
-			if (matrix1.Rows != matrix2.Rows) throw new ArgumentException("The row counts do not match.");
-			if (matrix1.Columns != matrix2.Columns) throw new ArgumentException("The column counts do not match.");
+			if (matrix1.RowCount != matrix2.RowCount) throw new ArgumentException("The row counts do not match.");
+			if (matrix1.ColumnCount != matrix2.ColumnCount) throw new ArgumentException("The column counts do not match.");
 
-			int rows = Items.Equal(matrix1.Rows, matrix2.Rows);
-			int columns = Items.Equal(matrix1.Columns, matrix2.Columns);
+			int rows = Items.Equal(matrix1.RowCount, matrix2.RowCount);
+			int columns = Items.Equal(matrix1.ColumnCount, matrix2.ColumnCount);
 
 			for (int row = 0; row < rows; row++)
 				for (int column = 0; column < columns; column++)
@@ -134,11 +134,11 @@ namespace Krach.Basics
 
 		public static MatrixComplex operator +(MatrixComplex matrix1, MatrixComplex matrix2)
 		{
-			if (matrix1.Rows != matrix2.Rows) throw new ArgumentException("The row counts do not match.");
-			if (matrix1.Columns != matrix2.Columns) throw new ArgumentException("The column counts do not match.");
+			if (matrix1.RowCount != matrix2.RowCount) throw new ArgumentException("The row counts do not match.");
+			if (matrix1.ColumnCount != matrix2.ColumnCount) throw new ArgumentException("The column counts do not match.");
 
-			int rows = Items.Equal(matrix1.Rows, matrix2.Rows);
-			int columns = Items.Equal(matrix1.Columns, matrix2.Columns);
+			int rows = Items.Equal(matrix1.RowCount, matrix2.RowCount);
+			int columns = Items.Equal(matrix1.ColumnCount, matrix2.ColumnCount);
 
 			MatrixComplex result = new MatrixComplex(rows, columns);
 
@@ -150,11 +150,11 @@ namespace Krach.Basics
 		}
 		public static MatrixComplex operator -(MatrixComplex matrix1, MatrixComplex matrix2)
 		{
-			if (matrix1.Rows != matrix2.Rows) throw new ArgumentException("The row counts do not match.");
-			if (matrix1.Columns != matrix2.Columns) throw new ArgumentException("The column counts do not match.");
+			if (matrix1.RowCount != matrix2.RowCount) throw new ArgumentException("The row counts do not match.");
+			if (matrix1.ColumnCount != matrix2.ColumnCount) throw new ArgumentException("The column counts do not match.");
 
-			int rows = Items.Equal(matrix1.Rows, matrix2.Rows);
-			int columns = Items.Equal(matrix1.Columns, matrix2.Columns);
+			int rows = Items.Equal(matrix1.RowCount, matrix2.RowCount);
+			int columns = Items.Equal(matrix1.ColumnCount, matrix2.ColumnCount);
 
 			MatrixComplex result = new MatrixComplex(rows, columns);
 
@@ -166,14 +166,14 @@ namespace Krach.Basics
 		}
 		public static MatrixComplex operator *(MatrixComplex matrix1, MatrixComplex matrix2)
 		{
-			if (matrix1.Columns != matrix2.Rows) throw new ArgumentOutOfRangeException();
+			if (matrix1.ColumnCount != matrix2.RowCount) throw new ArgumentOutOfRangeException();
 
-			int size = Items.Equal(matrix1.Columns, matrix2.Rows);
+			int size = Items.Equal(matrix1.ColumnCount, matrix2.RowCount);
 
-			MatrixComplex result = new MatrixComplex(matrix1.Rows, matrix2.Columns);
+			MatrixComplex result = new MatrixComplex(matrix1.RowCount, matrix2.ColumnCount);
 
-			for (int row = 0; row < matrix1.Rows; row++)
-				for (int column = 0; column < matrix2.Columns; column++)
+			for (int row = 0; row < matrix1.RowCount; row++)
+				for (int column = 0; column < matrix2.ColumnCount; column++)
 					for (int i = 0; i < size; i++)
 						result[row, column] += matrix1[row, i] * matrix2[i, column];
 
@@ -181,20 +181,20 @@ namespace Krach.Basics
 		}
 		public static MatrixComplex operator *(Complex factor, MatrixComplex matrix)
 		{
-			MatrixComplex result = new MatrixComplex(matrix.Rows, matrix.Columns);
+			MatrixComplex result = new MatrixComplex(matrix.RowCount, matrix.ColumnCount);
 
-			for (int row = 0; row < matrix.Rows; row++)
-				for (int column = 0; column < matrix.Columns; column++)
+			for (int row = 0; row < matrix.RowCount; row++)
+				for (int column = 0; column < matrix.ColumnCount; column++)
 					result[row, column] = matrix[row, column] * factor;
 
 			return result;
 		}
 		public static MatrixComplex operator *(MatrixComplex matrix, Complex factor)
 		{
-			MatrixComplex result = new MatrixComplex(matrix.Rows, matrix.Columns);
+			MatrixComplex result = new MatrixComplex(matrix.RowCount, matrix.ColumnCount);
 
-			for (int row = 0; row < matrix.Rows; row++)
-				for (int column = 0; column < matrix.Columns; column++)
+			for (int row = 0; row < matrix.RowCount; row++)
+				for (int column = 0; column < matrix.ColumnCount; column++)
 					result[row, column] = matrix[row, column] * factor;
 
 			return result;

@@ -64,8 +64,8 @@ namespace Krach.SignalProcessing
 
 			Complex factor = (2 * Math.PI / size) * Complex.ImaginaryOne;
 
-			for (int row = 0; row < transformation.Rows; row++)
-				for (int column = 0; column < transformation.Columns; column++)
+			for (int row = 0; row < transformation.RowCount; row++)
+				for (int column = 0; column < transformation.ColumnCount; column++)
 					transformation[row, column] = Scalars.Exponentiate(+factor * row * column);
 
 			return (1 / Scalars.SquareRoot(size)) * transformation;
@@ -81,8 +81,8 @@ namespace Krach.SignalProcessing
 
 			Complex factor = (2 * Math.PI / size) * Complex.ImaginaryOne;
 
-			for (int row = 0; row < transformation.Rows; row++)
-				for (int column = 0; column < transformation.Columns; column++)
+			for (int row = 0; row < transformation.RowCount; row++)
+				for (int column = 0; column < transformation.ColumnCount; column++)
 					transformation[row, column] = Scalars.Exponentiate(-factor * row * column);
 
 			return (1 / Scalars.SquareRoot(size)) * transformation;
