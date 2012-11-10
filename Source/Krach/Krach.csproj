@@ -125,6 +125,7 @@
     <Compile Include="Formats\Mpeg\MpegAudioFile.cs" />
     <Compile Include="Extensions\Paths.cs" />
     <Compile Include="Basics\OrderedRange.cs" />
+    <Compile Include="Extensions\Marshaling.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
