@@ -15,25 +15,49 @@
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Collections.Generic;
 
 namespace Krach.Extensions
 {
 	public static class Marshaling
 	{
-		public static IntPtr Copy<T>(this T[] array)
+		public static IntPtr Copy<T>(this IEnumerable<T> source)
 		{
-			IntPtr beginnning = Marshal.AllocCoTaskMem(array.Length * Marshal.SizeOf(typeof(T)));
+			IntPtr beginnning = Marshal.AllocCoTaskMem(source.Count() * Marshal.SizeOf(typeof(T)));
 
 			IntPtr pointer = beginnning;
-			foreach (T item in array)
+			foreach (T item in source)
 			{
 				Marshal.StructureToPtr(item, pointer, false);
 
-				pointer += Marshal.SizeOf(item);
+				pointer += Marshal.SizeOf(typeof(T));
 			}
 
 			return beginnning;
+		}
+		public static IEnumerable<T> ReadLazy<T>(this IntPtr pointer, int length)
+		{
+			for (int index = 0; index < length; index++)
+			{
+				yield return (T)Marshal.PtrToStructure(pointer, typeof(T));
+
+				pointer += Marshal.SizeOf(typeof(T));
+			}
+		}
+		public static IEnumerable<T> Read<T>(this IntPtr pointer, int length)
+		{
+			return pointer.ReadLazy<T>(length).ToArray();
+		}
+		public static void Write<T>(this IntPtr pointer, IEnumerable<T> source)
+		{
+			foreach (T item in source)
+			{
+				Marshal.StructureToPtr(item, pointer, false);
+
+				pointer += Marshal.SizeOf(typeof(T));
+			}
 		}
 	}
 }
