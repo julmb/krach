@@ -17,7 +17,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Krach
+namespace Krach.Extensions
 {
 	public static class Marshaling
 	{
