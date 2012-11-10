@@ -17,6 +17,7 @@
 using System;
 using System.Text;
 using Krach.Extensions;
+using System.Collections.Generic;
 
 namespace Krach.Basics
 {
@@ -44,6 +45,8 @@ namespace Krach.Basics
 				return matrix;
 			}
 		}
+		public IEnumerable<IEnumerable<Complex>> Rows { get { for (int rowIndex = 0; rowIndex < ColumnCount; rowIndex++) yield return GetRow(rowIndex); } }
+		public IEnumerable<IEnumerable<Complex>> Columns { get { for (int columnIndex = 0; columnIndex < ColumnCount; columnIndex++) yield return GetColumn(columnIndex); } }
 
 		public MatrixComplex(int rows, int columns)
 		{
@@ -99,6 +102,14 @@ namespace Krach.Basics
 			for (int i = 0; i < exponent; i++) matrix *= this;
 
 			return matrix;
+		}
+		public IEnumerable<Complex> GetRow(int rowIndex)
+		{
+			for (int columnIndex = 0; columnIndex < ColumnCount; columnIndex++) yield return values[rowIndex, columnIndex];
+		}
+		public IEnumerable<Complex> GetColumn(int columnIndex)
+		{
+			for (int rowIndex = 0; rowIndex < ColumnCount; rowIndex++) yield return values[rowIndex, columnIndex];
 		}
 
 		public static bool operator ==(MatrixComplex matrix1, MatrixComplex matrix2)

@@ -16,7 +16,9 @@
 
 using System;
 using System.Text;
+using System.Linq;
 using Krach.Extensions;
+using System.Collections.Generic;
 
 namespace Krach.Basics
 {
@@ -44,6 +46,8 @@ namespace Krach.Basics
 				return matrix;
 			}
 		}
+		public IEnumerable<IEnumerable<double>> Rows { get { for (int rowIndex = 0; rowIndex < ColumnCount; rowIndex++) yield return GetRow(rowIndex); } }
+		public IEnumerable<IEnumerable<double>> Columns { get { for (int columnIndex = 0; columnIndex < ColumnCount; columnIndex++) yield return GetColumn(columnIndex); } }
 
 		public Matrix(int rows, int columns)
 		{
@@ -89,7 +93,7 @@ namespace Krach.Basics
 		{
 			return this == other;
 		}
-
+	
 		public Matrix Power(int exponent)
 		{
 			if (RowCount != ColumnCount) throw new InvalidOperationException();
@@ -99,6 +103,15 @@ namespace Krach.Basics
 			for (int i = 0; i < exponent; i++) matrix *= this;
 
 			return matrix;
+		
+		}
+		public IEnumerable<double> GetRow(int rowIndex)
+		{
+			for (int columnIndex = 0; columnIndex < ColumnCount; columnIndex++) yield return values[rowIndex, columnIndex];
+		}
+		public IEnumerable<double> GetColumn(int columnIndex)
+		{
+			for (int rowIndex = 0; rowIndex < ColumnCount; rowIndex++) yield return values[rowIndex, columnIndex];
 		}
 
 		public static bool operator ==(Matrix matrix1, Matrix matrix2)
