@@ -56,7 +56,6 @@
     <Compile Include="Extensions\Collections.cs" />
     <Compile Include="Extensions\Comparables.cs" />
     <Compile Include="Extensions\Enumerations.cs" />
-    <Compile Include="Extensions\Matrices.cs" />
     <Compile Include="Extensions\Dictionaries.cs" />
     <Compile Include="Extensions\Enumerables.cs" />
     <Compile Include="Extensions\Items.cs" />

@@ -39,18 +39,18 @@ namespace Krach.SignalProcessing
 			if (!forwardTransformations.ContainsKey(values.Count())) forwardTransformations[values.Count()] = GetForwardTransformation(values.Count());
 
 			MatrixComplex transformation = forwardTransformations[values.Count()];
-			MatrixComplex vector = Matrices.ValuesToMatrix(values);
+			MatrixComplex vector = MatrixComplex.FromRowVectors(values.Select(MatrixComplex.CreateSingleton));
 
-			return Matrices.MatrixToValues(transformation * vector);
+			return (transformation * vector).Columns.Single();
 		}
 		public static IEnumerable<Complex> TransformReverse(IEnumerable<Complex> values)
 		{
 			if (!reverseTransformations.ContainsKey(values.Count())) reverseTransformations[values.Count()] = GetReverseTransformation(values.Count());
 
 			MatrixComplex transformation = reverseTransformations[values.Count()];
-			MatrixComplex vector = Matrices.ValuesToMatrix(values);
+			MatrixComplex vector = MatrixComplex.FromRowVectors(values.Select(MatrixComplex.CreateSingleton));
 
-			return Matrices.MatrixToValues(transformation * vector);
+			return (transformation * vector).Columns.Single();
 		}
 
 		// Intended for analysis

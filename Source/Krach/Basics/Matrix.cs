@@ -1,4 +1,4 @@
-// Copyright © Julian Brunner 2010 - 2011
+// Copyright © Julian Brunner 2010 - 2012
 
 // This file is part of Krach.
 //
@@ -37,24 +37,30 @@ namespace Krach.Basics
 		{
 			get
 			{
-				Matrix matrix = new Matrix(RowCount, ColumnCount);
+				Matrix result = new Matrix(RowCount, ColumnCount);
 
-				for (int row = 0; row < RowCount; row++)
-					for (int column = 0; column < ColumnCount; column++)
-						matrix[row, column] = values[column, row];
+				for (int rowIndex = 0; rowIndex < RowCount; rowIndex++)
+					for (int columnIndex = 0; columnIndex < ColumnCount; columnIndex++)
+						result[rowIndex, columnIndex] = values[columnIndex, rowIndex];
 
-				return matrix;
+				return result;
 			}
 		}
 		public IEnumerable<IEnumerable<double>> Rows { get { for (int rowIndex = 0; rowIndex < ColumnCount; rowIndex++) yield return GetRow(rowIndex); } }
 		public IEnumerable<IEnumerable<double>> Columns { get { for (int columnIndex = 0; columnIndex < ColumnCount; columnIndex++) yield return GetColumn(columnIndex); } }
 
-		public Matrix(int rows, int columns)
+		public Matrix(int rowCount, int columnCount)
 		{
-			this.values = new double[rows, columns];
+			if (rowCount <= 0) throw new ArgumentOutOfRangeException("rowCount");
+			if (columnCount <= 0) throw new ArgumentOutOfRangeException("columnCount");
+
+			this.values = new double[rowCount, columnCount];
 		}
 		public Matrix(double[,] values)
 		{
+			if (values.GetLength(0) == 0) throw new ArgumentOutOfRangeException("values");
+			if (values.GetLength(1) == 0) throw new ArgumentOutOfRangeException("values");
+
 			this.values = values;
 		}
 
@@ -98,7 +104,7 @@ namespace Krach.Basics
 		{
 			if (RowCount != ColumnCount) throw new InvalidOperationException();
 
-			Matrix matrix = Identity(Items.Equal(RowCount, ColumnCount));
+			Matrix matrix = CreateIdentity(Items.Equal(RowCount, ColumnCount));
 
 			for (int i = 0; i < exponent; i++) matrix *= this;
 
@@ -213,13 +219,55 @@ namespace Krach.Basics
 			return result;
 		}
 
-		public static Matrix Identity(int size)
+		public static Matrix CreateIdentity(int size)
 		{
+			if (size <= 0) throw new ArgumentOutOfRangeException("size");
+
 			Matrix matrix = new Matrix(size, size);
 
-			for (int i = 0; i < size; i++) matrix[i, i] = 1;
+			for (int i = 0; i < size; i++) matrix [i, i] = 1;
 
 			return matrix;
+		}
+		public static Matrix CreateSingleton(double value)
+		{
+			return new Matrix(new double[,] { { value } });
+		}
+		public static Matrix FromColumnVectors(IEnumerable<Matrix> vectors)
+		{
+			if (vectors == null) throw new ArgumentNullException("vectors");
+
+			vectors = vectors.ToArray();
+
+			IEnumerable<Vector2Integer> vectorSizes = vectors.Select(vector => new Vector2Integer(vector.ColumnCount, vector.RowCount));
+			if (!vectorSizes.IsDistinct()) throw new ArgumentException("Vectors in parameter 'vectors' are not all the same size.");
+			Vector2Integer vectorSize = vectorSizes.Distinct().Single();
+			if (vectorSize.Y != 1) throw new ArgumentException("Vectors in parameter 'vectors' are not column vectors.");
+
+			Matrix result = new Matrix(vectorSize.X, vectors.Count());
+			for (int rowIndex = 0; rowIndex < result.RowCount; rowIndex++)
+				for (int columnIndex = 0; columnIndex < result.ColumnCount; columnIndex++)
+					result[rowIndex, columnIndex] = vectors.ElementAt(columnIndex)[rowIndex, 0];
+
+			return result;
+		}
+		public static Matrix FromRowVectors(IEnumerable<Matrix> vectors)
+		{
+			if (vectors == null) throw new ArgumentNullException("vectors");
+
+			vectors = vectors.ToArray();
+
+			IEnumerable<Vector2Integer> vectorSizes = vectors.Select(vector => new Vector2Integer(vector.ColumnCount, vector.RowCount));
+			if (!vectorSizes.IsDistinct()) throw new ArgumentException("Vectors in parameter 'vectors' are not all the same size.");
+			Vector2Integer vectorSize = vectorSizes.Distinct().Single();
+			if (vectorSize.X != 1) throw new ArgumentException("Vectors in parameter 'vectors' are not row vectors.");
+
+			Matrix result = new Matrix(vectors.Count(), vectorSize.Y);
+			for (int rowIndex = 0; rowIndex < result.RowCount; rowIndex++)
+				for (int columnIndex = 0; columnIndex < result.ColumnCount; columnIndex++)
+					result[rowIndex, columnIndex] = vectors.ElementAt(rowIndex)[0, columnIndex];
+
+			return result;
 		}
 	}
 }

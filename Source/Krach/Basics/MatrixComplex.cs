@@ -1,4 +1,4 @@
-// Copyright © Julian Brunner 2010 - 2011
+// Copyright © Julian Brunner 2010 - 2012
 
 // This file is part of Krach.
 //
@@ -16,6 +16,7 @@
 
 using System;
 using System.Text;
+using System.Linq;
 using Krach.Extensions;
 using System.Collections.Generic;
 
@@ -36,24 +37,30 @@ namespace Krach.Basics
 		{
 			get
 			{
-				MatrixComplex matrix = new MatrixComplex(RowCount, ColumnCount);
+				MatrixComplex result = new MatrixComplex(RowCount, ColumnCount);
 
-				for (int row = 0; row < RowCount; row++)
-					for (int column = 0; column < ColumnCount; column++)
-						matrix[row, column] = values[column, row];
+				for (int rowIndex = 0; rowIndex < RowCount; rowIndex++)
+					for (int columnIndex = 0; columnIndex < ColumnCount; columnIndex++)
+						result[rowIndex, columnIndex] = values[columnIndex, rowIndex];
 
-				return matrix;
+				return result;
 			}
 		}
 		public IEnumerable<IEnumerable<Complex>> Rows { get { for (int rowIndex = 0; rowIndex < ColumnCount; rowIndex++) yield return GetRow(rowIndex); } }
 		public IEnumerable<IEnumerable<Complex>> Columns { get { for (int columnIndex = 0; columnIndex < ColumnCount; columnIndex++) yield return GetColumn(columnIndex); } }
 
-		public MatrixComplex(int rows, int columns)
+		public MatrixComplex(int rowCount, int columnCount)
 		{
-			this.values = new Complex[rows, columns];
+			if (rowCount <= 0) throw new ArgumentOutOfRangeException("rowCount");
+			if (columnCount <= 0) throw new ArgumentOutOfRangeException("columnCount");
+
+			this.values = new Complex[rowCount, columnCount];
 		}
 		public MatrixComplex(Complex[,] values)
 		{
+			if (values.GetLength(0) == 0) throw new ArgumentOutOfRangeException("values");
+			if (values.GetLength(1) == 0) throw new ArgumentOutOfRangeException("values");
+
 			this.values = values;
 		}
 
@@ -92,16 +99,17 @@ namespace Krach.Basics
 		{
 			return this == other;
 		}
-
+	
 		public MatrixComplex Power(int exponent)
 		{
 			if (RowCount != ColumnCount) throw new InvalidOperationException();
 
-			MatrixComplex matrix = Identity(Items.Equal(RowCount, ColumnCount));
+			MatrixComplex matrix = CreateIdentity(Items.Equal(RowCount, ColumnCount));
 
 			for (int i = 0; i < exponent; i++) matrix *= this;
 
 			return matrix;
+		
 		}
 		public IEnumerable<Complex> GetRow(int rowIndex)
 		{
@@ -211,13 +219,55 @@ namespace Krach.Basics
 			return result;
 		}
 
-		public static MatrixComplex Identity(int size)
+		public static MatrixComplex CreateIdentity(int size)
 		{
+			if (size <= 0) throw new ArgumentOutOfRangeException("size");
+
 			MatrixComplex matrix = new MatrixComplex(size, size);
 
-			for (int i = 0; i < size; i++) matrix[i, i] = 1;
+			for (int i = 0; i < size; i++) matrix [i, i] = 1;
 
 			return matrix;
+		}
+		public static MatrixComplex CreateSingleton(Complex value)
+		{
+			return new MatrixComplex(new Complex[,] { { value } });
+		}
+		public static MatrixComplex FromColumnVectors(IEnumerable<MatrixComplex> vectors)
+		{
+			if (vectors == null) throw new ArgumentNullException("vectors");
+
+			vectors = vectors.ToArray();
+
+			IEnumerable<Vector2Integer> vectorSizes = vectors.Select(vector => new Vector2Integer(vector.ColumnCount, vector.RowCount));
+			if (!vectorSizes.IsDistinct()) throw new ArgumentException("Vectors in parameter 'vectors' are not all the same size.");
+			Vector2Integer vectorSize = vectorSizes.Distinct().Single();
+			if (vectorSize.Y != 1) throw new ArgumentException("Vectors in parameter 'vectors' are not column vectors.");
+
+			MatrixComplex result = new MatrixComplex(vectorSize.X, vectors.Count());
+			for (int rowIndex = 0; rowIndex < result.RowCount; rowIndex++)
+				for (int columnIndex = 0; columnIndex < result.ColumnCount; columnIndex++)
+					result[rowIndex, columnIndex] = vectors.ElementAt(columnIndex)[rowIndex, 0];
+
+			return result;
+		}
+		public static MatrixComplex FromRowVectors(IEnumerable<MatrixComplex> vectors)
+		{
+			if (vectors == null) throw new ArgumentNullException("vectors");
+
+			vectors = vectors.ToArray();
+
+			IEnumerable<Vector2Integer> vectorSizes = vectors.Select(vector => new Vector2Integer(vector.ColumnCount, vector.RowCount));
+			if (!vectorSizes.IsDistinct()) throw new ArgumentException("Vectors in parameter 'vectors' are not all the same size.");
+			Vector2Integer vectorSize = vectorSizes.Distinct().Single();
+			if (vectorSize.X != 1) throw new ArgumentException("Vectors in parameter 'vectors' are not row vectors.");
+
+			MatrixComplex result = new MatrixComplex(vectors.Count(), vectorSize.Y);
+			for (int rowIndex = 0; rowIndex < result.RowCount; rowIndex++)
+				for (int columnIndex = 0; columnIndex < result.ColumnCount; columnIndex++)
+					result[rowIndex, columnIndex] = vectors.ElementAt(rowIndex)[0, columnIndex];
+
+			return result;
 		}
 	}
 }
