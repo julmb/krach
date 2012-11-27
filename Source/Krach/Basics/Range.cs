@@ -34,8 +34,6 @@ namespace Krach.Basics
 
 		public Range(T start, T end)
 		{
-			if (Comparer<T>.Default.Compare(start, end) > 0) throw new ArgumentException("Parameter 'start' cannot be greater than parameter 'end'.");
-
 			this.start = start;
 			this.end = end;
 		}

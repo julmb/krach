@@ -33,20 +33,21 @@ namespace Krach.Basics
 		}
 		public int RowCount { get { return values.GetLength(0); } }
 		public int ColumnCount { get { return values.GetLength(1); } }
+		public Vector2Integer Size { get { return new Vector2Integer(RowCount, ColumnCount); } }
 		public MatrixComplex Transpose
 		{
 			get
 			{
-				MatrixComplex result = new MatrixComplex(RowCount, ColumnCount);
+				MatrixComplex result = new MatrixComplex(ColumnCount, RowCount);
 
 				for (int rowIndex = 0; rowIndex < RowCount; rowIndex++)
 					for (int columnIndex = 0; columnIndex < ColumnCount; columnIndex++)
-						result[rowIndex, columnIndex] = values[columnIndex, rowIndex];
+						result[columnIndex, rowIndex] = values[rowIndex, columnIndex];
 
 				return result;
 			}
 		}
-		public IEnumerable<IEnumerable<Complex>> Rows { get { for (int rowIndex = 0; rowIndex < ColumnCount; rowIndex++) yield return GetRow(rowIndex); } }
+		public IEnumerable<IEnumerable<Complex>> Rows { get { for (int rowIndex = 0; rowIndex < RowCount; rowIndex++) yield return GetRow(rowIndex); } }
 		public IEnumerable<IEnumerable<Complex>> Columns { get { for (int columnIndex = 0; columnIndex < ColumnCount; columnIndex++) yield return GetColumn(columnIndex); } }
 
 		public MatrixComplex(int rowCount, int columnCount)
@@ -72,9 +73,9 @@ namespace Krach.Basics
 		{
 			int result = 0;
 
-			for (int row = 0; row < RowCount; row++)
-				for (int column = 0; column < ColumnCount; column++)
-					result ^= values[row, column].GetHashCode();
+			for (int rowIndex = 0; rowIndex < RowCount; rowIndex++)
+				for (int columnIndex = 0; columnIndex < ColumnCount; columnIndex++)
+					result ^= values[rowIndex, columnIndex].GetHashCode();
 
 			return result;
 		}
@@ -82,11 +83,11 @@ namespace Krach.Basics
 		{
 			StringBuilder result = new StringBuilder();
 
-			for (int row = 0; row < RowCount; row++)
+			for (int rowIndex = 0; rowIndex < RowCount; rowIndex++)
 			{
-				for (int column = 0; column < ColumnCount; column++)
+				for (int columnIndex = 0; columnIndex < ColumnCount; columnIndex++)
 				{
-					result.Append(values[row, column]);
+					result.Append(values[rowIndex, columnIndex]);
 					result.Append(", ");
 				}
 				result.Remove(result.Length - 2, 2);
@@ -117,7 +118,7 @@ namespace Krach.Basics
 		}
 		public IEnumerable<Complex> GetColumn(int columnIndex)
 		{
-			for (int rowIndex = 0; rowIndex < ColumnCount; rowIndex++) yield return values[rowIndex, columnIndex];
+			for (int rowIndex = 0; rowIndex < RowCount; rowIndex++) yield return values[rowIndex, columnIndex];
 		}
 
 		public static bool operator ==(MatrixComplex matrix1, MatrixComplex matrix2)
@@ -239,8 +240,8 @@ namespace Krach.Basics
 
 			vectors = vectors.ToArray();
 
-			IEnumerable<Vector2Integer> vectorSizes = vectors.Select(vector => new Vector2Integer(vector.ColumnCount, vector.RowCount));
-			if (!vectorSizes.IsDistinct()) throw new ArgumentException("Vectors in parameter 'vectors' are not all the same size.");
+			IEnumerable<Vector2Integer> vectorSizes = vectors.Select(vector => vector.Size);
+			if (vectorSizes.Distinct().Count() != 1) throw new ArgumentException("Vectors in parameter 'vectors' are not all the same size.");
 			Vector2Integer vectorSize = vectorSizes.Distinct().Single();
 			if (vectorSize.Y != 1) throw new ArgumentException("Vectors in parameter 'vectors' are not column vectors.");
 
@@ -257,8 +258,8 @@ namespace Krach.Basics
 
 			vectors = vectors.ToArray();
 
-			IEnumerable<Vector2Integer> vectorSizes = vectors.Select(vector => new Vector2Integer(vector.ColumnCount, vector.RowCount));
-			if (!vectorSizes.IsDistinct()) throw new ArgumentException("Vectors in parameter 'vectors' are not all the same size.");
+			IEnumerable<Vector2Integer> vectorSizes = vectors.Select(vector => vector.Size);
+			if (vectorSizes.Distinct().Count() != 1) throw new ArgumentException("Vectors in parameter 'vectors' are not all the same size.");
 			Vector2Integer vectorSize = vectorSizes.Distinct().Single();
 			if (vectorSize.X != 1) throw new ArgumentException("Vectors in parameter 'vectors' are not row vectors.");
 
