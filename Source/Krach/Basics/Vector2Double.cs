@@ -33,7 +33,8 @@ namespace Krach.Basics
 		public double Y { get { return y; } }
 		public double Length { get { return LengthSquared.SquareRoot(); } }
 		public double LengthSquared { get { return x.Square() + y.Square(); } }
-		public Vector2Double Direction { get { return (1 / Length) * this; } }
+		public Vector2Double NormalizedVector { get { return (1 / Length) * this; } }
+		public double Direction { get { return Scalars.ArcTangent(Y, X); } }
 
 		public Vector2Double(double x, double y)
 		{
@@ -59,7 +60,7 @@ namespace Krach.Basics
 		}
 		public Vector2Double Project(Vector2Double target)
 		{
-			return target.Direction * (Vector2Double.DotProduct(this, target) / target.Length);
+			return target.NormalizedVector * Vector2Double.DotProduct(this, target.NormalizedVector);
 		}
 
 		public static bool operator ==(Vector2Double vector1, Vector2Double vector2)
