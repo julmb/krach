@@ -125,10 +125,22 @@
     <Compile Include="Extensions\Paths.cs" />
     <Compile Include="Basics\OrderedRange.cs" />
     <Compile Include="Extensions\Marshaling.cs" />
+    <Compile Include="Analysis\Term.cs" />
+    <Compile Include="Analysis\Sum.cs" />
+    <Compile Include="Analysis\Variable.cs" />
+    <Compile Include="Analysis\Constant.cs" />
+    <Compile Include="Analysis\Assignment.cs" />
+    <Compile Include="Analysis\Product.cs" />
+    <Compile Include="Analysis\Function.cs" />
+    <Compile Include="Analysis\SymbolicFunction.cs" />
+    <Compile Include="Analysis\MatrixAssignment.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Analysis\" />
   </ItemGroup>
 </Project>
