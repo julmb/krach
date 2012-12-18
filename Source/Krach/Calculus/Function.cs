@@ -2,7 +2,7 @@ using System;
 using Krach.Basics;
 using System.Collections.Generic;
 
-namespace Krach.Analysis
+namespace Krach.Calculus
 {
 	public abstract class Function
 	{

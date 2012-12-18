@@ -3,7 +3,7 @@ using System.Linq;
 using Krach.Basics;
 using System.Collections.Generic;
 
-namespace Krach.Analysis
+namespace Krach.Calculus
 {
 	public class SymbolicFunction : Function
 	{
@@ -24,17 +24,13 @@ namespace Krach.Analysis
 
 		public override IEnumerable<Matrix> GetValues(Matrix position)
 		{
-			Assignment assignment = new MatrixAssignment(variables, position);
-
 			return
 				from term in terms
 				let derivative0 = term
-				select Matrix.CreateSingleton(derivative0.Evaluate(assignment));
+				select Matrix.CreateSingleton(derivative0.Assign(variables, position).Evaluate());
 		}
 		public override IEnumerable<Matrix> GetGradients(Matrix position)
 		{
-			Assignment assignment = new MatrixAssignment(variables, position);
-
 			return
 				from term in terms
 				let derivative0 = term
@@ -42,13 +38,11 @@ namespace Krach.Analysis
 				(
 					from variable1 in variables
 					let derivative1 = derivative0.GetDerivative(variable1)
-					select Matrix.CreateSingleton(derivative1.Evaluate(assignment))
+					select Matrix.CreateSingleton(derivative1.Assign(variables, position).Evaluate())
 				);
 		}
 		public override IEnumerable<Matrix> GetHessians(Matrix position)
 		{
-			Assignment assignment = new MatrixAssignment(variables, position);
-
 			return
 				from term in terms
 				let derivative0 = term
@@ -60,7 +54,7 @@ namespace Krach.Analysis
 					(
 						from variable2 in variables
 						let derivative2 = derivative1.GetDerivative(variable2)
-						select Matrix.CreateSingleton(derivative2.Evaluate(assignment))
+						select Matrix.CreateSingleton(derivative2.Assign(variables, position).Evaluate())
 					)
 				);
 		}

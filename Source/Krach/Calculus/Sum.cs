@@ -1,6 +1,6 @@
 using System;
 
-namespace Krach.Analysis
+namespace Krach.Calculus
 {
 	public class Sum : Term
 	{
@@ -16,9 +16,13 @@ namespace Krach.Analysis
 			this.term2 = term2;
 		}
 
-		public override double Evaluate(Assignment assignment)
+		public override double Evaluate()
 		{
-			return term1.Evaluate(assignment) + term2.Evaluate(assignment);
+			return term1.Evaluate() + term2.Evaluate();
+		}
+		public override Term Substitute(Variable variable, Term substitute)
+		{
+			return new Sum(term1.Substitute(variable, substitute), term2.Substitute(variable, substitute));
 		}
 		public override Term GetDerivative(Variable variable)
 		{

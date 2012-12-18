@@ -125,15 +125,17 @@
     <Compile Include="Extensions\Paths.cs" />
     <Compile Include="Basics\OrderedRange.cs" />
     <Compile Include="Extensions\Marshaling.cs" />
-    <Compile Include="Analysis\Term.cs" />
-    <Compile Include="Analysis\Sum.cs" />
-    <Compile Include="Analysis\Variable.cs" />
-    <Compile Include="Analysis\Constant.cs" />
-    <Compile Include="Analysis\Assignment.cs" />
-    <Compile Include="Analysis\Product.cs" />
-    <Compile Include="Analysis\Function.cs" />
-    <Compile Include="Analysis\SymbolicFunction.cs" />
-    <Compile Include="Analysis\MatrixAssignment.cs" />
+    <Compile Include="Calculus\Term.cs" />
+    <Compile Include="Calculus\Sum.cs" />
+    <Compile Include="Calculus\Variable.cs" />
+    <Compile Include="Calculus\Constant.cs" />
+    <Compile Include="Calculus\Product.cs" />
+    <Compile Include="Calculus\Function.cs" />
+    <Compile Include="Calculus\SymbolicFunction.cs" />
+    <Compile Include="Calculus\AdditiveInverse.cs" />
+    <Compile Include="Calculus\Terms.cs" />
+    <Compile Include="Calculus\MultiplicativeInverse.cs" />
+    <Compile Include="Calculus\Exponentiation.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -141,6 +143,6 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Analysis\" />
+    <Folder Include="Calculus\" />
   </ItemGroup>
 </Project>
