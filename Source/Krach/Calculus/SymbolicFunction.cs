@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Krach.Basics;
 using System.Collections.Generic;
+using Krach.Calculus.Terms;
 
 namespace Krach.Calculus
 {

@@ -1,6 +1,6 @@
 using System;
 
-namespace Krach.Calculus
+namespace Krach.Calculus.Terms
 {
 	public class MultiplicativeInverse : Term
 	{

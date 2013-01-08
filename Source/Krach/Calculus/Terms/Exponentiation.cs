@@ -1,7 +1,7 @@
 using System;
 using Krach.Extensions;
 
-namespace Krach.Calculus
+namespace Krach.Calculus.Terms
 {
 	public class Exponentiation : Term
 	{

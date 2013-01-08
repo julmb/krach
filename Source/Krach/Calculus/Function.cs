@@ -14,4 +14,3 @@ namespace Krach.Calculus
 		public abstract IEnumerable<Matrix> GetHessians(Matrix position);
 	}
 }
-
