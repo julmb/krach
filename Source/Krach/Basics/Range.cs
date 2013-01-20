@@ -37,6 +37,7 @@ namespace Krach.Basics
 			this.start = start;
 			this.end = end;
 		}
+		public Range(T position) : this(position, position) { }
 
 		public override bool Equals(object obj)
 		{
