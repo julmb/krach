@@ -14,20 +14,11 @@ namespace Krach.Calculus.Terms
 
 			this.name = name;
 		}
-
-		public override double Evaluate()
+		
+		public override string ToString()
 		{
-			throw new InvalidOperationException(string.Format("Cannot evaluate variable '{0}'.", name));
+			return name;
 		}
-		public override Term Substitute(Variable variable, Term term)
-		{
-			return variable == this ? term : this;
-		}
-		public override Term GetDerivative(Variable variable)
-		{
-			return new Constant(variable == this ? 1 : 0);
-		}
-
 		public override bool Equals(object obj)
 		{
 			return obj is Variable && this == (Variable)obj;
@@ -39,6 +30,18 @@ namespace Krach.Calculus.Terms
 		public bool Equals(Variable other)
 		{
 			return this == other;
+		}
+		public override double Evaluate()
+		{
+			throw new InvalidOperationException(string.Format("Cannot evaluate variable '{0}'.", name));
+		}
+		public override Term Substitute(Variable variable, Term term)
+		{
+			return variable == this ? term : this;
+		}
+		public override Term GetDerivative(Variable variable)
+		{
+			return new Constant(variable == this ? 1 : 0);
 		}
 
 		public static bool operator ==(Variable variable1, Variable variable2)

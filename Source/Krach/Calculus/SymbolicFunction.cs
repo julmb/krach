@@ -3,6 +3,7 @@ using System.Linq;
 using Krach.Basics;
 using System.Collections.Generic;
 using Krach.Calculus.Terms;
+using Krach.Extensions;
 
 namespace Krach.Calculus
 {
@@ -22,7 +23,16 @@ namespace Krach.Calculus
 			this.variables = variables;
 			this.terms = terms;
 		}
-
+		
+		public override string ToString ()
+		{
+			string result = string.Empty; 
+			
+			result += string.Format("Variables: {0}\n", variables.ToStrings().Separate(", ").AggregateString());
+			foreach (Term term in terms) result += string.Format("{0}\n", term);
+			
+			return result;
+		}
 		public override IEnumerable<Matrix> GetValues(Matrix position)
 		{
 			return
@@ -32,7 +42,7 @@ namespace Krach.Calculus
 		}
 		public override IEnumerable<Matrix> GetGradients(Matrix position)
 		{
-			return
+			return 
 				from term in terms
 				let derivative0 = term
 				select Matrix.FromRowVectors

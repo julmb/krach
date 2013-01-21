@@ -19,44 +19,44 @@ namespace Krach.Calculus.Terms
 				.Aggregate(this, (result, item) => result.Substitute(item.Item1, new Constant(item.Item2)));
 		}
 
-		public Exponentiation Exponentiate(Constant exponent)
+		public Term Exponentiate(Constant exponent)
 		{
 			return new Exponentiation(this, exponent);
 		}
-		public Exponentiation Square()
+		public Term Square()
 		{
 			return Exponentiate(new Constant(2));
 		}
 
-		public static Constant Constant(double value)
+		public static Term Constant(double value)
 		{
 			return new Constant(value);
 		}
-		public static Variable Variable(string name)
+		public static Term Variable(string name)
 		{
 			return new Variable(name);
 		}
-		public static Sum Sum(Term term1, Term term2)
+		public static Term Sum(Term term1, Term term2)
 		{
 			return new Sum(term1, term2);
 		}
 		public static Term Sum(IEnumerable<Term> terms)
 		{
-			return terms.Aggregate(Sum);
+			return terms.Aggregate<Term, Term>(Term.Constant(0), Sum);
 		}
-		public static Sum Difference(Term term1, Term term2)
+		public static Term Difference(Term term1, Term term2)
 		{
 			return new Sum(term1, new AdditiveInverse(term2));
 		}
-		public static Product Product(Term term1, Term term2)
+		public static Term Product(Term term1, Term term2)
 		{
 			return new Product(term1, term2);
 		}
 		public static Term Product(IEnumerable<Term> terms)
 		{
-			return terms.Aggregate(Product);
+			return terms.Aggregate(Term.Constant(1), Product);
 		}
-		public static Product Quotient(Term term1, Term term2)
+		public static Term Quotient(Term term1, Term term2)
 		{
 			return new Product(term1, new MultiplicativeInverse(term2));
 		}

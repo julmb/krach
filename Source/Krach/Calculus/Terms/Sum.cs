@@ -16,6 +16,10 @@ namespace Krach.Calculus.Terms
 			this.term2 = term2;
 		}
 
+		public override string ToString()
+		{
+			return string.Format("({0}) + ({1})", term1, term2);
+		}
 		public override double Evaluate()
 		{
 			return term1.Evaluate() + term2.Evaluate();

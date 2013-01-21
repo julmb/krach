@@ -12,7 +12,11 @@ namespace Krach.Calculus.Terms
 
 			this.term = term;
 		}
-
+		
+		public override string ToString()
+		{
+			return string.Format("({0}) ^ -1", term);
+		}
 		public override double Evaluate()
 		{
 			return 1 / term.Evaluate();

@@ -12,7 +12,11 @@ namespace Krach.Calculus.Terms
 		{
 			this.value = value;
 		}
-
+		
+		public override string ToString()
+		{
+			return value.ToString();
+		}
 		public override double Evaluate()
 		{
 			return value;
