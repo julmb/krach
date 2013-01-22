@@ -31,6 +31,8 @@ namespace Krach.Calculus.Terms
 		}
 		public override Term GetDerivative(Variable variable)
 		{
+			if (exponent.Value == 0) return new Constant(0);
+
 			return new Product(term.GetDerivative(variable), new Product(exponent, new Exponentiation(term, new Constant(exponent.Value - 1))));
 		}
 	}
