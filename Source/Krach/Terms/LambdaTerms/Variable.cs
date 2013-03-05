@@ -1,8 +1,8 @@
 using System;
 
-namespace Krach.Terms
+namespace Krach.Terms.LambdaTerms
 {
-	public class Variable : Term, IEquatable<Variable>
+	public class Variable : ValueTerm, IEquatable<Variable>
 	{
 		readonly string name;
 
@@ -13,10 +13,6 @@ namespace Krach.Terms
 			this.name = name;
 		}
 		
-		public override string ToString()
-		{
-			return name;
-		}
 		public override bool Equals(object obj)
 		{
 			return obj is Variable && this == (Variable)obj;
@@ -29,17 +25,21 @@ namespace Krach.Terms
 		{
 			return this == other;
 		}
+		public override ValueTerm Substitute(Variable variable, ValueTerm term)
+		{
+			return variable == this ? term : this;
+		}
+		public override string GetText()
+		{
+			return name;
+		}
 		public override double Evaluate()
 		{
 			throw new InvalidOperationException(string.Format("Cannot evaluate variable '{0}'.", name));
 		}
-		public override Term GetDerivative(Variable variable)
+		public override ValueTerm GetDerivative(Variable variable)
 		{
 			return new Constant(variable == this ? 1 : 0);
-		}
-		public override Term Substitute(Variable variable, Term term)
-		{
-			return variable == this ? term : this;
 		}
 		
 		public static bool operator ==(Variable variable1, Variable variable2)
