@@ -1,12 +1,10 @@
 using System;
 
-namespace Krach.Calculus.Terms
+namespace Krach.Terms
 {
 	public class Variable : Term, IEquatable<Variable>
 	{
 		readonly string name;
-
-		public string Name { get { return name; } }
 
 		public Variable(string name)
 		{
@@ -35,15 +33,15 @@ namespace Krach.Calculus.Terms
 		{
 			throw new InvalidOperationException(string.Format("Cannot evaluate variable '{0}'.", name));
 		}
-		public override Term Substitute(Variable variable, Term term)
-		{
-			return variable == this ? term : this;
-		}
 		public override Term GetDerivative(Variable variable)
 		{
 			return new Constant(variable == this ? 1 : 0);
 		}
-
+		public override Term Substitute(Variable variable, Term term)
+		{
+			return variable == this ? term : this;
+		}
+		
 		public static bool operator ==(Variable variable1, Variable variable2)
 		{
 			if (object.ReferenceEquals(variable1, variable2)) return true;

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -125,16 +125,16 @@
     <Compile Include="Extensions\Paths.cs" />
     <Compile Include="Basics\OrderedRange.cs" />
     <Compile Include="Extensions\Marshaling.cs" />
-    <Compile Include="Calculus\Function.cs" />
-    <Compile Include="Calculus\SymbolicFunction.cs" />
-    <Compile Include="Calculus\Terms\AdditiveInverse.cs" />
-    <Compile Include="Calculus\Terms\Constant.cs" />
-    <Compile Include="Calculus\Terms\Exponentiation.cs" />
-    <Compile Include="Calculus\Terms\MultiplicativeInverse.cs" />
-    <Compile Include="Calculus\Terms\Product.cs" />
-    <Compile Include="Calculus\Terms\Sum.cs" />
-    <Compile Include="Calculus\Terms\Term.cs" />
-    <Compile Include="Calculus\Terms\Variable.cs" />
+    <Compile Include="Terms\Variable.cs" />
+    <Compile Include="Terms\Abstraction.cs" />
+    <Compile Include="Terms\Application.cs" />
+    <Compile Include="Terms\Function.cs" />
+    <Compile Include="Terms\Constant.cs" />
+    <Compile Include="Terms\Term.cs" />
+    <Compile Include="Terms\LambdaTerm.cs" />
+    <Compile Include="Terms\Sum.cs" />
+    <Compile Include="Terms\Product.cs" />
+    <Compile Include="Terms\Exponentiation.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -142,7 +142,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Calculus\" />
-    <Folder Include="Calculus\Terms\" />
+    <Folder Include="Terms\" />
+    <Folder Include="Terms\" />
   </ItemGroup>
 </Project>

@@ -1,13 +1,11 @@
 using System;
 
-namespace Krach.Calculus.Terms
+namespace Krach.Terms
 {
 	public class Constant : Term
 	{
 		readonly double value;
-
-		public double Value { get { return value; } }
-
+		
 		public Constant(double value)
 		{
 			this.value = value;
@@ -21,13 +19,13 @@ namespace Krach.Calculus.Terms
 		{
 			return value;
 		}
-		public override Term Substitute(Variable variable, Term term)
-		{
-			return this;
-		}
 		public override Term GetDerivative(Variable variable)
 		{
-			return new Constant(0);
+			return Term.Constant(0);
+		}
+		public override Term Substitute(Variable variable, Term substitute) 
+		{
+			return this;
 		}
 	}
 }
