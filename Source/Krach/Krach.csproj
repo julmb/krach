@@ -125,16 +125,22 @@
     <Compile Include="Extensions\Paths.cs" />
     <Compile Include="Basics\OrderedRange.cs" />
     <Compile Include="Extensions\Marshaling.cs" />
-    <Compile Include="Terms\Variable.cs" />
-    <Compile Include="Terms\Abstraction.cs" />
-    <Compile Include="Terms\Application.cs" />
-    <Compile Include="Terms\Function.cs" />
-    <Compile Include="Terms\Constant.cs" />
+    <Compile Include="Terms\Functions\Exponentiation.cs" />
+    <Compile Include="Terms\Functions\Sum.cs" />
+    <Compile Include="Terms\Functions\Product.cs" />
+    <Compile Include="Terms\ValueTerm.cs" />
+    <Compile Include="Terms\FunctionTerm.cs" />
     <Compile Include="Terms\Term.cs" />
-    <Compile Include="Terms\LambdaTerm.cs" />
-    <Compile Include="Terms\Sum.cs" />
-    <Compile Include="Terms\Product.cs" />
-    <Compile Include="Terms\Exponentiation.cs" />
+    <Compile Include="Terms\Functions\Function.cs" />
+    <Compile Include="Terms\LambdaTerms\Abstraction.cs" />
+    <Compile Include="Terms\LambdaTerms\Application.cs" />
+    <Compile Include="Terms\LambdaTerms\Constant.cs" />
+    <Compile Include="Terms\LambdaTerms\Variable.cs" />
+    <Compile Include="Terms\Rewriting\Rule.cs" />
+    <Compile Include="Terms\Rewriting\FirstOrderRule.cs" />
+    <Compile Include="Terms\Rewriting\Substitution.cs" />
+    <Compile Include="Terms\Rewriting\Assignment.cs" />
+    <Compile Include="Terms\Rewriting\Rewriter.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -143,6 +149,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Terms\" />
-    <Folder Include="Terms\" />
+    <Folder Include="Terms\Functions\" />
+    <Folder Include="Terms\LambdaTerms\" />
+    <Folder Include="Terms\Rewriting\" />
   </ItemGroup>
 </Project>
