@@ -44,9 +44,12 @@ namespace Krach.Terms.Rewriting
 				if (patternApplication.Function == termApplication.Function)
 				{
 					return 
+					(
 						from item in Enumerable.Zip(patternApplication.Parameters, termApplication.Parameters, Tuple.Create)
 						from equation in AggregateEquations(item.Item1, item.Item2)
-						select equation;
+						select equation
+					)
+					.ToArray();
 				}				
 			}
 			

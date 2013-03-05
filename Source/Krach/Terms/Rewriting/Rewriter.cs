@@ -19,6 +19,9 @@ namespace Krach.Terms.Rewriting
 		
 		public T Rewrite<T>(T term) where T : Term<T> 
 		{
+			Console.WriteLine("Starting rewrite:");
+			Console.WriteLine(term.GetText());
+			
 			while (CanRewrite(term)) 
 			{
 				term = DoRewrite(term);

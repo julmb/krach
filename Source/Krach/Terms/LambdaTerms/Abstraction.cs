@@ -18,7 +18,7 @@ namespace Krach.Terms.LambdaTerms
 			if (variables == null) throw new ArgumentNullException("variables");
 			if (term == null) throw new ArgumentNullException("term");
 			
-			this.variables = variables;
+			this.variables = variables.ToArray();
 			this.term = term;
 		}
 		

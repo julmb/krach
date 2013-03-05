@@ -141,6 +141,8 @@
     <Compile Include="Terms\Rewriting\Substitution.cs" />
     <Compile Include="Terms\Rewriting\Assignment.cs" />
     <Compile Include="Terms\Rewriting\Rewriter.cs" />
+    <Compile Include="Terms\Rewriting\BetaReduction.cs" />
+    <Compile Include="Terms\Rewriting\EtaContraction.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

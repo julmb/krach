@@ -19,7 +19,7 @@ namespace Krach.Terms.LambdaTerms
 			if (parameters == null) throw new ArgumentNullException("parameters");
 			
 			this.function = function;
-			this.parameters = parameters;
+			this.parameters = parameters.ToArray();
 		}
 		
 		public override bool Equals(object obj)
