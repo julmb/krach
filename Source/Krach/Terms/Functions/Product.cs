@@ -6,8 +6,10 @@ using Krach.Terms.LambdaTerms;
 
 namespace Krach.Terms.Functions
 {
-	public class Product : Function
-	{
+	public class Product : BasicFunction
+	{	
+		public override int ParameterCount { get { return 2; } }
+		
 		public override bool Equals(object obj)
 		{
 			return obj is Product && Equals(this, (Product)obj);
@@ -32,7 +34,7 @@ namespace Krach.Terms.Functions
 		{
 			return values.ElementAt(0) * values.ElementAt(1);
 		}	
-		public override IEnumerable<FunctionTerm> GetJacobian()
+		public override IEnumerable<Function> GetJacobian()
 		{
 			Variable x = new Variable("x");
 			Variable y = new Variable("y");

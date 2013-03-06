@@ -5,15 +5,15 @@ using Krach.Extensions;
 
 namespace Krach.Terms.LambdaTerms
 {
-	public class Application : ValueTerm
+	public class Application : Value
 	{
-		readonly FunctionTerm function;
-		readonly IEnumerable<ValueTerm> parameters;
+		readonly Function function;
+		readonly IEnumerable<Value> parameters;
 		
-		public FunctionTerm Function { get { return function; } }
-		public IEnumerable<ValueTerm> Parameters { get { return parameters; } }
+		public Function Function { get { return function; } }
+		public IEnumerable<Value> Parameters { get { return parameters; } }
 		
-		public Application(FunctionTerm function, IEnumerable<ValueTerm> parameters)
+		public Application(Function function, IEnumerable<Value> parameters)
 		{
 			if (function == null) throw new ArgumentNullException("function");
 			if (parameters == null) throw new ArgumentNullException("parameters");
@@ -46,13 +46,13 @@ namespace Krach.Terms.LambdaTerms
 				Enumerables.Concatenate(parameters.Select(parameter => parameter.GetFreeVariables()))
 			);
 		}
-		public override ValueTerm RenameVariable(Variable oldVariable, Variable newVariable)
+		public override Value RenameVariable(Variable oldVariable, Variable newVariable)
 		{
 			return
 				function.RenameVariable(oldVariable, newVariable)
 				.Apply(parameters.Select(parameter => parameter.RenameVariable(oldVariable, newVariable)));
 		}
-		public override ValueTerm Substitute(Variable variable, ValueTerm substitute)
+		public override Value Substitute(Variable variable, Value substitute)
 		{
 			return function.Substitute(variable, substitute).Apply(parameters.Select(term => term.Substitute(variable, substitute)));
 		}
@@ -60,7 +60,7 @@ namespace Krach.Terms.LambdaTerms
 		{
 			return function.Evaluate(parameters.Select(term => term.Evaluate()));
 		}
-		public override ValueTerm GetDerivative(Variable variable)
+		public override Value GetDerivative(Variable variable)
 		{
 			return Term.Sum
 			(

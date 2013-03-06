@@ -5,15 +5,16 @@ using Krach.Extensions;
 
 namespace Krach.Terms.LambdaTerms
 {
-	public class Abstraction : FunctionTerm
+	public class Abstraction : Function
 	{
 		readonly IEnumerable<Variable> variables;
-		readonly ValueTerm term;
+		readonly Value term;
 		
+		public override int ParameterCount { get { return variables.Count(); } }
 		public IEnumerable<Variable> Variables { get { return variables; } }
-		public ValueTerm Term { get { return term; } }
+		public Value Term { get { return term; } }
 		
-		public Abstraction(IEnumerable<Variable> variables, ValueTerm term)
+		public Abstraction(IEnumerable<Variable> variables, Value term)
 		{
 			if (variables == null) throw new ArgumentNullException("variables");
 			if (term == null) throw new ArgumentNullException("term");
@@ -51,13 +52,13 @@ namespace Krach.Terms.LambdaTerms
 		{
 			return term.GetFreeVariables().Except(variables);
 		}
-		public override FunctionTerm RenameVariable(Variable oldVariable, Variable newVariable)
+		public override Function RenameVariable(Variable oldVariable, Variable newVariable)
 		{
 			if (variables.Contains(oldVariable)) return this;
 			
 			return new Abstraction(variables, term.RenameVariable(oldVariable, newVariable));
 		}		
-		public override FunctionTerm Substitute(Variable variable, ValueTerm substitute) 
+		public override Function Substitute(Variable variable, Value substitute) 
 		{
 			IEnumerable<Variable> newVariables =
 				from boundVariable in variables
@@ -77,7 +78,7 @@ namespace Krach.Terms.LambdaTerms
 		{
 			return term.Substitute(variables, values.Select(value => new Constant(value))).Evaluate();
 		}
-		public override IEnumerable<FunctionTerm> GetJacobian() 
+		public override IEnumerable<Function> GetJacobian() 
 		{
 			return 
 				from variable in variables

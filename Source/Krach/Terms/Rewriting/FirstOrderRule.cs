@@ -8,10 +8,10 @@ namespace Krach.Terms.Rewriting
 {
 	public class FirstOrderRule : Rule
 	{
-		readonly ValueTerm originalTerm;
-		readonly ValueTerm rewrittenTerm;
+		readonly Value originalTerm;
+		readonly Value rewrittenTerm;
 		
-		public FirstOrderRule(ValueTerm originalTerm, ValueTerm rewrittenTerm)
+		public FirstOrderRule(Value originalTerm, Value rewrittenTerm)
 		{
 			if (originalTerm == null) throw new ArgumentNullException("originalTerm");
 			if (rewrittenTerm == null) throw new ArgumentNullException("rewrittenTerm");
@@ -22,17 +22,17 @@ namespace Krach.Terms.Rewriting
 		
 		public override bool Matches<T>(T term)
 		{
-			if (!(term is ValueTerm)) return false;
+			if (!(term is Value)) return false;
 			
-			try { return Substitution<ValueTerm>.IsAssignment(AggregateEquations(originalTerm, (ValueTerm)(object)term)); }
+			try { return Substitution<Value>.IsAssignment(AggregateEquations(originalTerm, (Value)(object)term)); }
 			catch (InvalidOperationException) { return false; }
 		}
 		public override T Rewrite<T>(T term)
 		{
-			return (T)(object)Substitution<ValueTerm>.FromEquations(AggregateEquations(originalTerm, (ValueTerm)(object)term)).Apply(rewrittenTerm);
+			return (T)(object)Substitution<Value>.FromEquations(AggregateEquations(originalTerm, (Value)(object)term)).Apply(rewrittenTerm);
 		}
 		
-		static IEnumerable<Assignment> AggregateEquations(ValueTerm pattern, ValueTerm term)
+		static IEnumerable<Assignment> AggregateEquations(Value pattern, Value term)
 		{
 			if (pattern is Constant && pattern == term) return Enumerable.Empty<Assignment>();			
 			if (pattern is Variable) return Enumerables.Create(new Assignment((Variable)pattern, term));

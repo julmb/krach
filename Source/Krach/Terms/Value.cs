@@ -3,7 +3,7 @@ using Krach.Terms.LambdaTerms;
 
 namespace Krach.Terms
 {
-	public abstract class ValueTerm : Term<ValueTerm>, IEquatable<ValueTerm>
+	public abstract class Value : Term<Value>, IEquatable<Value>
 	{
 		public override bool Equals(object obj)
 		{
@@ -13,19 +13,19 @@ namespace Krach.Terms
 		{
 			throw new InvalidOperationException();
 		}
-		public bool Equals(ValueTerm other)
+		public bool Equals(Value other)
 		{
 			return object.Equals(this, other);
 		}
 		
 		public abstract double Evaluate();
-		public abstract ValueTerm GetDerivative(Variable variable);
+		public abstract Value GetDerivative(Variable variable);
 	
-		public static bool operator ==(ValueTerm term1, ValueTerm term2)
+		public static bool operator ==(Value term1, Value term2)
 		{
 			return object.Equals(term1, term2);
 		}
-		public static bool operator !=(ValueTerm term1, ValueTerm term2)
+		public static bool operator !=(Value term1, Value term2)
 		{
 			return !object.Equals(term1, term2);
 		}

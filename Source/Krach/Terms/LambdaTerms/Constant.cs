@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Krach.Terms.LambdaTerms
 {
-	public class Constant : ValueTerm, IEquatable<Constant>
+	public class Constant : Value, IEquatable<Constant>
 	{
 		readonly double value;
 		
@@ -34,11 +34,11 @@ namespace Krach.Terms.LambdaTerms
 		{
 			yield break;
 		}
-		public override ValueTerm RenameVariable(Variable oldVariable, Variable newVariable)
+		public override Value RenameVariable(Variable oldVariable, Variable newVariable)
 		{
 			return this;
 		}
-		public override ValueTerm Substitute(Variable variable, ValueTerm substitute) 
+		public override Value Substitute(Variable variable, Value substitute) 
 		{
 			return this;
 		}
@@ -46,7 +46,7 @@ namespace Krach.Terms.LambdaTerms
 		{
 			return value;
 		}
-		public override ValueTerm GetDerivative(Variable variable)
+		public override Value GetDerivative(Variable variable)
 		{
 			return Term.Constant(0);
 		}

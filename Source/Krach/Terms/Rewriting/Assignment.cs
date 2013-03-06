@@ -6,12 +6,12 @@ namespace Krach.Terms.Rewriting
 	public class Assignment
 	{
 		readonly Variable variable;
-		readonly ValueTerm term;
+		readonly Value term;
 		
 		public Variable Variable { get { return variable; } }
-		public ValueTerm Term { get { return term; } }
+		public Value Term { get { return term; } }
 		
-		public Assignment(Variable variable, ValueTerm term)
+		public Assignment(Variable variable, Value term)
 		{
 			if (variable == null) throw new ArgumentNullException("variable");
 			if (term == null) throw new ArgumentNullException("term");

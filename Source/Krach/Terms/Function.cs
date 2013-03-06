@@ -4,8 +4,10 @@ using Krach.Extensions;
 
 namespace Krach.Terms
 {
-	public abstract class FunctionTerm : Term<FunctionTerm>
-	{	
+	public abstract class Function : Term<Function>
+	{
+		public abstract int ParameterCount { get; }
+		
 		public override bool Equals(object obj)
 		{
 			throw new InvalidOperationException();
@@ -14,7 +16,7 @@ namespace Krach.Terms
 		{
 			throw new InvalidOperationException();
 		}
-		public bool Equals(FunctionTerm other)
+		public bool Equals(Function other)
 		{
 			return object.Equals(this, other);
 		}
@@ -24,13 +26,13 @@ namespace Krach.Terms
 			return string.Format("({0} {1})", GetText(), parameterTexts.Separate(" ").AggregateString());
 		}
 		public abstract double Evaluate(IEnumerable<double> values);
-		public abstract IEnumerable<FunctionTerm> GetJacobian();
+		public abstract IEnumerable<Function> GetJacobian();
 	
-		public static bool operator ==(FunctionTerm term1, FunctionTerm term2)
+		public static bool operator ==(Function term1, Function term2)
 		{
 			return object.Equals(term1, term2);
 		}
-		public static bool operator !=(FunctionTerm term1, FunctionTerm term2)
+		public static bool operator !=(Function term1, Function term2)
 		{
 			return !object.Equals(term1, term2);
 		}

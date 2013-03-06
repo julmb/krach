@@ -30,8 +30,8 @@ namespace Krach.Terms
 				Enumerable.Zip(oldVariables, newVariables, Tuple.Create)
 				.Aggregate((T)this, (result, item) => result.RenameVariable(item.Item1, item.Item2));
 		}
-		public abstract T Substitute(Variable variable, ValueTerm substitute);
-		public T Substitute(IEnumerable<Variable> variables, IEnumerable<ValueTerm> substitutes)
+		public abstract T Substitute(Variable variable, Value substitute);
+		public T Substitute(IEnumerable<Variable> variables, IEnumerable<Value> substitutes)
 		{
 			return
 				Enumerable.Zip(variables, substitutes, Tuple.Create)
@@ -49,68 +49,68 @@ namespace Krach.Terms
 	}
 	public static class Term
 	{		
-		public static ValueTerm Constant(double value)
+		public static Value Constant(double value)
 		{
 			return new Constant(value);
 		}
-		public static ValueTerm Variable(string name)
+		public static Value Variable(string name)
 		{
 			return new Variable(name);
 		}
-		public static FunctionTerm Abstract(this ValueTerm term, IEnumerable<Variable> variables)
+		public static Function Abstract(this Value term, IEnumerable<Variable> variables)
 		{
 			return new Abstraction(variables, term);
 		}
-		public static FunctionTerm Abstract(this ValueTerm term, params Variable[] variables)
+		public static Function Abstract(this Value term, params Variable[] variables)
 		{
 			return term.Abstract((IEnumerable<Variable>)variables);
 		}
-		public static ValueTerm Apply(this FunctionTerm function, IEnumerable<ValueTerm> parameters) 
+		public static Value Apply(this Function function, IEnumerable<Value> parameters) 
 		{
 			return new Application(function, parameters);
 		}
-		public static ValueTerm Apply(this FunctionTerm function, params ValueTerm[] parameters) 
+		public static Value Apply(this Function function, params Value[] parameters) 
 		{
-			return function.Apply((IEnumerable<ValueTerm>)parameters);
+			return function.Apply((IEnumerable<Value>)parameters);
 		}
 		
-		public static ValueTerm Sum(ValueTerm term1, ValueTerm term2)
+		public static Value Sum(Value term1, Value term2)
 		{
 			return new Sum().Apply(term1, term2);
 		}
-		public static ValueTerm Sum(IEnumerable<ValueTerm> terms)
+		public static Value Sum(IEnumerable<Value> terms)
 		{
 			return terms.Aggregate(Term.Constant(0), Sum);
 		}
-		public static ValueTerm Negate(this ValueTerm term) 
+		public static Value Negate(this Value term) 
 		{
 			return Term.Product(Term.Constant(-1), term);
 		}
-		public static ValueTerm Difference(ValueTerm term1, ValueTerm term2)
+		public static Value Difference(Value term1, Value term2)
 		{
 			return Term.Sum(term1, term2.Negate());
 		}
-		public static ValueTerm Product(ValueTerm term1, ValueTerm term2)
+		public static Value Product(Value term1, Value term2)
 		{
 			return new Product().Apply(term1, term2);
 		}
-		public static ValueTerm Product(IEnumerable<ValueTerm> terms)
+		public static Value Product(IEnumerable<Value> terms)
 		{
 			return terms.Aggregate(Term.Constant(1), Product);
 		}
-		public static ValueTerm Invert(this ValueTerm term)
+		public static Value Invert(this Value term)
 		{
 			return term.Exponentiate(-1);
 		}
-		public static ValueTerm Quotient(ValueTerm term1, ValueTerm term2)
+		public static Value Quotient(Value term1, Value term2)
 		{
 			return Term.Product(term1, term2.Invert());
 		}
-		public static ValueTerm Exponentiate(this ValueTerm term, double exponent)
+		public static Value Exponentiate(this Value term, double exponent)
 		{
 			return new Exponentiation(exponent).Apply(term);
 		}
-		public static ValueTerm Square(this ValueTerm term)
+		public static Value Square(this Value term)
 		{
 			return term.Exponentiate(2);
 		}

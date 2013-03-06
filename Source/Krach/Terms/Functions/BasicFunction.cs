@@ -5,7 +5,7 @@ using Krach.Extensions;
 
 namespace Krach.Terms.Functions
 {
-	public abstract class Function : FunctionTerm, IEquatable<Function>
+	public abstract class BasicFunction : Function, IEquatable<BasicFunction>
 	{
 		public override bool Equals(object obj)
 		{
@@ -15,7 +15,7 @@ namespace Krach.Terms.Functions
 		{
 			throw new InvalidOperationException();
 		}
-		public bool Equals(Function other)
+		public bool Equals(BasicFunction other)
 		{
 			return object.Equals(this, other);
 		}
@@ -23,20 +23,20 @@ namespace Krach.Terms.Functions
 		{
 			yield break;
 		}
-		public override FunctionTerm RenameVariable(Variable oldVariable, Variable newVariable)
+		public override Function RenameVariable(Variable oldVariable, Variable newVariable)
 		{
 			return this;
 		}
-		public override FunctionTerm Substitute(Variable variable, ValueTerm substitute)
+		public override Function Substitute(Variable variable, Value substitute)
 		{
 			return this;
 		}
 		
-		public static bool operator ==(Function function1, Function function2)
+		public static bool operator ==(BasicFunction function1, BasicFunction function2)
 		{
 			return object.Equals(function1, function2);
 		}
-		public static bool operator !=(Function function1, Function function2)
+		public static bool operator !=(BasicFunction function1, BasicFunction function2)
 		{
 			return !object.Equals(function1, function2);
 		}

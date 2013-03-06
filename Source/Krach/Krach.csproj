@@ -128,10 +128,7 @@
     <Compile Include="Terms\Functions\Exponentiation.cs" />
     <Compile Include="Terms\Functions\Sum.cs" />
     <Compile Include="Terms\Functions\Product.cs" />
-    <Compile Include="Terms\ValueTerm.cs" />
-    <Compile Include="Terms\FunctionTerm.cs" />
     <Compile Include="Terms\Term.cs" />
-    <Compile Include="Terms\Functions\Function.cs" />
     <Compile Include="Terms\LambdaTerms\Abstraction.cs" />
     <Compile Include="Terms\LambdaTerms\Application.cs" />
     <Compile Include="Terms\LambdaTerms\Constant.cs" />
@@ -143,6 +140,9 @@
     <Compile Include="Terms\Rewriting\Rewriter.cs" />
     <Compile Include="Terms\Rewriting\BetaReduction.cs" />
     <Compile Include="Terms\Rewriting\EtaContraction.cs" />
+    <Compile Include="Terms\Functions\BasicFunction.cs" />
+    <Compile Include="Terms\Function.cs" />
+    <Compile Include="Terms\Value.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

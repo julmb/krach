@@ -6,9 +6,11 @@ using Krach.Terms.LambdaTerms;
 
 namespace Krach.Terms.Functions
 {
-	public class Exponentiation : Function
+	public class Exponentiation : BasicFunction
 	{
 		readonly double exponent;
+			
+		public override int ParameterCount { get { return 1; } }
 		
 		public Exponentiation(double exponent) 
 		{
@@ -39,7 +41,7 @@ namespace Krach.Terms.Functions
 		{
 			return values.ElementAt(0).Exponentiate(exponent);
 		}
-		public override IEnumerable<FunctionTerm> GetJacobian()
+		public override IEnumerable<Function> GetJacobian()
 		{	
 			Variable x = new Variable("x");
 			

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Krach.Terms.LambdaTerms
 {
-	public class Variable : ValueTerm, IEquatable<Variable>
+	public class Variable : Value, IEquatable<Variable>
 	{
 		readonly string name;
 		
@@ -37,13 +37,13 @@ namespace Krach.Terms.LambdaTerms
 		{
 			yield return this;
 		}
-		public override ValueTerm RenameVariable(Variable oldVariable, Variable newVariable)
+		public override Value RenameVariable(Variable oldVariable, Variable newVariable)
 		{
 			if (this == oldVariable) return newVariable;
 			
 			return this;
 		}
-		public override ValueTerm Substitute(Variable variable, ValueTerm term)
+		public override Value Substitute(Variable variable, Value term)
 		{
 			return variable == this ? term : this;
 		}
@@ -51,7 +51,7 @@ namespace Krach.Terms.LambdaTerms
 		{
 			throw new InvalidOperationException(string.Format("Cannot evaluate variable '{0}'.", name));
 		}
-		public override ValueTerm GetDerivative(Variable variable)
+		public override Value GetDerivative(Variable variable)
 		{
 			return new Constant(variable == this ? 1 : 0);
 		}
