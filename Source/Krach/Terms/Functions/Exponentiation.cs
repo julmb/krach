@@ -10,8 +10,9 @@ namespace Krach.Terms.Functions
 	{
 		readonly double exponent;
 			
-		public override int ParameterCount { get { return 1; } }
-		
+		public override int DomainDimension { get { return 1; } }
+		public override int CodomainDimension { get { return 1; } }
+
 		public Exponentiation(double exponent) 
 		{
 			this.exponent = exponent;
@@ -23,27 +24,25 @@ namespace Krach.Terms.Functions
 		}
 		public override int GetHashCode()
 		{
-			return exponent.GetHashCode();
+			return 0;
 		}
 		public bool Equals(Exponentiation other)
 		{
 			return object.Equals(this, other);
 		}
-		public override string GetText()
+		public override string ToString()
 		{
-			return string.Format("(^{0})", exponent);
+			if (exponent.Floor() == exponent) return ((int)exponent).ToSuperscriptString();
+			
+			return string.Format("^{0}", exponent);
 		}
-		public override string GetText(IEnumerable<string> parameterTexts)
+		public override IEnumerable<double> Evaluate(IEnumerable<double> values)
 		{
-			return string.Format("({0} ^ {1})", parameterTexts.ElementAt(0), exponent);
+			yield return values.ElementAt(0).Exponentiate(exponent);
 		}
-		public override double Evaluate(IEnumerable<double> values)
-		{
-			return values.ElementAt(0).Exponentiate(exponent);
-		}
-		public override IEnumerable<Function> GetJacobian()
+		public override IEnumerable<Function> GetPartialDerivatives()
 		{	
-			Variable x = new Variable("x");
+			Variable x = new Variable(1, "x");
 			
 			yield return Term.Product(Term.Constant(exponent), x.Exponentiate(exponent - 1)).Abstract(x);
 		}

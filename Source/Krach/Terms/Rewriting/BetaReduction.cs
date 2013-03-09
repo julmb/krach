@@ -26,7 +26,7 @@ namespace Krach.Terms.Rewriting
 				{
 					Abstraction abstraction = (Abstraction)application.Function;
 					
-					return (T)(object)abstraction.Term.Substitute(abstraction.Variables, application.Parameters);
+					return (T)(object)abstraction.Term.Substitute(abstraction.Variable, application.Parameter);
 				}
 			}
 			

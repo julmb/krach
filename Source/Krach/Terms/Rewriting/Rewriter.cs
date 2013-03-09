@@ -41,21 +41,31 @@ namespace Krach.Terms.Rewriting
 			
 			if (matchingRules.Any()) return true;
 			
-			if (term is Constant) return false;
 			if (term is Variable) return false;
 			if (term is Abstraction) 
 			{
 				Abstraction abstraction = (Abstraction)(object)term;
 				
-				return CanRewrite(abstraction.Term);
+				if (CanRewrite(abstraction.Term)) return true;
 			}
 			if (term is Application) 
 			{
 				Application application = (Application)(object)term;
 				
 				if (CanRewrite(application.Function)) return true;
+				if (CanRewrite(application.Parameter)) return true;
+			}
+			if (term is Vector)
+			{
+				Vector vector = (Vector)(object)term;
 				
-				return application.Parameters.Any(parameter => CanRewrite(parameter));
+				if (vector.Values.Any(CanRewrite)) return true;
+			}
+			if (term is Selection)
+			{
+				Selection selection = (Selection)(object)term;
+				
+				if (CanRewrite(selection.Value)) return true;
 			}
 			
 			return false;
@@ -70,21 +80,31 @@ namespace Krach.Terms.Rewriting
 			
 			if (matchingRules.Any()) return matchingRules.First().Rewrite(term);
 			
-			if (term is Constant) throw new InvalidOperationException();
 			if (term is Variable) throw new InvalidOperationException();
 			if (term is Abstraction) 
 			{
 				Abstraction abstraction = (Abstraction)(object)term;
 				
-				return (T)(object)DoRewrite(abstraction.Term).Abstract(abstraction.Variables);
+				if (CanRewrite(abstraction.Term)) return (T)(object)DoRewrite(abstraction.Term).Abstract(abstraction.Variable);
 			}
 			if (term is Application) 
 			{
 				Application application = (Application)(object)term;
 				
-				if (CanRewrite(application.Function)) return (T)(object)DoRewrite(application.Function).Apply(application.Parameters);
+				if (CanRewrite(application.Function)) return (T)(object)DoRewrite(application.Function).Apply(application.Parameter);
+				if (CanRewrite(application.Parameter)) return (T)(object)application.Function.Apply(DoRewrite(application.Parameter));
+			}
+			if (term is Vector)
+			{
+				Vector vector = (Vector)(object)term;
 				
-				return (T)(object)application.Function.Apply(DoRewriteOne(application.Parameters));
+				if (vector.Values.Any(CanRewrite)) return (T)(object)Term.Vector(DoRewriteOne(vector.Values));
+			}
+			if (term is Selection)
+			{
+				Selection selection = (Selection)(object)term;
+
+				if (CanRewrite(selection.Value)) return (T)(object)DoRewrite(selection.Value).Select(selection.Index);
 			}
 			
 			throw new InvalidOperationException();

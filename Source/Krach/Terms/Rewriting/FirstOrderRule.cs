@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Krach.Terms.LambdaTerms;
 using Krach.Extensions;
+using Krach.Terms.Functions;
 
 namespace Krach.Terms.Rewriting
 {
@@ -34,23 +35,29 @@ namespace Krach.Terms.Rewriting
 		
 		static IEnumerable<Assignment> AggregateEquations(Value pattern, Value term)
 		{
-			if (pattern is Constant && pattern == term) return Enumerable.Empty<Assignment>();			
-			if (pattern is Variable) return Enumerables.Create(new Assignment((Variable)pattern, term));
-			if (pattern is Application && term is Application) 
+			if (pattern.Dimension == term.Dimension) 
 			{
-				Application patternApplication = (Application)pattern;
-				Application termApplication = (Application)term;
-				
-				if (patternApplication.Function == termApplication.Function)
+				if (pattern is Variable) return Enumerables.Create(new Assignment((Variable)pattern, term));
+				if (pattern is Application && term is Application) 
 				{
+					Application patternApplication = (Application)pattern;
+					Application termApplication = (Application)term;
+					
+					if (patternApplication.Function == termApplication.Function)
+						return AggregateEquations(patternApplication.Parameter, termApplication.Parameter);			
+				}
+				if (pattern is Vector) 
+				{
+					Vector patternVector = (Vector)pattern;
+					
 					return 
 					(
-						from item in Enumerable.Zip(patternApplication.Parameters, termApplication.Parameters, Tuple.Create)
-						from equation in AggregateEquations(item.Item1, item.Item2)
+						from index in Enumerable.Range(0, patternVector.Dimension)
+						from equation in AggregateEquations(patternVector.Values.ElementAt(index), term.Select(index))
 						select equation
 					)
 					.ToArray();
-				}				
+				}
 			}
 			
 			throw new InvalidOperationException();

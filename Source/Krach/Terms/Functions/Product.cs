@@ -8,8 +8,9 @@ namespace Krach.Terms.Functions
 {
 	public class Product : BasicFunction
 	{	
-		public override int ParameterCount { get { return 2; } }
-		
+		public override int DomainDimension { get { return 2; } }
+		public override int CodomainDimension { get { return 1; } }
+
 		public override bool Equals(object obj)
 		{
 			return obj is Product && Equals(this, (Product)obj);
@@ -22,25 +23,21 @@ namespace Krach.Terms.Functions
 		{
 			return object.Equals(this, other);
 		}
-		public override string GetText()
+		
+		public override string ToString()
 		{
-			return "(*)";
+			return "*";
 		}
-		public override string GetText(IEnumerable<string> parameterTexts)
+		public override IEnumerable<double> Evaluate(IEnumerable<double> values)
 		{
-			return string.Format("({0} * {1})", parameterTexts.ElementAt(0), parameterTexts.ElementAt(1));
+			yield return values.ElementAt(0) * values.ElementAt(1);
 		}
-		public override double Evaluate(IEnumerable<double> values)
+		public override IEnumerable<Function> GetPartialDerivatives()
 		{
-			return values.ElementAt(0) * values.ElementAt(1);
-		}	
-		public override IEnumerable<Function> GetJacobian()
-		{
-			Variable x = new Variable("x");
-			Variable y = new Variable("y");
+			Variable x = new Variable(2, "x");
 			
-			yield return y.Abstract(x, y);
-			yield return x.Abstract(x, y);
+			yield return x.Select(1).Abstract(x);
+			yield return x.Select(0).Abstract(x);
 		}
 		
 		public static bool operator ==(Product product1, Product product2)

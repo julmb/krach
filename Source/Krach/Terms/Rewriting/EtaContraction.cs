@@ -16,8 +16,7 @@ namespace Krach.Terms.Rewriting
 				{
 					Application application = (Application)abstraction.Term;
 					
-					if (Enumerable.SequenceEqual(abstraction.Variables, application.Parameters)) 
-						return true;
+					if (abstraction.Variable == application.Parameter) return true;
 				}
 			}
 			
@@ -33,8 +32,7 @@ namespace Krach.Terms.Rewriting
 				{
 					Application application = (Application)abstraction.Term;
 					
-					if (Enumerable.SequenceEqual(abstraction.Variables, application.Parameters)) 
-						return (T)(object)application.Function;
+					if (abstraction.Variable == application.Parameter) return (T)(object)application.Function;
 				}
 			}
 			

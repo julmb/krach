@@ -7,82 +7,74 @@ namespace Krach.Terms.LambdaTerms
 {
 	public class Abstraction : Function
 	{
-		readonly IEnumerable<Variable> variables;
+		readonly Variable variable;
 		readonly Value term;
 		
-		public override int ParameterCount { get { return variables.Count(); } }
-		public IEnumerable<Variable> Variables { get { return variables; } }
+		public override int DomainDimension { get { return variable.Dimension; } }
+		public override int CodomainDimension { get { return term.Dimension; } }
+		public Variable Variable { get { return variable; } }
 		public Value Term { get { return term; } }
 		
-		public Abstraction(IEnumerable<Variable> variables, Value term)
+		public Abstraction(Variable variable, Value term)
 		{
-			if (variables == null) throw new ArgumentNullException("variables");
+			if (variable == null) throw new ArgumentNullException("variable");
 			if (term == null) throw new ArgumentNullException("term");
 			
-			this.variables = variables.ToArray();
+			this.variable = variable;
 			this.term = term;
 		}
 		
+		public override string ToString() 
+		{
+			return string.Format("(λ {0}. {1})", variable, term); 
+		}
 		public override bool Equals(object obj)
 		{
 			return obj is Abstraction && Equals(this, (Abstraction)obj);
 		}
 		public override int GetHashCode()
 		{
-			IEnumerable<Variable> newVariables = 
-				from index in Enumerable.Range(0, variables.Count())
-				select new Variable(index.ToString());
-				
-			return term.RenameVariables(variables, newVariables).GetHashCode();
+			return 0;
 		}
 		public bool Equals(Abstraction other)
 		{
 			return object.Equals(this, other);
 		}
-		public override string GetText() 
-		{
-			return string.Format
-			(
-				"(λ {0}. {1})", 
-				variables.Select(variable => variable.GetText()).Separate(" ").AggregateString(), 
-				term.GetText()
-			); 
-		}
 		public override IEnumerable<Variable> GetFreeVariables()
 		{
-			return term.GetFreeVariables().Except(variables);
+			return term.GetFreeVariables().Except(Enumerables.Create(variable));
 		}
 		public override Function RenameVariable(Variable oldVariable, Variable newVariable)
 		{
-			if (variables.Contains(oldVariable)) return this;
+			if (variable == oldVariable) return this;
 			
-			return new Abstraction(variables, term.RenameVariable(oldVariable, newVariable));
+			return term.RenameVariable(oldVariable, newVariable).Abstract(variable);
 		}		
 		public override Function Substitute(Variable variable, Value substitute) 
 		{
-			IEnumerable<Variable> newVariables =
-				from boundVariable in variables
-				select boundVariable.FindUnusedVariable
+			Variable newVariable = variable.FindUnusedVariable
+			(
+				Enumerables.Concatenate
 				(
-					Enumerables.Concatenate
-					(
-						GetFreeVariables(), 
-						substitute.GetFreeVariables(), 
-						Enumerables.Create(variable)
-					)
-				);
+					term.GetFreeVariables(), 
+					substitute.GetFreeVariables()
+				)
+			);
 					
-			return new Abstraction(newVariables, term.RenameVariables(variables, newVariables).Substitute(variable, substitute)); 
+			return term.RenameVariable(variable, newVariable).Substitute(variable, substitute).Abstract(newVariable); 
 		}
-		public override double Evaluate(IEnumerable<double> values)
+		public override IEnumerable<double> Evaluate(IEnumerable<double> values)
 		{
-			return term.Substitute(variables, values.Select(value => new Constant(value))).Evaluate();
+			return term.Substitute(variable, Terms.Term.Constant(values)).Evaluate();
 		}
-		public override IEnumerable<Function> GetJacobian() 
+		public override IEnumerable<Function> GetPartialDerivatives() 
 		{
 			return 
-				from variable in variables
-				select term.GetDerivative(variable).Abstract(variables);
+			(
+				from partialDerivative in term.GetPartialDerivatives(variable)
+				select partialDerivative.Abstract(variable)
+			)
+			.ToArray();
 		}
 	
 		public static bool operator ==(Abstraction abstraction1, Abstraction abstraction2)
@@ -99,16 +91,15 @@ namespace Krach.Terms.LambdaTerms
 			if (object.ReferenceEquals(abstraction1, abstraction2)) return true;
 			if (object.ReferenceEquals(abstraction1, null) || object.ReferenceEquals(abstraction2, null)) return false;
 			
-			if (abstraction1.variables.Count() != abstraction2.variables.Count()) return false;
+			if (abstraction1.variable.Dimension != abstraction2.variable.Dimension) return false;
 			
-			IEnumerable<Variable> variables = 
-				from item in Enumerable.Zip(abstraction1.variables, abstraction2.variables, Tuple.Create)
-				let combinedVariable = new Variable(item.Item1.Name + item.Item2.Name)
-				select combinedVariable.FindUnusedVariable(Enumerables.Concatenate(abstraction1.term.GetFreeVariables(), abstraction2.term.GetFreeVariables()));
-				
+			int dimension = Items.Equal(abstraction1.variable.Dimension, abstraction2.variable.Dimension);
+			Variable combinedVariable = new Variable(dimension, abstraction1.variable.Name + abstraction2.variable.Name);
+			Variable unusedVariable = combinedVariable.FindUnusedVariable(Enumerables.Concatenate(abstraction1.term.GetFreeVariables(), abstraction2.term.GetFreeVariables()));
+			
 			return 
-				abstraction1.term.RenameVariables(abstraction1.variables, variables) ==
-				abstraction2.term.RenameVariables(abstraction2.variables, variables);
+				abstraction1.term.RenameVariable(abstraction1.variable, unusedVariable) ==
+				abstraction2.term.RenameVariable(abstraction2.variable, unusedVariable);
 		}
 	}
 }

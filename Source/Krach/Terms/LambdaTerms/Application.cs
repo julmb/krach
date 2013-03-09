@@ -8,67 +8,67 @@ namespace Krach.Terms.LambdaTerms
 	public class Application : Value
 	{
 		readonly Function function;
-		readonly IEnumerable<Value> parameters;
+		readonly Value parameter;
 		
+		public override int Dimension { get { return function.CodomainDimension; } }
 		public Function Function { get { return function; } }
-		public IEnumerable<Value> Parameters { get { return parameters; } }
+		public Value Parameter { get { return parameter; } }
 		
-		public Application(Function function, IEnumerable<Value> parameters)
+		public Application(Function function, Value parameter)
 		{
 			if (function == null) throw new ArgumentNullException("function");
-			if (parameters == null) throw new ArgumentNullException("parameters");
+			if (parameter == null) throw new ArgumentNullException("parameter");
 			
 			this.function = function;
-			this.parameters = parameters.ToArray();
+			this.parameter = parameter;
 		}
 		
+		public override string ToString()
+		{
+			return string.Format("({0} ! {1})", function, parameter);
+		}
 		public override bool Equals(object obj)
 		{
 			return obj is Application && Equals(this, (Application)obj);
 		}
 		public override int GetHashCode()
 		{
-			return function.GetHashCode() ^ Enumerables.GetSequenceHashCode(parameters);
+			return 0;
 		}
 		public bool Equals(Application other)
 		{
 			return object.Equals(this, other);
 		}
-		public override string GetText()
-		{
-			return function.GetText(parameters.Select(parameter => parameter.GetText()));
-		}
 		public override IEnumerable<Variable> GetFreeVariables()
 		{
-			return Enumerables.Concatenate
-			(
-				function.GetFreeVariables(), 
-				Enumerables.Concatenate(parameters.Select(parameter => parameter.GetFreeVariables()))
-			);
+			return Enumerables.Concatenate(function.GetFreeVariables(), parameter.GetFreeVariables());
 		}
 		public override Value RenameVariable(Variable oldVariable, Variable newVariable)
 		{
 			return
 				function.RenameVariable(oldVariable, newVariable)
-				.Apply(parameters.Select(parameter => parameter.RenameVariable(oldVariable, newVariable)));
+				.Apply(parameter.RenameVariable(oldVariable, newVariable));
 		}
 		public override Value Substitute(Variable variable, Value substitute)
 		{
-			return function.Substitute(variable, substitute).Apply(parameters.Select(term => term.Substitute(variable, substitute)));
+			return function.Substitute(variable, substitute).Apply(parameter.Substitute(variable, substitute));
 		}
-		public override double Evaluate()
+		public override IEnumerable<double> Evaluate()
 		{
-			return function.Evaluate(parameters.Select(term => term.Evaluate()));
+			return function.Evaluate(parameter.Evaluate());
 		}
-		public override Value GetDerivative(Variable variable)
+		public override IEnumerable<Value> GetPartialDerivatives(Variable variable)
 		{
-			return Term.Sum
+			return 
 			(
-				from item in Enumerable.Zip(function.GetJacobian(), parameters, Tuple.Create)
-				let partialDerivative = new Application(item.Item1, parameters) 
-				let parameterDerivative = item.Item2.GetDerivative(variable)
-				select Term.Product(partialDerivative, parameterDerivative)
-			);
+				from parameterPartialDerivative in parameter.GetPartialDerivatives(variable)
+				select Term.Vector
+				(
+					from functionPartialDerivative in function.GetPartialDerivatives()
+					select Term.Product(functionPartialDerivative.Apply(parameter), parameterPartialDerivative)
+				)
+			)
+			.ToArray();
 		}
 		
 		public static bool operator ==(Application application1, Application application2)
@@ -87,8 +87,7 @@ namespace Krach.Terms.LambdaTerms
 			
 			return 
 				application1.function == application2.function && 
-				Enumerable.Zip(application1.parameters, application2.parameters, Tuple.Create)
-				.All(item => item.Item1 == item.Item2);
+				application1.parameter == application2.parameter;
 		}
 	}
 }

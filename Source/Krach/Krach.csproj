@@ -131,7 +131,6 @@
     <Compile Include="Terms\Term.cs" />
     <Compile Include="Terms\LambdaTerms\Abstraction.cs" />
     <Compile Include="Terms\LambdaTerms\Application.cs" />
-    <Compile Include="Terms\LambdaTerms\Constant.cs" />
     <Compile Include="Terms\LambdaTerms\Variable.cs" />
     <Compile Include="Terms\Rewriting\Rule.cs" />
     <Compile Include="Terms\Rewriting\FirstOrderRule.cs" />
@@ -143,6 +142,10 @@
     <Compile Include="Terms\Functions\BasicFunction.cs" />
     <Compile Include="Terms\Function.cs" />
     <Compile Include="Terms\Value.cs" />
+    <Compile Include="Terms\Functions\Constant.cs" />
+    <Compile Include="Extensions\Integer.cs" />
+    <Compile Include="Terms\LambdaTerms\Vector.cs" />
+    <Compile Include="Terms\LambdaTerms\Selection.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

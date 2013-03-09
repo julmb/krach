@@ -274,26 +274,52 @@ namespace Krach.Extensions
 
 			return (int)result;
 		}
-		public static IEnumerable<TResult> Zip<TSource1, TResult>(this IEnumerable<TSource1> source1, Func<TSource1, TResult> resultSelector)
+		public static IEnumerable<TResult> Zip<TSource1, TResult>(IEnumerable<TSource1> source1, Func<TSource1, TResult> resultSelector)
 		{
 			IEnumerator<TSource1> enumerator1 = source1.GetEnumerator();
 
 			while (enumerator1.MoveNext()) yield return resultSelector(enumerator1.Current);
 		}
-		public static IEnumerable<TResult> Zip<TSource1, TSource2, TResult>(this IEnumerable<TSource1> source1, IEnumerable<TSource2> source2, Func<TSource1, TSource2, TResult> resultSelector)
+		public static IEnumerable<TResult> Zip<TSource1, TSource2, TResult>(IEnumerable<TSource1> source1, IEnumerable<TSource2> source2, Func<TSource1, TSource2, TResult> resultSelector)
 		{
 			IEnumerator<TSource1> enumerator1 = source1.GetEnumerator();
 			IEnumerator<TSource2> enumerator2 = source2.GetEnumerator();
 
 			while (enumerator1.MoveNext() && enumerator2.MoveNext()) yield return resultSelector(enumerator1.Current, enumerator2.Current);
 		}
-		public static IEnumerable<TResult> Zip<TSource1, TSource2, TSource3, TResult>(this IEnumerable<TSource1> source1, IEnumerable<TSource2> source2, IEnumerable<TSource3> source3, Func<TSource1, TSource2, TSource3, TResult> resultSelector)
+		public static IEnumerable<TResult> Zip<TSource1, TSource2, TSource3, TResult>(IEnumerable<TSource1> source1, IEnumerable<TSource2> source2, IEnumerable<TSource3> source3, Func<TSource1, TSource2, TSource3, TResult> resultSelector)
 		{
 			IEnumerator<TSource1> enumerator1 = source1.GetEnumerator();
 			IEnumerator<TSource2> enumerator2 = source2.GetEnumerator();
 			IEnumerator<TSource3> enumerator3 = source3.GetEnumerator();
 
 			while (enumerator1.MoveNext() && enumerator2.MoveNext() && enumerator3.MoveNext()) yield return resultSelector(enumerator1.Current, enumerator2.Current, enumerator3.Current);
+		}
+		public static IEnumerable<int> GetPartialSums(this IEnumerable<int> source) 
+		{
+			if (source == null) throw new ArgumentNullException("source");
+			
+			int currentPartialSum = 0;
+			
+			foreach (int item in source) 
+			{
+				yield return currentPartialSum;
+			
+				currentPartialSum += item;
+			}
+		}
+		public static IEnumerable<double> GetPartialSums(this IEnumerable<double> source) 
+		{
+			if (source == null) throw new ArgumentNullException("source");
+			
+			double currentPartialSum = 0;
+			
+			foreach (double item in source) 
+			{
+				yield return currentPartialSum;
+			
+				currentPartialSum += item;
+			}
 		}
 	}
 }
