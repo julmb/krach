@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Krach.Extensions;
+using Krach.Calculus.Terms.Basic;
 
-namespace Krach.Terms.LambdaTerms
+namespace Krach.Calculus.Terms.Combination
 {
-	public class Variable : Value, IEquatable<Variable>
+	public class Variable : ValueTerm, IEquatable<Variable>
 	{
 		readonly int dimension;
 		readonly string name;
@@ -22,49 +23,55 @@ namespace Krach.Terms.LambdaTerms
 			this.name = name;
 		}
 		
-		public override string ToString()
-		{
-			return name;
-		}
 		public override bool Equals(object obj)
 		{
 			return obj is Variable && Equals(this, (Variable)obj);
 		}
 		public override int GetHashCode()
 		{
-			return 0;
+			return dimension.GetHashCode() ^ name.GetHashCode();
 		}
 		public bool Equals(Variable other)
 		{
 			return object.Equals(this, other);
 		}
+		
 		public override IEnumerable<Variable> GetFreeVariables()
 		{
 			yield return this;
 		}
-		public override Value RenameVariable(Variable oldVariable, Variable newVariable)
+		public override ValueTerm RenameVariable(Variable oldVariable, Variable newVariable)
 		{
 			if (this == oldVariable) return newVariable;
 			
 			return this;
 		}
-		public override Value Substitute(Variable variable, Value term)
+		public override ValueTerm Substitute(Variable variable, ValueTerm term)
 		{
 			return variable == this ? term : this;
 		}
+		
+		public override int GetSize()
+		{
+			return 1;
+		}
+		public override string GetText()
+		{
+			return name;
+		}
 		public override IEnumerable<double> Evaluate()
 		{
-			throw new InvalidOperationException(string.Format("Cannot evaluate variable '{0}'.", name));
+			throw new InvalidOperationException(string.Format("Cannot evaluate variable '{0}'.", this));
 		}
-		public override IEnumerable<Value> GetPartialDerivatives(Variable variable)
+		public override IEnumerable<ValueTerm> GetDerivatives(Variable variable)
 		{
-			return 
+			return
 			(
 				from variableIndex in Enumerable.Range(0, variable.Dimension)
 				select Term.Vector
 				(
-					from derivativeIndex in Enumerable.Range(0, dimension)
-					select Term.Constant(variable == this && variableIndex == derivativeIndex ? 1 : 0)
+					from componentIndex in Enumerable.Range(0, dimension)
+					select Term.Constant(variable == this && variableIndex == componentIndex ? 1 : 0)
 				)
 			)
 			.ToArray();

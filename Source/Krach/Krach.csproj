@@ -10,6 +10,7 @@
     <RootNamespace>Krach</RootNamespace>
     <AssemblyName>Krach</AssemblyName>
     <ProductVersion>10.0.0</ProductVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -125,27 +126,39 @@
     <Compile Include="Extensions\Paths.cs" />
     <Compile Include="Basics\OrderedRange.cs" />
     <Compile Include="Extensions\Marshaling.cs" />
-    <Compile Include="Terms\Functions\Exponentiation.cs" />
-    <Compile Include="Terms\Functions\Sum.cs" />
-    <Compile Include="Terms\Functions\Product.cs" />
-    <Compile Include="Terms\Term.cs" />
-    <Compile Include="Terms\LambdaTerms\Abstraction.cs" />
-    <Compile Include="Terms\LambdaTerms\Application.cs" />
-    <Compile Include="Terms\LambdaTerms\Variable.cs" />
-    <Compile Include="Terms\Rewriting\Rule.cs" />
-    <Compile Include="Terms\Rewriting\FirstOrderRule.cs" />
-    <Compile Include="Terms\Rewriting\Substitution.cs" />
-    <Compile Include="Terms\Rewriting\Assignment.cs" />
-    <Compile Include="Terms\Rewriting\Rewriter.cs" />
-    <Compile Include="Terms\Rewriting\BetaReduction.cs" />
-    <Compile Include="Terms\Rewriting\EtaContraction.cs" />
-    <Compile Include="Terms\Functions\BasicFunction.cs" />
-    <Compile Include="Terms\Function.cs" />
-    <Compile Include="Terms\Value.cs" />
-    <Compile Include="Terms\Functions\Constant.cs" />
-    <Compile Include="Extensions\Integer.cs" />
-    <Compile Include="Terms\LambdaTerms\Vector.cs" />
-    <Compile Include="Terms\LambdaTerms\Selection.cs" />
+    <Compile Include="Calculus\Abstract\IFunction.cs" />
+    <Compile Include="Calculus\Abstract\IValue.cs" />
+    <Compile Include="Calculus\Terms\Term.cs" />
+    <Compile Include="Calculus\Terms\FunctionTerm.cs" />
+    <Compile Include="Calculus\Terms\ValueTerm.cs" />
+    <Compile Include="Calculus\Terms\Basic\BasicFunction.cs" />
+    <Compile Include="Calculus\Terms\Basic\BasicValue.cs" />
+    <Compile Include="Calculus\Terms\VariableTerm.cs" />
+    <Compile Include="Calculus\Terms\Combination\Abstraction.cs" />
+    <Compile Include="Calculus\Terms\Combination\Application.cs" />
+    <Compile Include="Calculus\Terms\Combination\Variable.cs" />
+    <Compile Include="Calculus\Terms\BaseTerm.cs" />
+    <Compile Include="Calculus\Constant.cs" />
+    <Compile Include="Calculus\Exponentiation.cs" />
+    <Compile Include="Calculus\Product.cs" />
+    <Compile Include="Calculus\Sum.cs" />
+    <Compile Include="Calculus\Terms\Combination\Vector.cs" />
+    <Compile Include="Calculus\Terms\Combination\Selection.cs" />
+    <Compile Include="Calculus\Terms\Rewriting\Assignment.cs" />
+    <Compile Include="Calculus\Terms\Rewriting\BetaReduction.cs" />
+    <Compile Include="Calculus\Terms\Rewriting\EtaContraction.cs" />
+    <Compile Include="Calculus\Terms\Rewriting\FirstOrderRule.cs" />
+    <Compile Include="Calculus\Terms\Rewriting\Rewriter.cs" />
+    <Compile Include="Calculus\Terms\Rewriting\Rule.cs" />
+    <Compile Include="Calculus\Terms\Rewriting\Substitution.cs" />
+    <Compile Include="Calculus\Terms\Rewriting\VectorRules.cs" />
+    <Compile Include="Calculus\Basic\Function.cs" />
+    <Compile Include="Calculus\Basic\Value.cs" />
+    <Compile Include="Calculus\Basic\BinaryOperator.cs" />
+    <Compile Include="Calculus\Scaling.cs" />
+    <Compile Include="Calculus\Terms\Rewriting\SumExpansion.cs" />
+    <Compile Include="Calculus\Terms\Rewriting\ProductExpansion.cs" />
+    <Compile Include="Calculus\Terms\Rewriting\ScalingExpansion.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -153,9 +166,11 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Terms\" />
-    <Folder Include="Terms\Functions\" />
-    <Folder Include="Terms\LambdaTerms\" />
-    <Folder Include="Terms\Rewriting\" />
+    <Folder Include="Calculus\" />
+    <Folder Include="Calculus\Abstract\" />
+    <Folder Include="Calculus\" />
+    <Folder Include="Calculus\" />
+    <Folder Include="Calculus\Terms\" />
+    <Folder Include="Calculus\Basic\" />
   </ItemGroup>
 </Project>

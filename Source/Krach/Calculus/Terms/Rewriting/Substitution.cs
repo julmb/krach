@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Krach.Calculus.Terms;
 
 namespace Krach.Terms.Rewriting
 {
-	public class Substitution<T> where T : Term<T>
+	public class Substitution
 	{
 		readonly IEnumerable<Assignment> assignments;
 		
@@ -12,10 +13,10 @@ namespace Krach.Terms.Rewriting
 		{
 			if (assignments == null) throw new ArgumentNullException("assignments");
 			
-			this.assignments = assignments;
+			this.assignments = assignments.ToArray();
 		}
 		
-		public T Apply(T term) 
+		public T Apply<T>(T term) where T : VariableTerm<T>
 		{
 			return term.Substitute
 			(
@@ -34,16 +35,13 @@ namespace Krach.Terms.Rewriting
 			)
 			.All(termCount => termCount == 1);
 		}
-		public static Substitution<T> FromEquations(IEnumerable<Assignment> equations) 
+		public static Substitution FromEquations(IEnumerable<Assignment> equations) 
 		{			
-			return new Substitution<T>
+			return new Substitution
 			(
-				( 
-					from equation in equations
-					group equation.Term by equation.Variable into variableGroup
-					select new Assignment(variableGroup.Key, variableGroup.Distinct().Single())
-				)
-				.ToArray()
+				from equation in equations
+				group equation.Term by equation.Variable into variableGroup
+				select new Assignment(variableGroup.Key, variableGroup.Distinct().Single())
 			);
 		}
 	}

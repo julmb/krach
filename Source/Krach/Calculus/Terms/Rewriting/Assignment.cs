@@ -1,17 +1,18 @@
 using System;
-using Krach.Terms.LambdaTerms;
+using Krach.Calculus.Terms;
+using Krach.Calculus.Terms.Combination;
 
 namespace Krach.Terms.Rewriting
 {
 	public class Assignment
 	{
 		readonly Variable variable;
-		readonly Value term;
+		readonly ValueTerm term;
 		
 		public Variable Variable { get { return variable; } }
-		public Value Term { get { return term; } }
+		public ValueTerm Term { get { return term; } }
 		
-		public Assignment(Variable variable, Value term)
+		public Assignment(Variable variable, ValueTerm term)
 		{
 			if (variable == null) throw new ArgumentNullException("variable");
 			if (term == null) throw new ArgumentNullException("term");

@@ -15,6 +15,8 @@
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace Krach.Extensions
 {
@@ -53,6 +55,62 @@ namespace Krach.Extensions
 					}
 
 			return distance[rowCount - 1, columnCount - 1];
+		}
+		public static bool IsSubSuperScriptCompatible(this string text)
+		{
+			IEnumerable<char> allowedCharacters = Enumerables.Create('-', '0' ,'1' ,'2', '3', '4', '5', '6', '7', '8', '9');
+				
+			return !text.Except(allowedCharacters).Any();
+		}
+		public static string ToSubscript(this string text) 
+		{
+			string result = string.Empty;
+			
+			foreach (char character in text) 
+			{
+				switch (character) 
+				{
+					case '-': result += '\u208B'; break;
+					case '0': result += '\u2080'; break;
+					case '1': result += '\u2081'; break;
+					case '2': result += '\u2082'; break;
+					case '3': result += '\u2083'; break;
+					case '4': result += '\u2084'; break;
+					case '5': result += '\u2085'; break;
+					case '6': result += '\u2086'; break;
+					case '7': result += '\u2087'; break;
+					case '8': result += '\u2088'; break;
+					case '9': result += '\u2089'; break;
+					default: throw new InvalidOperationException();
+				}
+			}
+			
+			return result;
+		}
+		public static string ToSuperscript(this string text) 
+		{
+			string result = string.Empty;
+			
+			foreach (char character in text) 
+			{
+				switch (character) 
+				{
+					case '-': result += '\u207B'; break;
+					case '0': result += '\u2070'; break;
+					case '1': result += '\u00B9'; break;
+					case '2': result += '\u00B2'; break;
+					case '3': result += '\u00B3'; break;
+					case '4': result += '\u2074'; break;
+					case '5': result += '\u2075'; break;
+					case '6': result += '\u2076'; break;
+					case '7': result += '\u2077'; break;
+					case '8': result += '\u2078'; break;
+					case '9': result += '\u2079'; break;
+					default: throw new InvalidOperationException();
+				}
+			}
+			
+			return result;
 		}
 	}
 }
