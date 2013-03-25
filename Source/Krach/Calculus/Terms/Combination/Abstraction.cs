@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using Krach.Extensions;
-using Krach.Calculus.Abstract;
 using Krach.Calculus.Terms.Basic;
 
 namespace Krach.Calculus.Terms.Combination
@@ -86,11 +85,11 @@ namespace Krach.Calculus.Terms.Combination
 				term.GetText()
 			);
 		}
-		public override bool HasCustomApplicationText(IValue parameter)
+		public override bool HasCustomApplicationText(ValueTerm parameter)
 		{
 			return false;
 		}
-		public override string GetCustomApplicationText(IValue parameter)
+		public override string GetCustomApplicationText(ValueTerm parameter)
 		{
 			throw new InvalidOperationException();
 		}
@@ -106,7 +105,7 @@ namespace Krach.Calculus.Terms.Combination
 			
 			return term.Substitute(variables, substitutes).Evaluate();
 		}
-		public override IEnumerable<IFunction> GetDerivatives() 
+		public override IEnumerable<FunctionTerm> GetDerivatives() 
 		{
 			return
 			(

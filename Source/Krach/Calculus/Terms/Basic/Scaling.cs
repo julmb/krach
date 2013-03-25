@@ -2,22 +2,20 @@ using System;
 using System.Collections.Generic;
 using Krach.Extensions;
 using System.Linq;
-using Krach.Calculus.Abstract;
 using Krach.Calculus.Terms.Combination;
 using Krach.Calculus.Terms;
-using Krach.Calculus.Basic;
 
-namespace Krach.Calculus
+namespace Krach.Calculus.Terms.Basic
 {
-	public class Product : BinaryOperator, IEquatable<Product>
+	public class Scaling : BinaryOperator, IEquatable<Scaling>
 	{
 		readonly int dimension;
 		
 		public int Dimension { get { return dimension; } }
-		public override int DomainDimension { get { return 2 * dimension; } }
-		public override int CodomainDimension { get { return 1; } }
+		public override int DomainDimension { get { return 1 + dimension; } }
+		public override int CodomainDimension { get { return dimension; } }
 		
-		public Product(int dimension)
+		public Scaling(int dimension)
 		{
 			if (dimension < 0) throw new ArgumentOutOfRangeException("dimension");
 			
@@ -26,57 +24,61 @@ namespace Krach.Calculus
 		
 		public override bool Equals(object obj)
 		{
-			return obj is Product && Equals(this, (Product)obj);
+			return obj is Scaling && Equals(this, (Scaling)obj);
 		}
 		public override int GetHashCode()
 		{
 			return dimension.GetHashCode();
 		}
-		public bool Equals(Product other)
+		public bool Equals(Scaling other)
 		{
 			return object.Equals(this, other);
 		}
 		
 		public override string GetText()
 		{
-			return "∙";
+			return "*";
 		}
 		public override IEnumerable<double> Evaluate(IEnumerable<double> values)
 		{
-			yield return
+			double factor = values.First();
+			
+			return
 			(
-				from index in Enumerable.Range(0, dimension)
-				let value1 = values.ElementAt(0 * dimension + index)
-				let value2 = values.ElementAt(1 * dimension + index)
-				select value1 * value2
+				from value in values.Skip(1)
+				select factor * value
 			)
-			.Sum();
+			.ToArray();
 		}
-		public override IEnumerable<IFunction> GetDerivatives()
-		{
+		public override IEnumerable<FunctionTerm> GetDerivatives()
+		{			
+			Variable c = new Variable(dimension, "c");
 			Variable x = new Variable(dimension, "x");
-			Variable y = new Variable(dimension, "y");
 			
 			return Enumerables.Concatenate
 			(
+				Enumerables.Create(x.Abstract(c, x)),
 				from indexX in Enumerable.Range(0, dimension)
-				select y.Select(indexX).Abstract(x, y),
-				from indexY in Enumerable.Range(0, dimension)
-				select x.Select(indexY).Abstract(x, y)
+				select Term.Vector
+				(
+					from index in Enumerable.Range(0, dimension)
+					select index == indexX ? c : Term.Constant(0)
+				)
+				.Abstract(c, x)
 			)
 			.ToArray();
 		}
 		
-		public static bool operator ==(Product function1, Product function2)
+		public static bool operator ==(Scaling function1, Scaling function2)
 		{
 			return object.Equals(function1, function2);
 		}
-		public static bool operator !=(Product function1, Product function2)
+		public static bool operator !=(Scaling function1, Scaling function2)
 		{
 			return !object.Equals(function1, function2);
 		}
 		
-		static bool Equals(Product function1, Product function2) 
+		static bool Equals(Scaling function1, Scaling function2) 
 		{
 			if (object.ReferenceEquals(function1, function2)) return true;
 			if (object.ReferenceEquals(function1, null) || object.ReferenceEquals(function2, null)) return false;

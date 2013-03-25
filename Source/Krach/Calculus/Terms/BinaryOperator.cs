@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
-using Krach.Calculus.Abstract;
 using Krach.Calculus.Terms.Combination;
 using System.Linq;
 using Krach.Extensions;
 
-namespace Krach.Calculus.Basic
+namespace Krach.Calculus.Terms
 {
-	public abstract class BinaryOperator : Function, IEquatable<BinaryOperator>
+	public abstract class BinaryOperator : BasicFunctionTerm, IEquatable<BinaryOperator>
 	{		
 		public override bool Equals(object obj)
 		{
@@ -22,15 +21,15 @@ namespace Krach.Calculus.Basic
 			return object.Equals(this, other);
 		}
 
-		public override bool HasCustomApplicationText(IValue parameter)
+		public override bool HasCustomApplicationText(ValueTerm parameter)
 		{
-			IEnumerable<IValue> parameters = parameter is Vector ? ((Vector)parameter).Terms : Enumerables.Create(parameter);
+			IEnumerable<ValueTerm> parameters = parameter is Vector ? ((Vector)parameter).Terms : Enumerables.Create(parameter);
 			
 			return parameters.Count() == 2 && parameters.ElementAt(0).Dimension == parameters.ElementAt(1).Dimension;
 		}
-		public override string GetCustomApplicationText(IValue parameter)
+		public override string GetCustomApplicationText(ValueTerm parameter)
 		{
-			IEnumerable<IValue> parameters = parameter is Vector ? ((Vector)parameter).Terms : Enumerables.Create(parameter);
+			IEnumerable<ValueTerm> parameters = parameter is Vector ? ((Vector)parameter).Terms : Enumerables.Create(parameter);
 			
 			return string.Format("({0} {1} {2})", parameters.ElementAt(0).GetText(), GetText(), parameters.ElementAt(1).GetText());
 		}

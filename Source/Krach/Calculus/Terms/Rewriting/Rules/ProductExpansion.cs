@@ -6,7 +6,7 @@ using Krach.Calculus.Terms.Basic;
 using Krach.Calculus;
 using System.Collections.Generic;
 
-namespace Krach.Terms.Rewriting
+namespace Krach.Calculus.Terms.Rewriting.Rules
 {
 	public class ProductExpansion : Rule
 	{
@@ -23,13 +23,9 @@ namespace Krach.Terms.Rewriting
 			
 			Application application = (Application)(BaseTerm)term;
 			
-			if (!(application.Function is BasicFunction)) throw new InvalidOperationException();
+			if (!(application.Function is Product)) throw new InvalidOperationException();
 			
-			BasicFunction basicFunction = (BasicFunction)application.Function;
-			
-			if (!(basicFunction.Function is Product)) throw new InvalidOperationException();
-			
-			Product product = (Product)basicFunction.Function;
+			Product product = (Product)application.Function;
 			
 			if (product.Dimension == 1) throw new InvalidOperationException();
 			

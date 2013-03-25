@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Krach.Extensions;
 using Krach.Calculus.Terms.Combination;
-using Krach.Calculus.Abstract;
 using Krach.Calculus.Terms.Basic;
 
 namespace Krach.Calculus.Terms
@@ -52,22 +51,9 @@ namespace Krach.Calculus.Terms
 			return new Selection(term, index);
 		}
 		
-		public static ValueTerm ToTerm(this IValue value)
-		{
-			if (value is ValueTerm) return (ValueTerm)value;
-			
-			return new BasicValue(value);
-		}
-		public static FunctionTerm ToTerm(this IFunction function)
-		{
-			if (function is FunctionTerm) return (FunctionTerm)function;
-			
-			return new BasicFunction(function);
-		}
-		
 		public static ValueTerm Constant(IEnumerable<double> values)
 		{			
-			return Vector(values.Select(value => new Constant(value).ToTerm()));
+			return Vector(values.Select(value => new Constant(value)));
 		}
 		public static ValueTerm Constant(params double[] values)
 		{
@@ -75,7 +61,7 @@ namespace Krach.Calculus.Terms
 		}
 		public static ValueTerm Sum(ValueTerm value1, ValueTerm value2)
 		{
-			return new Sum(Items.Equal(value1.Dimension, value2.Dimension)).ToTerm().Apply(value1, value2);
+			return new Sum(Items.Equal(value1.Dimension, value2.Dimension)).Apply(value1, value2);
 		}
 		public static ValueTerm Sum(IEnumerable<ValueTerm> terms)
 		{
@@ -91,7 +77,7 @@ namespace Krach.Calculus.Terms
 		}
 		public static ValueTerm Product(ValueTerm value1, ValueTerm value2)
 		{
-			return new Product(Items.Equal(value1.Dimension, value2.Dimension)).ToTerm().Apply(value1, value2);
+			return new Product(Items.Equal(value1.Dimension, value2.Dimension)).Apply(value1, value2);
 		}
 		public static ValueTerm Product(IEnumerable<ValueTerm> terms)
 		{
@@ -99,7 +85,7 @@ namespace Krach.Calculus.Terms
 		}
 		public static ValueTerm Scale(ValueTerm factor, ValueTerm vector)
 		{
-			return new Scaling(vector.Dimension).ToTerm().Apply(factor, vector);
+			return new Scaling(vector.Dimension).Apply(factor, vector);
 		}
 		public static ValueTerm Invert(this ValueTerm value)
 		{
@@ -111,7 +97,7 @@ namespace Krach.Calculus.Terms
 		}
 		public static ValueTerm Exponentiate(this ValueTerm value, double exponent)
 		{
-			return new Exponentiation(exponent).ToTerm().Apply(value);
+			return new Exponentiation(exponent).Apply(value);
 		}
 		public static ValueTerm Square(this ValueTerm term)
 		{

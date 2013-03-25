@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Krach.Calculus.Abstract;
 using Krach.Calculus.Terms.Combination;
 
 namespace Krach.Calculus.Terms

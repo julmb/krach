@@ -6,7 +6,7 @@ using Krach.Calculus.Terms.Basic;
 using Krach.Calculus;
 using System.Collections.Generic;
 
-namespace Krach.Terms.Rewriting
+namespace Krach.Calculus.Terms.Rewriting.Rules
 {
 	public class ScalingExpansion : Rule
 	{
@@ -23,13 +23,9 @@ namespace Krach.Terms.Rewriting
 			
 			Application application = (Application)(BaseTerm)term;
 			
-			if (!(application.Function is BasicFunction)) throw new InvalidOperationException();
+			if (!(application.Function is Scaling)) throw new InvalidOperationException();
 			
-			BasicFunction basicFunction = (BasicFunction)application.Function;
-			
-			if (!(basicFunction.Function is Scaling)) throw new InvalidOperationException();
-			
-			Scaling scaling = (Scaling)basicFunction.Function;
+			Scaling scaling = (Scaling)application.Function;
 			
 			if (scaling.Dimension == 1) throw new InvalidOperationException();
 			

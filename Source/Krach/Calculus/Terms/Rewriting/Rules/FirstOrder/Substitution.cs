@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Krach.Calculus.Terms;
 
-namespace Krach.Terms.Rewriting
+namespace Krach.Calculus.Terms.Rewriting.Rules.FirstOrder
 {
 	public class Substitution
 	{

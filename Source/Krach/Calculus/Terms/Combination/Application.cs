@@ -94,7 +94,7 @@ namespace Krach.Calculus.Terms.Combination
 			IEnumerable<ValueTerm> functionDerivatives =
 			(
 				from derivative in function.GetDerivatives()
-				select derivative.ToTerm().Apply(parameter)
+				select derivative.Apply(parameter)
 			)
 			.ToArray();
 			IEnumerable<ValueTerm> flippedFunctionDerivatives =

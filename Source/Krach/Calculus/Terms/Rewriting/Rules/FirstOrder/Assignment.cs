@@ -2,7 +2,7 @@ using System;
 using Krach.Calculus.Terms;
 using Krach.Calculus.Terms.Combination;
 
-namespace Krach.Terms.Rewriting
+namespace Krach.Calculus.Terms.Rewriting.Rules.FirstOrder
 {
 	public class Assignment
 	{

@@ -2,11 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Krach.Extensions;
-using Krach.Calculus.Terms;
-using Krach.Calculus.Terms.Combination;
 using Krach.Calculus.Terms.Basic;
+using Krach.Calculus.Terms.Combination;
 
-namespace Krach.Terms.Rewriting
+namespace Krach.Calculus.Terms.Rewriting
 {
 	public class Rewriter
 	{
@@ -44,8 +43,8 @@ namespace Krach.Terms.Rewriting
 			
 			if (matchingRules.Any()) return true;
 			
-			if (term is BasicValue) return false;
-			if (term is BasicFunction) return false;
+			if (term is BasicValueTerm) return false;
+			if (term is BasicFunctionTerm) return false;
 			if (term is Variable) return false;
 			if (term is Abstraction)
 			{
@@ -94,8 +93,8 @@ namespace Krach.Terms.Rewriting
 			
 			if (matchingRules.Any()) return matchingRules.First().Rewrite(term);
 			
-			if (term is BasicValue) throw new InvalidOperationException();
-			if (term is BasicFunction) throw new InvalidOperationException();
+			if (term is BasicValueTerm) throw new InvalidOperationException();
+			if (term is BasicFunctionTerm) throw new InvalidOperationException();
 			if (term is Variable) throw new InvalidOperationException();
 			if (term is Abstraction)
 			{

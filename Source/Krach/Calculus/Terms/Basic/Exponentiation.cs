@@ -2,14 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Krach.Extensions;
-using Krach.Calculus.Abstract;
 using Krach.Calculus.Terms.Combination;
 using Krach.Calculus.Terms;
-using Krach.Calculus.Basic;
 
-namespace Krach.Calculus
+namespace Krach.Calculus.Terms.Basic
 {
-	public class Exponentiation : Function, IEquatable<Exponentiation>
+	public class Exponentiation : BasicFunctionTerm, IEquatable<Exponentiation>
 	{
 		readonly double exponent;
 			
@@ -39,12 +37,12 @@ namespace Krach.Calculus
 		{
 			return string.Format("^{0}", exponent);
 		}
-		public override bool HasCustomApplicationText(IValue parameter)
+		public override bool HasCustomApplicationText(ValueTerm parameter)
 		{
 			return true;
 		}
-		public override string GetCustomApplicationText(IValue parameter)
-		{			
+		public override string GetCustomApplicationText(ValueTerm parameter)
+		{
 			if (exponent.ToString().IsSubSuperScriptCompatible())
 				return string.Format("{0}{1}", parameter.GetText(), exponent.ToString().ToSuperscript());
 			
@@ -54,7 +52,7 @@ namespace Krach.Calculus
 		{
 			yield return values.ElementAt(0).Exponentiate(exponent);
 		}
-		public override IEnumerable<IFunction> GetDerivatives()
+		public override IEnumerable<FunctionTerm> GetDerivatives()
 		{	
 			Variable x = new Variable(1, "x");
 			

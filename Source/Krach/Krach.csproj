@@ -126,51 +126,44 @@
     <Compile Include="Extensions\Paths.cs" />
     <Compile Include="Basics\OrderedRange.cs" />
     <Compile Include="Extensions\Marshaling.cs" />
-    <Compile Include="Calculus\Abstract\IFunction.cs" />
-    <Compile Include="Calculus\Abstract\IValue.cs" />
     <Compile Include="Calculus\Terms\Term.cs" />
     <Compile Include="Calculus\Terms\FunctionTerm.cs" />
     <Compile Include="Calculus\Terms\ValueTerm.cs" />
-    <Compile Include="Calculus\Terms\Basic\BasicFunction.cs" />
-    <Compile Include="Calculus\Terms\Basic\BasicValue.cs" />
     <Compile Include="Calculus\Terms\VariableTerm.cs" />
     <Compile Include="Calculus\Terms\Combination\Abstraction.cs" />
     <Compile Include="Calculus\Terms\Combination\Application.cs" />
     <Compile Include="Calculus\Terms\Combination\Variable.cs" />
     <Compile Include="Calculus\Terms\BaseTerm.cs" />
-    <Compile Include="Calculus\Constant.cs" />
-    <Compile Include="Calculus\Exponentiation.cs" />
-    <Compile Include="Calculus\Product.cs" />
-    <Compile Include="Calculus\Sum.cs" />
     <Compile Include="Calculus\Terms\Combination\Vector.cs" />
     <Compile Include="Calculus\Terms\Combination\Selection.cs" />
-    <Compile Include="Calculus\Terms\Rewriting\Assignment.cs" />
-    <Compile Include="Calculus\Terms\Rewriting\BetaReduction.cs" />
-    <Compile Include="Calculus\Terms\Rewriting\EtaContraction.cs" />
-    <Compile Include="Calculus\Terms\Rewriting\FirstOrderRule.cs" />
     <Compile Include="Calculus\Terms\Rewriting\Rewriter.cs" />
     <Compile Include="Calculus\Terms\Rewriting\Rule.cs" />
-    <Compile Include="Calculus\Terms\Rewriting\Substitution.cs" />
-    <Compile Include="Calculus\Terms\Rewriting\VectorRules.cs" />
-    <Compile Include="Calculus\Basic\Function.cs" />
-    <Compile Include="Calculus\Basic\Value.cs" />
-    <Compile Include="Calculus\Basic\BinaryOperator.cs" />
-    <Compile Include="Calculus\Scaling.cs" />
-    <Compile Include="Calculus\Terms\Rewriting\SumExpansion.cs" />
-    <Compile Include="Calculus\Terms\Rewriting\ProductExpansion.cs" />
-    <Compile Include="Calculus\Terms\Rewriting\ScalingExpansion.cs" />
+    <Compile Include="Calculus\Terms\Rewriting\Rules\BetaReduction.cs" />
+    <Compile Include="Calculus\Terms\Rewriting\Rules\EtaContraction.cs" />
+    <Compile Include="Calculus\Terms\Rewriting\Rules\ProductExpansion.cs" />
+    <Compile Include="Calculus\Terms\Rewriting\Rules\ScalingExpansion.cs" />
+    <Compile Include="Calculus\Terms\Rewriting\Rules\SumExpansion.cs" />
+    <Compile Include="Calculus\Terms\Rewriting\Rules\VectorRules.cs" />
+    <Compile Include="Calculus\Terms\Rewriting\Rules\FirstOrder\Assignment.cs" />
+    <Compile Include="Calculus\Terms\Rewriting\Rules\FirstOrder\FirstOrderRule.cs" />
+    <Compile Include="Calculus\Terms\Rewriting\Rules\FirstOrder\Substitution.cs" />
+    <Compile Include="Calculus\Terms\Basic\Constant.cs" />
+    <Compile Include="Calculus\Terms\Basic\Exponentiation.cs" />
+    <Compile Include="Calculus\Terms\Basic\Product.cs" />
+    <Compile Include="Calculus\Terms\Basic\Scaling.cs" />
+    <Compile Include="Calculus\Terms\Basic\Sum.cs" />
+    <Compile Include="Calculus\Terms\BinaryOperator.cs" />
+    <Compile Include="Calculus\IFunction.cs" />
+    <Compile Include="Calculus\IValue.cs" />
+    <Compile Include="Calculus\Terms\BasicFunctionTerm.cs" />
+    <Compile Include="Calculus\Terms\BasicValueTerm.cs" />
+    <Compile Include="Calculus\ExplicitFunction.cs" />
+    <Compile Include="Calculus\ExplicitValue.cs" />
+    <Compile Include="Calculus\Simplification.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Calculus\" />
-    <Folder Include="Calculus\Abstract\" />
-    <Folder Include="Calculus\" />
-    <Folder Include="Calculus\" />
-    <Folder Include="Calculus\Terms\" />
-    <Folder Include="Calculus\Basic\" />
   </ItemGroup>
 </Project>

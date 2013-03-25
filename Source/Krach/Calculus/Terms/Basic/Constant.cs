@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
-using Krach.Calculus.Abstract;
-using Krach.Calculus.Basic;
+using Krach.Extensions;
 
-namespace Krach.Calculus
+namespace Krach.Calculus.Terms.Basic
 {
-	public class Constant : Value, IEquatable<Constant>
+	public class Constant : BasicValueTerm, IEquatable<Constant>
 	{
 		readonly double value;
 		
@@ -36,7 +35,7 @@ namespace Krach.Calculus
 		}
 		public override IEnumerable<double> Evaluate()
 		{
-			yield return value;
+			return Enumerables.Create(value);
 		}
 		
 		public static bool operator ==(Constant value1, Constant value2)

@@ -1,7 +1,7 @@
 using System;
 using Krach.Calculus.Terms;
 
-namespace Krach.Terms.Rewriting
+namespace Krach.Calculus.Terms.Rewriting
 {
 	public abstract class Rule 
 	{

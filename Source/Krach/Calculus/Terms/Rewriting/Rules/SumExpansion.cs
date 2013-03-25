@@ -6,7 +6,7 @@ using Krach.Calculus.Terms.Basic;
 using Krach.Calculus;
 using System.Collections.Generic;
 
-namespace Krach.Terms.Rewriting
+namespace Krach.Calculus.Terms.Rewriting.Rules
 {
 	public class SumExpansion : Rule
 	{
@@ -23,13 +23,9 @@ namespace Krach.Terms.Rewriting
 			
 			Application application = (Application)(BaseTerm)term;
 			
-			if (!(application.Function is BasicFunction)) throw new InvalidOperationException();
+			if (!(application.Function is Sum)) throw new InvalidOperationException();
 			
-			BasicFunction basicFunction = (BasicFunction)application.Function;
-			
-			if (!(basicFunction.Function is Sum)) throw new InvalidOperationException();
-			
-			Sum sum = (Sum)basicFunction.Function;
+			Sum sum = (Sum)application.Function;
 			
 			if (sum.Dimension == 1) throw new InvalidOperationException();
 			

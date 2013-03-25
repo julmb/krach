@@ -1,23 +1,21 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Krach.Extensions;
-using Krach.Calculus.Abstract;
+using System.Linq;
 using Krach.Calculus.Terms.Combination;
 using Krach.Calculus.Terms;
-using Krach.Calculus.Basic;
 
-namespace Krach.Calculus
+namespace Krach.Calculus.Terms.Basic
 {
-	public class Sum : BinaryOperator, IEquatable<Sum>
+	public class Product : BinaryOperator, IEquatable<Product>
 	{
 		readonly int dimension;
 		
 		public int Dimension { get { return dimension; } }
 		public override int DomainDimension { get { return 2 * dimension; } }
-		public override int CodomainDimension { get { return dimension; } }
+		public override int CodomainDimension { get { return 1; } }
 		
-		public Sum(int dimension)
+		public Product(int dimension)
 		{
 			if (dimension < 0) throw new ArgumentOutOfRangeException("dimension");
 			
@@ -26,33 +24,33 @@ namespace Krach.Calculus
 		
 		public override bool Equals(object obj)
 		{
-			return obj is Sum && Equals(this, (Sum)obj);
+			return obj is Product && Equals(this, (Product)obj);
 		}
 		public override int GetHashCode()
 		{
-			return 0;
+			return dimension.GetHashCode();
 		}
-		public bool Equals(Sum other)
+		public bool Equals(Product other)
 		{
 			return object.Equals(this, other);
 		}
 		
 		public override string GetText()
 		{
-			return "+";
+			return "∙";
 		}
 		public override IEnumerable<double> Evaluate(IEnumerable<double> values)
 		{
-			return
+			yield return
 			(
 				from index in Enumerable.Range(0, dimension)
 				let value1 = values.ElementAt(0 * dimension + index)
 				let value2 = values.ElementAt(1 * dimension + index)
-				select value1 + value2
+				select value1 * value2
 			)
-			.ToArray();
+			.Sum();
 		}
-		public override IEnumerable<IFunction> GetDerivatives()
+		public override IEnumerable<FunctionTerm> GetDerivatives()
 		{
 			Variable x = new Variable(dimension, "x");
 			Variable y = new Variable(dimension, "y");
@@ -60,33 +58,23 @@ namespace Krach.Calculus
 			return Enumerables.Concatenate
 			(
 				from indexX in Enumerable.Range(0, dimension)
-				select Term.Vector
-				(
-					from index in Enumerable.Range(0, dimension)
-					select Term.Constant(index == indexX ? 1 : 0)
-				)
-				.Abstract(x, y),
+				select y.Select(indexX).Abstract(x, y),
 				from indexY in Enumerable.Range(0, dimension)
-				select Term.Vector
-				(
-					from index in Enumerable.Range(0, dimension)
-					select Term.Constant(index == indexY ? 1 : 0)
-				)
-				.Abstract(x, y)
+				select x.Select(indexY).Abstract(x, y)
 			)
 			.ToArray();
 		}
 		
-		public static bool operator ==(Sum function1, Sum function2)
+		public static bool operator ==(Product function1, Product function2)
 		{
 			return object.Equals(function1, function2);
 		}
-		public static bool operator !=(Sum function1, Sum function2)
+		public static bool operator !=(Product function1, Product function2)
 		{
 			return !object.Equals(function1, function2);
 		}
 		
-		static bool Equals(Sum function1, Sum function2) 
+		static bool Equals(Product function1, Product function2) 
 		{
 			if (object.ReferenceEquals(function1, function2)) return true;
 			if (object.ReferenceEquals(function1, null) || object.ReferenceEquals(function2, null)) return false;
@@ -95,4 +83,3 @@ namespace Krach.Calculus
 		}
 	}
 }
-

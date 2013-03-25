@@ -7,7 +7,7 @@ using Krach.Extensions;
 using Krach.Calculus.Terms.Basic;
 using Krach.Calculus;
 
-namespace Krach.Terms.Rewriting
+namespace Krach.Calculus.Terms.Rewriting.Rules
 {
 	public class SelectVector : Rule
 	{

@@ -6,7 +6,7 @@ using Krach.Calculus.Terms;
 using Krach.Calculus.Terms.Combination;
 using Krach.Calculus.Terms.Basic;
 
-namespace Krach.Terms.Rewriting
+namespace Krach.Calculus.Terms.Rewriting.Rules.FirstOrder
 {
 	public class FirstOrderRule : Rule
 	{
@@ -50,12 +50,12 @@ namespace Krach.Terms.Rewriting
 		}
 		static IEnumerable<Assignment> AggregateEquations(ValueTerm pattern, ValueTerm term)
 		{
-			if (pattern is BasicValue && term is BasicValue)
+			if (pattern is BasicValueTerm && term is BasicValueTerm)
 			{
-				BasicValue patternBasicValue = (BasicValue)pattern;
-				BasicValue termBasicValue = (BasicValue)term;
+				BasicValueTerm patternBasicValueTerm = (BasicValueTerm)pattern;
+				BasicValueTerm termBasicValueTerm = (BasicValueTerm)term;
 				
-				if (patternBasicValue != termBasicValue) throw new InvalidOperationException();
+				if (patternBasicValueTerm != termBasicValueTerm) throw new InvalidOperationException();
 				
 				return Enumerables.Create<Assignment>();
 			}

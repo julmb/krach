@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Krach.Calculus.Abstract;
 
 namespace Krach.Calculus.Terms
 {
@@ -22,10 +21,10 @@ namespace Krach.Calculus.Terms
 			return object.Equals(this, other);
 		}
 		
-		public abstract bool HasCustomApplicationText(IValue parameter);
-		public abstract string GetCustomApplicationText(IValue parameter);
+		public abstract bool HasCustomApplicationText(ValueTerm parameter);
+		public abstract string GetCustomApplicationText(ValueTerm parameter);
 		public abstract IEnumerable<double> Evaluate(IEnumerable<double> parameters);
-		public abstract IEnumerable<IFunction> GetDerivatives();
+		public abstract IEnumerable<FunctionTerm> GetDerivatives();
 
 		public static bool operator ==(FunctionTerm term1, FunctionTerm term2)
 		{
@@ -34,6 +33,11 @@ namespace Krach.Calculus.Terms
 		public static bool operator !=(FunctionTerm term1, FunctionTerm term2)
 		{
 			return !object.Equals(term1, term2);
+		}
+
+		IEnumerable<IFunction> IFunction.GetDerivatives()
+		{
+			return GetDerivatives();
 		}
 	}
 }
