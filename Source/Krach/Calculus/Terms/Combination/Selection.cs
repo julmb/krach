@@ -40,10 +40,6 @@ namespace Krach.Calculus.Terms.Combination
 		{
 			return term.GetFreeVariables();
 		}
-		public override ValueTerm RenameVariable(Variable oldVariable, Variable newVariable)
-		{
-			return new Selection(term.RenameVariable(oldVariable, newVariable), index);
-		}
 		public override ValueTerm Substitute(Variable variable, ValueTerm substitute)
 		{
 			return new Selection(term.Substitute(variable, substitute), index);

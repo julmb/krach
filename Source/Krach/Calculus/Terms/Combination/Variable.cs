@@ -40,12 +40,6 @@ namespace Krach.Calculus.Terms.Combination
 		{
 			yield return this;
 		}
-		public override ValueTerm RenameVariable(Variable oldVariable, Variable newVariable)
-		{
-			if (this == oldVariable) return newVariable;
-			
-			return this;
-		}
 		public override ValueTerm Substitute(Variable variable, ValueTerm term)
 		{
 			return variable == this ? term : this;
@@ -75,14 +69,6 @@ namespace Krach.Calculus.Terms.Combination
 				)
 			)
 			.ToArray();
-		}
-		public Variable FindUnusedVariable(IEnumerable<Variable> usedVariables) 
-		{
-			Variable variable = this;
-			
-			while (usedVariables.Contains(variable)) variable = new Variable(variable.Dimension, variable.name + "'");
-			
-			return variable;
 		}
 		
 		public static bool operator ==(Variable variable1, Variable variable2)

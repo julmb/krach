@@ -48,6 +48,19 @@ namespace Krach.Calculus.Terms
 		{
 			if (term.Dimension == 1 && index == 0) return term;
 			
+			if (term is Vector)
+			{
+				Vector vector = (Vector)term;
+				
+				return
+				(
+					from subTerm in vector.Terms
+					from subIndex in Enumerable.Range(0, subTerm.Dimension)
+					select subTerm.Select(subIndex)
+				)
+				.ElementAt(index);
+			}
+			
 			return new Selection(term, index);
 		}
 		
@@ -67,13 +80,17 @@ namespace Krach.Calculus.Terms
 		{
 			return terms.Aggregate(Sum);
 		}
-		public static ValueTerm Negate(this ValueTerm value)
+		public static ValueTerm Sum(params ValueTerm[] terms)
+		{
+			return Sum((IEnumerable<ValueTerm>)terms);
+		}
+		public static ValueTerm Negate(ValueTerm value)
 		{
 			return Scale(Constant(-1), value);
 		}
 		public static ValueTerm Difference(ValueTerm value1, ValueTerm value2)
 		{
-			return Sum(value1, value2.Negate());
+			return Sum(value1, Term.Negate(value2));
 		}
 		public static ValueTerm Product(ValueTerm value1, ValueTerm value2)
 		{
@@ -83,25 +100,31 @@ namespace Krach.Calculus.Terms
 		{
 			return terms.Aggregate(Product);
 		}
+		public static ValueTerm Product(params ValueTerm[] terms)
+		{
+			return Product((IEnumerable<ValueTerm>)terms);
+		}
 		public static ValueTerm Scale(ValueTerm factor, ValueTerm vector)
 		{
+			if (vector.Dimension == 1) return Product(factor, vector);
+			
 			return new Scaling(vector.Dimension).Apply(factor, vector);
 		}
-		public static ValueTerm Invert(this ValueTerm value)
+		public static ValueTerm Invert(ValueTerm value)
 		{
-			return value.Exponentiate(-1);
+			return Exponentiate(value, Term.Constant(-1));
 		}
 		public static ValueTerm Quotient(ValueTerm value1, ValueTerm value2)
 		{
-			return Term.Product(value1, value2.Invert());
+			return Term.Product(value1, Term.Invert(value2));
 		}
-		public static ValueTerm Exponentiate(this ValueTerm value, double exponent)
+		public static ValueTerm Exponentiate(ValueTerm @base, ValueTerm exponent)
 		{
-			return new Exponentiation(exponent).Apply(value);
+			return new Exponentiation().Apply(@base, exponent);
 		}
-		public static ValueTerm Square(this ValueTerm term)
+		public static ValueTerm Logarithm(ValueTerm value)
 		{
-			return term.Exponentiate(2);
+			return new Logarithm().Apply(value);
 		}
 	}
 }

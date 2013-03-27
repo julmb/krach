@@ -28,10 +28,6 @@ namespace Krach.Calculus.Terms
 		{
 			yield break;
 		}
-		public override FunctionTerm RenameVariable(Variable oldVariable, Variable newVariable)
-		{
-			return this;
-		}
 		public override FunctionTerm Substitute(Variable variable, ValueTerm substitute)
 		{
 			return this;

@@ -42,14 +42,6 @@ namespace Krach.Calculus.Terms.Combination
 			)
 			.ToArray();
 		}
-		public override ValueTerm RenameVariable(Variable oldVariable, Variable newVariable)
-		{
-			return new Vector
-			(
-				from term in terms
-				select term.RenameVariable(oldVariable, newVariable)
-			);
-		}
 		public override ValueTerm Substitute(Variable variable, ValueTerm substitute)
 		{
 			return new Vector

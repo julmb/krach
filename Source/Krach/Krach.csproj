@@ -160,6 +160,9 @@
     <Compile Include="Calculus\ExplicitFunction.cs" />
     <Compile Include="Calculus\ExplicitValue.cs" />
     <Compile Include="Calculus\Simplification.cs" />
+    <Compile Include="Calculus\Terms\Rewriting\Rules\Evaluation.cs" />
+    <Compile Include="Calculus\Terms\Rewriting\Rules\Sorting.cs" />
+    <Compile Include="Calculus\Terms\Basic\Logarithm.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

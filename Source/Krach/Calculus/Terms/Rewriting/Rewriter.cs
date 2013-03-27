@@ -20,14 +20,19 @@ namespace Krach.Calculus.Terms.Rewriting
 		
 		public T Rewrite<T>(T term) where T : VariableTerm<T> 
 		{
-			Console.WriteLine(term.GetText());
+			Terminal.Write(term.GetText(), ConsoleColor.Red);
+			Terminal.WriteLine();
 			
 			while (CanRewrite(term)) 
 			{
 				term = DoRewrite(term);
 			
-				Console.WriteLine(term.GetText());
+//				Terminal.Write(term.GetText(), ConsoleColor.Yellow);
+//				Terminal.WriteLine();
 			}
+			
+			Terminal.Write(term.GetText(), ConsoleColor.Green);
+			Terminal.WriteLine();
 			
 			return term;
 		}

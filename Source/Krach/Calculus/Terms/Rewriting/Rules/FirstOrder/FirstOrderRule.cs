@@ -30,15 +30,11 @@ namespace Krach.Calculus.Terms.Rewriting.Rules.FirstOrder
 			return true;
 		}
 		public override T Rewrite<T>(T term)
-		{
-			IEnumerable<Assignment> equations = Match(originalTerm, term);
-			Substitution substitution = Substitution.FromEquations(equations);
-			BaseTerm result = substitution.Apply(rewrittenTerm);
-			
-			return (T)result;
+		{			
+			return (T)(BaseTerm)Match(originalTerm, term).Apply(rewrittenTerm);
 		}
 	
-		static IEnumerable<Assignment> Match(ValueTerm pattern, BaseTerm term)
+		static Substitution Match(ValueTerm pattern, BaseTerm term)
 		{
 			if (!(term is ValueTerm)) throw new InvalidOperationException();
 			
@@ -46,7 +42,11 @@ namespace Krach.Calculus.Terms.Rewriting.Rules.FirstOrder
 			
 			if (pattern.Dimension != valueTerm.Dimension) throw new InvalidOperationException();
 			
-			return AggregateEquations(pattern, valueTerm);
+			IEnumerable<Assignment> equations = AggregateEquations(pattern, valueTerm);
+			
+			if (!Substitution.IsAssignment(equations)) throw new InvalidOperationException();
+			
+			return Substitution.FromEquations(equations);
 		}
 		static IEnumerable<Assignment> AggregateEquations(ValueTerm pattern, ValueTerm term)
 		{

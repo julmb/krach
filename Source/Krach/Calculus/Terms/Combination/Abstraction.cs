@@ -20,6 +20,7 @@ namespace Krach.Calculus.Terms.Combination
 		{
 			if (variables == null) throw new ArgumentNullException("variables");
 			if (term == null) throw new ArgumentNullException("term");
+			if (!variables.IsDistinct()) throw new ArgumentException("The given variables are not distinct.");
 			
 			this.variables = variables.ToArray();
 			this.term = term;
@@ -41,38 +42,27 @@ namespace Krach.Calculus.Terms.Combination
 		public override IEnumerable<Variable> GetFreeVariables()
 		{
 			return term.GetFreeVariables().Except(variables);
-		}
-		public override FunctionTerm RenameVariable(Variable oldVariable, Variable newVariable)
-		{
-			if (variables.Contains(oldVariable)) return this;
-			
-			return new Abstraction(variables, term.RenameVariable(oldVariable, newVariable));
-		}		
+		}	
 		public override FunctionTerm Substitute(Variable variable, ValueTerm substitute) 
 		{
 			if (variables.Contains(variable)) return this;
 			
-			// TODO: this may rename the bound variables in such a way that they collide with each other
-			// TODO: also, think this through once more
-			IEnumerable<Variable> newVariables =
+			IEnumerable<Variable> newVariables = FindUnusedVariables
 			(
-				from boundVariable in variables
-				select boundVariable.FindUnusedVariable
+				variables,
+				Enumerables.Concatenate
 				(
-					Enumerables.Concatenate
-					(
-						GetFreeVariables(), 
-						substitute.GetFreeVariables(), 
-						Enumerables.Create(variable)
-					)
+					GetFreeVariables(),
+					Enumerables.Create(variable),
+					substitute.GetFreeVariables()
 				)
-			)
-			.ToArray();
+			);
+			ValueTerm newTerm = term.Substitute(variables, newVariables);
 			
-			return new Abstraction(newVariables, term.RenameVariables(variables, newVariables).Substitute(variable, substitute)); 
+			return new Abstraction(newVariables, newTerm.Substitute(variable, substitute)); 
 		}
 		
-		public override int GetSize ()
+		public override int GetSize()
 		{
 			return 1 + variables.Sum(variable => variable.GetSize()) + term.GetSize();
 		}

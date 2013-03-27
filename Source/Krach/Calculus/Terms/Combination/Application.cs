@@ -58,14 +58,6 @@ namespace Krach.Calculus.Terms.Combination
 			)
 			.ToArray();
 		}
-		public override ValueTerm RenameVariable(Variable oldVariable, Variable newVariable)
-		{
-			return new Application
-			(
-				function.RenameVariable(oldVariable, newVariable),
-				parameter.RenameVariable(oldVariable, newVariable)
-			);
-		}
 		public override ValueTerm Substitute(Variable variable, ValueTerm substitute)
 		{
 			return new Application
