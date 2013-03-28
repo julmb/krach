@@ -22,12 +22,14 @@ namespace Krach.Calculus.Terms.Rewriting.Rules
 			if (!(term is ValueTerm)) throw new InvalidOperationException();
 			
 			ValueTerm valueTerm = (ValueTerm)(BaseTerm)term;
-			
-			if (valueTerm is Constant) throw new InvalidOperationException();
-			
+
 			if (valueTerm.GetFreeVariables().Any()) throw new InvalidOperationException();
-			
-			return (T)(BaseTerm)Term.Constant(valueTerm.Evaluate());
+
+			ValueTerm result = Term.Constant(valueTerm.Evaluate());
+
+			if (result == valueTerm) throw new InvalidOperationException();
+
+			return (T)(BaseTerm)result;
 		}
 	}
 }

@@ -52,7 +52,7 @@ namespace Krach.Calculus.Terms.Basic
 		}
 		public override IEnumerable<FunctionTerm> GetDerivatives()
 		{			
-			Variable c = new Variable(dimension, "c");
+			Variable c = new Variable(1, "c");
 			Variable x = new Variable(dimension, "x");
 			
 			return Enumerables.Concatenate

@@ -25,7 +25,7 @@ namespace Krach.Calculus.Terms
 		{
 			IEnumerable<ValueTerm> parameters = parameter is Vector ? ((Vector)parameter).Terms : Enumerables.Create(parameter);
 			
-			return parameters.Count() == 2 && parameters.ElementAt(0).Dimension == parameters.ElementAt(1).Dimension;
+			return parameters.Count() == 2;
 		}
 		public override string GetCustomApplicationText(ValueTerm parameter)
 		{

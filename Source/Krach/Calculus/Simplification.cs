@@ -85,9 +85,9 @@ namespace Krach.Calculus
 					new Sorting.ProductAssociative(),
 					
 					// distributivity
-					new FirstOrderRule(Term.Product(x, Term.Sum(y, z)), Term.Sum(Term.Product(x, y), Term.Product(x, z))),
-					new FirstOrderRule(Term.Product(Term.Sum(y, z), x), Term.Sum(Term.Product(y, x), Term.Product(z, x))),
-					new FirstOrderRule(Term.Exponentiate(Term.Product(x, y), z), Term.Product(Term.Exponentiate(x, z), Term.Exponentiate(y, z))),
+//					new FirstOrderRule(Term.Product(x, Term.Sum(y, z)), Term.Sum(Term.Product(x, y), Term.Product(x, z))),
+//					new FirstOrderRule(Term.Product(Term.Sum(y, z), x), Term.Sum(Term.Product(y, x), Term.Product(z, x))),
+//					new FirstOrderRule(Term.Exponentiate(Term.Product(x, y), z), Term.Product(Term.Exponentiate(x, z), Term.Exponentiate(y, z))),
 					
 					// associativity
 					new FirstOrderRule(Term.Sum(x, Term.Sum(y, z)), Term.Sum(Term.Sum(x, y), z)),
@@ -142,19 +142,19 @@ namespace Krach.Calculus
 					(
 						Term.Exponentiate(Term.Exponentiate(x, y), z),
 						Term.Exponentiate(x, Term.Product(y, z))
-					),
+					)
 					
 					// binomial theorem, special case
-					new FirstOrderRule
-					(
-						Term.Exponentiate(Term.Sum(x, y), Term.Constant(2)),
-						Term.Sum
-						(
-							Term.Exponentiate(x, Term.Constant(2)),
-							Term.Product(Term.Constant(2), x, y),
-							Term.Exponentiate(y, Term.Constant(2))
-						)
-					)
+//					new FirstOrderRule
+//					(
+//						Term.Exponentiate(Term.Sum(x, y), Term.Constant(2)),
+//						Term.Sum
+//						(
+//							Term.Exponentiate(x, Term.Constant(2)),
+//							Term.Product(Term.Constant(2), x, y),
+//							Term.Exponentiate(y, Term.Constant(2))
+//						)
+//					)
 				)
 			);
 		}
