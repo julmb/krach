@@ -233,14 +233,14 @@ namespace Krach.Extensions
 		{
 			if (source == null) throw new ArgumentNullException("source");
 
-			if (!source.Any()) yield break;
-
 			IEnumerable<IEnumerator<TSource>> enumerators =
 			(
 				from row in source
 				select row.GetEnumerator()
 			)
 			.ToArray();
+
+            if (!enumerators.Any()) yield break;
 
 			while (enumerators.All(enumerator => enumerator.MoveNext()))
 				yield return
