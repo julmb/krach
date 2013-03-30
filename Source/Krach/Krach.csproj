@@ -10,7 +10,6 @@
     <RootNamespace>Krach</RootNamespace>
     <AssemblyName>Krach</AssemblyName>
     <ProductVersion>10.0.0</ProductVersion>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -126,43 +125,60 @@
     <Compile Include="Extensions\Paths.cs" />
     <Compile Include="Basics\OrderedRange.cs" />
     <Compile Include="Extensions\Marshaling.cs" />
-    <Compile Include="Calculus\Terms\Term.cs" />
     <Compile Include="Calculus\Terms\FunctionTerm.cs" />
     <Compile Include="Calculus\Terms\ValueTerm.cs" />
     <Compile Include="Calculus\Terms\VariableTerm.cs" />
-    <Compile Include="Calculus\Terms\Combination\Abstraction.cs" />
-    <Compile Include="Calculus\Terms\Combination\Application.cs" />
-    <Compile Include="Calculus\Terms\Combination\Variable.cs" />
     <Compile Include="Calculus\Terms\BaseTerm.cs" />
-    <Compile Include="Calculus\Terms\Combination\Vector.cs" />
-    <Compile Include="Calculus\Terms\Combination\Selection.cs" />
-    <Compile Include="Calculus\Terms\Rewriting\Rewriter.cs" />
-    <Compile Include="Calculus\Terms\Rewriting\Rule.cs" />
-    <Compile Include="Calculus\Terms\Rewriting\Rules\BetaReduction.cs" />
-    <Compile Include="Calculus\Terms\Rewriting\Rules\EtaContraction.cs" />
-    <Compile Include="Calculus\Terms\Rewriting\Rules\ProductExpansion.cs" />
-    <Compile Include="Calculus\Terms\Rewriting\Rules\ScalingExpansion.cs" />
-    <Compile Include="Calculus\Terms\Rewriting\Rules\SumExpansion.cs" />
-    <Compile Include="Calculus\Terms\Rewriting\Rules\VectorRules.cs" />
-    <Compile Include="Calculus\Terms\Rewriting\Rules\FirstOrder\Assignment.cs" />
-    <Compile Include="Calculus\Terms\Rewriting\Rules\FirstOrder\FirstOrderRule.cs" />
-    <Compile Include="Calculus\Terms\Rewriting\Rules\FirstOrder\Substitution.cs" />
-    <Compile Include="Calculus\Terms\Basic\Constant.cs" />
-    <Compile Include="Calculus\Terms\Basic\Exponentiation.cs" />
-    <Compile Include="Calculus\Terms\Basic\Product.cs" />
-    <Compile Include="Calculus\Terms\Basic\Scaling.cs" />
-    <Compile Include="Calculus\Terms\Basic\Sum.cs" />
-    <Compile Include="Calculus\Terms\BinaryOperator.cs" />
     <Compile Include="Calculus\IFunction.cs" />
     <Compile Include="Calculus\IValue.cs" />
-    <Compile Include="Calculus\Terms\BasicFunctionTerm.cs" />
-    <Compile Include="Calculus\Terms\BasicValueTerm.cs" />
     <Compile Include="Calculus\ExplicitFunction.cs" />
     <Compile Include="Calculus\ExplicitValue.cs" />
-    <Compile Include="Calculus\Simplification.cs" />
-    <Compile Include="Calculus\Terms\Rewriting\Rules\Evaluation.cs" />
-    <Compile Include="Calculus\Terms\Rewriting\Rules\Sorting.cs" />
-    <Compile Include="Calculus\Terms\Basic\Logarithm.cs" />
+    <Compile Include="Calculus\Terms\Basic\BasicFunctionTerm.cs" />
+    <Compile Include="Calculus\Terms\Basic\BasicValueTerm.cs" />
+    <Compile Include="Calculus\Terms\Basic\Definitions\FunctionDefinition.cs" />
+    <Compile Include="Calculus\Terms\Basic\Definitions\ValueDefinition.cs" />
+    <Compile Include="Calculus\Terms\Composite\Abstraction.cs" />
+    <Compile Include="Calculus\Terms\Composite\Application.cs" />
+    <Compile Include="Calculus\Terms\Composite\Variable.cs" />
+    <Compile Include="Calculus\Terms\Composite\Vector.cs" />
+    <Compile Include="Calculus\Terms\Composite\Selection.cs" />
+    <Compile Include="Calculus\Terms\Basic\Atoms\Constant.cs" />
+    <Compile Include="Calculus\Terms\Basic\Atoms\Exponentiation.cs" />
+    <Compile Include="Calculus\Terms\Basic\Atoms\Logarithm.cs" />
+    <Compile Include="Calculus\Terms\Basic\Atoms\Sum.cs" />
+    <Compile Include="Calculus\Terms\Basic\Atoms\Product.cs" />
+    <Compile Include="Calculus\Rules\Rule.cs" />
+    <Compile Include="Calculus\Rules\Definitions\ExpandFunctionDefinition.cs" />
+    <Compile Include="Calculus\Rules\Definitions\ExpandValueDefinition.cs" />
+    <Compile Include="Calculus\Term.cs" />
+    <Compile Include="Calculus\Rewriting.cs" />
+    <Compile Include="Calculus\Rules\Composite\Any.cs" />
+    <Compile Include="Calculus\Rules\Composite\Anywhere.cs" />
+    <Compile Include="Calculus\Rules\Composite\Repeat.cs" />
+    <Compile Include="Calculus\Rules\FirstOrder\Assignment.cs" />
+    <Compile Include="Calculus\Rules\FirstOrder\FirstOrderRule.cs" />
+    <Compile Include="Calculus\Rules\FirstOrder\Substitution.cs" />
+    <Compile Include="Calculus\Rules\LambdaCalculus\BetaReduction.cs" />
+    <Compile Include="Calculus\Rules\LambdaCalculus\EtaContraction.cs" />
+    <Compile Include="Calculus\Rules\Vectors\SelectVector.cs" />
+    <Compile Include="Calculus\Rules\Vectors\SingletonVector.cs" />
+    <Compile Include="Calculus\Rules\Vectors\FlattenVector.cs" />
+    <Compile Include="Calculus\Rules\Vectors\SelectSingle.cs" />
+    <Compile Include="Calculus\Rules\Simplification\Evaluation.cs" />
+    <Compile Include="Calculus\Rules\Simplification\Sorting.cs" />
+    <Compile Include="Calculus\Terms\Notation\Syntax.cs" />
+    <Compile Include="Calculus\Terms\Notation\ValueSyntax.cs" />
+    <Compile Include="Calculus\Terms\Notation\FunctionSyntax.cs" />
+    <Compile Include="Calculus\Terms\Notation\Composite\AbstractionSyntax.cs" />
+    <Compile Include="Calculus\Terms\Notation\Composite\VariableSyntax.cs" />
+    <Compile Include="Calculus\Terms\Notation\Composite\ApplicationSyntax.cs" />
+    <Compile Include="Calculus\Terms\Notation\Composite\VectorSyntax.cs" />
+    <Compile Include="Calculus\Terms\Notation\Composite\SelectionSyntax.cs" />
+    <Compile Include="Calculus\Terms\Notation\Basic\BasicFunctionSyntax.cs" />
+    <Compile Include="Calculus\Terms\Notation\Basic\BasicValueSyntax.cs" />
+    <Compile Include="Calculus\Terms\Notation\Basic\BinaryOperatorSyntax.cs" />
+    <Compile Include="Calculus\Terms\Notation\Basic\ExponentiationSyntax.cs" />
+    <Compile Include="Calculus\Terms\Notation\Basic\NormSyntax.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

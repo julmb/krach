@@ -1,0 +1,46 @@
+using System;
+using System.Linq;
+using Krach.Calculus.Terms;
+using System.Collections.Generic;
+using Krach.Extensions;
+using Krach.Calculus.Terms.Composite;
+
+namespace Krach.Calculus.Rules.LambdaCalculus
+{
+	public class EtaContraction : Rule
+	{
+		public override bool Matches<T>(T term)
+		{
+			if (!(term is Abstraction)) return false;
+			
+			Abstraction abstraction = (Abstraction)(BaseTerm)term;
+			
+			if (!(abstraction.Term is Application)) return false;
+
+			Application application = (Application)abstraction.Term;
+
+			IEnumerable<ValueTerm> parameters = application.Parameter is Vector ? ((Vector)application.Parameter).Terms : Enumerables.Create(application.Parameter);
+
+			if (!Enumerable.SequenceEqual(abstraction.Variables, parameters)) return false;
+
+			return true;
+		}
+		public override T Rewrite<T>(T term)
+		{
+			if (!(term is Abstraction)) throw new InvalidOperationException();
+			
+			Abstraction abstraction = (Abstraction)(BaseTerm)term;
+			
+			if (!(abstraction.Term is Application)) throw new InvalidOperationException();
+
+			Application application = (Application)abstraction.Term;
+
+			IEnumerable<ValueTerm> parameters = application.Parameter is Vector ? ((Vector)application.Parameter).Terms : Enumerables.Create(application.Parameter);
+
+			if (!Enumerable.SequenceEqual(abstraction.Variables, parameters)) throw new InvalidOperationException();
+
+			return (T)(BaseTerm)application.Function;
+		}
+	}
+}
+

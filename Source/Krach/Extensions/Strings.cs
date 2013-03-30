@@ -58,7 +58,7 @@ namespace Krach.Extensions
 		}
 		public static bool IsSubSuperScriptCompatible(this string text)
 		{
-			IEnumerable<char> allowedCharacters = Enumerables.Create('-', '0' ,'1' ,'2', '3', '4', '5', '6', '7', '8', '9');
+			IEnumerable<char> allowedCharacters = Enumerables.Create(' ', '0' ,'1' ,'2', '3', '4', '5', '6', '7', '8', '9', '+', '-', '=', '(', ')');
 				
 			return !text.Except(allowedCharacters).Any();
 		}
@@ -70,7 +70,7 @@ namespace Krach.Extensions
 			{
 				switch (character) 
 				{
-					case '-': result += '\u208B'; break;
+					case ' ': result += ' '; break;
 					case '0': result += '\u2080'; break;
 					case '1': result += '\u2081'; break;
 					case '2': result += '\u2082'; break;
@@ -81,6 +81,11 @@ namespace Krach.Extensions
 					case '7': result += '\u2087'; break;
 					case '8': result += '\u2088'; break;
 					case '9': result += '\u2089'; break;
+					case '+': result += '\u208A'; break;
+					case '-': result += '\u208B'; break;
+					case '=': result += '\u208C'; break;
+					case '(': result += '\u208D'; break;
+					case ')': result += '\u208E'; break;
 					default: throw new InvalidOperationException();
 				}
 			}
@@ -95,7 +100,7 @@ namespace Krach.Extensions
 			{
 				switch (character) 
 				{
-					case '-': result += '\u207B'; break;
+					case ' ': result += ' '; break;
 					case '0': result += '\u2070'; break;
 					case '1': result += '\u00B9'; break;
 					case '2': result += '\u00B2'; break;
@@ -106,6 +111,11 @@ namespace Krach.Extensions
 					case '7': result += '\u2077'; break;
 					case '8': result += '\u2078'; break;
 					case '9': result += '\u2079'; break;
+					case '+': result += '\u207A'; break;
+					case '-': result += '\u207B'; break;
+					case '=': result += '\u207C'; break;
+					case '(': result += '\u207D'; break;
+					case ')': result += '\u207E'; break;
 					default: throw new InvalidOperationException();
 				}
 			}

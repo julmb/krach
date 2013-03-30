@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
+using Krach.Calculus.Terms.Notation;
 
 namespace Krach.Calculus.Terms
 {
 	public abstract class FunctionTerm : VariableTerm<FunctionTerm>, IFunction, IEquatable<FunctionTerm>
 	{
+		public override Syntax Syntax { get { return FunctionSyntax; } }
+		public abstract FunctionSyntax FunctionSyntax { get; }
 		public abstract int DomainDimension { get; }
 		public abstract int CodomainDimension { get; }
 		
@@ -20,9 +23,7 @@ namespace Krach.Calculus.Terms
 		{
 			return object.Equals(this, other);
 		}
-		
-		public abstract bool HasCustomApplicationText(ValueTerm parameter);
-		public abstract string GetCustomApplicationText(ValueTerm parameter);
+
 		public abstract IEnumerable<double> Evaluate(IEnumerable<double> parameters);
 		public abstract IEnumerable<FunctionTerm> GetDerivatives();
 

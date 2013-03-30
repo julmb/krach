@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
-using Krach.Calculus.Terms.Combination;
+using Krach.Calculus.Terms.Composite;
+using Krach.Calculus.Terms.Notation;
 
 namespace Krach.Calculus.Terms
 {
 	public abstract class ValueTerm : VariableTerm<ValueTerm>, IValue, IEquatable<ValueTerm>
 	{
+		public override Syntax Syntax { get { return ValueSyntax; } }
+		public abstract ValueSyntax ValueSyntax { get; }
 		public abstract int Dimension { get; }
 		
 		public override bool Equals(object obj)
