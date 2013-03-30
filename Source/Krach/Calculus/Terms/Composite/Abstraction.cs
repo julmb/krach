@@ -63,11 +63,6 @@ namespace Krach.Calculus.Terms.Composite
 			
 			return new Abstraction(newVariables, newTerm.Substitute(variable, substitute)); 
 		}
-		
-		public override int GetSize()
-		{
-			return 1 + variables.Sum(variable => variable.GetSize()) + term.GetSize();
-		}
 
 		public override IEnumerable<double> Evaluate(IEnumerable<double> values)
 		{

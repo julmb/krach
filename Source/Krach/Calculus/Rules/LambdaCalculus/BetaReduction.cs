@@ -9,23 +9,17 @@ namespace Krach.Calculus.Rules.LambdaCalculus
 {
 	public class BetaReduction : Rule
 	{
-		public override bool Matches<T>(T term)
+		public override string ToString()
 		{
-			if (!(term is Application)) return false;
-			
-			Application application = (Application)(BaseTerm)term;
-			
-			if (!(application.Function is Abstraction)) return false;
-
-			return true;
+			return "β";
 		}
 		public override T Rewrite<T>(T term)
 		{
-			if (!(term is Application)) throw new InvalidOperationException();
+			if (!(term is Application)) return null;
 			
 			Application application = (Application)(BaseTerm)term;
 			
-			if (!(application.Function is Abstraction)) throw new InvalidOperationException();
+			if (!(application.Function is Abstraction)) return null;
 
 			Abstraction abstraction = (Abstraction)application.Function;
 			

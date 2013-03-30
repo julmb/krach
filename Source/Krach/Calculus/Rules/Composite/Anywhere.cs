@@ -13,6 +13,8 @@ namespace Krach.Calculus.Rules.Composite
 	{
 		readonly Rule rule;
 
+		public Rule Rule { get { return rule; } }
+
 		public Anywhere(Rule rule)
 		{
 			if (rule == null) throw new ArgumentException("rule");
@@ -20,99 +22,56 @@ namespace Krach.Calculus.Rules.Composite
 			this.rule = rule;
 		}
 
-		public override bool Matches<T>(T term)
+		public override string ToString()
 		{
-			if (rule.Matches(term)) return true;
-			
-			if (term is BasicValueTerm) return false;
-			if (term is BasicFunctionTerm) return false;
-			if (term is Variable) return false;
-			if (term is Abstraction)
-			{
-				Abstraction abstraction = (Abstraction)(BaseTerm)term;
-				
-				if (Matches(abstraction.Term)) return true;
-				
-				return false;
-			}
-			if (term is Application)
-			{
-				Application application = (Application)(BaseTerm)term;
-				
-				if (Matches(application.Function)) return true;
-				if (Matches(application.Parameter)) return true;
-				
-				return false;
-			}
-			if (term is Vector)
-			{
-				Vector vector = (Vector)(BaseTerm)term;
-				
-				if (vector.Terms.Any(Matches)) return true;
-				
-				return false;
-			}
-			if (term is Selection)
-			{
-				Selection selection = (Selection)(BaseTerm)term;
-				
-				if (Matches(selection.Term)) return true;
-				
-				return false;
-			}
-			
-			throw new InvalidOperationException();
+			return string.Format("<{0}>", rule);
 		}
 		public override T Rewrite<T>(T term)
 		{
-			if (rule.Matches(term))
-			{
-//				Terminal.Write(term.GetText(), ConsoleColor.Blue);
-//				Terminal.WriteLine();
-
-				return rule.Rewrite(term);
-			}
+			T rewrittenTerm = rule.Rewrite(term);
+			if (rewrittenTerm != null) return rewrittenTerm;
 			
-			if (term is BasicValueTerm) throw new InvalidOperationException();
-			if (term is BasicFunctionTerm) throw new InvalidOperationException();
-			if (term is Variable) throw new InvalidOperationException();
+			if (term is BasicValueTerm) return null;
+			if (term is BasicFunctionTerm) return null;
+			if (term is Variable) return null;
 			if (term is Abstraction)
 			{
 				Abstraction abstraction = (Abstraction)(BaseTerm)term;
+
+				ValueTerm rewrittenAbstractionTerm = Rewrite(abstraction.Term);
+				if (rewrittenAbstractionTerm != null) return (T)(BaseTerm)new Abstraction(abstraction.Variables, rewrittenAbstractionTerm);
 				
-				if (Matches(abstraction.Term))
-					return (T)(BaseTerm)new Abstraction(abstraction.Variables, Rewrite(abstraction.Term));
-				
-				throw new InvalidOperationException();
+				return null;
 			}
 			if (term is Application)
 			{
 				Application application = (Application)(BaseTerm)term;
+
+				FunctionTerm rewrittenApplicationFunction = Rewrite(application.Function);
+				if (rewrittenApplicationFunction != null) return (T)(BaseTerm)new Application(rewrittenApplicationFunction, application.Parameter);
 				
-				if (Matches(application.Function))
-					return (T)(BaseTerm)new Application(Rewrite(application.Function), application.Parameter);
-				if (Matches(application.Parameter))
-					return (T)(BaseTerm)new Application(application.Function, Rewrite(application.Parameter));
-				
-				throw new InvalidOperationException();
+				ValueTerm rewrittenApplicationParameter = Rewrite(application.Parameter);
+				if (rewrittenApplicationParameter != null) return (T)(BaseTerm)new Application(application.Function, rewrittenApplicationParameter);
+
+				return null;
 			}
 			if (term is Vector)
 			{
 				Vector vector = (Vector)(BaseTerm)term;
-				
-				if (vector.Terms.Any(Matches))
-					return (T)(BaseTerm)new Vector(RewriteOne(vector.Terms));
-				
-				throw new InvalidOperationException();
+
+				IEnumerable<ValueTerm> rewrittenVectorTerms = RewriteOne(vector.Terms);
+				if (rewrittenVectorTerms != null) return (T)(BaseTerm)new Vector(rewrittenVectorTerms);
+
+				return null;
 			}
 			if (term is Selection)
 			{
 				Selection selection = (Selection)(BaseTerm)term;
-				
-				if (Matches(selection.Term))
-					return (T)(BaseTerm)new Selection(Rewrite(selection.Term), selection.Index);
-				
-				throw new InvalidOperationException();
+
+				ValueTerm rewrittenSelectionTerm = Rewrite(selection.Term);
+				if (rewrittenSelectionTerm != null) return (T)(BaseTerm)new Selection(rewrittenSelectionTerm, selection.Index);
+
+				return null;
 			}
 			
 			throw new InvalidOperationException();
@@ -120,20 +79,30 @@ namespace Krach.Calculus.Rules.Composite
 
 		IEnumerable<T> RewriteOne<T>(IEnumerable<T> terms) where T : VariableTerm<T>
 		{
-			bool continueRewriting = true;
+			List<T> result = new List<T>();
+
+			bool matched = false;
 			
 			foreach (T term in terms) 
 			{
-				if (continueRewriting && Matches(term))
+				if (matched) result.Add(term);
+				else
 				{
-					continueRewriting = false;
-					
-					yield return Rewrite(term);
+					T rewrittenTerm = Rewrite(term);
+
+					if (rewrittenTerm != null)
+					{
+						matched = true;
+						
+						result.Add(rewrittenTerm);
+					}
+					else result.Add(term);
 				}
-				else yield return term;
 			}
-			
-			if (continueRewriting) throw new InvalidOperationException();
+
+			if (!matched) return null;
+
+			return result;
 		}
 	}
 }

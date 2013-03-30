@@ -12,35 +12,23 @@ namespace Krach.Calculus.Rules.Simplification
 {
 	public class Evaluation : Rule
 	{
-		public override bool Matches<T>(T term)
+		public override string ToString()
 		{
-			if (!(term is ValueTerm)) return false;
-			
-			ValueTerm valueTerm = (ValueTerm)(BaseTerm)term;
-
-			if (valueTerm.GetFreeVariables().Any()) return false;
-
-			IEnumerable<double> values = Rewriting.Expansion.Rewrite(valueTerm).Evaluate();
-
-			ValueTerm result = values.Count() == 1 ? (ValueTerm)new Constant(values.Single()) : (ValueTerm)new Vector(values.Select(value => new Constant(value)));
-
-			if (result == valueTerm) return false;
-
-			return true;
+			return "evaluation";
 		}
 		public override T Rewrite<T>(T term)
 		{
-			if (!(term is ValueTerm)) throw new InvalidOperationException();
+			if (!(term is ValueTerm)) return null;
 			
 			ValueTerm valueTerm = (ValueTerm)(BaseTerm)term;
 
-			if (valueTerm.GetFreeVariables().Any()) throw new InvalidOperationException();
+			if (valueTerm.GetFreeVariables().Any()) return null;
 
 			IEnumerable<double> values = Rewriting.Expansion.Rewrite(valueTerm).Evaluate();
 
 			ValueTerm result = values.Count() == 1 ? (ValueTerm)new Constant(values.Single()) : (ValueTerm)new Vector(values.Select(value => new Constant(value)));
 
-			if (result == valueTerm) throw new InvalidOperationException();
+			if (result == valueTerm) return null;
 
 			return (T)(BaseTerm)result;
 		}

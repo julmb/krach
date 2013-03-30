@@ -12,6 +12,7 @@ using Krach.Calculus.Rules.Simplification;
 using Krach.Calculus.Terms;
 using Krach.Calculus.Terms.Composite;
 using Krach.Calculus.Terms.Basic.Atoms;
+using System.Diagnostics;
 
 namespace Krach.Calculus
 {
@@ -105,10 +106,55 @@ namespace Krach.Calculus
 			if (term == null) throw new ArgumentNullException("valueTerm");
 			if (rule == null) throw new ArgumentNullException("rule");
 
+			if (rule is Repeat)
+			{
+				rule = ((Repeat)rule).Rule;
+			}
+
+			Stopwatch stopwatch = new Stopwatch();
+			double longestTime = 0;
+			T longestTimeTerm = null;
+
 			Terminal.Write(term.ToString(), ConsoleColor.Red);
 			Terminal.WriteLine();
 
-			term = rule.Rewrite(term);
+			int rewriteCount = 0;
+
+			while (true)
+			{
+				stopwatch.Restart();
+				T rewrittenTerm = rule.Rewrite(term);
+				stopwatch.Stop();
+				
+				if (rewrittenTerm == null) break;
+
+				if (stopwatch.Elapsed.TotalSeconds > longestTime)
+				{
+					longestTime = stopwatch.Elapsed.TotalSeconds;
+					longestTimeTerm = term;
+				}
+
+				term = rewrittenTerm;
+				rewriteCount++;
+
+//				Terminal.Write(term.ToString(), ConsoleColor.Yellow);
+//				Terminal.WriteLine();
+			}
+
+			if (longestTimeTerm != null)
+			{
+				Terminal.Write(longestTime.ToString(), ConsoleColor.Cyan);
+				Terminal.WriteLine();
+
+				Terminal.Write(longestTimeTerm.ToString(), ConsoleColor.Cyan);
+				Terminal.WriteLine();
+
+				Terminal.Write(rule.Rewrite(longestTimeTerm).ToString(), ConsoleColor.Cyan);
+				Terminal.WriteLine();
+			}
+
+			Terminal.Write(rewriteCount.ToString(), ConsoleColor.Yellow);
+			Terminal.WriteLine();
 
 			Terminal.Write(term.ToString(), ConsoleColor.Green);
 			Terminal.WriteLine();

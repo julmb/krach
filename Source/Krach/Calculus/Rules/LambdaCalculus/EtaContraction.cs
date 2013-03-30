@@ -9,35 +9,23 @@ namespace Krach.Calculus.Rules.LambdaCalculus
 {
 	public class EtaContraction : Rule
 	{
-		public override bool Matches<T>(T term)
+		public override string ToString()
 		{
-			if (!(term is Abstraction)) return false;
-			
-			Abstraction abstraction = (Abstraction)(BaseTerm)term;
-			
-			if (!(abstraction.Term is Application)) return false;
-
-			Application application = (Application)abstraction.Term;
-
-			IEnumerable<ValueTerm> parameters = application.Parameter is Vector ? ((Vector)application.Parameter).Terms : Enumerables.Create(application.Parameter);
-
-			if (!Enumerable.SequenceEqual(abstraction.Variables, parameters)) return false;
-
-			return true;
+			return "η";
 		}
 		public override T Rewrite<T>(T term)
 		{
-			if (!(term is Abstraction)) throw new InvalidOperationException();
+			if (!(term is Abstraction)) return null;
 			
 			Abstraction abstraction = (Abstraction)(BaseTerm)term;
 			
-			if (!(abstraction.Term is Application)) throw new InvalidOperationException();
+			if (!(abstraction.Term is Application)) return null;
 
 			Application application = (Application)abstraction.Term;
 
 			IEnumerable<ValueTerm> parameters = application.Parameter is Vector ? ((Vector)application.Parameter).Terms : Enumerables.Create(application.Parameter);
 
-			if (!Enumerable.SequenceEqual(abstraction.Variables, parameters)) throw new InvalidOperationException();
+			if (!Enumerable.SequenceEqual(abstraction.Variables, parameters)) return null;
 
 			return (T)(BaseTerm)application.Function;
 		}

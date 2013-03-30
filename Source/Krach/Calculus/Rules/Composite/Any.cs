@@ -12,6 +12,8 @@ namespace Krach.Calculus.Rules.Composite
 	{
 		readonly IEnumerable<Rule> rules;
 
+		public IEnumerable<Rule> Rules { get { return rules; } }
+
 		public Any(IEnumerable<Rule> rules)
 		{
 			if (rules == null) throw new ArgumentException("rules");
@@ -20,18 +22,20 @@ namespace Krach.Calculus.Rules.Composite
 		}
 		public Any(params Rule[] rules) : this((IEnumerable<Rule>)rules) { }
 
-		public override bool Matches<T>(T term)
+		public override string ToString()
 		{
-			return rules.Any(rule => rule.Matches(term));
+			return string.Format("({0})", rules.ToStrings().Separate("|").AggregateString());
 		}
 		public override T Rewrite<T>(T term)
 		{
-			Rule matchingRule = rules.First(rule => rule.Matches(term));
+			foreach (Rule rule in rules)
+			{
+				T rewrittenTerm = rule.Rewrite(term);
 
-//			Terminal.Write(string.Format("{0}: {1}", matchingRule.GetType().Name, term.GetText()), ConsoleColor.Cyan);
-//			Terminal.WriteLine();
+				if (rewrittenTerm != null) return rewrittenTerm;
+			}
 
-			return matchingRule.Rewrite(term);
+			return null;
 		}
 	}
 }

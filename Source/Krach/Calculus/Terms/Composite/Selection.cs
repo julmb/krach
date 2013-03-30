@@ -46,11 +46,6 @@ namespace Krach.Calculus.Terms.Composite
 		{
 			return new Selection(term.Substitute(variable, substitute), index);
 		}
-		
-		public override int GetSize()
-		{
-			return 1 + term.GetSize();
-		}
 
 		public override IEnumerable<double> Evaluate()
 		{

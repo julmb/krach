@@ -41,8 +41,7 @@ namespace Krach.Calculus.Terms.Composite
 				from term in terms
 				from variable in term.GetFreeVariables()
 				select variable
-			)
-			.ToArray();
+			);
 		}
 		public override ValueTerm Substitute(Variable variable, ValueTerm substitute)
 		{
@@ -51,11 +50,6 @@ namespace Krach.Calculus.Terms.Composite
 				from term in terms
 				select term.Substitute(variable, substitute)
 			);
-		}
-		
-		public override int GetSize()
-		{
-			return 1 + terms.Sum(term => term.GetSize());
 		}
 
 		public override IEnumerable<double> Evaluate()

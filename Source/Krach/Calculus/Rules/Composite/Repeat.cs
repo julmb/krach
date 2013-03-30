@@ -13,6 +13,8 @@ namespace Krach.Calculus.Rules.Composite
 	{
 		readonly Rule rule;
 
+		public Rule Rule { get { return rule; } }
+
 		public Repeat(Rule rule)
 		{
 			if (rule == null) throw new ArgumentException("rule");
@@ -20,21 +22,20 @@ namespace Krach.Calculus.Rules.Composite
 			this.rule = rule;
 		}
 
-		public override bool Matches<T>(T term)
+		public override string ToString()
 		{
-			return true;
+			return string.Format("{0}*", rule);
 		}
 		public override T Rewrite<T>(T term)
 		{
-			while (rule.Matches(term))
+			while (true)
 			{
-//				Terminal.Write(term.ToString(), ConsoleColor.Yellow);
-//				Terminal.WriteLine();
+				T rewrittenTerm = rule.Rewrite(term);
 
-				term = rule.Rewrite(term);
+				if (rewrittenTerm == null) return term;
+
+				term = rewrittenTerm;
 			}
-
-			return term;
 		}
 	}
 }

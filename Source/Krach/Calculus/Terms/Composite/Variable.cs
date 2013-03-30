@@ -46,11 +46,6 @@ namespace Krach.Calculus.Terms.Composite
 		{
 			return variable == this ? term : this;
 		}
-		
-		public override int GetSize()
-		{
-			return 1;
-		}
 
 		public override IEnumerable<double> Evaluate()
 		{

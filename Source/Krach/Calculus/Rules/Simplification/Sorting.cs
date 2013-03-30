@@ -14,123 +14,73 @@ namespace Krach.Calculus.Rules.Simplification
 	{
 		public class ProductSimple : Rule
 		{
-			public override bool Matches<T>(T term)
+			public override string ToString()
 			{
-				if (!(term is Application)) return false;
-
-				Application application = (Application)(BaseTerm)term;
-
-				if (!(application.Function is Product)) return false;
-
-				if (!(application.Parameter is Vector)) return false;
-
-				Vector vector = (Vector)application.Parameter;
-
-				if (vector.Terms.Count() != 2) return false;
-
-				ValueTerm parameter0 = vector.Terms.ElementAt(0);
-				ValueTerm parameter1 = vector.Terms.ElementAt(1);
-
-				if (!ShouldSwap(parameter0, parameter1)) return false;
-
-				return true;
+				return "sorting.productsimple";
 			}
 			public override T Rewrite<T>(T term)
 			{
-				if (!(term is Application)) throw new InvalidOperationException();
+				if (!(term is Application)) return null;
 
 				Application application = (Application)(BaseTerm)term;
 
-				if (!(application.Function is Product)) throw new InvalidOperationException();
+				if (!(application.Function is Product)) return null;
 
-				if (!(application.Parameter is Vector)) throw new InvalidOperationException();
+				if (!(application.Parameter is Vector)) return null;
 
 				Vector vector = (Vector)application.Parameter;
 
-				if (vector.Terms.Count() != 2) throw new InvalidOperationException();
+				if (vector.Terms.Count() != 2) return null;
 
 				ValueTerm parameter0 = vector.Terms.ElementAt(0);
 				ValueTerm parameter1 = vector.Terms.ElementAt(1);
 
-				if (!ShouldSwap(parameter0, parameter1)) throw new InvalidOperationException();
+				if (!ShouldSwap(parameter0, parameter1)) return null;
 
 				return (T)(BaseTerm)Term.Product(parameter1, parameter0);
 			}
 		}
 		public class ProductAssociative : Rule
 		{
-			public override bool Matches<T>(T term)
+			public override string ToString()
 			{
-				if (!(term is Application)) return false;
-
-				Application application0 = (Application)(BaseTerm)term;
-
-				if (!(application0.Function is Product)) return false;
-
-				if (!(application0.Parameter is Vector)) return false;
-
-				Vector vector0 = (Vector)application0.Parameter;
-
-				if (vector0.Terms.Count() != 2) return false;
-
-				ValueTerm parameter00 = vector0.Terms.ElementAt(0);
-				ValueTerm parameter01 = vector0.Terms.ElementAt(1);
-
-				if (!(parameter00 is Application)) return false;
-
-				Application application00 = (Application)parameter00;
-
-				if (!(application00.Function is Product)) return false;
-
-				if (!(application00.Parameter is Vector)) return false;
-
-				Vector vector00 = (Vector)application00.Parameter;
-
-				if (vector00.Terms.Count() != 2) return false;
-
-				ValueTerm parameter001 = vector00.Terms.ElementAt(1);
-
-				// ((parameter000 . parameter001) . parameter01)
-
-				if (!ShouldSwap(parameter001, parameter01)) return false;
-
-				return true;
+				return "sorting.productassociative";
 			}
 			public override T Rewrite<T>(T term)
 			{
-				if (!(term is Application)) throw new InvalidOperationException();
+				if (!(term is Application)) return null;
 
 				Application application0 = (Application)(BaseTerm)term;
 
-				if (!(application0.Function is Product)) throw new InvalidOperationException();
+				if (!(application0.Function is Product)) return null;
 
-				if (!(application0.Parameter is Vector)) throw new InvalidOperationException();
+				if (!(application0.Parameter is Vector)) return null;
 
 				Vector vector0 = (Vector)application0.Parameter;
 
-				if (vector0.Terms.Count() != 2) throw new InvalidOperationException();
+				if (vector0.Terms.Count() != 2) return null;
 
 				ValueTerm parameter00 = vector0.Terms.ElementAt(0);
 				ValueTerm parameter01 = vector0.Terms.ElementAt(1);
 
-				if (!(parameter00 is Application)) throw new InvalidOperationException();
+				if (!(parameter00 is Application)) return null;
 
 				Application application00 = (Application)parameter00;
 
-				if (!(application00.Function is Product)) throw new InvalidOperationException();
+				if (!(application00.Function is Product)) return null;
 
-				if (!(application00.Parameter is Vector)) throw new InvalidOperationException();
+				if (!(application00.Parameter is Vector)) return null;
 
 				Vector vector00 = (Vector)application00.Parameter;
 
-				if (vector00.Terms.Count() != 2) throw new InvalidOperationException();
+				if (vector00.Terms.Count() != 2) return null;
 
 				ValueTerm parameter000 = vector00.Terms.ElementAt(0);
 				ValueTerm parameter001 = vector00.Terms.ElementAt(1);
 
 				// ((parameter000 . parameter001) . parameter01)
 
-				if (!ShouldSwap(parameter001, parameter01)) throw new InvalidOperationException();
+				if (!ShouldSwap(parameter001, parameter01)) return null;
 
 				return (T)(BaseTerm)Term.Product(Term.Product(parameter000, parameter01), parameter001);
 			}

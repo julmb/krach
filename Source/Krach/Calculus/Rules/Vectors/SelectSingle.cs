@@ -11,23 +11,17 @@ namespace Krach.Calculus.Rules.Vectors
 {
 	public class SelectSingle : Rule
 	{
-		public override bool Matches<T>(T term)
+		public override string ToString()
 		{
-			if (!(term is Selection)) return false;
-
-			Selection selection = (Selection)(BaseTerm)term;
-			
-			if (selection.Term.Dimension != 1 || selection.Index != 0) return false;
-			
-			return true;
+			return "select_single";
 		}
 		public override T Rewrite<T>(T term)
 		{
-			if (!(term is Selection)) throw new InvalidOperationException();
+			if (!(term is Selection)) return null;
 
 			Selection selection = (Selection)(BaseTerm)term;
 			
-			if (selection.Term.Dimension != 1 || selection.Index != 0) throw new InvalidOperationException();
+			if (selection.Term.Dimension != 1 || selection.Index != 0) return null;
 			
 			return (T)(BaseTerm)selection.Term;
 		}

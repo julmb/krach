@@ -26,8 +26,6 @@ namespace Krach.Calculus.Terms
 		{
 			return object.Equals(this, other);
 		}
-
-		public abstract int GetSize();
 		
 		public static bool operator ==(BaseTerm term1, BaseTerm term2)
 		{

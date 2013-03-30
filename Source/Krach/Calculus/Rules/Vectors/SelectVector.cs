@@ -11,23 +11,17 @@ namespace Krach.Calculus.Rules.Vectors
 {
 	public class SelectVector : Rule
 	{
-		public override bool Matches<T>(T term)
+		public override string ToString()
 		{
-			if (!(term is Selection)) return false;
-
-			Selection selection = (Selection)(BaseTerm)term;
-			
-			if (!(selection.Term is Vector)) return false;
-
-			return true;
+			return "select_vector";
 		}
 		public override T Rewrite<T>(T term)
 		{
-			if (!(term is Selection)) throw new InvalidOperationException();
+			if (!(term is Selection)) return null;
 
 			Selection selection = (Selection)(BaseTerm)term;
 			
-			if (!(selection.Term is Vector)) throw new InvalidOperationException();
+			if (!(selection.Term is Vector)) return null;
 
 			Vector vector = (Vector)selection.Term;
 

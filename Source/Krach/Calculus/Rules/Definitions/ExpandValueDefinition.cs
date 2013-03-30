@@ -10,12 +10,14 @@ namespace Krach.Calculus.Rules.Definitions
 {
 	public class ExpandValueDefinition : Rule
 	{
-		public override bool Matches<T>(T term)
+		public override string ToString()
 		{
-			return term is ValueDefinition;
+			return "expand_value_definition";
 		}
 		public override T Rewrite<T>(T term)
 		{
+			if (!(term is ValueDefinition)) return null;
+
 			return (T)(BaseTerm)((ValueDefinition)(BaseTerm)term).Value;
 		}
 	}

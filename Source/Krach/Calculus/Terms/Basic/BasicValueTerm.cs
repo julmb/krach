@@ -20,11 +20,6 @@ namespace Krach.Calculus.Terms.Basic
 			return object.Equals(this, other);
 		}
 		
-		public override int GetSize()
-		{
-			return 1;
-		}
-		
 		public override IEnumerable<Variable> GetFreeVariables()
 		{
 			yield break;

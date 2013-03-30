@@ -42,14 +42,10 @@ namespace Krach.Calculus.Terms.Composite
 		
 		public override IEnumerable<Variable> GetFreeVariables()
 		{
-			return Enumerables.Concatenate
-			(
-				from variable in function.GetFreeVariables()
-				select variable,
-				from variable in parameter.GetFreeVariables()
-				select variable
-			)
-			.ToArray();
+			foreach (Variable variable in function.GetFreeVariables()) yield return variable;
+			foreach (Variable variable in parameter.GetFreeVariables()) yield return variable;
+
+			//return Enumerables.Concatenate(function.GetFreeVariables(), parameter.GetFreeVariables()).ToArray();
 		}
 		public override ValueTerm Substitute(Variable variable, ValueTerm substitute)
 		{
@@ -58,11 +54,6 @@ namespace Krach.Calculus.Terms.Composite
 				function.Substitute(variable, substitute),
 				parameter.Substitute(variable, substitute)
 			);
-		}
-		
-		public override int GetSize ()
-		{
-			return 1 + function.GetSize() + parameter.GetSize();
 		}
 
 		public override IEnumerable<double> Evaluate()

@@ -11,23 +11,17 @@ namespace Krach.Calculus.Rules.Vectors
 {
 	public class FlattenVector : Rule
 	{
-		public override bool Matches<T>(T term)
+		public override string ToString()
 		{
-			if (!(term is Vector)) return false;
-
-			Vector vector = (Vector)(BaseTerm)term;
-			
-			if (!vector.Terms.Any(subTerm => subTerm is Vector)) return false;
-
-			return true;
+			return "flatten_vector";
 		}
 		public override T Rewrite<T>(T term)
 		{
-			if (!(term is Vector)) throw new InvalidOperationException();
+			if (!(term is Vector)) return null;
 
 			Vector vector = (Vector)(BaseTerm)term;
 			
-			if (!vector.Terms.Any(subTerm => subTerm is Vector)) throw new InvalidOperationException();
+			if (!vector.Terms.Any(subTerm => subTerm is Vector)) return null;
 
 			return (T)(BaseTerm)Term.Vector
 			(

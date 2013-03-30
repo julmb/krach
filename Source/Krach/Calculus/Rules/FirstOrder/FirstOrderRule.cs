@@ -21,48 +21,26 @@ namespace Krach.Calculus.Rules.FirstOrder
 			this.originalTerm = originalTerm;
 			this.rewrittenTerm = rewrittenTerm;
 		}
-		
-		public override bool Matches<T>(T term)
+
+		public override string ToString()
 		{
-			return CanMatch(originalTerm, term);
+			return string.Format("({0} -> {1})", originalTerm, rewrittenTerm);
 		}
 		public override T Rewrite<T>(T term)
-		{			
-			return (T)(BaseTerm)Match(originalTerm, term).Apply(rewrittenTerm);
+		{
+			if (!(term is ValueTerm)) return null;
+			
+			ValueTerm valueTerm = (ValueTerm)(BaseTerm)term;
+			
+			IEnumerable<Assignment> equations = GetEquations(originalTerm, valueTerm);
+
+			if (equations == null) return null;
+			
+			if (!Substitution.IsAssignment(equations)) return null;
+
+			return (T)(BaseTerm)Substitution.FromEquations(equations).Apply(rewrittenTerm);
 		}
 	
-		static bool CanMatch(ValueTerm pattern, BaseTerm term)
-		{
-			if (!(term is ValueTerm)) return false;
-			
-			ValueTerm valueTerm = (ValueTerm)term;
-			
-			if (pattern.Dimension != valueTerm.Dimension) return false;
-			
-			IEnumerable<Assignment> equations = GetEquations(pattern, valueTerm);
-
-			if (equations == null) return false;
-
-			if (!Substitution.IsAssignment(equations)) return false;
-			
-			return true;
-		}
-		static Substitution Match(ValueTerm pattern, BaseTerm term)
-		{
-			if (!(term is ValueTerm)) throw new InvalidOperationException();
-			
-			ValueTerm valueTerm = (ValueTerm)term;
-			
-			if (pattern.Dimension != valueTerm.Dimension) throw new InvalidOperationException();
-			
-			IEnumerable<Assignment> equations = GetEquations(pattern, valueTerm);
-
-			if (equations == null) throw new InvalidOperationException();
-			
-			if (!Substitution.IsAssignment(equations)) throw new InvalidOperationException();
-			
-			return Substitution.FromEquations(equations);
-		}
 		static IEnumerable<Assignment> GetEquations(ValueTerm pattern, ValueTerm term)
 		{
 			if (pattern is BasicValueTerm)
