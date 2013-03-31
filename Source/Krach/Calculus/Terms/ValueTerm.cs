@@ -7,8 +7,6 @@ namespace Krach.Calculus.Terms
 {
 	public abstract class ValueTerm : VariableTerm<ValueTerm>, IValue, IEquatable<ValueTerm>
 	{
-		public override Syntax Syntax { get { return ValueSyntax; } }
-		public abstract ValueSyntax ValueSyntax { get; }
 		public abstract int Dimension { get; }
 		
 		public override bool Equals(object obj)

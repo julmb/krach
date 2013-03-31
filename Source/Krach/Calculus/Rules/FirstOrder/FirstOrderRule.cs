@@ -80,17 +80,16 @@ namespace Krach.Calculus.Rules.FirstOrder
 				
 				if (patternVector.Terms.Count() != termVector.Terms.Count()) return null;
 
-				IEnumerable<IEnumerable<Assignment>> equationSets = Enumerable.Zip(patternVector.Terms, termVector.Terms, GetEquations).ToArray();
+                List<Assignment> result = new List<Assignment>();
 
-				if (equationSets.Any(equations => equations == null)) return null;
+                foreach (IEnumerable<Assignment> equations in Enumerable.Zip(patternVector.Terms, termVector.Terms, GetEquations))
+                {
+                    if (equations == null) return null;
 
-				return
-				(
-					from equations in equationSets
-					from equation in equations
-					select equation
-				)
-				.ToArray();
+                    result.AddRange(equations);
+                }
+
+                return result;
 			}
 			if (pattern is Selection)
 			{

@@ -32,10 +32,10 @@ namespace Krach.Calculus.Rules.LambdaCalculus
 			(
 				variables.Select(variable => variable.Dimension).GetPartialSums(),
 				variables.Select(variable => variable.Dimension),
-				(start, length) => Term.Vector
+				(start, length) => new Vector
 				(
 					from index in Enumerable.Range(start, length)
-					select parameter.Select(index)
+					select new Selection(parameter, index)
 				)
 			)
 			.ToArray();

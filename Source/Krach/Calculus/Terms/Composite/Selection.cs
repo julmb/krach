@@ -13,7 +13,7 @@ namespace Krach.Calculus.Terms.Composite
 		
 		public ValueTerm Term { get { return term; } }
 		public int Index { get { return index; } }
-		public override ValueSyntax ValueSyntax { get { return Syntax.Selection(this); } }
+        public override Syntax Syntax { get { return Syntax.Selection(this); } }
 		public override int Dimension { get { return 1; } }
 		
 		public Selection(ValueTerm term, int index)
@@ -37,7 +37,7 @@ namespace Krach.Calculus.Terms.Composite
 		{
 			return object.Equals(this, other);
 		}
-		
+
 		public override IEnumerable<Variable> GetFreeVariables()
 		{
 			return term.GetFreeVariables();

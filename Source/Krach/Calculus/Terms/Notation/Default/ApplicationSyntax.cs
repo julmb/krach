@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using Krach.Calculus.Terms.Composite;
 using Krach.Extensions;
 
-namespace Krach.Calculus.Terms.Notation.Composite
+namespace Krach.Calculus.Terms.Notation.Default
 {
-	public class ApplicationSyntax : ValueSyntax
+    public class ApplicationSyntax : Syntax
 	{
 		readonly FunctionTerm function;
 		readonly ValueTerm parameter;

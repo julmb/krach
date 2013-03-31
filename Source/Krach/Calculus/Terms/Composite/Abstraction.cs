@@ -14,7 +14,7 @@ namespace Krach.Calculus.Terms.Composite
 		
 		public IEnumerable<Variable> Variables { get { return variables; } }
 		public ValueTerm Term { get { return term; } }
-		public override FunctionSyntax FunctionSyntax { get { return Syntax.Abstraction(this); } }
+        public override Syntax Syntax { get { return Syntax.Abstraction(this); } }
 		public override int DomainDimension { get { return variables.Sum(variable => variable.Dimension); } }
 		public override int CodomainDimension { get { return term.Dimension; } }
 		
@@ -40,11 +40,11 @@ namespace Krach.Calculus.Terms.Composite
 		{
 			return object.Equals(this, other);
 		}
-		
+
 		public override IEnumerable<Variable> GetFreeVariables()
 		{
 			return term.GetFreeVariables().Except(variables);
-		}	
+		}
 		public override FunctionTerm Substitute(Variable variable, ValueTerm substitute) 
 		{
 			if (variables.Contains(variable)) return this;

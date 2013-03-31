@@ -5,13 +5,13 @@ using Krach.Extensions;
 using Krach.Calculus.Terms.Composite;
 using Krach.Calculus.Terms;
 using Krach.Calculus.Terms.Notation;
-using Krach.Calculus.Terms.Notation.Basic;
+using Krach.Calculus.Terms.Notation.Custom;
 
 namespace Krach.Calculus.Terms.Basic.Atoms
 {
 	public class Sum : BasicFunctionTerm, IEquatable<Sum>
 	{
-		public override FunctionSyntax FunctionSyntax { get { return new BinaryOperatorSyntax("+"); } }
+        public override Syntax Syntax { get { return new BasicBinaryOperatorSyntax("+"); } }
 		public override int DomainDimension { get { return 2; } }
 		public override int CodomainDimension { get { return 1; } }
 		

@@ -1,43 +1,41 @@
 using System;
 using Krach.Calculus.Terms.Composite;
-using Krach.Extensions;
-using Krach.Calculus.Terms.Notation.Composite;
+using Krach.Calculus.Terms.Notation.Default;
 
 namespace Krach.Calculus.Terms.Notation
 {
-	public abstract class Syntax
-	{
-		public abstract string GetText();
+    public abstract class Syntax
+    {
+        public abstract string GetText();
+        public virtual Syntax GetApplicationSyntax(Application application)
+        {
+            return null;
+        }
 
-		// explanation
-		// the application is not the only sensible place for specifying custom syntax
-		// having the function of an application term specify this syntax is an even more special case
-		// thus, all the responsibility for selecting the right syntax based on the various requests
-		// made by the subterms is condensed here
-		public static ValueSyntax Variable(Variable variable)
-		{
-			return new VariableSyntax(variable.Name);
-		}
-		public static FunctionSyntax Abstraction(Abstraction abstraction)
-		{
-			return new AbstractionSyntax(abstraction.Variables, abstraction.Term);
-		}
-		public static ValueSyntax Application(Application application)
-		{
-			ValueSyntax applicationSyntax = application.Function.FunctionSyntax.GetApplicationSyntax(application.Parameter);
+        public static Syntax Variable(Variable variable)
+        {
+            return new VariableSyntax(variable.Name);
+        }
+        public static Syntax Abstraction(Abstraction abstraction)
+        {
+            return new AbstractionSyntax(abstraction.Variables, abstraction.Term);
+        }
+        public static Syntax Application(Application application)
+        {
+            Syntax applicationSyntax = application.Function.Syntax.GetApplicationSyntax(application);
 
-			if (applicationSyntax != null) return applicationSyntax;
+            if (applicationSyntax != null) return applicationSyntax;
 
-			return new ApplicationSyntax(application.Function, application.Parameter);
-		}
-		public static ValueSyntax Vector(Vector vector)
-		{
-			return new VectorSyntax(vector.Terms);
-		}
-		public static ValueSyntax Selection(Selection selection)
-		{
-			return new SelectionSyntax(selection.Term, selection.Index);
-		}
-	}
+            return new ApplicationSyntax(application.Function, application.Parameter);
+        }
+        public static Syntax Vector(Vector vector)
+        {
+            return new VectorSyntax(vector.Terms);
+        }
+        public static Syntax Selection(Selection selection)
+        {
+            return new SelectionSyntax(selection.Term, selection.Index);
+        }
+    }
 }
 

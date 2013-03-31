@@ -16,7 +16,7 @@ namespace Krach.Calculus.Rules.Simplification
 		{
 			public override string ToString()
 			{
-				return "sorting.productsimple";
+				return "sorting_productsimple";
 			}
 			public override T Rewrite<T>(T term)
 			{
@@ -35,16 +35,18 @@ namespace Krach.Calculus.Rules.Simplification
 				ValueTerm parameter0 = vector.Terms.ElementAt(0);
 				ValueTerm parameter1 = vector.Terms.ElementAt(1);
 
+                if (parameter0 is Application && ((Application)parameter0).Function is Product) return null;
+
 				if (!ShouldSwap(parameter0, parameter1)) return null;
 
-				return (T)(BaseTerm)Term.Product(parameter1, parameter0);
+				return (T)(BaseTerm)new Application(new Product(), new Vector(Enumerables.Create(parameter1, parameter0)));
 			}
 		}
 		public class ProductAssociative : Rule
 		{
 			public override string ToString()
 			{
-				return "sorting.productassociative";
+				return "sorting_productassociative";
 			}
 			public override T Rewrite<T>(T term)
 			{
@@ -82,31 +84,13 @@ namespace Krach.Calculus.Rules.Simplification
 
 				if (!ShouldSwap(parameter001, parameter01)) return null;
 
-				return (T)(BaseTerm)Term.Product(Term.Product(parameter000, parameter01), parameter001);
+                return (T)(BaseTerm)new Application(new Product(), new Vector(Enumerables.Create(new Application(new Product(), new Vector(Enumerables.Create(parameter000, parameter01))), parameter001)));
 			}
 		}
 
 		static bool ShouldSwap(ValueTerm term1, ValueTerm term2)
 		{
 			if (!(term1 is Constant) && term2 is Constant) return true;
-
-//			string names1 =
-//			(
-//				from variable in term1.GetFreeVariables().Distinct()
-//				orderby variable.Name ascending
-//				select variable.Name
-//			)
-//			.AggregateString();
-//
-//			string names2 =
-//			(
-//				from variable in term2.GetFreeVariables().Distinct()
-//				orderby variable.Name ascending
-//				select variable.Name
-//			)
-//			.AggregateString();
-//
-//			if (string.Compare(names1, names2) > 0) return true;
 
 			return false;
 		}

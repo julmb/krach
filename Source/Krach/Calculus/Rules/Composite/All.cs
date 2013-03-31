@@ -8,23 +8,23 @@ using Krach.Calculus;
 
 namespace Krach.Calculus.Rules.Composite
 {
-	public class Any : Rule
+	public class All : Rule
 	{
 		readonly IEnumerable<Rule> rules;
 
 		public IEnumerable<Rule> Rules { get { return rules; } }
 
-		public Any(IEnumerable<Rule> rules)
+		public All(IEnumerable<Rule> rules)
 		{
 			if (rules == null) throw new ArgumentException("rules");
 
 			this.rules = rules.ToArray();
 		}
-		public Any(params Rule[] rules) : this((IEnumerable<Rule>)rules) { }
+        public All(params Rule[] rules) : this((IEnumerable<Rule>)rules) { }
 
 		public override string ToString()
 		{
-			return string.Format("({0})", rules.ToStrings().Separate("|").AggregateString());
+			return string.Format("({0})", rules.ToStrings().Separate(".").AggregateString());
 		}
 		public override T Rewrite<T>(T term)
 		{
@@ -32,10 +32,12 @@ namespace Krach.Calculus.Rules.Composite
 			{
 				T rewrittenTerm = rule.Rewrite(term);
 
-                if (rewrittenTerm != null) return rewrittenTerm;
+                if (rewrittenTerm == null) return null;
+
+                term = rewrittenTerm;
 			}
 
-			return null;
+            return term;
 		}
 	}
 }

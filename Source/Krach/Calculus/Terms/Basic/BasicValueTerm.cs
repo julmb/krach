@@ -19,7 +19,7 @@ namespace Krach.Calculus.Terms.Basic
 		{
 			return object.Equals(this, other);
 		}
-		
+
 		public override IEnumerable<Variable> GetFreeVariables()
 		{
 			yield break;

@@ -5,13 +5,13 @@ using Krach.Extensions;
 using Krach.Calculus.Terms.Composite;
 using Krach.Calculus.Terms;
 using Krach.Calculus.Terms.Notation;
-using Krach.Calculus.Terms.Notation.Basic;
+using Krach.Calculus.Terms.Notation.Custom;
 
 namespace Krach.Calculus.Terms.Basic.Atoms
 {
 	public class Exponentiation : BasicFunctionTerm, IEquatable<Exponentiation>
 	{
-		public override FunctionSyntax FunctionSyntax { get { return new ExponentiationSyntax("^"); } }
+        public override Syntax Syntax { get { return new ExponentiationSyntax(); } }
 		public override int DomainDimension { get { return 2; } }
 		public override int CodomainDimension { get { return 1; } }
 
@@ -37,7 +37,7 @@ namespace Krach.Calculus.Terms.Basic.Atoms
 			Variable x = new Variable(1, "x");
 			Variable y = new Variable(1, "y");
 			
-			yield return Term.Product(y, Term.Exponentiation(x, Term.Sum(y, Term.Constant(-1)))).Abstract(x, y);
+			yield return Term.Product(y, Term.Exponentiation(x, Term.Difference(y, Term.Constant(1)))).Abstract(x, y);
 			yield return Term.Product(Term.Logarithm(x), Term.Exponentiation(x, y)).Abstract(x, y);
 		}
 		

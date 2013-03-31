@@ -11,7 +11,7 @@ namespace Krach.Calculus.Terms.Composite
 		readonly IEnumerable<ValueTerm> terms;
 		
 		public IEnumerable<ValueTerm> Terms { get { return terms; } }
-		public override ValueSyntax ValueSyntax { get { return Syntax.Vector(this); } }
+        public override Syntax Syntax { get { return Syntax.Vector(this); } }
 		public override int Dimension { get { return terms.Sum(term => term.Dimension); } }
 		
 		public Vector(IEnumerable<ValueTerm> terms)
@@ -33,7 +33,7 @@ namespace Krach.Calculus.Terms.Composite
 		{
 			return object.Equals(this, other);
 		}
-		
+
 		public override IEnumerable<Variable> GetFreeVariables()
 		{
 			return

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using Krach.Calculus.Terms.Composite;
 using Krach.Extensions;
 
-namespace Krach.Calculus.Terms.Notation.Composite
+namespace Krach.Calculus.Terms.Notation.Default
 {
-	public class SelectionSyntax : ValueSyntax
+    public class SelectionSyntax : Syntax
 	{
 		readonly ValueTerm term;
 		readonly int index;

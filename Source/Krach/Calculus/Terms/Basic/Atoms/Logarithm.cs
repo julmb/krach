@@ -5,13 +5,12 @@ using Krach.Extensions;
 using Krach.Calculus.Terms.Composite;
 using Krach.Calculus.Terms;
 using Krach.Calculus.Terms.Notation;
-using Krach.Calculus.Terms.Notation.Basic;
 
 namespace Krach.Calculus.Terms.Basic.Atoms
 {
 	public class Logarithm : BasicFunctionTerm, IEquatable<Logarithm>
 	{
-		public override FunctionSyntax FunctionSyntax { get { return new BasicFunctionSyntax("ln"); } }
+        public override Syntax Syntax { get { return new BasicSyntax("ln"); } }
 		public override int DomainDimension { get { return 1; } }
 		public override int CodomainDimension { get { return 1; } }
 

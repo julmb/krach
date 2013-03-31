@@ -14,7 +14,7 @@ namespace Krach.Calculus.Terms.Composite
 		
 		public FunctionTerm Function { get { return function; } }
 		public ValueTerm Parameter { get { return parameter; } }
-		public override ValueSyntax ValueSyntax { get { return Syntax.Application(this); } }
+        public override Syntax Syntax { get { return Syntax.Application(this); } }
 		public override int Dimension { get { return function.CodomainDimension; } }
 		
 		public Application(FunctionTerm function, ValueTerm parameter)
@@ -39,13 +39,11 @@ namespace Krach.Calculus.Terms.Composite
 		{
 			return object.Equals(this, other);
 		}
-		
+
 		public override IEnumerable<Variable> GetFreeVariables()
 		{
 			foreach (Variable variable in function.GetFreeVariables()) yield return variable;
 			foreach (Variable variable in parameter.GetFreeVariables()) yield return variable;
-
-			//return Enumerables.Concatenate(function.GetFreeVariables(), parameter.GetFreeVariables()).ToArray();
 		}
 		public override ValueTerm Substitute(Variable variable, ValueTerm substitute)
 		{
@@ -86,7 +84,7 @@ namespace Krach.Calculus.Terms.Composite
 				select Term.Vector
 				(
 					from functionDerivative in flippedFunctionDerivatives
-					select Term.Product(functionDerivative, parameterDerivative)
+					select Term.DotProduct(functionDerivative, parameterDerivative)
 				)
 			)
 			.ToArray();

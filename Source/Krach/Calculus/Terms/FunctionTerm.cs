@@ -6,8 +6,6 @@ namespace Krach.Calculus.Terms
 {
 	public abstract class FunctionTerm : VariableTerm<FunctionTerm>, IFunction, IEquatable<FunctionTerm>
 	{
-		public override Syntax Syntax { get { return FunctionSyntax; } }
-		public abstract FunctionSyntax FunctionSyntax { get; }
 		public abstract int DomainDimension { get; }
 		public abstract int CodomainDimension { get; }
 		

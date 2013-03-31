@@ -12,13 +12,15 @@ namespace Krach.Calculus.Rules.Definitions
 	{
 		public override string ToString()
 		{
-			return "expand_function_definition";
+			return "expand_function";
 		}
 		public override T Rewrite<T>(T term)
 		{
 			if (!(term is FunctionDefinition)) return null;
 
-			return (T)(BaseTerm)((FunctionDefinition)(BaseTerm)term).Function;
+            FunctionDefinition functionDefinition = ((FunctionDefinition)(BaseTerm)term);
+
+            return (T)(BaseTerm)functionDefinition.Function;
 		}
 	}
 }

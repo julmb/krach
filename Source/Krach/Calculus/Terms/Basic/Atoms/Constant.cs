@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Krach.Extensions;
 using Krach.Calculus.Terms.Notation;
-using Krach.Calculus.Terms.Notation.Basic;
 
 namespace Krach.Calculus.Terms.Basic.Atoms
 {
@@ -11,7 +10,7 @@ namespace Krach.Calculus.Terms.Basic.Atoms
 		readonly double value;
 		
 		public double Value { get { return value; } }
-		public override ValueSyntax ValueSyntax { get { return new BasicValueSyntax(value.ToString()); } }
+        public override Syntax Syntax { get { return new BasicSyntax(value.ToString()); } }
 		public override int Dimension { get { return 1; } }
 		
 		public Constant(double value)

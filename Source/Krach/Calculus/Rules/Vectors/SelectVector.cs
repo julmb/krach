@@ -34,7 +34,7 @@ namespace Krach.Calculus.Rules.Vectors
 			(
 				from subTerm in terms
 				from subIndex in Enumerable.Range(0, subTerm.Dimension)
-				select subTerm.Select(subIndex)
+				select new Selection(subTerm, subIndex)
 			)
 			.ElementAt(index);
 		}

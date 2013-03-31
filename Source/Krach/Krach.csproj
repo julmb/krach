@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -41,6 +41,19 @@
     <Compile Include="Basics\Vector1Double.cs" />
     <Compile Include="Basics\Vector2Double.cs" />
     <Compile Include="BitField.cs" />
+    <Compile Include="Calculus\Rules\Composite\All.cs" />
+    <Compile Include="Calculus\Rules\Composite\Maybe.cs" />
+    <Compile Include="Calculus\Rules\Composite\Everywhere.cs" />
+    <Compile Include="Calculus\Rules\Tests.cs" />
+    <Compile Include="Calculus\Rules\Definitions\ExpandAppliedFunctionDefinition.cs" />
+    <Compile Include="Calculus\Rules\Simplification\BigSum.cs" />
+    <Compile Include="Calculus\Rules\Simplification\BigProduct.cs" />
+    <Compile Include="Calculus\Rules\Simplification\Norm.cs" />
+    <Compile Include="Calculus\Rules\Simplification\VectorScaling.cs" />
+    <Compile Include="Calculus\Rules\Simplification\DotProduct.cs" />
+    <Compile Include="Calculus\Rules\Simplification\VectorSum.cs" />
+    <Compile Include="Calculus\Rules\Simplification\Identity.cs" />
+    <Compile Include="Calculus\Terms\Notation\Custom\BasicBinaryOperatorSyntax.cs" />
     <Compile Include="Collections\BatchCollection.cs" />
     <Compile Include="Collections\SearchList.cs" />
     <Compile Include="Combinatorics\BacktrackingSolver.cs" />
@@ -167,18 +180,15 @@
     <Compile Include="Calculus\Rules\Simplification\Evaluation.cs" />
     <Compile Include="Calculus\Rules\Simplification\Sorting.cs" />
     <Compile Include="Calculus\Terms\Notation\Syntax.cs" />
-    <Compile Include="Calculus\Terms\Notation\ValueSyntax.cs" />
-    <Compile Include="Calculus\Terms\Notation\FunctionSyntax.cs" />
-    <Compile Include="Calculus\Terms\Notation\Composite\AbstractionSyntax.cs" />
-    <Compile Include="Calculus\Terms\Notation\Composite\VariableSyntax.cs" />
-    <Compile Include="Calculus\Terms\Notation\Composite\ApplicationSyntax.cs" />
-    <Compile Include="Calculus\Terms\Notation\Composite\VectorSyntax.cs" />
-    <Compile Include="Calculus\Terms\Notation\Composite\SelectionSyntax.cs" />
-    <Compile Include="Calculus\Terms\Notation\Basic\BasicFunctionSyntax.cs" />
-    <Compile Include="Calculus\Terms\Notation\Basic\BasicValueSyntax.cs" />
-    <Compile Include="Calculus\Terms\Notation\Basic\BinaryOperatorSyntax.cs" />
-    <Compile Include="Calculus\Terms\Notation\Basic\ExponentiationSyntax.cs" />
-    <Compile Include="Calculus\Terms\Notation\Basic\NormSyntax.cs" />
+    <Compile Include="Calculus\Terms\Notation\Default\AbstractionSyntax.cs" />
+    <Compile Include="Calculus\Terms\Notation\Default\VariableSyntax.cs" />
+    <Compile Include="Calculus\Terms\Notation\Default\ApplicationSyntax.cs" />
+    <Compile Include="Calculus\Terms\Notation\Default\VectorSyntax.cs" />
+    <Compile Include="Calculus\Terms\Notation\Default\SelectionSyntax.cs" />
+    <Compile Include="Calculus\Terms\Notation\BasicSyntax.cs" />
+    <Compile Include="Calculus\Terms\Notation\Custom\BinaryOperatorSyntax.cs" />
+    <Compile Include="Calculus\Terms\Notation\Custom\ExponentiationSyntax.cs" />
+    <Compile Include="Calculus\Terms\Notation\Custom\NormSyntax.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

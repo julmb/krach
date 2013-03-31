@@ -12,7 +12,7 @@ namespace Krach.Calculus.Terms.Composite
 		readonly int dimension;
 		readonly string name;
 
-		public override ValueSyntax ValueSyntax { get { return Syntax.Variable(this); } }
+        public override Syntax Syntax { get { return Syntax.Variable(this); } }
 		public override int Dimension { get { return dimension; } }
 		public string Name { get { return name; } }
 		
@@ -37,7 +37,7 @@ namespace Krach.Calculus.Terms.Composite
 		{
 			return object.Equals(this, other);
 		}
-		
+
 		public override IEnumerable<Variable> GetFreeVariables()
 		{
 			yield return this;

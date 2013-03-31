@@ -22,13 +22,14 @@ namespace Krach.Calculus.Rules.Simplification
 			
 			ValueTerm valueTerm = (ValueTerm)(BaseTerm)term;
 
+            if (valueTerm is Constant) return null;
+            if (valueTerm is Vector && ((Vector)valueTerm).Terms.All(subTerm => subTerm is Constant)) return null;
+
 			if (valueTerm.GetFreeVariables().Any()) return null;
 
-			IEnumerable<double> values = Rewriting.Expansion.Rewrite(valueTerm).Evaluate();
+			IEnumerable<double> values = valueTerm.Evaluate();
 
 			ValueTerm result = values.Count() == 1 ? (ValueTerm)new Constant(values.Single()) : (ValueTerm)new Vector(values.Select(value => new Constant(value)));
-
-			if (result == valueTerm) return null;
 
 			return (T)(BaseTerm)result;
 		}

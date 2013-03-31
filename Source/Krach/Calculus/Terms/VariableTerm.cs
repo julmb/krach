@@ -20,7 +20,7 @@ namespace Krach.Calculus.Terms
 		{
 			return object.Equals(this, other);
 		}
-		
+
 		public abstract IEnumerable<Variable> GetFreeVariables();
 	    public abstract T Substitute(Variable variable, ValueTerm substitute);
 		public T Substitute(IEnumerable<Variable> variables, IEnumerable<ValueTerm> substitutes)
@@ -35,7 +35,7 @@ namespace Krach.Calculus.Terms
 			)
 			.ToArray();
 			
-			IEnumerable<Variable> newVariables = FindUnusedVariables(variables, freeVariables);
+			IEnumerable<Variable> newVariables = FindUnusedVariables(variables, freeVariables).ToArray();
 			
 			T result = (T)this;
 			

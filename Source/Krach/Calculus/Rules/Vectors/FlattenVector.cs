@@ -23,7 +23,7 @@ namespace Krach.Calculus.Rules.Vectors
 			
 			if (!vector.Terms.Any(subTerm => subTerm is Vector)) return null;
 
-			return (T)(BaseTerm)Term.Vector
+			return (T)(BaseTerm)new Vector
 			(
 				from subTerm in vector.Terms
 				let subSubTerms = subTerm is Vector ? ((Vector)subTerm).Terms : Enumerables.Create(subTerm)
