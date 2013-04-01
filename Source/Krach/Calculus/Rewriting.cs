@@ -114,51 +114,12 @@ namespace Krach.Calculus
         public static Rule CompleteSimplification { get { return new Repeat(new Everywhere(Simplification)); } }
         public static Rule CompleteNormalization { get { return new Repeat(new Any(new Everywhere(Simplification), new Everywhere(DefinitionExpansion))); } }
 
-        public static T Rewrite<T>(this T term, Rule rule) where T : VariableTerm<T>
-        {
-            if (term == null) throw new ArgumentNullException("valueTerm");
-            if (rule == null) throw new ArgumentNullException("rule");
-
-            if (rule is Repeat) rule = ((Repeat)rule).Rule;
-
-            Terminal.Write(term.ToString(), ConsoleColor.Red);
-            Terminal.WriteLine();
-
-            int rewriteCount = 0;
-
-            while (true)
-            {
-                T rewrittenTerm = rule.Rewrite(term);
-
-                if (rewrittenTerm == null) break;
-
-                term = rewrittenTerm;
-                rewriteCount++;
-
-                //Terminal.Write(term.ToString(), ConsoleColor.Yellow);
-                //Terminal.WriteLine();
-                //Terminal.WriteLine();
-            }
-
-            Terminal.Write(rewriteCount.ToString(), ConsoleColor.Yellow);
-            Terminal.WriteLine();
-
-            Terminal.Write(term.ToString(), ConsoleColor.Green);
-            Terminal.WriteLine();
-
-            return term;
-        }
-
-        public static T Normalize<T>(this T term) where T : VariableTerm<T>
-        {
-            return CompleteNormalization.Rewrite(term);
-        }
         public static IFunction Normalize(this FunctionTerm functionTerm, int depth)
         {
             if (functionTerm == null) throw new ArgumentNullException("functionTerm");
             if (depth < 0) throw new ArgumentOutOfRangeException("depth");
 
-            functionTerm = functionTerm.Rewrite(CompleteNormalization);
+            functionTerm = CompleteNormalization.Rewrite(functionTerm);
 
             if (depth == 0) return functionTerm;
             

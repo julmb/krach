@@ -117,7 +117,7 @@ namespace Krach.Calculus.Rules
 
         static void RunTest<T>(T term, Rule rule) where T : VariableTerm<T>
         {
-            T result = term.Rewrite(rule);
+            T result = rule.Rewrite(term);
 
             if (result == null) throw new InvalidOperationException();
 
