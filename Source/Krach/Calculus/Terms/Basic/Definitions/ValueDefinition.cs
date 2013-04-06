@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using Krach.Extensions;
 using Krach.Calculus.Terms.Notation;
+using Krach.Calculus.Terms.Composite;
+using System.Linq;
+using Krach.Calculus.Terms.Basic;
 
 namespace Krach.Calculus.Terms.Basic.Definitions
 {
@@ -20,6 +23,7 @@ namespace Krach.Calculus.Terms.Basic.Definitions
 		{
             if (name == null) throw new ArgumentNullException("name");
 			if (value == null) throw new ArgumentNullException("value");
+			if (value.GetFreeVariables().Any()) throw new ArgumentException("cannot create definition containing free variables.");
             if (syntax == null) throw new ArgumentNullException("syntax");
 
             this.name = name;

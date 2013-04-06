@@ -142,14 +142,8 @@
     <Compile Include="Calculus\Terms\ValueTerm.cs" />
     <Compile Include="Calculus\Terms\VariableTerm.cs" />
     <Compile Include="Calculus\Terms\BaseTerm.cs" />
-    <Compile Include="Calculus\IFunction.cs" />
-    <Compile Include="Calculus\IValue.cs" />
-    <Compile Include="Calculus\ExplicitFunction.cs" />
-    <Compile Include="Calculus\ExplicitValue.cs" />
     <Compile Include="Calculus\Terms\Basic\BasicFunctionTerm.cs" />
     <Compile Include="Calculus\Terms\Basic\BasicValueTerm.cs" />
-    <Compile Include="Calculus\Terms\Basic\Definitions\FunctionDefinition.cs" />
-    <Compile Include="Calculus\Terms\Basic\Definitions\ValueDefinition.cs" />
     <Compile Include="Calculus\Terms\Composite\Abstraction.cs" />
     <Compile Include="Calculus\Terms\Composite\Application.cs" />
     <Compile Include="Calculus\Terms\Composite\Variable.cs" />
@@ -185,10 +179,21 @@
     <Compile Include="Calculus\Terms\Notation\Default\ApplicationSyntax.cs" />
     <Compile Include="Calculus\Terms\Notation\Default\VectorSyntax.cs" />
     <Compile Include="Calculus\Terms\Notation\Default\SelectionSyntax.cs" />
-    <Compile Include="Calculus\Terms\Notation\BasicSyntax.cs" />
     <Compile Include="Calculus\Terms\Notation\Custom\BinaryOperatorSyntax.cs" />
     <Compile Include="Calculus\Terms\Notation\Custom\ExponentiationSyntax.cs" />
     <Compile Include="Calculus\Terms\Notation\Custom\NormSyntax.cs" />
+    <Compile Include="Calculus\Abstract\IFunction.cs" />
+    <Compile Include="Calculus\Abstract\IValue.cs" />
+    <Compile Include="Calculus\Explicit\ExplicitFunction.cs" />
+    <Compile Include="Calculus\Explicit\ExplicitValue.cs" />
+    <Compile Include="Calculus\Terms\Basic\Definitions\FunctionDefinition.cs" />
+    <Compile Include="Calculus\Terms\Basic\Definitions\ValueDefinition.cs" />
+    <Compile Include="Calculus\Terms\Notation\Custom\BasicSyntax.cs" />
+    <Compile Include="Calculus\Explicit\ExplicitConstraint.cs" />
+    <Compile Include="Calculus\Abstract\IConstraint.cs" />
+    <Compile Include="Calculus\Constraint.cs" />
+    <Compile Include="Calculus\Rules\Composite\Shortening.cs" />
+    <Compile Include="Calculus\Rules\Vectors\VectorSelect.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

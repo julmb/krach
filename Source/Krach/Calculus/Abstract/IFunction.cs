@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Krach.Calculus
+namespace Krach.Calculus.Abstract
 {
 	public interface IFunction
 	{

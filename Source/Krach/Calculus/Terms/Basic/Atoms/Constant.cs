@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Krach.Extensions;
 using Krach.Calculus.Terms.Notation;
+using Krach.Calculus.Terms.Notation.Custom;
 
 namespace Krach.Calculus.Terms.Basic.Atoms
 {

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Krach.Extensions;
 using Krach.Calculus.Terms.Basic;
 using Krach.Calculus;
+using Krach.Calculus.Terms.Basic.Definitions;
 
 namespace Krach.Calculus.Rules.Composite
 {

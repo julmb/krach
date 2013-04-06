@@ -42,9 +42,9 @@ namespace Krach.Calculus.Terms.Composite
 		{
 			yield return this;
 		}
-		public override ValueTerm Substitute(Variable variable, ValueTerm term)
+		public override ValueTerm Substitute(Variable variable, ValueTerm substitute)
 		{
-			return variable == this ? term : this;
+			return variable == this ? substitute : this;
 		}
 
 		public override IEnumerable<double> Evaluate()

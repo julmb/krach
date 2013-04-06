@@ -7,6 +7,7 @@ using Krach.Extensions;
 using Krach.Calculus.Terms.Basic;
 using Krach.Calculus;
 using Krach.Calculus.Terms.Basic.Atoms;
+using Krach.Calculus.Terms.Basic.Definitions;
 
 namespace Krach.Calculus.Rules.Simplification
 {
@@ -22,6 +23,7 @@ namespace Krach.Calculus.Rules.Simplification
 			
 			ValueTerm valueTerm = (ValueTerm)(BaseTerm)term;
 
+			if (valueTerm is ValueDefinition) return null;
             if (valueTerm is Constant) return null;
             if (valueTerm is Vector && ((Vector)valueTerm).Terms.All(subTerm => subTerm is Constant)) return null;
 

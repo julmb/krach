@@ -6,7 +6,6 @@ using Krach.Calculus.Terms.Composite;
 using Krach.Calculus.Terms;
 using Krach.Calculus.Terms.Basic;
 using Krach.Calculus.Terms.Basic.Atoms;
-using Krach.Calculus.Terms.Basic.Definitions;
 using Krach.Calculus.Terms.Notation;
 using Krach.Calculus.Rules;
 using Krach.Calculus.Rules.Composite;
@@ -14,6 +13,7 @@ using Krach.Calculus.Rules.Vectors;
 using Krach.Calculus.Rules.LambdaCalculus;
 using Krach.Calculus.Rules.Simplification;
 using Krach.Calculus.Terms.Notation.Custom;
+using Krach.Calculus.Terms.Basic.Definitions;
 
 namespace Krach.Calculus
 {
@@ -329,10 +329,6 @@ namespace Krach.Calculus
 
             return Norm(dimension).Apply(value);
         }
-        public static ValueTerm NormSquared(ValueTerm value)
-        {
-            return Square(Norm(value));
-        }
 
         // polynomial
         public static FunctionTerm Polynomial(int dimension, int degree)
@@ -348,19 +344,14 @@ namespace Krach.Calculus
             )
             .ToArray();
 
-            return new FunctionDefinition
+            return Sum
             (
-                string.Format("polynomial_{0}_{1}", dimension, degree),
-                Sum
-                (
-                    from index in Enumerable.Range(0, degree)
-                    let power = Exponentiation(variable, Constant(index))
-                    let parameter = coefficients.ElementAt(index)
-                    select Scaling(power, parameter)
-                )
-                .Abstract(Enumerables.Concatenate(Enumerables.Create(variable), coefficients)),
-                new BasicSyntax("ω")
-            );
+                from index in Enumerable.Range(0, degree)
+                let power = Exponentiation(variable, Constant(index))
+                let parameter = coefficients.ElementAt(index)
+                select Scaling(power, parameter)
+            )
+			.Abstract(Enumerables.Concatenate(Enumerables.Create(variable), coefficients));
         }
     }
 }

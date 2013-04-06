@@ -5,6 +5,7 @@ using Krach.Extensions;
 using Krach.Calculus.Terms;
 using Krach.Calculus.Terms.Composite;
 using Krach.Calculus.Terms.Basic;
+using Krach.Calculus.Terms.Basic.Definitions;
 
 namespace Krach.Calculus.Rules.FirstOrder
 {
@@ -49,6 +50,17 @@ namespace Krach.Calculus.Rules.FirstOrder
 
 				BasicValueTerm patternBasicValueTerm = (BasicValueTerm)pattern;
 				BasicValueTerm termBasicValueTerm = (BasicValueTerm)term;
+				
+				if (patternBasicValueTerm != termBasicValueTerm) return null;
+				
+				return Enumerables.Create<Assignment>();
+			}
+			if (pattern is ValueDefinition)
+			{
+				if (!(term is ValueDefinition)) return null;
+
+				ValueDefinition patternBasicValueTerm = (ValueDefinition)pattern;
+				ValueDefinition termBasicValueTerm = (ValueDefinition)term;
 				
 				if (patternBasicValueTerm != termBasicValueTerm) return null;
 				

@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
+using Krach.Calculus.Abstract;
 
-namespace Krach.Calculus
+namespace Krach.Calculus.Explicit
 {
 	class ExplicitValue : IValue
 	{

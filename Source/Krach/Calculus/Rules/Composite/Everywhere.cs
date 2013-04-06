@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Krach.Extensions;
 using Krach.Calculus.Terms.Basic;
 using Krach.Calculus;
+using Krach.Calculus.Terms.Basic.Definitions;
 
 namespace Krach.Calculus.Rules.Composite
 {
@@ -30,7 +31,7 @@ namespace Krach.Calculus.Rules.Composite
 		{
 			T rewrittenTerm = rule.Rewrite(term);
 			if (rewrittenTerm != null) return rewrittenTerm;
-			
+
 			if (term is BasicValueTerm) return null;
 			if (term is BasicFunctionTerm) return null;
 			if (term is Variable) return null;

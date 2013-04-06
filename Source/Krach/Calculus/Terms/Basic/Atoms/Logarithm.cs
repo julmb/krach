@@ -5,6 +5,7 @@ using Krach.Extensions;
 using Krach.Calculus.Terms.Composite;
 using Krach.Calculus.Terms;
 using Krach.Calculus.Terms.Notation;
+using Krach.Calculus.Terms.Notation.Custom;
 
 namespace Krach.Calculus.Terms.Basic.Atoms
 {

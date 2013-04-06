@@ -1,7 +1,6 @@
 using System;
 using Krach.Calculus.Terms;
 using Krach.Calculus.Terms.Basic.Atoms;
-using Krach.Calculus.Terms.Basic.Definitions;
 using Krach.Calculus.Terms.Composite;
 using Krach.Calculus.Rules;
 using Krach.Calculus.Rules.Composite;
@@ -12,6 +11,8 @@ using Krach.Calculus.Rules.Simplification;
 using Krach.Calculus.Rules.Vectors;
 using Krach.Calculus.Terms.Notation;
 using Krach.Extensions;
+using Krach.Calculus.Terms.Basic.Definitions;
+using Krach.Calculus.Terms.Notation.Custom;
 
 namespace Krach.Calculus.Rules
 {
@@ -71,6 +72,7 @@ namespace Krach.Calculus.Rules
         static ValueTerm SingletonVectorTest { get { return new Vector(Enumerables.Create(new Variable(4, "x"))); } }
         static ValueTerm SelectSingleTest { get { return new Selection(new Variable(1, "x"), 0); } }
         static ValueTerm SelectVectorTest { get { return new Selection(new Vector(Enumerables.Create(new Constant(41), new Constant(42))), 1); } }
+		static ValueTerm VectorSelectTest { get { return new Vector(Enumerables.Create(new Selection(new Variable(2, "x"), 0), new Selection(new Variable(2, "x"), 1))); } }
         static ValueTerm FlattenVectorTest { get { return new Vector(Enumerables.Create<ValueTerm>(new Constant(41), new Vector(Enumerables.Create(new Constant(42))))); } }
 
         // errors found using unit tests: 2
@@ -112,11 +114,14 @@ namespace Krach.Calculus.Rules
             RunTest(SingletonVectorTest, new SingletonVector());
             RunTest(SelectSingleTest, new SelectSingle());
             RunTest(SelectVectorTest, new SelectVector());
+			RunTest(VectorSelectTest, new VectorSelect());
             RunTest(FlattenVectorTest, new FlattenVector());
         }
 
         static void RunTest<T>(T term, Rule rule) where T : VariableTerm<T>
         {
+			Terminal.Write(string.Format("testing rule {0}...", rule.GetType().Name));
+
             T result = rule.Rewrite(term);
 
             if (result == null) throw new InvalidOperationException();
@@ -129,8 +134,6 @@ namespace Krach.Calculus.Rules
                 ValueTerm resultValueTerm = (ValueTerm)(BaseTerm)result;
 
                 if (termValueTerm.Dimension != resultValueTerm.Dimension) throw new InvalidOperationException();
-
-                return;
             }
 
             if (term is FunctionTerm)
@@ -142,11 +145,10 @@ namespace Krach.Calculus.Rules
 
                 if (resultFunctionTerm.DomainDimension != termFunctionTerm.DomainDimension) throw new InvalidOperationException();
                 if (resultFunctionTerm.CodomainDimension != termFunctionTerm.CodomainDimension) throw new InvalidOperationException();
-
-                return;
             }
 
-            throw new InvalidOperationException();
+			Terminal.Write("success");
+			Terminal.WriteLine();
         }
     }
 }

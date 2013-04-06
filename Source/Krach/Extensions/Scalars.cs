@@ -50,6 +50,8 @@ namespace Krach.Extensions
 		}
 		public static double Exponentiate(this double @base, double exponent)
 		{
+			if (@base <= 0 && exponent < 0) throw new ArgumentOutOfRangeException("exponent");
+
 			return Math.Pow(@base, exponent);
 		}
 		public static double Exponentiate(double exponent)
@@ -62,12 +64,17 @@ namespace Krach.Extensions
 		}
 		public static double Logarithm(this double @base, double value)
 		{
+			if (@base <= 0) throw new ArgumentOutOfRangeException("base");
+			if (value <= 0) throw new ArgumentOutOfRangeException("value");
+
 			if (@base == 10) return Math.Log10(value);
 
 			return Math.Log(value, @base);
 		}
 		public static double Logarithm(double value)
 		{
+			if (value <= 0) throw new ArgumentOutOfRangeException("value");
+
 			return Math.Log(value);
 		}
 		// Trigonometry

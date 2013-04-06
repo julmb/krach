@@ -4,6 +4,8 @@ using Krach.Calculus.Terms.Composite;
 using System.Linq;
 using Krach.Extensions;
 using Krach.Calculus.Terms.Notation;
+using Krach.Calculus.Terms.Basic;
+using Krach.Calculus.Terms.Notation.Custom;
 
 namespace Krach.Calculus.Terms.Basic.Definitions
 {
@@ -23,6 +25,7 @@ namespace Krach.Calculus.Terms.Basic.Definitions
         {
             if (name == null) throw new ArgumentNullException("name");
 			if (function == null) throw new ArgumentNullException("function");
+			if (function.GetFreeVariables().Any()) throw new ArgumentException("cannot create definition containing free variables.");
             if (syntax == null) throw new ArgumentNullException("syntax");
 
             this.name = name;
@@ -49,7 +52,20 @@ namespace Krach.Calculus.Terms.Basic.Definitions
 		}
 		public override IEnumerable<FunctionTerm> GetDerivatives()
 		{
-            return function.GetDerivatives();
+			IEnumerable<FunctionTerm> derivatives = function.GetDerivatives().ToArray();
+
+            return
+			(
+				from index in Enumerable.Range(0, derivatives.Count())
+				let derivative = derivatives.ElementAt(index)
+				select new FunctionDefinition
+				(
+					string.Format("{0}_d{1}", name, index),
+					Rewriting.CompleteNormalization.Rewrite(derivative),
+					new BasicSyntax(string.Format("{0}'{1}", syntax.GetText(), index.ToString().ToSuperscript()))
+				)
+			)
+			.ToArray();
 		}
 
 		public static bool operator ==(FunctionDefinition function1, FunctionDefinition function2)
