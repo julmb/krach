@@ -26,10 +26,10 @@ namespace Krach.Basics
 	{
 		public readonly double[,] values;
 
-		public double this[int row, int column]
+		public double this[int rowIndex, int columnIndex]
 		{
-			get { return values[row, column]; }
-			set { values[row, column] = value; }
+			get { return values[rowIndex, columnIndex]; }
+			set { values[rowIndex, columnIndex] = value; }
 		}
 		public int RowCount { get { return values.GetLength(0); } }
 		public int ColumnCount { get { return values.GetLength(1); } }
