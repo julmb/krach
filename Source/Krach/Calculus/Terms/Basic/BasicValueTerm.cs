@@ -29,16 +29,6 @@ namespace Krach.Calculus.Terms.Basic
 			return this;
 		}
 
-		public override IEnumerable<ValueTerm> GetDerivatives(Variable variable)
-		{
-			return
-			(
-				from variableIndex in Enumerable.Range(0, variable.Dimension)
-				select Term.Vector(Enumerable.Repeat(Term.Constant(0), Dimension))
-			)
-			.ToArray();
-		}
-
 		public static bool operator ==(BasicValueTerm term1, BasicValueTerm term2)
 		{
 			return object.Equals(term1, term2);

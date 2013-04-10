@@ -74,7 +74,6 @@
     <Compile Include="Extensions\Items.cs" />
     <Compile Include="Extensions\Maps.cs" />
     <Compile Include="Extensions\Queues.cs" />
-    <Compile Include="Extensions\Ranges.cs" />
     <Compile Include="Extensions\Scalars.cs" />
     <Compile Include="Extensions\Streams.cs" />
     <Compile Include="Extensions\Strings.cs" />
@@ -194,6 +193,8 @@
     <Compile Include="Calculus\Constraint.cs" />
     <Compile Include="Calculus\Rules\Composite\Shortening.cs" />
     <Compile Include="Calculus\Rules\Vectors\VectorSelect.cs" />
+    <Compile Include="Extensions\OrderedRanges.cs" />
+    <Compile Include="Calculus\Derivation.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -58,37 +58,6 @@ namespace Krach.Calculus.Terms.Composite
 		{
 			return function.Evaluate(parameter.Evaluate());
 		}
-		public override IEnumerable<ValueTerm> GetDerivatives(Variable variable)
-		{
-			IEnumerable<ValueTerm> functionDerivatives =
-			(
-				from derivative in function.GetDerivatives()
-				select derivative.Apply(parameter)
-			)
-			.ToArray();
-			IEnumerable<ValueTerm> flippedFunctionDerivatives =
-			(
-				from index in Enumerable.Range(0, function.CodomainDimension)
-				select Term.Vector
-				(
-					from derivative in functionDerivatives
-					select derivative.Select(index)
-				)
-			)
-			.ToArray();
-			IEnumerable<ValueTerm> parameterDerivatives = parameter.GetDerivatives(variable);
-
-			return
-			(
-				from parameterDerivative in parameterDerivatives
-				select Term.Vector
-				(
-					from functionDerivative in flippedFunctionDerivatives
-					select Term.DotProduct(functionDerivative, parameterDerivative)
-				)
-			)
-			.ToArray();
-		}
 		
 		public static bool operator ==(Application application1, Application application2)
 		{

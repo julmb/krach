@@ -32,14 +32,6 @@ namespace Krach.Calculus.Terms.Basic.Atoms
 		{
 			yield return values.ElementAt(0).Exponentiate(values.ElementAt(1));
 		}
-		public override IEnumerable<FunctionTerm> GetDerivatives()
-		{	
-			Variable x = new Variable(1, "x");
-			Variable y = new Variable(1, "y");
-			
-			yield return Term.Product(y, Term.Exponentiation(x, Term.Difference(y, Term.Constant(1)))).Abstract(x, y);
-			yield return Term.Product(Term.Logarithm(x), Term.Exponentiation(x, y)).Abstract(x, y);
-		}
 		
 		public static bool operator ==(Exponentiation function1, Exponentiation function2)
 		{

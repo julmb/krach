@@ -24,7 +24,6 @@ namespace Krach.Calculus.Terms
 		}
 		
 		public abstract IEnumerable<double> Evaluate();
-		public abstract IEnumerable<ValueTerm> GetDerivatives(Variable variable);
 		
 		public static bool operator ==(ValueTerm term1, ValueTerm term2)
 		{

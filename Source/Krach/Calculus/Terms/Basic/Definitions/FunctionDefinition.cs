@@ -50,23 +50,6 @@ namespace Krach.Calculus.Terms.Basic.Definitions
 		{
             return function.Evaluate(values);
 		}
-		public override IEnumerable<FunctionTerm> GetDerivatives()
-		{
-			IEnumerable<FunctionTerm> derivatives = function.GetDerivatives().ToArray();
-
-            return
-			(
-				from index in Enumerable.Range(0, derivatives.Count())
-				let derivative = derivatives.ElementAt(index)
-				select new FunctionDefinition
-				(
-					string.Format("{0}_d{1}", name, index),
-					Rewriting.CompleteNormalization.Rewrite(derivative),
-					new BasicSyntax(string.Format("{0}'{1}", syntax.GetText(), index.ToString().ToSuperscript()))
-				)
-			)
-			.ToArray();
-		}
 
 		public static bool operator ==(FunctionDefinition function1, FunctionDefinition function2)
 		{

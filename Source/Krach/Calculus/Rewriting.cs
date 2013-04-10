@@ -36,7 +36,49 @@ namespace Krach.Calculus
             }
         }
         static Rule VectorSimplification { get { return new Any(new SingletonVector(), new SelectSingle(), new SelectVector(), new VectorSelect()); } }
-        static Rule BasicSimplification
+		static Rule Simplification0
+		{
+			get
+			{
+                Variable x = new Variable(1, "x");
+
+				return new Any
+				(
+					new Evaluation(),
+	                new FirstOrderRule(new Application(new Product(), new Vector(Enumerables.Create<ValueTerm>(new Constant(0), x))), new Constant(0)),
+	                new FirstOrderRule(new Application(new Product(), new Vector(Enumerables.Create<ValueTerm>(x, new Constant(0)))), new Constant(0)),
+                    new FirstOrderRule(new Application(new Exponentiation(), new Vector(Enumerables.Create<ValueTerm>(new Constant(1), x))), new Constant(1)),
+                    new FirstOrderRule(new Application(new Exponentiation(), new Vector(Enumerables.Create<ValueTerm>(x, new Constant(0)))), new Constant(1))
+				);
+			}
+		}
+        static Rule Simplification1
+        {
+            get
+            {
+                Variable x = new Variable(1, "x");
+
+                return new Any
+                (
+                    new FirstOrderRule(new Application(new Sum(), new Vector(Enumerables.Create<ValueTerm>(new Constant(0), x))), x),
+                    new FirstOrderRule(new Application(new Sum(), new Vector(Enumerables.Create<ValueTerm>(x, new Constant(0)))), x),
+                    new FirstOrderRule(new Application(new Product(), new Vector(Enumerables.Create<ValueTerm>(new Constant(1), x))), x),
+                    new FirstOrderRule(new Application(new Product(), new Vector(Enumerables.Create<ValueTerm>(x, new Constant(1)))), x),
+                    new FirstOrderRule(new Application(new Exponentiation(), new Vector(Enumerables.Create<ValueTerm>(x, new Constant(1)))), x),
+
+					new FirstOrderRule(new Application(new Exponentiation(), new Vector(Enumerables.Create<ValueTerm>(new Application(new Exponentiation(), new Vector(Enumerables.Create<ValueTerm>(x, new Constant(0.5)))), new Constant(2)))), x),
+
+                    new Identity.Application(),
+                    new VectorSum.ZeroDimensional(), new VectorSum.OneDimensional(),
+                    new DotProduct.ZeroDimensional(), new DotProduct.OneDimensional(),
+                    new VectorScaling.ZeroDimensional(), new VectorScaling.OneDimensional(),
+                    new BigSum.Nullary(), new BigSum.Unary(), new BigSum.Binary(),
+                    new BigProduct.Nullary(), new BigProduct.Unary(), new BigProduct.Binary(),
+                    new Norm.ZeroDimensional()
+                );
+            }
+        }
+		static Rule Simplification2
         {
             get
             {
@@ -46,85 +88,73 @@ namespace Krach.Calculus
 
                 return new Any
                 (
-                    new FirstOrderRule(new Application(new Sum(), new Vector(Enumerables.Create<ValueTerm>(new Constant(0), x))), x),
-                    new FirstOrderRule(new Application(new Sum(), new Vector(Enumerables.Create<ValueTerm>(x, new Constant(0)))), x),
-                    new FirstOrderRule(new Application(new Product(), new Vector(Enumerables.Create<ValueTerm>(new Constant(0), x))), new Constant(0)),
-                    new FirstOrderRule(new Application(new Product(), new Vector(Enumerables.Create<ValueTerm>(x, new Constant(0)))), new Constant(0)),
-                    new FirstOrderRule(new Application(new Product(), new Vector(Enumerables.Create<ValueTerm>(new Constant(1), x))), x),
-                    new FirstOrderRule(new Application(new Product(), new Vector(Enumerables.Create<ValueTerm>(x, new Constant(1)))), x),
-                    new FirstOrderRule(new Application(new Exponentiation(), new Vector(Enumerables.Create<ValueTerm>(new Constant(1), x))), new Constant(1)),
-                    new FirstOrderRule(new Application(new Exponentiation(), new Vector(Enumerables.Create<ValueTerm>(x, new Constant(0)))), new Constant(1)),
-                    new FirstOrderRule(new Application(new Exponentiation(), new Vector(Enumerables.Create<ValueTerm>(x, new Constant(1)))), x),
+					new FirstOrderRule
+					(
+					    new Application(new Sum(), new Vector(Enumerables.Create<ValueTerm>(x, new Application(new Sum(), new Vector(Enumerables.Create<ValueTerm>(y, z)))))),
+					    new Application(new Sum(), new Vector(Enumerables.Create<ValueTerm>(new Application(new Sum(), new Vector(Enumerables.Create<ValueTerm>(x, y))), z)))
+					),
+					new FirstOrderRule
+					(
+					    new Application(new Product(), new Vector(Enumerables.Create<ValueTerm>(x, new Application(new Product(), new Vector(Enumerables.Create<ValueTerm>(y, z)))))),
+					    new Application(new Product(), new Vector(Enumerables.Create<ValueTerm>(new Application(new Product(), new Vector(Enumerables.Create<ValueTerm>(x, y))), z)))
+					),
 
-                    new FirstOrderRule
-                    (
-                        new Application(new Sum(), new Vector(Enumerables.Create<ValueTerm>(x, new Application(new Sum(), new Vector(Enumerables.Create<ValueTerm>(y, z)))))),
-                        new Application(new Sum(), new Vector(Enumerables.Create<ValueTerm>(new Application(new Sum(), new Vector(Enumerables.Create<ValueTerm>(x, y))), z)))
-                    ),
-                    new FirstOrderRule
-                    (
-                        new Application(new Product(), new Vector(Enumerables.Create<ValueTerm>(x, new Application(new Product(), new Vector(Enumerables.Create<ValueTerm>(y, z)))))),
-                        new Application(new Product(), new Vector(Enumerables.Create<ValueTerm>(new Application(new Product(), new Vector(Enumerables.Create<ValueTerm>(x, y))), z)))
-                    ),
-
-                    new FirstOrderRule(new Application(new Exponentiation(), new Vector(Enumerables.Create<ValueTerm>(new Application(new Exponentiation(), new Vector(Enumerables.Create<ValueTerm>(x, new Constant(0.5)))), new Constant(2)))), x)
+					new Sorting.ProductSimple(), new Sorting.ProductAssociative()
                 );
             }
         }
-        static Rule AdvancedSimplification
-        {
-            get
-            {
-                return new Any
-                (
-                    new Identity.Application(),
-                    new VectorSum.ZeroDimensional(), new VectorSum.OneDimensional(),
-                    new DotProduct.ZeroDimensional(), new DotProduct.OneDimensional(),
-                    new VectorScaling.ZeroDimensional(), new VectorScaling.OneDimensional(),
-                    new BigSum.Nullary(), new BigSum.Unary(), new BigSum.Binary(),
-                    new BigProduct.Nullary(), new BigProduct.Unary(), new BigProduct.Binary(),
-                    new Norm.ZeroDimensional(),
-
-                    new Evaluation(),
-
-                    new Sorting.ProductSimple(), new Sorting.ProductAssociative()
-                );
-            }
-        }
-        static Rule Simplification { get { return new Any(LambdaCalculusSimplification, VectorSimplification, BasicSimplification, AdvancedSimplification); } }
-        static Rule DefinitionExpansion
-        {
-            get
-            {
-                return new Any
+        static Rule Simplification
+		{
+			get 
+			{
+				return new Any
+				(
+					new Everywhere(Simplification0),
+					new Everywhere(new Any(LambdaCalculusSimplification, VectorSimplification, Simplification1))
+					//new Everywhere(Simplification2)
+				);
+			}
+		}
+		static Rule DefinitionExpansion
+		{
+			get
+			{
+				return new Any
                 (
                     new ExpandValueDefinition(),
-					// TODO: this is only fast because it prevents parameters of sum derivatives from getting expanded and simplified before they are discarded
+					// TODO: find out why this makes such a huge difference
 					new ExpandAppliedFunctionDefinition(),
                     new ExpandFunctionDefinition()
-                );
+				);
+			}
+		}
+        static Rule BasicDefinitionExpansion
+        {
+            get
+            {
+                return new Everywhere(DefinitionExpansion);
             }
         }
-		// TODO: find a way of getting derivatives simplified properly without being normalized completely
-		//   for instance, the derivatives of big_sum are huge, but they can be simplified to a constant function
-		//   find a way of simplifying these without affecting the rest
 		static Rule ShorteningDefinitionExpansion
         {
             get
             {
-                return new Shortening
-                (
-					new All
-					(
-						DefinitionExpansion,
-						new Repeat(new Everywhere(Simplification))
+                return new Everywhere
+				(
+					new Shortening
+	                (
+						new All
+						(
+							DefinitionExpansion,
+							new Repeat(new Everywhere(Simplification))
+						)
 					)
 				);
             }
         }
 
-        public static Rule CompleteSimplification { get { return new Repeat(new Any(new Everywhere(Simplification), new Everywhere(ShorteningDefinitionExpansion))); } }
-        public static Rule CompleteNormalization { get { return new Repeat(new Any(new Everywhere(Simplification), new Everywhere(DefinitionExpansion))); } }
+        public static Rule CompleteSimplification { get { return new Repeat(new Any(Simplification, ShorteningDefinitionExpansion)); } }
+        public static Rule CompleteNormalization { get { return new Repeat(new Any(Simplification, BasicDefinitionExpansion)); } }
 
 		// TODO: remove debug code
 		public static T RewriteAll<T>(this Rule rule, T term) where T : VariableTerm<T>
@@ -132,6 +162,8 @@ namespace Krach.Calculus
 			if (rule is Repeat) rule = ((Repeat)rule).Rule;
 
 			int rewriteCount = 0;
+//			Console.WriteLine(term);
+//			Console.WriteLine();
 
 			while (true)
 			{

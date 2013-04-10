@@ -76,16 +76,6 @@ namespace Krach.Calculus.Terms.Composite
 			
 			return term.Substitute(variables, substitutes).Evaluate();
 		}
-		public override IEnumerable<FunctionTerm> GetDerivatives() 
-		{
-			return
-			(
-				from variable in variables
-				from derivative in term.GetDerivatives(variable)
-				select derivative.Abstract(variables)
-			)
-			.ToArray();
-		}
 	
 		public static bool operator ==(Abstraction abstraction1, Abstraction abstraction2)
 		{

@@ -32,7 +32,6 @@ namespace Krach.Calculus
     //     examples: terms need to be simplified before being printed or derived
     public static class Term
     {
-
         // lambda terms
         public static ValueTerm Variable(int dimension, string name)
         {

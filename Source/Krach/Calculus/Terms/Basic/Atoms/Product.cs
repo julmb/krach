@@ -32,14 +32,6 @@ namespace Krach.Calculus.Terms.Basic.Atoms
 		{
 			yield return values.ElementAt(0) * values.ElementAt(1);
 		}
-		public override IEnumerable<FunctionTerm> GetDerivatives()
-		{
-			Variable x = new Variable(1, "x");
-			Variable y = new Variable(1, "y");
-
-			yield return y.Abstract(x, y);
-			yield return x.Abstract(x, y);
-		}
 		
 		public static bool operator ==(Product function1, Product function2)
 		{

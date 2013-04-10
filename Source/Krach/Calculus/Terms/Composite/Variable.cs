@@ -51,19 +51,6 @@ namespace Krach.Calculus.Terms.Composite
 		{
 			throw new InvalidOperationException(string.Format("Cannot evaluate variable '{0}'.", this));
 		}
-		public override IEnumerable<ValueTerm> GetDerivatives(Variable variable)
-		{
-			return
-			(
-				from variableIndex in Enumerable.Range(0, variable.Dimension)
-				select Term.Vector
-				(
-					from componentIndex in Enumerable.Range(0, dimension)
-					select Term.Constant(variable == this && variableIndex == componentIndex ? 1 : 0)
-				)
-			)
-			.ToArray();
-		}
 		
 		public static bool operator ==(Variable variable1, Variable variable2)
 		{

@@ -24,7 +24,6 @@ namespace Krach.Calculus.Terms
 		}
 
 		public abstract IEnumerable<double> Evaluate(IEnumerable<double> parameters);
-		public abstract IEnumerable<FunctionTerm> GetDerivatives();
 
 		public static bool operator ==(FunctionTerm term1, FunctionTerm term2)
 		{
@@ -37,7 +36,7 @@ namespace Krach.Calculus.Terms
 
 		IEnumerable<IFunction> IFunction.GetDerivatives()
 		{
-			return GetDerivatives();
+			return this.GetDerivatives();
 		}
 	}
 }

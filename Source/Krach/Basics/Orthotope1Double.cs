@@ -111,7 +111,7 @@ namespace Krach.Basics
 		}
 		public static Orthotope1Double Interpolate(Orthotope1Double orthotope1, Orthotope1Double orthotope2, Interpolation<double> interpolate, double fraction)
 		{
-			return new Orthotope1Double(Ranges.Interpolate(orthotope1.rangeX, orthotope2.rangeX, interpolate, fraction));
+			return new Orthotope1Double(OrderedRanges.Interpolate(orthotope1.rangeX, orthotope2.rangeX, interpolate, fraction));
 		}
 	}
 }

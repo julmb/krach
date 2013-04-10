@@ -32,12 +32,6 @@ namespace Krach.Calculus.Terms.Basic.Atoms
 		{
 			yield return Scalars.Logarithm(values.ElementAt(0));
 		}
-		public override IEnumerable<FunctionTerm> GetDerivatives()
-		{	
-			Variable x = new Variable(1, "x");
-
-			yield return Term.Invert(x).Abstract(x);
-		}
 		
 		public static bool operator ==(Logarithm function1, Logarithm function2)
 		{

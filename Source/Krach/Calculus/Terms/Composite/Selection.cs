@@ -51,15 +51,6 @@ namespace Krach.Calculus.Terms.Composite
 		{
 			yield return term.Evaluate().ElementAt(index);
 		}
-		public override IEnumerable<ValueTerm> GetDerivatives(Variable variable)
-		{
-			return
-			(
-				from derivative in term.GetDerivatives(variable)
-				select derivative.Select(index)
-			)
-			.ToArray();
-		}
 		
 		public static bool operator ==(Selection selection1, Selection selection2)
 		{

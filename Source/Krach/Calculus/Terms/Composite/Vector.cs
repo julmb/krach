@@ -62,17 +62,6 @@ namespace Krach.Calculus.Terms.Composite
 			)
 			.ToArray();
 		}
-		public override IEnumerable<ValueTerm> GetDerivatives(Variable variable)
-		{
-			return
-			(
-				from term in terms
-				select term.GetDerivatives(variable)
-			)
-			.Flip()
-			.Select(Term.Vector)
-			.ToArray();
-		}
 		
 		public static bool operator ==(Vector vector1, Vector vector2)
 		{
