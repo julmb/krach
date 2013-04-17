@@ -23,6 +23,7 @@ namespace Krach.Calculus
 			{
 				yield return GetDerivativesSum;
 				yield return GetDerivativesProduct;
+				yield return GetDerivativesExponentiation;
 			}
 		}
 
@@ -222,18 +223,11 @@ namespace Krach.Calculus
 			ValueTerm term0 = vector.Terms.ElementAt(0);
 			ValueTerm term1 = vector.Terms.ElementAt(1);
 
-//			return Enumerable.Zip
-//			(
-//				term0.GetDerivatives(variable),
-//				term1.GetDerivatives(variable),
-//				(derivative0, derivative1) => Term.Sum(derivative0, derivative1)
-//			);
-
 			return Enumerable.Zip
 			(
 				term0.GetDerivatives(variable),
 				term1.GetDerivatives(variable),
-				(derivative0, derivative1) => new Application(new Sum(), new Vector(Enumerables.Create(derivative0, derivative1)))
+				(derivative0, derivative1) => Term.Sum(derivative0, derivative1)
 			);
 		}
 		static IEnumerable<ValueTerm> GetDerivativesProduct(ValueTerm term, Variable variable)
@@ -253,28 +247,38 @@ namespace Krach.Calculus
 			ValueTerm term0 = vector.Terms.ElementAt(0);
 			ValueTerm term1 = vector.Terms.ElementAt(1);
 
-//			return Enumerable.Zip
-//			(
-//				term0.GetDerivatives(variable),
-//				term1.GetDerivatives(variable),
-//				(derivative0, derivative1) => Term.Sum(Term.Product(derivative0, term1), Term.Product(term0, derivative1))
-//			);
+			return Enumerable.Zip
+			(
+				term0.GetDerivatives(variable),
+				term1.GetDerivatives(variable),
+				(derivative0, derivative1) => Term.Sum(Term.Product(derivative0, term1), Term.Product(term0, derivative1))
+			);
+		}
+		static IEnumerable<ValueTerm> GetDerivativesExponentiation(ValueTerm term, Variable variable)
+		{
+			if (!(term is Application)) return null;
+
+			Application application = (Application)term;
+
+			if (!(application.Function is Exponentiation)) return null;
+
+			if (!(application.Parameter is Vector)) return null;
+
+			Vector vector = (Vector)application.Parameter;
+
+			if (vector.Terms.Count() != 2) return null;
+
+			ValueTerm term0 = vector.Terms.ElementAt(0);
+			ValueTerm term1 = vector.Terms.ElementAt(1);
 
 			return Enumerable.Zip
 			(
 				term0.GetDerivatives(variable),
 				term1.GetDerivatives(variable),
-				(derivative0, derivative1) => new Application
+				(derivative0, derivative1) => Term.Sum
 				(
-					new Sum(),
-					new Vector
-					(
-						Enumerables.Create
-						(
-							new Application(new Product(), new Vector(Enumerables.Create(derivative0, term1))),
-							new Application(new Product(), new Vector(Enumerables.Create(term0, derivative1)))
-						)
-					)
+					Term.Product(term1, Term.Exponentiation(term0, Term.Difference(term1, Term.Constant(1))), derivative0),
+					Term.Product(Term.Logarithm(term0), Term.Exponentiation(term0, term1), derivative1)
 				)
 			);
 		}

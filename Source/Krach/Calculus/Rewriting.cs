@@ -192,7 +192,8 @@ namespace Krach.Calculus
             if (depth < 0) throw new ArgumentOutOfRangeException("depth");
 
             functionTerm = CompleteNormalization.Rewrite(functionTerm);
-			Console.WriteLine(new string(' ', (2 - depth) * 4) + functionTerm);
+			//Console.WriteLine(new string(' ', (2 - depth) * 4) + functionTerm);
+			Console.Write(".");
 
             if (depth == 0) return functionTerm;
             

@@ -38,15 +38,13 @@ namespace Krach.Calculus.Terms.Constraints
 				Enumerables.Create<OrderedRange<double>>()
 			);
 		}
+		public static IConstraint<ValueTerm> CreateZero(ValueTerm value)
+		{
+			return new ExplicitConstraint<ValueTerm>(value, Enumerable.Repeat(new OrderedRange<double>(0), value.Dimension));
+		}
 		public static IConstraint<ValueTerm> CreateEquality(ValueTerm value1, ValueTerm value2)
 		{
-			int dimension = Items.Equal(value1.Dimension, value2.Dimension);
-
-			return new ExplicitConstraint<ValueTerm>
-			(
-				Term.Difference(value1, value2),
-				Enumerable.Repeat(new OrderedRange<double>(0), dimension)
-			);
+			return CreateZero(Term.Difference(value1, value2));
 		}
 		public static IConstraint<ValueTerm> Merge(IEnumerable<IConstraint<ValueTerm>> constraints)
 		{
