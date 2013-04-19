@@ -67,6 +67,7 @@ namespace Krach.Calculus
                     new FirstOrderRule(new Application(new Exponentiation(), new Vector(Enumerables.Create<ValueTerm>(x, new Constant(1)))), x),
 
 					new FirstOrderRule(new Application(new Exponentiation(), new Vector(Enumerables.Create<ValueTerm>(new Application(new Exponentiation(), new Vector(Enumerables.Create<ValueTerm>(x, new Constant(0.5)))), new Constant(2)))), x),
+					new FirstOrderRule(new Application(new Product(), new Vector(Enumerables.Create<ValueTerm>(x, x))), new Application(new Exponentiation(), new Vector(Enumerables.Create<ValueTerm>(x, new Constant(2))))),
 
                     new Identity.Application(),
                     new VectorSum.ZeroDimensional(), new VectorSum.OneDimensional(),

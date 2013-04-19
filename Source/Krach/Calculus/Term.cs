@@ -318,7 +318,7 @@ namespace Krach.Calculus
             return new FunctionDefinition
             (
                 string.Format("norm_{0}", dimension),
-                Exponentiation(ApplyDotProduct(x, x), Constant(0.5)).Abstract(x),
+                Exponentiation(DotProduct(x, x), Constant(0.5)).Abstract(x),
                 new NormSyntax()
             );
         }
