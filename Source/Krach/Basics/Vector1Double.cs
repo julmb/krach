@@ -16,6 +16,7 @@
 
 using System;
 using Krach.Extensions;
+using System.Xml.Linq;
 
 namespace Krach.Basics
 {
@@ -25,16 +26,24 @@ namespace Krach.Basics
 
 		public static Vector1Double Origin { get { return new Vector1Double(0); } }
 		public static Vector1Double UnitX { get { return new Vector1Double(1); } }
+		public static string XElementName { get { return "vector_1_double"; } }
 
 		public double X { get { return x; } }
 		public double Length { get { return LengthSquared.SquareRoot(); } }
 		public double LengthSquared { get { return x.Square(); } }
 		public Vector1Double NormalizedVector { get { return (1 / Length) * this; } }
 		public double Direction { get { return 0; } }
+		public XElement XElement { get { return new XElement(XElementName, new XElement("x", x)); } }
 
 		public Vector1Double(double x)
 		{
 			this.x = x;
+		}
+		public Vector1Double(XElement source)
+		{
+			if (source == null) throw new ArgumentNullException("source");
+
+			this.x = (double)source.Element("x");
 		}
 
 		public override bool Equals(object obj)

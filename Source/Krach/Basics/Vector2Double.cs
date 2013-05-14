@@ -16,6 +16,7 @@
 
 using System;
 using Krach.Extensions;
+using System.Xml.Linq;
 
 namespace Krach.Basics
 {
@@ -28,6 +29,7 @@ namespace Krach.Basics
 		public static Vector2Double UnitX { get { return new Vector2Double(1, 0); } }
 		public static Vector2Double UnitY { get { return new Vector2Double(0, 1); } }
 		public static Vector2Double UnitXY { get { return new Vector2Double(1, 1); } }
+		public static string XElementName { get { return "vector_2_double"; } }
 
 		public double X { get { return x; } }
 		public double Y { get { return y; } }
@@ -35,11 +37,19 @@ namespace Krach.Basics
 		public double LengthSquared { get { return x.Square() + y.Square(); } }
 		public Vector2Double NormalizedVector { get { return (1 / Length) * this; } }
 		public double Direction { get { return Scalars.ArcTangent(Y, X); } }
+		public XElement XElement { get { return new XElement(XElementName, new XElement("x", x), new XElement("y", y)); } }
 
 		public Vector2Double(double x, double y)
 		{
 			this.x = x;
 			this.y = y;
+		}
+		public Vector2Double(XElement source)
+		{
+			if (source == null) throw new ArgumentNullException("source");
+
+			this.x = (double)source.Element("x");
+			this.y = (double)source.Element("y");
 		}
 
 		public override bool Equals(object obj)

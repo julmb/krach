@@ -15,6 +15,7 @@
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using System.Xml.Linq;
 
 namespace Krach.Basics
 {
@@ -27,14 +28,23 @@ namespace Krach.Basics
 		public static Vector2Integer UnitX { get { return new Vector2Integer(1, 0); } }
 		public static Vector2Integer UnitY { get { return new Vector2Integer(0, 1); } }
 		public static Vector2Integer UnitXY { get { return new Vector2Integer(1, 1); } }
+		public static string XElementName { get { return "vector_2_integer"; } }
 
 		public int X { get { return x; } }
 		public int Y { get { return y; } }
+		public XElement XElement { get { return new XElement(XElementName, new XElement("x", x), new XElement("y", y)); } }
 
 		public Vector2Integer(int x, int y)
 		{
 			this.x = x;
 			this.y = y;
+		}
+		public Vector2Integer(XElement source)
+		{
+			if (source == null) throw new ArgumentNullException("source");
+
+			this.x = (int)source.Element("x");
+			this.y = (int)source.Element("y");
 		}
 
 		public override bool Equals(object obj)

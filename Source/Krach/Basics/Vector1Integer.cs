@@ -15,6 +15,7 @@
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using System.Xml.Linq;
 
 namespace Krach.Basics
 {
@@ -24,12 +25,20 @@ namespace Krach.Basics
 
 		public static Vector1Integer Origin { get { return new Vector1Integer(0); } }
 		public static Vector1Integer UnitX { get { return new Vector1Integer(1); } }
+		public static string XElementName { get { return "vector_1_integer"; } }
 
 		public int X { get { return x; } }
+		public XElement XElement { get { return new XElement(XElementName, new XElement("x", x)); } }
 
 		public Vector1Integer(int x)
 		{
 			this.x = x;
+		}
+		public Vector1Integer(XElement source)
+		{
+			if (source == null) throw new ArgumentNullException("source");
+
+			this.x = (int)source.Element("x");
 		}
 
 		public override bool Equals(object obj)
