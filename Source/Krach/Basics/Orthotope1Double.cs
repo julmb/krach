@@ -30,8 +30,6 @@ namespace Krach.Basics
 		public OrderedRange<double> RangeX { get { return rangeX; } }
 		public Vector1Double Start { get { return new Vector1Double(rangeX.Start); } }
 		public Vector1Double End { get { return new Vector1Double(rangeX.End); } }
-		public double StartX { get { return rangeX.Start; } }
-		public double EndX { get { return rangeX.End; } }
 		public Vector1Double Size { get { return new Vector1Double(rangeX.Length()); } }
 		public double Volume { get { return Size.X; } }
 		public bool IsEmpty { get { return Size.X <= 0; } }
@@ -102,8 +100,8 @@ namespace Krach.Basics
 			if (intersection.IsEmpty) yield return orthotope;
 			else
 			{
-				Orthotope1Double left = new Orthotope1Double(orthotope.StartX, intersection.StartX);
-				Orthotope1Double right = new Orthotope1Double(intersection.EndX, orthotope.EndX);
+				Orthotope1Double left = new Orthotope1Double(orthotope.Start.X, intersection.Start.X);
+				Orthotope1Double right = new Orthotope1Double(intersection.End.X, orthotope.End.X);
 
 				if (!left.IsEmpty) yield return left;
 				if (!right.IsEmpty) yield return right;

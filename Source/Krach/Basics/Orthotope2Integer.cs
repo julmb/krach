@@ -32,10 +32,6 @@ namespace Krach.Basics
 		public OrderedRange<int> RangeY { get { return rangeY; } }
 		public Vector2Integer Start { get { return new Vector2Integer(rangeX.Start, rangeY.Start); } }
 		public Vector2Integer End { get { return new Vector2Integer(rangeX.End, rangeY.End); } }
-		public int StartX { get { return rangeX.Start; } }
-		public int EndX { get { return rangeX.End; } }
-		public int StartY { get { return rangeY.Start; } }
-		public int EndY { get { return rangeY.End; } }
 		public Vector2Integer Size { get { return new Vector2Integer(rangeX.Length(), rangeY.Length()); } }
 		public int Volume { get { return Size.X * Size.Y; } }
 		public bool IsEmpty { get { return Size.X <= 0 || Size.Y <= 0; } }
@@ -110,10 +106,10 @@ namespace Krach.Basics
 			if (intersection.IsEmpty) yield return orthotope;
 			else
 			{
-				Orthotope2Integer left = new Orthotope2Integer(orthotope.StartX, intersection.StartX, intersection.StartY, intersection.EndY);
-				Orthotope2Integer right = new Orthotope2Integer(intersection.EndX, orthotope.EndX, intersection.StartY, intersection.EndY);
-				Orthotope2Integer top = new Orthotope2Integer(orthotope.StartX, orthotope.EndX, orthotope.StartY, intersection.StartY);
-				Orthotope2Integer bottom = new Orthotope2Integer(orthotope.StartX, orthotope.EndX, intersection.EndY, orthotope.EndY);
+				Orthotope2Integer left = new Orthotope2Integer(orthotope.Start.X, intersection.Start.X, intersection.Start.Y, intersection.End.Y);
+				Orthotope2Integer right = new Orthotope2Integer(intersection.End.X, orthotope.End.X, intersection.Start.Y, intersection.End.Y);
+				Orthotope2Integer top = new Orthotope2Integer(orthotope.Start.X, orthotope.End.X, orthotope.Start.Y, intersection.Start.Y);
+				Orthotope2Integer bottom = new Orthotope2Integer(orthotope.Start.X, orthotope.End.X, intersection.End.Y, orthotope.End.Y);
 
 				if (!left.IsEmpty) yield return left;
 				if (!right.IsEmpty) yield return right;

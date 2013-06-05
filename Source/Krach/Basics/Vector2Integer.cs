@@ -94,13 +94,13 @@ namespace Krach.Basics
 		{
 			return new Vector2Integer(vector1.x - vector2.x, vector1.y - vector2.y);
 		}
-		public static Vector2Integer operator *(Vector2Integer vector, int factor)
+		public static Vector2Integer operator *(Vector2Integer vector, double factor)
 		{
-			return new Vector2Integer(vector.x * factor, vector.y * factor);
+			return new Vector2Integer((int)(vector.x * factor), (int)(vector.y * factor));
 		}
-		public static Vector2Integer operator *(int factor, Vector2Integer vector)
+		public static Vector2Integer operator *(double factor, Vector2Integer vector)
 		{
-			return new Vector2Integer(factor * vector.x, factor * vector.y);
+			return new Vector2Integer((int)(factor * vector.x), (int)(factor * vector.y));
 		}
 	}
 }

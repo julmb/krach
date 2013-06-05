@@ -32,10 +32,6 @@ namespace Krach.Basics
 		public OrderedRange<double> RangeY { get { return rangeY; } }
 		public Vector2Double Start { get { return new Vector2Double(rangeX.Start, rangeY.Start); } }
 		public Vector2Double End { get { return new Vector2Double(rangeX.End, rangeY.End); } }
-		public double StartX { get { return rangeX.Start; } }
-		public double EndX { get { return rangeX.End; } }
-		public double StartY { get { return rangeY.Start; } }
-		public double EndY { get { return rangeY.End; } }
 		public Vector2Double Size { get { return new Vector2Double(rangeX.Length(), rangeY.Length()); } }
 		public double Volume { get { return Size.X * Size.Y; } }
 		public bool IsEmpty { get { return Size.X <= 0 || Size.Y <= 0; } }
@@ -109,10 +105,10 @@ namespace Krach.Basics
 			if (intersection.IsEmpty) yield return orthotope;
 			else
 			{
-				Orthotope2Double left = new Orthotope2Double(orthotope.StartX, intersection.StartX, intersection.StartY, intersection.EndY);
-				Orthotope2Double right = new Orthotope2Double(intersection.EndX, orthotope.EndX, intersection.StartY, intersection.EndY);
-				Orthotope2Double top = new Orthotope2Double(orthotope.StartX, orthotope.EndX, orthotope.StartY, intersection.StartY);
-				Orthotope2Double bottom = new Orthotope2Double(orthotope.StartX, orthotope.EndX, intersection.EndY, orthotope.EndY);
+				Orthotope2Double left = new Orthotope2Double(orthotope.Start.X, intersection.Start.X, intersection.Start.Y, intersection.End.Y);
+				Orthotope2Double right = new Orthotope2Double(intersection.End.X, orthotope.End.X, intersection.Start.Y, intersection.End.Y);
+				Orthotope2Double top = new Orthotope2Double(orthotope.Start.X, orthotope.End.X, orthotope.Start.Y, intersection.Start.Y);
+				Orthotope2Double bottom = new Orthotope2Double(orthotope.Start.X, orthotope.End.X, intersection.End.Y, orthotope.End.Y);
 
 				if (!left.IsEmpty) yield return left;
 				if (!right.IsEmpty) yield return right;

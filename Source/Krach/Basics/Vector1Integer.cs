@@ -88,13 +88,13 @@ namespace Krach.Basics
 		{
 			return new Vector1Integer(vector1.x - vector2.x);
 		}
-		public static Vector1Integer operator *(Vector1Integer vector, int factor)
+		public static Vector1Integer operator *(Vector1Integer vector, double factor)
 		{
-			return new Vector1Integer(vector.x * factor);
+			return new Vector1Integer((int)(vector.x * factor));
 		}
-		public static Vector1Integer operator *(int factor, Vector1Integer vector)
+		public static Vector1Integer operator *(double factor, Vector1Integer vector)
 		{
-			return new Vector1Integer(factor * vector.x);
+			return new Vector1Integer((int)(factor * vector.x));
 		}
 	}
 }
