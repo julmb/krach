@@ -23,7 +23,7 @@ using Krach.Extensions;
 
 namespace Krach.Formats.Tags.ID3v2
 {
-	public abstract class ID3v2Frame
+	public abstract class ID3v2Frame : IParseItem
 	{
 		readonly string identifier;
 		readonly bool tagAlterPreservation;
@@ -46,6 +46,7 @@ namespace Krach.Formats.Tags.ID3v2
 		public int HeaderLength { get { return 10; } }
 		public abstract int DataLength { get; }
 		public int TotalLength { get { return HeaderLength + DataLength; } }
+		public virtual bool HasChanged { get { return false; } }
 
 		protected ID3v2Frame(string identifier, bool tagAlterPreservation, bool fileAlterPreservation, bool readOnly, bool compression, bool encryption, bool groupingIdentity)
 		{

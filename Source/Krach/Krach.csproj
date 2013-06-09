@@ -201,5 +201,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
   </ItemGroup>
 </Project>

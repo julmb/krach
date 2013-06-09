@@ -19,6 +19,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace Krach.Formats.Tags.ID3v2
 {
@@ -52,20 +54,21 @@ namespace Krach.Formats.Tags.ID3v2
 		readonly ID3v2ImageType imageType;
 		readonly string description;
 		readonly byte[] imageData;
+		readonly bool hasChanged = false;
 
 		public string MimeType { get { return mimeType; } }
 		public ID3v2ImageType ImageType { get { return imageType; } }
 		public string Description { get { return description; } }
 		public IEnumerable<byte> ImageData { get { return imageData; } }
 		public override int DataLength { get { return base.DataLength + TextToData(Encoding.ASCII, mimeType + '\0').Length + 1 + TextToData(Encoding, description + '\0').Length + imageData.Length; } }
+		public override bool HasChanged { get { return base.HasChanged || hasChanged; } }
 
-		public ID3v2ImageFrame(string mimeType, IEnumerable<byte> imageData)
+		public ID3v2ImageFrame(IEnumerable<byte> imageData)
 			: base("APIC", 0)
 		{
-			if (mimeType == null) throw new ArgumentNullException("mimeType");
 			if (imageData == null) throw new ArgumentNullException("imageData");
 
-			this.mimeType = mimeType;
+			this.mimeType = GetMimeType(imageData);
 			this.imageType = ID3v2ImageType.FrontCover;
 			this.description = string.Empty;
 			this.imageData = imageData.ToArray();
@@ -98,6 +101,14 @@ namespace Krach.Formats.Tags.ID3v2
 			if (imageDataLength < 0) throw new InvalidDataException(string.Format("Invalid image data length '{0}'.", imageDataLength));
 
 			this.imageData = reader.ReadBytes((int)imageDataLength);
+
+			string dataMimeType = GetMimeType(this.imageData);
+
+			if (this.mimeType != dataMimeType)
+			{
+				this.mimeType = dataMimeType;
+				this.hasChanged = true;
+			}
 		}
 
 		public override void Write(BinaryWriter writer)
@@ -108,6 +119,14 @@ namespace Krach.Formats.Tags.ID3v2
 			writer.Write((byte)imageType);
 			WriteText(writer, Encoding, description + '\0');
 			writer.Write(imageData);
+		}
+
+		static string GetMimeType(IEnumerable<byte> imageData)
+		{
+			Image image = Image.FromStream(new MemoryStream(imageData.ToArray()));
+			ImageCodecInfo imageDecoder = ImageCodecInfo.GetImageDecoders().Single(decoder => decoder.FormatID == image.RawFormat.Guid);
+
+			return imageDecoder.MimeType;
 		}
 	}
 }

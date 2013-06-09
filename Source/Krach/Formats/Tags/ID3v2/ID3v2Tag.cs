@@ -41,7 +41,7 @@ namespace Krach.Formats.Tags.ID3v2
 		public int DataLength { get { return frames.Sum(frame => frame.TotalLength); } }
 		public int TotalLength { get { return HeaderLength + DataLength; } }
 		public IEnumerable<ID3v2Frame> Frames { get { return frames; } }
-		public virtual bool HasChanged { get { return false; } }
+		public virtual bool HasChanged { get { return frames.Any(frame => frame.HasChanged); } }
 		
 		public ID3v2Tag(byte majorVersion, byte minorVersion, bool unsynchronisation, bool extendedHeader, bool experimental, IEnumerable<ID3v2Frame> frames)
 		{
