@@ -1,5 +1,4 @@
 // Copyright © Julian Brunner 2010 - 2011
-
 // This file is part of Krach.
 //
 // Krach is free software: you can redistribute it and/or modify it under the
@@ -26,7 +25,6 @@ namespace Krach.Maps.Scalar
 			: base(source, destination, GetFactory(mapper), GetFactory(mapper))
 		{
 		}
-		public SymmetricRangeMap(OrderedRange<double> source, IFactory<IMap<double, double>, OrderedRange<double>, OrderedRange<double>> mapper) : this(source, new OrderedRange<double>(0, 1), mapper) { }
 		public SymmetricRangeMap(IFactory<IMap<double, double>, OrderedRange<double>, OrderedRange<double>> mapper) : this(new OrderedRange<double>(0, 1), new OrderedRange<double>(0, 1), mapper) { }
 
 		static IFactory<RangeMap, OrderedRange<double>, OrderedRange<double>> GetFactory(IFactory<IMap<double, double>, OrderedRange<double>, OrderedRange<double>> mapper)

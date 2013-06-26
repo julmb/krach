@@ -34,7 +34,6 @@ namespace Krach.Maps.Scalar
 			this.source = source;
 			this.destination = destination;
 		}
-		public RangeMap(OrderedRange<double> source, IFactory<IMap<double, double>, OrderedRange<double>, OrderedRange<double>> mapper) : this(source, new OrderedRange<double>(0, 1), mapper) { }
 		public RangeMap(IFactory<IMap<double, double>, OrderedRange<double>, OrderedRange<double>> mapper) : this(new OrderedRange<double>(0, 1), new OrderedRange<double>(0, 1), mapper) { }
 	}
 }
