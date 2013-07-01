@@ -1,0 +1,8 @@
+name = Wrappers.Gsl.Native
+type = library
+includeDirectories =
+libraries = gsl
+libraryDirectories =
+classes =
+
+include makefiles/Makefile.build

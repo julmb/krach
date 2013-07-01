@@ -3,6 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krach", "Krach\Krach.csproj", "{132A3E13-29BF-4322-B17F-E5E5D86C22EF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wrappers.Casadi", "Wrappers.Casadi\Wrappers.Casadi.csproj", "{7A82DCF3-7D64-4BB7-B500-CD72788AAA14}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wrappers.Gsl", "Wrappers.Gsl\Wrappers.Gsl.csproj", "{B3EC3B41-2F7F-4958-BF95-892D6A27C75F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +17,17 @@ Global
 		{132A3E13-29BF-4322-B17F-E5E5D86C22EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{132A3E13-29BF-4322-B17F-E5E5D86C22EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{132A3E13-29BF-4322-B17F-E5E5D86C22EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A82DCF3-7D64-4BB7-B500-CD72788AAA14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A82DCF3-7D64-4BB7-B500-CD72788AAA14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A82DCF3-7D64-4BB7-B500-CD72788AAA14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A82DCF3-7D64-4BB7-B500-CD72788AAA14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3EC3B41-2F7F-4958-BF95-892D6A27C75F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3EC3B41-2F7F-4958-BF95-892D6A27C75F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3EC3B41-2F7F-4958-BF95-892D6A27C75F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3EC3B41-2F7F-4958-BF95-892D6A27C75F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Krach\Krach.csproj
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

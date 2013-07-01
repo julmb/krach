@@ -233,7 +233,7 @@ namespace Krach.Extensions
 			start = start.Ceiling(intervalLength);
 			end = end.Floor(intervalLength);
 
-			return GetIntermediateValues(start, end, (int)((end - start) / intervalLength).Round());
+			return GetIntermediateValuesSymmetric(start, end, (int)((end - start) / intervalLength).Round());
 		}
 		// Interpolation
 		public static double InterpolateLinear(double value1, double value2, double fraction)
@@ -251,7 +251,11 @@ namespace Krach.Extensions
 		}
 		public static IEnumerable<double> GetIntermediateValues(double start, double end, int count)
 		{
-			for (int index = 0; index <= count; index++) yield return start + index * (end - start) / count;
+			for (int index = 0; index < count; index++) yield return start + index * (end - start) / count;
+		}
+		public static IEnumerable<double> GetIntermediateValuesSymmetric(double start, double end, int count)
+		{
+			for (int index = 0; index < count; index++) yield return start + index * (end - start) / (count - 1);
 		}
 	}
 }
