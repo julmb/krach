@@ -21,7 +21,7 @@
     <ConsolePause>false</ConsolePause>
     <CustomCommands>
       <CustomCommands>
-        <Command type="BeforeBuild" command="${SolutionDir}/Wrappers.Gsl.Native/install &quot;${ProjectDir}&quot;" workingdir="${SolutionDir}/Wrappers.Gsl.Native" />
+        <Command type="BeforeBuild" command="${ProjectDir}/../Wrappers.Gsl.Native/install &quot;${ProjectDir}&quot;" workingdir="${ProjectDir}/../Wrappers.Gsl.Native" />
       </CustomCommands>
     </CustomCommands>
   </PropertyGroup>
@@ -34,7 +34,7 @@
     <ConsolePause>false</ConsolePause>
     <CustomCommands>
       <CustomCommands>
-        <Command type="BeforeBuild" command="${SolutionDir}/Wrappers.Gsl.Native/install &quot;${ProjectDir}&quot;" workingdir="${SolutionDir}/Wrappers.Gsl.Native" />
+        <Command type="BeforeBuild" command="${ProjectDir}/../Wrappers.Gsl.Native/install &quot;${ProjectDir}&quot;" workingdir="${ProjectDir}/../Wrappers.Gsl.Native" />
       </CustomCommands>
     </CustomCommands>
   </PropertyGroup>
