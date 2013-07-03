@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Krach.Basics;
 using System.Security.Cryptography;
+using System.Text;
 
 namespace Krach.Extensions
 {
@@ -320,6 +321,27 @@ namespace Krach.Extensions
 			
 				currentPartialSum += item;
 			}
+		}
+		public static string SequenceToString<TSource>(this IEnumerable<TSource> source)
+		{
+			if (source == null) throw new ArgumentNullException("source");
+
+			return source.ToStrings().Separate(", ").AggregateString();
+		}
+		public static string SequenceToMultilineString<TSource>(this IEnumerable<TSource> source)
+		{
+			if (source == null) throw new ArgumentNullException("source");
+
+			StringBuilder stringBuilder = new StringBuilder();
+
+			stringBuilder.AppendLine("{");
+
+			foreach (string @string in source.ToStrings())
+				stringBuilder.AppendFormat("\t{0}", @string.Replace("\n", "\n\t"));
+
+			stringBuilder.AppendLine("}");
+
+			return stringBuilder.ToString();
 		}
 	}
 }

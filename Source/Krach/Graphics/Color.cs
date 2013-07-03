@@ -63,6 +63,11 @@ namespace Krach.Graphics
 		}
 		Color(HsvColor color) : this(color, 1) { }
 
+		public Color ReplaceAlpha(double alpha)
+		{
+			return Color.FromRgba(Red, Green, Blue, alpha);
+		}
+
 		public static Color FromRgba(double red, double green, double blue, double alpha)
 		{
 			return new Color(new RgbColor(red, green, blue), alpha);
