@@ -194,6 +194,16 @@ namespace Krach.Extensions
 		{
 			return Absolute(value1 - value2) <= bound;
 		}
+		public static bool IsPowerOf2(this int value)
+		{
+			if (value <= 0) throw new ArgumentOutOfRangeException("value");
+
+			uint result = 1;
+
+			while (result < value) result <<= 1;
+
+			return result == value;
+		}
 		// Target rounding
 		public static double Round(this double value, IEnumerable<double> targets)
 		{
@@ -242,8 +252,7 @@ namespace Krach.Extensions
 
 			return (1 - fraction) * value1 + fraction * value2;
 		}
-		// TODO: Rename to InterpolateSine, together with stuff in Krach.Maps
-		public static double InterpolateCosine(double value1, double value2, double fraction)
+		public static double InterpolateSine(double value1, double value2, double fraction)
 		{
 			if (fraction < 0 || fraction > 1) throw new ArgumentOutOfRangeException("fraction");
 

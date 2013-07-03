@@ -105,7 +105,6 @@
     <Compile Include="Graphs\GraphTraverser.cs" />
     <Compile Include="Graphs\IGraph.cs" />
     <Compile Include="Maps\Abstract\IBounded.cs" />
-    <Compile Include="Maps\Basic\CosineMap.cs" />
     <Compile Include="Maps\Basic\LinearMap.cs" />
     <Compile Include="Maps\Mappers.cs" />
     <Compile Include="Maps\InstantMap.cs" />
@@ -194,6 +193,7 @@
     <Compile Include="Calculus\Rules\Vectors\VectorSelect.cs" />
     <Compile Include="Extensions\OrderedRanges.cs" />
     <Compile Include="Calculus\Derivation.cs" />
+    <Compile Include="Maps\Basic\SineMap.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

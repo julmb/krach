@@ -63,6 +63,10 @@ namespace Krach.Graphics
 		}
 		Color(HsvColor color) : this(color, 1) { }
 
+		public override string ToString()
+		{
+			return ToHtmlString(this);
+		}
 		public Color ReplaceAlpha(double alpha)
 		{
 			return Color.FromRgba(Red, Green, Blue, alpha);
@@ -117,9 +121,9 @@ namespace Krach.Graphics
 		public static string ToHtmlString(Color color)
 		{
 			return
-				(color.Red * 0xFF).ToString("X2") +
-				(color.Green * 0xFF).ToString("X2") +
-				(color.Blue * 0xFF).ToString("X2");
+				((byte)(color.Red * 0xFF)).ToString("X2") +
+				((byte)(color.Green * 0xFF)).ToString("X2") +
+				((byte)(color.Blue * 0xFF)).ToString("X2");
 		}
 		public static double DistanceRgb(Color color1, Color color2)
 		{

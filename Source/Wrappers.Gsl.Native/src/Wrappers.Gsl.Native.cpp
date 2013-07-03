@@ -27,9 +27,9 @@ extern "C"
 		return gsl_wavelet_bspline_centered;
 	}
 
-	gsl_wavelet* CreateWavelet(gsl_wavelet_type* type, size_t k)
+	gsl_wavelet* CreateWavelet(gsl_wavelet_type* waveletType, size_t k)
 	{
-		return gsl_wavelet_alloc(type, k);
+		return gsl_wavelet_alloc(waveletType, k);
 	}
 	void DisposeWavelet(gsl_wavelet* wavelet)
 	{

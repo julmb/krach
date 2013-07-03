@@ -1,16 +1,11 @@
 using System;
 using System.Runtime.InteropServices;
+using System.Collections.Generic;
+using System.Linq;
+using Krach.Extensions;
 
 namespace Wrappers.Gsl
 {
-	enum WaveletType
-	{
-		gsl_wavelet_daubechies,
-		gsl_wavelet_daubechies_centered,
-		gsl_wavelet_haar,
-		gsl_wavelet_haar_centered,
-		gsl_wavelet_bspline,
-		gsl_wavelet_bspline_centered
-	}
+	public enum WaveletType { Haar, Daubechies, BSpline }
 }
 

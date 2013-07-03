@@ -40,15 +40,25 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Native.cs" />
+    <Compile Include="WaveletCollection.cs" />
+    <Compile Include="Wavelet.cs" />
     <Compile Include="WaveletType.cs" />
+    <Compile Include="WaveletTransformer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <None Include="libWrappers.Gsl.Native.so">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Krach\Krach.csproj">
+      <Project>{132A3E13-29BF-4322-B17F-E5E5D86C22EF}</Project>
+      <Name>Krach</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

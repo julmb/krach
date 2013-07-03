@@ -59,6 +59,10 @@ namespace Krach.Extensions
 				pointer += Marshal.SizeOf(typeof(T));
 			}
 		}
+		public static void Free(this IntPtr pointer)
+		{
+			Marshal.FreeCoTaskMem(pointer);
+		}
 	}
 }
 

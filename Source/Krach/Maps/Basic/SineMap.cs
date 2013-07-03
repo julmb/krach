@@ -14,34 +14,31 @@
 // You should have received a copy of the GNU General Public License along with
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
+using System;
 using Krach.Basics;
-using Krach.Design;
+using Krach.Extensions;
 using Krach.Maps.Abstract;
-using Krach.Maps.Basic;
 
-namespace Krach.Maps
+namespace Krach.Maps.Basic
 {
-	public static class Mappers
+	public class SineMap : IMap<double, double>
 	{
-		public static IFactory<IMap<double, double>, OrderedRange<double>, OrderedRange<double>> Linear
+		readonly OrderedRange<double> source;
+		readonly OrderedRange<double> destination;
+
+		public SineMap(OrderedRange<double> source, OrderedRange<double> destination)
 		{
-			get
-			{
-				return new Factory<IMap<double, double>, OrderedRange<double>, OrderedRange<double>>
-				(
-					(source, destination) => new LinearMap(source, destination)
-				);
-			}
+			this.source = source;
+			this.destination = destination;
 		}
-		public static IFactory<IMap<double, double>, OrderedRange<double>, OrderedRange<double>> Sine
+
+		public double Map(double value)
 		{
-			get
-			{
-				return new Factory<IMap<double, double>, OrderedRange<double>, OrderedRange<double>>
-				(
-					(source, destination) => new SineMap(source, destination)
-				);
-			}
+			if (value < source.Start || value > source.End) throw new ArgumentOutOfRangeException("value");
+
+			double fraction = (value - source.Start) / (source.End - source.Start);
+
+			return Scalars.InterpolateSine(destination.Start, destination.End, fraction);
 		}
 	}
 }
