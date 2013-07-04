@@ -137,9 +137,9 @@ namespace Krach.Graphics
 		{
 			return new Color(RgbColor.Interpolate(color1.rgbColor, color2.rgbColor, interpolate, fraction), interpolate(color1.alpha, color2.alpha, fraction));
 		}
-		public static Color InterpolateHsv(Color color1, Color color2, Interpolation<double> interpolate, double fraction)
+		public static Color InterpolateHsv(Color color1, Color color2, Interpolation<double> interpolate, double fraction, Direction direction)
 		{
-			return new Color(HsvColor.Interpolate(color1.hsvColor, color2.hsvColor, interpolate, fraction), interpolate(color1.alpha, color2.alpha, fraction));
+			return new Color(HsvColor.Interpolate(color1.hsvColor, color2.hsvColor, interpolate, fraction, direction), interpolate(color1.alpha, color2.alpha, fraction));
 		}
 	}
 }

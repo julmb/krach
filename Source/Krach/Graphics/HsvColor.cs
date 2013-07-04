@@ -64,14 +64,23 @@ namespace Krach.Graphics
 
 			return (hue.Square() + saturation.Square() + value.Square()).SquareRoot();
 		}
-		public static HsvColor Interpolate(HsvColor color1, HsvColor color2, Interpolation<double> interpolate, double fraction)
+		public static HsvColor Interpolate(HsvColor color1, HsvColor color2, Interpolation<double> interpolate, double fraction, Direction direction)
 		{
 			if (interpolate == null) throw new ArgumentNullException("interpolate");
 			if (fraction < 0 || fraction > 1) throw new ArgumentOutOfRangeException("fraction");
+			
+			double hue1 = color1.hue;
+			double hue2 = color2.hue;
+
+			switch (direction)
+			{
+				case Direction.Forward: if (hue1 > hue2) hue2 += 6; break;
+				case Direction.Reverse: if (hue2 > hue1) hue1 += 6; break;
+			}
 
 			return new HsvColor
 			(
-				interpolate(color1.hue, color2.hue, fraction),
+				interpolate(hue1, hue2, fraction).Modulo(6),
 				interpolate(color1.saturation, color2.saturation, fraction),
 				interpolate(color1.value, color2.value, fraction)
 			);
