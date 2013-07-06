@@ -54,13 +54,13 @@ namespace Krach
 		{
 			return NextDouble(0, 1);
 		}
-		public bool NextBool(double probability)
+		public bool NextBoolean(double probability)
 		{
 			return NextDouble() < probability;
 		}
-		public bool NextBool()
+		public bool NextBoolean()
 		{
-			return NextBool(0.5);
+			return NextBoolean(0.5);
 		}
 		public double NextLogarithmic(double minimum, double maximum)
 		{
