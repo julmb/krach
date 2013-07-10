@@ -153,6 +153,10 @@ namespace Wrappers.Casadi
 		{
 			return Exponentiation(DotProduct(value, value), Constant(0.5));
 		}
+		public static ValueTerm Normalize(ValueTerm vector)
+		{
+			return Scaling(Invert(Norm(vector)), vector);
+		}
 
 		public static FunctionTerm Polynomial(int dimension, int degree)
 		{
