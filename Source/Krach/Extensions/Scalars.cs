@@ -77,6 +77,20 @@ namespace Krach.Extensions
 
 			return Math.Log(value);
 		}
+		public static int Factorial(int n)
+		{
+			if (n == 0) return 1;
+
+			return n * Factorial(n - 1);
+		}
+		public static int BinomialCoefficient(int n, int k)
+		{
+			if (n < k) throw new ArgumentException("parameter 'n' was less than parameter 'k'");
+
+			if (k == 0) return 1;
+
+			return n * BinomialCoefficient(n - 1, k - 1) / k;
+		}
 		// Trigonometry
 		public static double PSine(double value)
 		{
@@ -264,6 +278,13 @@ namespace Krach.Extensions
 		}
 		public static IEnumerable<double> GetIntermediateValuesSymmetric(double start, double end, int count)
 		{
+			if (count == 1)
+			{
+				yield return (start + end) / 2;
+
+				yield break;
+			}
+
 			for (int index = 0; index < count; index++) yield return start + index * (end - start) / (count - 1);
 		}
 	}

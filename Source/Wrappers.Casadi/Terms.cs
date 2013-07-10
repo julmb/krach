@@ -158,30 +158,59 @@ namespace Wrappers.Casadi
 			return Scaling(Invert(Norm(vector)), vector);
 		}
 
-		public static FunctionTerm Polynomial(int dimension, int degree)
+		public static IEnumerable<FunctionTerm> StandardPolynomialBasis(int length)
 		{
-			if (dimension < 0) throw new ArgumentOutOfRangeException("dimension");
-			if (degree < 0) throw new ArgumentOutOfRangeException("degree");
+			if (length < 0) throw new ArgumentOutOfRangeException("length");
 
+			ValueTerm variable = Variable("x");
+
+			return
+			(
+				from index in Enumerable.Range(0, length)
+				select Exponentiation(variable, Constant(index)).Abstract(variable)
+			)
+			.ToArray();
+		}
+		public static IEnumerable<FunctionTerm> BernsteinPolynomialBasis(int length)
+		{
+			if (length < 0) throw new ArgumentOutOfRangeException("length");
+
+			ValueTerm variable = Variable("x");
+
+			int degree = length - 1;
+
+			return
+			(
+				from index in Enumerable.Range(0, length)
+				select Product
+				(
+					Constant(Scalars.BinomialCoefficient(degree, index)),
+					Exponentiation(variable, Constant(index)),
+					Exponentiation(Difference(Constant(1), variable), Constant(degree - index))
+				)
+				.Abstract(variable)
+			)
+			.ToArray();
+		}
+		public static FunctionTerm Polynomial(IEnumerable<FunctionTerm> basis, int dimension)
+		{
+			if (basis == null) throw new ArgumentNullException("basis");
+			if (dimension < 0) throw new ArgumentOutOfRangeException("dimension");
 
 			ValueTerm variable = Variable("x");
 			IEnumerable<ValueTerm> coefficients =
 			(
-				from index in Enumerable.Range(0, degree)
+				from index in Enumerable.Range(0, basis.Count())
 				select Variable(string.Format("c_{0}", index), dimension)
 			)
 			.ToArray();
+			IEnumerable<ValueTerm> parameters = Enumerables.Concatenate(Enumerables.Create(variable), coefficients);
 
-			if (degree == 0) return Constant(Enumerable.Repeat(0.0, dimension)).Abstract(Enumerables.Concatenate(Enumerables.Create(variable), coefficients));
+			if (!basis.Any()) return Constant(Enumerable.Repeat(0.0, dimension)).Abstract(parameters);
 
-			return Sum
-			(
-				from index in Enumerable.Range(0, degree)
-				let power = Exponentiation(variable, Constant(index))
-				let parameter = coefficients.ElementAt(index)
-				select Scaling(power, parameter)
-			)
-			.Abstract(Enumerables.Concatenate(Enumerables.Create(variable), coefficients));
+			IEnumerable<ValueTerm> basisValues = basis.Select(basisFunction => basisFunction.Apply(variable));
+
+			return Sum(Enumerable.Zip(basisValues, coefficients, Scaling)).Abstract(parameters);
 		}
 		public static ValueTerm IntegrateTrapezoid(FunctionTerm function, OrderedRange<double> bounds, int segmentCount)
 		{
@@ -191,7 +220,7 @@ namespace Wrappers.Casadi
 
 			IEnumerable<ValueTerm> values =
 			(
-				from segmentPosition in Scalars.GetIntermediateValues(bounds.Start, bounds.End, segmentCount)
+				from segmentPosition in Scalars.GetIntermediateValuesSymmetric(bounds.Start, bounds.End, segmentCount)
 				select function.Apply(Terms.Constant(segmentPosition))
 			)
 			.ToArray();
