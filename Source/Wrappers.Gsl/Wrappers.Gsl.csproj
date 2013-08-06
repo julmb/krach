@@ -19,11 +19,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <CustomCommands>
-      <CustomCommands>
-        <Command type="BeforeBuild" command="${ProjectDir}/../Wrappers.Gsl.Native/install &quot;${ProjectDir}&quot;" workingdir="${ProjectDir}/../Wrappers.Gsl.Native" />
-      </CustomCommands>
-    </CustomCommands>
+    <PreBuildEventUseInBuild>true</PreBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -32,11 +28,10 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <CustomCommands>
-      <CustomCommands>
-        <Command type="BeforeBuild" command="${ProjectDir}/../Wrappers.Gsl.Native/install &quot;${ProjectDir}&quot;" workingdir="${ProjectDir}/../Wrappers.Gsl.Native" />
-      </CustomCommands>
-    </CustomCommands>
+    <PreBuildEventUseInBuild>true</PreBuildEventUseInBuild>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>cd $(MSBuildProjectDirectory)/../Wrappers.Gsl.Native &amp;&amp; ./install "$(MSBuildProjectDirectory)"</PreBuildEvent>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
