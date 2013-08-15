@@ -46,6 +46,7 @@ namespace Krach.Extensions
 
 			double remainder = value % divisor;
 			if (remainder < 0) remainder += divisor;
+			if (remainder == divisor) remainder = 0; //For small negative remainder values in combination with rounding the above sum (falsely) yields the divisor.
 			return remainder;
 		}
 		public static double Exponentiate(this double @base, double exponent)
