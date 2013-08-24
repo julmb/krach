@@ -35,6 +35,21 @@ namespace Wrappers.Casadi.Native
 		public static extern IntPtr MatrixProduct(IntPtr value1, IntPtr value2);
 		[DllImport("Wrappers.Casadi.Native")]
 		public static extern IntPtr Transpose(IntPtr value);
+
+		[DllImport("Wrappers.Casadi.Native")]
+		public static extern IntPtr Sine(IntPtr value);
+		[DllImport("Wrappers.Casadi.Native")]
+		public static extern IntPtr ArcSine(IntPtr value);
+		[DllImport("Wrappers.Casadi.Native")]
+		public static extern IntPtr Cosine(IntPtr value);
+		[DllImport("Wrappers.Casadi.Native")]
+		public static extern IntPtr ArcCosine(IntPtr value);
+		[DllImport("Wrappers.Casadi.Native")]
+		public static extern IntPtr Tangent(IntPtr value);
+		[DllImport("Wrappers.Casadi.Native")]
+		public static extern IntPtr ArcTangent(IntPtr value);
+		[DllImport("Wrappers.Casadi.Native")]
+		public static extern IntPtr ArcTangent2(IntPtr value1, IntPtr value2);
 		
 		[DllImport("Wrappers.Casadi.Native")]
 		public static extern string ValueToString(IntPtr value);

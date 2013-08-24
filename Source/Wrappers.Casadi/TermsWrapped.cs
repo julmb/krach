@@ -68,6 +68,35 @@ namespace Wrappers.Casadi
 		{
 			lock (GeneralNative.Synchronization) return new ValueTerm(TermsNative.Transpose(value.Value));
 		}
+
+		public static ValueTerm Sine(ValueTerm value)
+		{
+			lock (GeneralNative.Synchronization) return new ValueTerm(TermsNative.Sine(value.Value));
+		}
+		public static ValueTerm ArcSine(ValueTerm value)
+		{
+			lock (GeneralNative.Synchronization) return new ValueTerm(TermsNative.ArcSine(value.Value));
+		}
+		public static ValueTerm Cosine(ValueTerm value)
+		{
+			lock (GeneralNative.Synchronization) return new ValueTerm(TermsNative.Cosine(value.Value));
+		}
+		public static ValueTerm ArcCosine(ValueTerm value)
+		{
+			lock (GeneralNative.Synchronization) return new ValueTerm(TermsNative.ArcCosine(value.Value));
+		}
+		public static ValueTerm Tangent(ValueTerm value)
+		{
+			lock (GeneralNative.Synchronization) return new ValueTerm(TermsNative.Tangent(value.Value));
+		}
+		public static ValueTerm ArcTangent(ValueTerm value)
+		{
+			lock (GeneralNative.Synchronization) return new ValueTerm(TermsNative.ArcTangent(value.Value));
+		}
+		public static ValueTerm ArcTangent2(ValueTerm value1, ValueTerm value2)
+		{
+			lock (GeneralNative.Synchronization) return new ValueTerm(TermsNative.ArcTangent2(value1.Value, value2.Value));
+		}
 	
 		public static string ValueToString(ValueTerm value)
 		{

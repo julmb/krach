@@ -75,7 +75,7 @@ namespace Wrappers.Casadi
 			return Constant((IEnumerable<double>)values);
 		}
 
-		// common operations in calculus
+		// common operations
 		public static ValueTerm Sum(ValueTerm value1, ValueTerm value2)
 		{
 			if (value1.Dimension != value2.Dimension) throw new ArgumentException("Dimensions of 'value1' and 'value2' do not match.");
@@ -148,14 +148,88 @@ namespace Wrappers.Casadi
 		{
 			return Exponentiation(value, Constant(2));
 		}
+		public static ValueTerm SquareRoot(ValueTerm value)
+		{
+			return Exponentiation(value, Constant(0.5));
+		}
+
+		// trigonometry
+		public static ValueTerm Sine(ValueTerm value)
+		{
+			if (value.Dimension != 1) throw new ArgumentException("Dimension of 'value' is not 1.");
+
+			return TermsWrapped.Sine(value);
+		}
+		public static ValueTerm ArcSine(ValueTerm value)
+		{
+			if (value.Dimension != 1) throw new ArgumentException("Dimension of 'value' is not 1.");
+
+			return TermsWrapped.ArcSine(value);
+		}
+		public static ValueTerm Cosine(ValueTerm value)
+		{
+			if (value.Dimension != 1) throw new ArgumentException("Dimension of 'value' is not 1.");
+
+			return TermsWrapped.Cosine(value);
+		}
+		public static ValueTerm ArcCosine(ValueTerm value)
+		{
+			if (value.Dimension != 1) throw new ArgumentException("Dimension of 'value' is not 1.");
+
+			return TermsWrapped.ArcCosine(value);
+		}
+		public static ValueTerm Tangent(ValueTerm value)
+		{
+			if (value.Dimension != 1) throw new ArgumentException("Dimension of 'value' is not 1.");
+
+			return TermsWrapped.Tangent(value);
+		}
+		public static ValueTerm ArcTangent(ValueTerm value)
+		{
+			if (value.Dimension != 1) throw new ArgumentException("Dimension of 'value' is not 1.");
+
+			return TermsWrapped.ArcTangent(value);
+		}
+
+		// polar coordinates
+		public static ValueTerm CartesianToPolar(ValueTerm value)
+		{
+			if (value.Dimension != 2) throw new ArgumentException("Dimension of 'value' is not 2.");
+
+			return Vector(Norm(value), Angle(value));
+		}
+		public static ValueTerm PolarToCartesian(ValueTerm value)
+		{
+			if (value.Dimension != 2) throw new ArgumentException("Dimension of 'value' is not 2.");
+
+			return Scaling(value.Select(0), Direction(value.Select(1)));
+		}
 
 		public static ValueTerm Norm(ValueTerm value)
 		{
-			return Exponentiation(DotProduct(value, value), Constant(0.5));
+			return SquareRoot(DotProduct(value, value));
 		}
-		public static ValueTerm Normalize(ValueTerm vector)
+		public static ValueTerm Angle(ValueTerm value)
 		{
-			return Scaling(Invert(Norm(vector)), vector);
+			if (value.Dimension != 2) throw new ArgumentException("Dimension of 'value' is not 2.");
+
+			return TermsWrapped.ArcTangent2(value.Select(1), value.Select(0));
+		}
+		public static ValueTerm Direction(ValueTerm value)
+		{
+			if (value.Dimension != 1) throw new ArgumentException("Dimension of 'value' is not 1.");
+
+			return Vector(Cosine(value), Sine(value));
+		}
+		public static ValueTerm Normalize(ValueTerm value)
+		{
+			return Scaling(Invert(Norm(value)), value);
+		}
+		public static ValueTerm Normal(ValueTerm value)
+		{
+			if (value.Dimension != 2) throw new ArgumentException("Dimension of 'value' is not 2.");
+
+			return Vector(Negate(value.Select(1)), value.Select(0));
 		}
 
 		public static IEnumerable<FunctionTerm> StandardPolynomialBasis(int length)

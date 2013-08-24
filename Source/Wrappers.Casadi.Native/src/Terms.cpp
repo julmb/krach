@@ -80,6 +80,35 @@ extern "C"
 		return CreateValue(trans(*value));
 	}
 
+	SXMatrix* Sine(SXMatrix* value)
+	{
+		return CreateValue(sin(*value));
+	}
+	SXMatrix* ArcSine(SXMatrix* value)
+	{
+		return CreateValue(asin(*value));
+	}
+	SXMatrix* Cosine(SXMatrix* value)
+	{
+		return CreateValue(cos(*value));
+	}
+	SXMatrix* ArcCosine(SXMatrix* value)
+	{
+		return CreateValue(acos(*value));
+	}
+	SXMatrix* Tangent(SXMatrix* value)
+	{
+		return CreateValue(tan(*value));
+	}
+	SXMatrix* ArcTangent(SXMatrix* value)
+	{
+		return CreateValue(atan(*value));
+	}
+	SXMatrix* ArcTangent2(SXMatrix* value1, SXMatrix* value2)
+	{
+		return CreateValue(atan2(*value1, *value2));
+	}
+
 	const char* ValueToString(SXMatrix* value)
 	{
 		string description = value->getDescription();

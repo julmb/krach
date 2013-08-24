@@ -23,6 +23,8 @@ namespace Krach.Extensions
 {
 	public static class Scalars
 	{
+		public const double Tau = 2 * Math.PI;
+
 		// Calculation
 		public static double Square(this double value)
 		{
