@@ -277,16 +277,13 @@ namespace Krach.Extensions
 		}
 		public static IEnumerable<double> GetIntermediateValues(double start, double end, int count)
 		{
+			if (count < 0) throw new ArgumentOutOfRangeException("count");
+
 			for (int index = 0; index < count; index++) yield return start + index * (end - start) / count;
 		}
 		public static IEnumerable<double> GetIntermediateValuesSymmetric(double start, double end, int count)
 		{
-			if (count == 1)
-			{
-				yield return (start + end) / 2;
-
-				yield break;
-			}
+			if (count < 2) throw new ArgumentOutOfRangeException("count");
 
 			for (int index = 0; index < count; index++) yield return start + index * (end - start) / (count - 1);
 		}

@@ -29,15 +29,7 @@ namespace Wrappers.Casadi
 
 				settings.Apply(solver);
 
-				IpoptNative.IpoptSolverInitialize(solver);
-
-				IntPtr constraintLowerBounds = problem.ConstraintRanges.Select(range => range.Start).Copy();
-				IntPtr constraintUpperBounds = problem.ConstraintRanges.Select(range => range.End).Copy();
-
-				IpoptNative.IpoptSolverSetConstraintBounds(solver, constraintLowerBounds, constraintUpperBounds, problem.ConstraintRanges.Count());
-
-				Marshal.FreeCoTaskMem(constraintLowerBounds);
-				Marshal.FreeCoTaskMem(constraintUpperBounds);
+				IpoptNative.IpoptSolverInitialize(solver, problem.Problem);
 			}
 		}
 		~IpoptSolver()

@@ -12,23 +12,19 @@ namespace Wrappers.Casadi
 	public class IpoptProblem : IDisposable
 	{
 		readonly IntPtr problem;
-		readonly IEnumerable<OrderedRange<double>> constraintRanges;
 		readonly int domainDimension;
 
 		bool disposed = false;
 
 		public IntPtr Problem { get { return problem; } }
-		public IEnumerable<OrderedRange<double>> ConstraintRanges { get { return constraintRanges; } }
 		public int DomainDimension { get { return domainDimension; } }
 
-		IpoptProblem(IntPtr problem, IEnumerable<OrderedRange<double>> constraintRanges, int domainDimension)
+		IpoptProblem(IntPtr problem, int domainDimension)
 		{
 			if (problem == IntPtr.Zero) throw new ArgumentOutOfRangeException("problem");
-			if (constraintRanges == null) throw new ArgumentNullException("constraintRanges");
 			if (domainDimension < 0) throw new ArgumentOutOfRangeException("domainDimension");
 
 			this.problem = problem;
-			this.constraintRanges = constraintRanges;
 			this.domainDimension = domainDimension;
 		}
 		~IpoptProblem()
@@ -58,17 +54,23 @@ namespace Wrappers.Casadi
 			Marshal.FreeCoTaskMem(variablesPointer);
 			Marshal.FreeCoTaskMem(valuesPointer);
 
-			return new IpoptProblem(newProblem, constraintRanges, domainDimension);
+			return new IpoptProblem(newProblem, domainDimension);
 		}
 
-		public static IpoptProblem Create(FunctionTerm objectiveFunction, FunctionTerm constraintFunction, IEnumerable<OrderedRange<double>> constraintRanges)
+		public static IpoptProblem Create(FunctionTerm objectiveFunction, FunctionTerm constraintFunction, IEnumerable<Range<ValueTerm>> constraintRanges)
 		{
+			IntPtr constraintLowerBoundsPointer = constraintRanges.Select(range => range.Start.Value).Copy();
+			IntPtr constraintUpperBoundsPointer = constraintRanges.Select(range => range.End.Value).Copy();
+
 			IntPtr problem;
-			lock (GeneralNative.Synchronization) problem = IpoptNative.IpoptProblemCreate(objectiveFunction.Function, constraintFunction.Function);
+			lock (GeneralNative.Synchronization) problem = IpoptNative.IpoptProblemCreate(objectiveFunction.Function, constraintFunction.Function, constraintLowerBoundsPointer, constraintUpperBoundsPointer);
+
+			Marshal.FreeCoTaskMem(constraintLowerBoundsPointer);
+			Marshal.FreeCoTaskMem(constraintUpperBoundsPointer);
 
 			int domainDimension = Items.Equal(objectiveFunction.DomainDimension, constraintFunction.DomainDimension);
 
-			return new IpoptProblem(problem, constraintRanges, domainDimension);
+			return new IpoptProblem(problem, domainDimension);
 		}
 	}
 }

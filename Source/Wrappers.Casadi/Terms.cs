@@ -209,6 +209,10 @@ namespace Wrappers.Casadi
 		{
 			return SquareRoot(DotProduct(value, value));
 		}
+		public static ValueTerm NormSquared(ValueTerm value)
+		{
+			return DotProduct(value, value);
+		}
 		public static ValueTerm Angle(ValueTerm value)
 		{
 			if (value.Dimension != 2) throw new ArgumentException("Dimension of 'value' is not 2.");

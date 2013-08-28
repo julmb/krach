@@ -11,7 +11,7 @@ namespace Wrappers.Casadi.Native
 	static class IpoptNative
 	{
 		[DllImport("Wrappers.Casadi.Native")]
-		public static extern IntPtr IpoptProblemCreate(IntPtr objectiveFunction, IntPtr constraintFunction);
+		public static extern IntPtr IpoptProblemCreate(IntPtr objectiveFunction, IntPtr constraintFunction, IntPtr constraintUpperBounds, IntPtr constraintLowerBounds);
 		[DllImport("Wrappers.Casadi.Native")]
 		public static extern void IpoptProblemDispose(IntPtr problem);
 		[DllImport("Wrappers.Casadi.Native")]
@@ -22,9 +22,7 @@ namespace Wrappers.Casadi.Native
 		[DllImport("Wrappers.Casadi.Native")]
 		public static extern void IpoptSolverDispose(IntPtr solver);
 		[DllImport("Wrappers.Casadi.Native")]
-		public static extern void IpoptSolverInitialize(IntPtr solver);
-		[DllImport("Wrappers.Casadi.Native")]
-		public static extern void IpoptSolverSetConstraintBounds(IntPtr solver, IntPtr constraintLowerBounds, IntPtr constraintUpperBounds, int constraintCount);
+		public static extern void IpoptSolverInitialize(IntPtr solver, IntPtr problem);
 		[DllImport("Wrappers.Casadi.Native")]
 		public static extern void IpoptSolverSetInitialPosition(IntPtr solver, IntPtr position, int positionCount);
 		[DllImport("Wrappers.Casadi.Native")]

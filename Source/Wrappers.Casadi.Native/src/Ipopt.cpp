@@ -12,25 +12,23 @@ struct IpoptProblem
 	SXFunction H;
 	SXFunction J;
 	SXFunction GF;
+	SXMatrix ConstraintLowerBounds;
+	SXMatrix ConstraintUpperBounds;
 };
-
-const string FunctionToString(SXFunction function)
-{
-	stringstream descriptionStream;
-
-	descriptionStream << "(λ " << function.inputExpr(0).getDescription() << ". " << function.outputExpr(0).getDescription() << ")";
-
-	return descriptionStream.str();
-}
 
 extern "C"
 {
-	const IpoptProblem* IpoptProblemCreate(SXFunction* objectiveFunction, SXFunction* constraintFunction)
+	const IpoptProblem* IpoptProblemCreate(SXFunction* objectiveFunction, SXFunction* constraintFunction, SXMatrix** constraintLowerBounds, SXMatrix** constraintUpperBounds)
 	{
+		IpoptProblem* problem = new IpoptProblem();
+
+		problem->F = *objectiveFunction;
+
+		problem->G = *constraintFunction;
+
 		SXMatrix position = objectiveFunction->inputExpr(0);
 		SXMatrix sigma = ssym("sigma", objectiveFunction->getNumScalarOutputs());
 		SXMatrix lambda = ssym("lambda", constraintFunction->getNumScalarOutputs());
-
 		vector<SXMatrix> lagrangeVariables;
 		lagrangeVariables.push_back(position);
 		lagrangeVariables.push_back(lambda);
@@ -38,14 +36,17 @@ extern "C"
 		SXMatrix lagrangeValue = sigma * objectiveFunction->eval(position) + (constraintFunction->getNumScalarOutputs() == 0 ? 0 : inner_prod(lambda, constraintFunction->eval(position)));
 		SXFunction lagrangeFunction = SXFunction(lagrangeVariables, lagrangeValue);
 		lagrangeFunction.init();
-
-		IpoptProblem* problem = new IpoptProblem();
-
-		problem->F = *objectiveFunction;
-		problem->G = *constraintFunction;
 		problem->H = SXFunction(lagrangeFunction.hessian());
+
 		problem->J = constraintFunction->getNumScalarOutputs() == 0 ? SXFunction(position, SXMatrix(0, position.size1())) : SXFunction(constraintFunction->jacobian());
+
 		problem->GF = SXFunction(objectiveFunction->gradient());
+
+		for (int index = 0; index < constraintFunction->getNumScalarOutputs(); index++)
+		{
+			problem->ConstraintLowerBounds.append(*constraintLowerBounds[index]);
+			problem->ConstraintUpperBounds.append(*constraintUpperBounds[index]);
+		}
 
 		return problem;
 	}
@@ -61,6 +62,8 @@ extern "C"
 		outputValuesVector.push_back(problem->H.outputExpr(0));
 		outputValuesVector.push_back(problem->J.outputExpr(0));
 		outputValuesVector.push_back(problem->GF.outputExpr(0));
+		outputValuesVector.push_back(problem->ConstraintLowerBounds);
+		outputValuesVector.push_back(problem->ConstraintUpperBounds);
 
 		vector<SXMatrix> variablesVector;
 		for (int index = 0; index < count; index++) variablesVector.push_back(*variables[index]);
@@ -77,35 +80,31 @@ extern "C"
 		newProblem->H = SXFunction(problem->H.inputExpr(), outputValuesVector[2]);
 		newProblem->J = SXFunction(problem->J.inputExpr(), outputValuesVector[3]);
 		newProblem->GF = SXFunction(problem->GF.inputExpr(), outputValuesVector[4]);
+		newProblem->ConstraintLowerBounds = outputValuesVector[5];
+		newProblem->ConstraintUpperBounds = outputValuesVector[6];
 
 		return newProblem;
 	}
 
 	const IpoptSolver* IpoptSolverCreate(IpoptProblem* problem)
 	{
-//		cout << "creating IpoptSolver..." << endl;
-//		cout << "objective function: " << FunctionToString(problem->F) << endl;
-//		cout << "constraint function: " << FunctionToString(problem->G) << endl;
-
 		return new IpoptSolver(problem->F, problem->G, problem->H, problem->J, problem->GF);
 	}
 	void IpoptSolverDispose(IpoptSolver* solver)
 	{
 		delete solver;
 	}
-	void IpoptSolverInitialize(IpoptSolver* solver)
+	void IpoptSolverInitialize(IpoptSolver* solver, IpoptProblem* problem)
 	{
 		solver->init();
-	}
-	void IpoptSolverSetConstraintBounds(IpoptSolver* solver, double* constraintLowerBounds, double* constraintUpperBounds, int constraintCount)
-	{
+
 		vector<double> constraintLowerBoundsValues;
 		vector<double> constraintUpperBoundsValues;
 
-		for (int index = 0; index < constraintCount; index++)
+		for (int index = 0; index < problem->G.getNumScalarOutputs(); index++)
 		{
-			constraintLowerBoundsValues.push_back(constraintLowerBounds[index]);
-			constraintUpperBoundsValues.push_back(constraintUpperBounds[index]);
+			constraintLowerBoundsValues.push_back(problem->ConstraintLowerBounds.elem(index, 0).getValue());
+			constraintUpperBoundsValues.push_back(problem->ConstraintUpperBounds.elem(index, 0).getValue());
 		}
 
 		solver->setInput(constraintLowerBoundsValues, NLP_LBG);

@@ -8,7 +8,7 @@ using Krach.Design;
 
 namespace Wrappers.Casadi
 {
-	public class FunctionTerm : IDisposable
+	public class FunctionTerm : IDisposable, IEquatable<FunctionTerm>
 	{
 		readonly IntPtr function;
 
@@ -29,6 +29,18 @@ namespace Wrappers.Casadi
 			Dispose();
 		}
 		
+		public override bool Equals(object obj)
+		{
+			return obj is FunctionTerm && Equals(this, (FunctionTerm)obj);
+		}
+		public override int GetHashCode()
+		{
+			return function.GetHashCode();
+		}
+		public bool Equals(FunctionTerm other)
+		{
+			return object.Equals(this, other);
+		}
 		public override string ToString()
 		{
 			return TermsWrapped.FunctionToString(this);
@@ -52,6 +64,23 @@ namespace Wrappers.Casadi
 				
 				GC.SuppressFinalize(this);
 			}
+		}
+
+		public static bool operator ==(FunctionTerm functionTerm1, FunctionTerm functionTerm2)
+		{
+			return object.Equals(functionTerm1, functionTerm2);
+		}
+		public static bool operator !=(FunctionTerm functionTerm1, FunctionTerm functionTerm2)
+		{
+			return !object.Equals(functionTerm1, functionTerm2);
+		}
+		
+		static bool Equals(FunctionTerm functionTerm1, FunctionTerm functionTerm2)
+		{
+			if (object.ReferenceEquals(functionTerm1, functionTerm2)) return true;
+			if (object.ReferenceEquals(functionTerm1, null) || object.ReferenceEquals(functionTerm2, null)) return false;
+			
+			return functionTerm1.function == functionTerm2.function;
 		}
 	}
 }

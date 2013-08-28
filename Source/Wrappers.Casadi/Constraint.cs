@@ -8,12 +8,12 @@ namespace Wrappers.Casadi
 	public class Constraint<T>
 	{        
 		readonly T item;
-		readonly IEnumerable<OrderedRange<double>> ranges;
+		readonly IEnumerable<Range<ValueTerm>> ranges;
 
 		public T Item { get { return item; } }
-		public IEnumerable<OrderedRange<double>> Ranges { get { return ranges; } }
+		public IEnumerable<Range<ValueTerm>> Ranges { get { return ranges; } }
 
-		public Constraint(T item, IEnumerable<OrderedRange<double>> ranges)
+		public Constraint(T item, IEnumerable<Range<ValueTerm>> ranges)
 		{
 			if (item == null) throw new ArgumentNullException("function");
 			if (ranges == null) throw new ArgumentNullException("ranges");
