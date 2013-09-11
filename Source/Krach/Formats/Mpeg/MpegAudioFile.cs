@@ -23,6 +23,7 @@ using Krach.Formats.Mpeg;
 using Krach.Formats.Tags.ID3v2;
 using Krach.Formats;
 using Krach.Formats.Tags.ID3v1;
+using Krach.Formats.Mpeg.MetaData;
 
 namespace Krach.Formats.Mpeg
 {
