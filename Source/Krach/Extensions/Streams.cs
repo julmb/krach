@@ -24,6 +24,15 @@ namespace Krach.Extensions
 {
 	public static class Streams
 	{
+		public static BinaryReader Reset(this BinaryReader binaryReader, long position)
+		{
+			if (binaryReader == null) throw new ArgumentNullException("binaryReader");
+			if (position < 0 || position > binaryReader.BaseStream.Length) throw new ArgumentOutOfRangeException("position");
+
+			binaryReader.BaseStream.Position = position;
+
+			return binaryReader;
+		}
 		public static byte[] Peek(this BinaryReader binaryReader, int byteCount)
 		{
 			if (binaryReader == null) throw new ArgumentNullException("binaryReader");

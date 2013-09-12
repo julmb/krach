@@ -37,7 +37,7 @@ namespace Krach.Formats.Mpeg.MetaData
 		readonly byte[] tableOfContents;
 		readonly int qualityIndicator;
 		
-		public override int MetaDataOffset { get { return SideInformationLength; } }
+		public override int MetaDataOffset { get { return SideInformationLength - ChecksumLength; } }
 		public override string MetaDataIdentifier { get { return "Xing"; } }
 		public MpegAudioXingFields Fields { get { return fields; } }
 		public int FrameCount { get { return frameCount; } }

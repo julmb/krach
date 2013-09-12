@@ -20,7 +20,11 @@ using System.Linq;
 
 namespace Krach.Design
 {
-	public class Option<TItem>
+	public interface IOption<out TItem>
+	{		
+		TItem Item { get; }
+	}
+	public class Option<TItem> : IOption<TItem>
 	{
 		readonly TItem item;
 		
