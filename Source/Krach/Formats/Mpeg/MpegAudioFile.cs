@@ -52,7 +52,9 @@ namespace Krach.Formats.Mpeg
 		{
 			this.id3v2Tag = new ID3v2Tag(reader);
 			this.mpegAudioXingFrame = new MpegAudioXingFrame(reader);
-			this.mpegAudioDataFrames = ReadFrames(reader, new MpegAudioDataFrame(reader), reader.BaseStream.Length).ToArray();
+			this.mpegAudioDataFrames = ReadFrames(reader).ToArray();
+
+			if (reader.BaseStream.Position < reader.BaseStream.Length) throw new InvalidDataException("Found data after MPEG data frames.");
 		}
 
 		public void Write(BinaryWriter writer)
@@ -62,15 +64,17 @@ namespace Krach.Formats.Mpeg
 			foreach (MpegAudioDataFrame mpegAudioDataFrame in mpegAudioDataFrames) mpegAudioDataFrame.Write(writer);
 		}
 
-		static IEnumerable<MpegAudioDataFrame> ReadFrames(BinaryReader reader, MpegAudioDataFrame referenceFrame, long framesEndPosition)
+		static IEnumerable<MpegAudioDataFrame> ReadFrames(BinaryReader reader)
 		{
+			MpegAudioDataFrame referenceFrame = new MpegAudioDataFrame(reader);
+
 			yield return referenceFrame;
 
-			while (reader.BaseStream.Position < framesEndPosition)
+			while (reader.BaseStream.Position < reader.BaseStream.Length)
 			{
 				MpegAudioDataFrame frame = new MpegAudioDataFrame(reader);
 
-				if (frame.Type != referenceFrame.Type) throw new InvalidDataException("Got a frame with of different type than the reference frame.");
+				if (frame.Type != referenceFrame.Type) throw new InvalidDataException("Got a frame of different type than the reference frame.");
 
 				yield return frame;
 			}
