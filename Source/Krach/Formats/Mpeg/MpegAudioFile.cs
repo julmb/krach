@@ -30,49 +30,43 @@ namespace Krach.Formats.Mpeg
 	public class MpegAudioFile : IParseItem
 	{
 		readonly ID3v2Tag id3v2Tag;
-		readonly MpegAudioXingFrame mpegAudioXingFrame;
-		readonly IEnumerable<MpegAudioDataFrame> mpegAudioDataFrames;
+		readonly IEnumerable<MpegAudioFrame> mpegAudioFrames;
 
 		public ID3v2Tag ID3v2Tag { get { return id3v2Tag; } }
-		public MpegAudioXingFrame MpegAudioXingFrame { get { return mpegAudioXingFrame; } }
-		public IEnumerable<MpegAudioDataFrame> MpegAudioDataFrames { get { return mpegAudioDataFrames; } }
-		public virtual bool HasChanged { get { return id3v2Tag.HasChanged || mpegAudioXingFrame.HasChanged || mpegAudioDataFrames.Any(frame => frame.HasChanged); } }
+		public IEnumerable<MpegAudioFrame> MpegAudioFrames { get { return mpegAudioFrames; } }
+		public virtual bool HasChanged { get { return id3v2Tag.HasChanged || mpegAudioFrames.Any(frame => frame.HasChanged); } }
 
-		public MpegAudioFile(ID3v2Tag id3v2Tag, MpegAudioXingFrame mpegAudioXingFrame, IEnumerable<MpegAudioDataFrame> mpegAudioDataFrames)
+		public MpegAudioFile(ID3v2Tag id3v2Tag, IEnumerable<MpegAudioFrame> mpegAudioFrames)
 		{
 			if (id3v2Tag == null) throw new ArgumentNullException("id3v2Tag");
-			if (mpegAudioXingFrame == null) throw new ArgumentNullException("mpegAudioXingFrame");
-			if (mpegAudioDataFrames == null) throw new ArgumentNullException("mpegAudioDataFrames");
+			if (mpegAudioFrames == null) throw new ArgumentNullException("mpegAudioFrames");
 
 			this.id3v2Tag = id3v2Tag;
-			this.mpegAudioXingFrame = mpegAudioXingFrame;
-			this.mpegAudioDataFrames = mpegAudioDataFrames;
+			this.mpegAudioFrames = mpegAudioFrames;
 		}
 		public MpegAudioFile(BinaryReader reader)
 		{
 			this.id3v2Tag = new ID3v2Tag(reader);
-			this.mpegAudioXingFrame = new MpegAudioXingFrame(reader);
-			this.mpegAudioDataFrames = ReadFrames(reader).ToArray();
+			this.mpegAudioFrames = ReadFrames(reader).ToArray();
 
-			if (reader.BaseStream.Position < reader.BaseStream.Length) throw new InvalidDataException("Found data after MPEG data frames.");
+			if (reader.BaseStream.Position < reader.BaseStream.Length) throw new InvalidDataException("Found data after MPEG frames.");
 		}
 
 		public void Write(BinaryWriter writer)
 		{
 			id3v2Tag.Write(writer);
-			mpegAudioXingFrame.Write(writer);
-			foreach (MpegAudioDataFrame mpegAudioDataFrame in mpegAudioDataFrames) mpegAudioDataFrame.Write(writer);
+			foreach (MpegAudioFrame mpegAudioFrame in mpegAudioFrames) mpegAudioFrame.Write(writer);
 		}
 
-		static IEnumerable<MpegAudioDataFrame> ReadFrames(BinaryReader reader)
+		static IEnumerable<MpegAudioFrame> ReadFrames(BinaryReader reader)
 		{
-			MpegAudioDataFrame referenceFrame = new MpegAudioDataFrame(reader);
+			MpegAudioFrame referenceFrame = new MpegAudioDataFrame(reader);
 
 			yield return referenceFrame;
 
 			while (reader.BaseStream.Position < reader.BaseStream.Length)
 			{
-				MpegAudioDataFrame frame = new MpegAudioDataFrame(reader);
+				MpegAudioFrame frame = new MpegAudioDataFrame(reader);
 
 				if (frame.Type != referenceFrame.Type) throw new InvalidDataException("Got a frame of different type than the reference frame.");
 

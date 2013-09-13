@@ -29,7 +29,7 @@ namespace Krach.Formats.Mpeg.MetaData
 {
 	public class MpegAudioLameFrame : MpegAudioSimpleMetaDataFrame
 	{
-		public override int MetaDataOffset { get { return SideInformationLength - ChecksumLength; } }
+		public override int MetaDataOffset { get { return SideInformationLength; } }
 		public override string MetaDataIdentifier { get { return "LAME"; } }
 
 		public MpegAudioLameFrame(BinaryReader reader) : base(reader) { }
