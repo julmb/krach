@@ -199,6 +199,7 @@
     <Compile Include="Formats\Mpeg\MetaData\MpegAudioInfoFrame.cs" />
     <Compile Include="Basics\Direction.cs" />
     <Compile Include="Maps\Basic\SineMap.cs" />
+    <Compile Include="Basics\TerminalItem.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

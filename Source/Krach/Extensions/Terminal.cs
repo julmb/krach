@@ -16,6 +16,8 @@
 
 using System;
 using System.IO;
+using Krach.Basics;
+using System.Collections.Generic;
 
 namespace Krach.Extensions
 {
@@ -76,6 +78,22 @@ namespace Krach.Extensions
 			}
 			else Console.Write(new string(' ', column) + text);
 		}
+		public static void Write(int column, string text, ConsoleColor foregroundColor)
+		{
+			ConsoleColor oldForegroundColor = Console.ForegroundColor;
+
+			Console.ForegroundColor = foregroundColor;
+			Write(column, text);
+			Console.ForegroundColor = oldForegroundColor;
+		}
+		public static void Write(int column, string text, ConsoleColor foregroundColor, ConsoleColor backgroundColor)
+		{
+			ConsoleColor oldBackgroundColor = Console.BackgroundColor;
+
+			Console.BackgroundColor = backgroundColor;
+			Write(column, text, foregroundColor);
+			Console.BackgroundColor = oldBackgroundColor;
+		}
 		public static void WriteLine()
 		{
 			Console.WriteLine();
@@ -85,6 +103,11 @@ namespace Krach.Extensions
 			Write(caption);
 
 			return Console.ReadLine();
+		}
+
+		public static void Write(this IEnumerable<TerminalItem> items, int indentation)
+		{
+			foreach (TerminalItem item in items) item.Write(indentation);
 		}
 	}
 }

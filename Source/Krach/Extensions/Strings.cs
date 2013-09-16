@@ -122,5 +122,17 @@ namespace Krach.Extensions
 			
 			return result;
 		}
+		public static string ToFileSizeString(this double value)
+		{
+			if (value >= 0x40000000) return string.Format("{0:F2} GB", value / 0x40000000);
+			if (value >= 0x100000) return string.Format("{0:F2} MB", value / 0x100000);
+			if (value >= 0x400) return string.Format("{0:F2} kB", value / 0x400);
+
+			return string.Format("{0} B", value);
+		}
+		public static string ToFileSizeString(this long value)
+		{
+			return ToFileSizeString((double)value);
+		}
 	}
 }
