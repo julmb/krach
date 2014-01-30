@@ -87,6 +87,12 @@ namespace Krach.Extensions
 
 			return -1;
 		}
+		public static double Average(params double[] source)
+		{
+			if (source == null) throw new ArgumentNullException("source");
+
+			return source.Average();
+		}
 		public static IEnumerable<TSource> Rotate<TSource>(this IEnumerable<TSource> source, int offset)
 		{
 			if (source == null) throw new ArgumentNullException("source");

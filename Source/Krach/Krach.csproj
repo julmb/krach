@@ -200,6 +200,7 @@
     <Compile Include="Basics\Direction.cs" />
     <Compile Include="Maps\Basic\SineMap.cs" />
     <Compile Include="Basics\TerminalItem.cs" />
+    <Compile Include="Formats\Svg\Svg.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -211,5 +212,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Formats\Mpeg\MetaData\" />
+    <Folder Include="Formats\Svg\" />
   </ItemGroup>
 </Project>
