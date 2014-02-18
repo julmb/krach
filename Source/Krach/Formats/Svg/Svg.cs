@@ -122,7 +122,7 @@ namespace Krach.Formats.Svg
 		}
 
 		// scene
-		public static XElement Scene(Orthotope2Double viewBox, IEnumerable<XElement> items)
+		public static XElement Document(Orthotope2Double viewBox, IEnumerable<XElement> items)
 		{
 			return new XElement
 			(
