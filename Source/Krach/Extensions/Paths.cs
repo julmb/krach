@@ -14,6 +14,9 @@
 // You should have received a copy of the GNU General Public License along with
 // Krach. If not, see <http://www.gnu.org/licenses/>.
 
+using System.IO;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Krach.Extensions
@@ -25,6 +28,24 @@ namespace Krach.Extensions
 		public static string ToFileName(string text)
 		{
 			return Regex.Replace(text, string.Format("[{0}]+", Regex.Escape(new string(invalidCharacters))), string.Empty).TrimEnd('.');
+		}
+		public static string GetFreshName(string path, IEnumerable<string> paths)
+		{
+			if (!Directory.Exists(path) && !File.Exists(path) && !paths.Contains(path)) return path;
+
+			return GetFreshName(path + "_", paths);
+		}
+		public static void MoveRaw(string sourcePath, string targetPath)
+		{
+			if ((File.GetAttributes(sourcePath) & FileAttributes.Directory) != 0) Directory.Move(sourcePath, targetPath);
+			else File.Move(sourcePath, targetPath);
+		}
+		public static void Move(string sourcePath, string targetPath)
+		{
+			string intermediatePath = GetFreshName(sourcePath, Enumerables.Create(sourcePath, targetPath));
+
+			MoveRaw(sourcePath, intermediatePath);
+			MoveRaw(intermediatePath, targetPath);
 		}
 	}
 }

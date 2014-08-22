@@ -130,6 +130,10 @@ namespace Krach.Extensions
 
 			return string.Format("{0} B", value);
 		}
+		public static string ToFileSizeString(this int value)
+		{
+			return ToFileSizeString((double)value);
+		}
 		public static string ToFileSizeString(this long value)
 		{
 			return ToFileSizeString((double)value);
