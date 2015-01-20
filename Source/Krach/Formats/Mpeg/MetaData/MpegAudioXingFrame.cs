@@ -28,7 +28,7 @@ using Krach.Maps.Scalar;
 namespace Krach.Formats.Mpeg.MetaData
 {
 	[Flags]
-	public enum MpegAudioXingFields { FrameCount = 0x0001, AudioDataLength = 0x0002, TableOfContents = 0x0004, QualityIndicator = 0x0008 }
+	public enum MpegAudioXingFields { FrameCount = 0x00000001, AudioDataLength = 0x00000002, TableOfContents = 0x00000004, QualityIndicator = 0x0000008 }
 	public class MpegAudioXingFrame : MpegAudioMetaDataFrame
 	{
 		readonly MpegAudioXingFields fields;
@@ -56,14 +56,17 @@ namespace Krach.Formats.Mpeg.MetaData
 			(
 				mpegAudioDataFrames.First().Version,
 				mpegAudioDataFrames.First().Layer,
+				mpegAudioDataFrames.First().HasErrorProtection,
 				FindLowestBitRateID(mpegAudioDataFrames.First()),
 				mpegAudioDataFrames.First().SampleRateID,
-				mpegAudioDataFrames.First().IsPrivate,
+				false,
+				mpegAudioDataFrames.First().PrivateBit,
 				mpegAudioDataFrames.First().ChannelMode,
 				mpegAudioDataFrames.First().JoinID,
 				mpegAudioDataFrames.First().IsCopyrighted,
 				mpegAudioDataFrames.First().IsOriginal,
-				mpegAudioDataFrames.First().Emphasis
+				mpegAudioDataFrames.First().Emphasis,
+				0x0000
 			)
 		{
 			if (mpegAudioDataFrames == null) throw new ArgumentNullException("mpegAudioDataFrames");
@@ -132,8 +135,10 @@ namespace Krach.Formats.Mpeg.MetaData
 
 		static int FindLowestBitRateID(MpegAudioFrame referenceFrame)
 		{
+			int requiredLength = 4 + 32 + 4 + 4 + 4 + 4 + 100 + 4;
+
 			for (int bitRateID = 1; bitRateID < 15; bitRateID++)
-				if (MpegAudioFrame.GetTotalLength(referenceFrame.Version, referenceFrame.Layer, bitRateID, referenceFrame.SampleRateID) >= 156)
+				if (MpegAudioFrame.GetTotalLength(referenceFrame.Version, referenceFrame.Layer, bitRateID, referenceFrame.SampleRateID) >= requiredLength)
 					return bitRateID;
 
 			throw new InvalidOperationException("Found no bit rate ID for the requested frame size.");

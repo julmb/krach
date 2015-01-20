@@ -29,7 +29,7 @@ namespace Krach.Formats.Mpeg
 		readonly int bitRateID;
 		readonly int sampleRateID;
 		readonly bool hasPadding;
-		readonly bool isPrivate;
+		readonly bool privateBit;
 		readonly MpegAudioChannelMode channelMode;
 		readonly int joinID;
 		readonly bool isCopyrighted;
@@ -43,7 +43,7 @@ namespace Krach.Formats.Mpeg
 		public int BitRateID { get { return bitRateID; } }
 		public int SampleRateID { get { return sampleRateID; } }
 		public bool HasPadding { get { return hasPadding; } }
-		public bool IsPrivate { get { return isPrivate; } }
+		public bool PrivateBit { get { return privateBit; } }
 		public MpegAudioChannelMode ChannelMode { get { return channelMode; } }
 		public int JoinID { get { return joinID; } }
 		public bool IsCopyrighted { get { return isCopyrighted; } }
@@ -70,14 +70,17 @@ namespace Krach.Formats.Mpeg
 		(
 			MpegAudioVersion version,
 			MpegAudioLayer layer,
+			bool hasErrorProtection,
 			int bitRateID,
 			int sampleRateID,
+			bool hasPadding,
 			bool isPrivate,
 			MpegAudioChannelMode channelMode,
 			int joinID,
 			bool isCopyrighted,
 			bool isOriginal,
-			MpegAudioEmphasis emphasis
+			MpegAudioEmphasis emphasis,
+			ushort checksum
 		)
 		{
 			if (version == MpegAudioVersion.Reserved) throw new ArgumentException(string.Format("Incorrect version '{0}'.", version));
@@ -87,18 +90,18 @@ namespace Krach.Formats.Mpeg
 
 			this.version = version;
 			this.layer = layer;
-			this.hasErrorProtection = false;
+			this.hasErrorProtection = hasErrorProtection;
 			this.bitRateID = bitRateID;
 			this.sampleRateID = sampleRateID;
-			this.hasPadding = false;
-			this.isPrivate = isPrivate;
+			this.hasPadding = hasPadding;
+			this.privateBit = isPrivate;
 			this.channelMode = channelMode;
 			this.joinID = joinID;
 			this.isCopyrighted = isCopyrighted;
 			this.isOriginal = isOriginal;
 			this.emphasis = emphasis;
 
-			this.checksum = 0;
+			this.checksum = checksum;
 		}
 		protected MpegAudioFrame(BinaryReader reader)
 		{
@@ -118,7 +121,7 @@ namespace Krach.Formats.Mpeg
 			this.sampleRateID = header[20, 22].Value;
 			if (sampleRateID == 3) throw new InvalidDataException(string.Format("Incorrect sample rate ID '{0}'.", sampleRateID));
 			this.hasPadding = header[22];
-			this.isPrivate = header[23];
+			this.privateBit = header[23];
 			this.channelMode = (MpegAudioChannelMode)header[24, 26].Value;
 			this.joinID = header[26, 28].Value;
 			this.isCopyrighted = header[28];
@@ -141,7 +144,7 @@ namespace Krach.Formats.Mpeg
 					BitField.FromValue(bitRateID, 4).Bits,
 					BitField.FromValue(sampleRateID, 2).Bits,
 					Enumerables.Create(hasPadding),
-					Enumerables.Create(isPrivate),
+					Enumerables.Create(privateBit),
 					BitField.FromValue((int)channelMode, 2).Bits,
 					BitField.FromValue((int)joinID, 2).Bits,
 					Enumerables.Create(isCopyrighted),

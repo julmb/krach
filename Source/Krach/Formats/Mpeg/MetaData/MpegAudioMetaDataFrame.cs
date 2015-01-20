@@ -37,16 +37,19 @@ namespace Krach.Formats.Mpeg.MetaData
 		(
 			MpegAudioVersion version,
 			MpegAudioLayer layer,
+			bool hasErrorProtection,
 			int bitRateID,
 			int sampleRateID,
-			bool isPrivate,
+			bool hasPadding,
+			bool privateBit,
 			MpegAudioChannelMode channelMode,
 			int joinID,
 			bool isCopyrighted,
 			bool isOriginal,
-			MpegAudioEmphasis emphasis
+			MpegAudioEmphasis emphasis,
+			ushort checksum
 		)
-			: base(version, layer, bitRateID, sampleRateID, isPrivate, channelMode, joinID, isCopyrighted, isOriginal, emphasis)
+			: base(version, layer, hasErrorProtection, bitRateID, sampleRateID, hasPadding, privateBit, channelMode, joinID, isCopyrighted, isOriginal, emphasis, checksum)
 		{
 		}
 		protected MpegAudioMetaDataFrame(BinaryReader reader)
