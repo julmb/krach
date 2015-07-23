@@ -74,7 +74,7 @@ namespace Krach.Formats.Mpeg
 			int bitRateID,
 			int sampleRateID,
 			bool hasPadding,
-			bool isPrivate,
+			bool privateBit,
 			MpegAudioChannelMode channelMode,
 			int joinID,
 			bool isCopyrighted,
@@ -94,7 +94,7 @@ namespace Krach.Formats.Mpeg
 			this.bitRateID = bitRateID;
 			this.sampleRateID = sampleRateID;
 			this.hasPadding = hasPadding;
-			this.privateBit = isPrivate;
+			this.privateBit = privateBit;
 			this.channelMode = channelMode;
 			this.joinID = joinID;
 			this.isCopyrighted = isCopyrighted;
