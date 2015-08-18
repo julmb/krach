@@ -4,11 +4,14 @@ dataDirectory="$HOME/.csscript"
 
 mkdir -p $dataDirectory
 
-if [ ! -e "$dataDirectory/Krach" ];
+if [ ! -e "$dataDirectory/krach" ];
 then
-	svn checkout "http://krach.googlecode.com/svn" "$dataDirectory/Krach"
+	hg clone "https://bitbucket.org/brunnerj/krach" "$dataDirectory/krach"
 fi
 
-svn update "$dataDirectory/Krach"
+cd "$dataDirectory/krach"
 
-xbuild /property:Configuration=Release "$dataDirectory/Krach/trunk/Source/Krach.sln"
+hg pull
+hg up
+
+xbuild /property:Configuration=Release "Source/Krach/Krach.csproj"
