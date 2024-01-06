@@ -19,8 +19,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Drawing;
-using System.Drawing.Imaging;
+using SkiaSharp;
 
 namespace Krach.Formats.Tags.ID3v2
 {
@@ -123,10 +122,15 @@ namespace Krach.Formats.Tags.ID3v2
 
 		static string GetMimeType(IEnumerable<byte> imageData)
 		{
-			Image image = Image.FromStream(new MemoryStream(imageData.ToArray()));
-			ImageCodecInfo imageDecoder = ImageCodecInfo.GetImageDecoders().Single(decoder => decoder.FormatID == image.RawFormat.Guid);
+			SKCodec codec = SKCodec.Create(new MemoryStream(imageData.ToArray()));
 
-			return imageDecoder.MimeType;
+			switch (codec.EncodedFormat)
+			{
+				case SKEncodedImageFormat.Bmp: return "image/bmp";
+				case SKEncodedImageFormat.Jpeg: return "image/jpeg";
+				case SKEncodedImageFormat.Png: return "image/png";
+				default: throw new InvalidDataException(string.Format("Unknown image format '{0}'.", codec.EncodedFormat));
+			}
 		}
 	}
 }
