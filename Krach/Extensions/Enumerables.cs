@@ -103,12 +103,6 @@ namespace Krach.Extensions
 
 			for (int i = 0; i < buffer.Length; i++) yield return buffer[(i - offset).Modulo(buffer.Length)];
 		}
-		public static IEnumerable<TSource> Append<TSource>(this IEnumerable<TSource> source, TSource item)
-		{
-			if (source == null) throw new ArgumentNullException("source");
-
-			return Enumerable.Concat(source, Create(item));
-		}
 		public static IEnumerable<TSource> SkipLast<TSource>(this IEnumerable<TSource> source, int count)
 		{
 			if (source == null) throw new ArgumentNullException("source");
