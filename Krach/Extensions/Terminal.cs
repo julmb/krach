@@ -23,22 +23,6 @@ namespace Krach.Extensions
 {
 	public static class Terminal
 	{
-		public static bool IsTerminal
-		{
-			get
-			{
-				try
-				{
-					#pragma warning disable 0219
-					bool cursorVisible = Console.CursorVisible;
-					#pragma warning restore 0219
-
-					return Console.BufferWidth > 0;
-				}
-				catch (IOException) { return false; }
-			}
-		}
-
 		public static void Write(string text)
 		{
 			Console.Write(text);
@@ -61,7 +45,7 @@ namespace Krach.Extensions
 		}
 		public static void Write(int column, string text)
 		{
-			if (IsTerminal)
+			if (!Console.IsOutputRedirected)
 			{
 				Console.CursorLeft = column;
 				foreach (string word in text.Split(' '))
